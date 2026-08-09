@@ -10,6 +10,12 @@
  *  - Husky   → male voice, pitch 0.8 / rate 0.9 (deeper, rougher)
  *  - Smooth  → female voice, pitch 1.1 / rate 0.95 (softer, calming)
  *  - Custom  → any installed system voice the user picks
+ *
+ * Reliability notes:
+ *  - Chrome stops speaking long utterances after ~15 seconds (a well-known
+ *    browser bug). A keep-alive timer nudges `resume()` while speaking so
+ *    long medical answers read to the end.
+ *  - Pause/resume is true pause (utterance position is kept), not a restart.
  */
 
 export type VoiceProfileId = "male" | "female" | "husky" | "smooth" | "custom";
@@ -141,6 +147,23 @@ function pickByGender(gender: "male" | "female"): SpeechSynthesisVoice | null {
   return found ?? null;
 }
 
+/* ------------------------- active utterance ------------------------- */
+
+interface ActiveSpeech {
+  paused: boolean;
+  keepAlive: ReturnType<typeof setInterval> | null;
+}
+
+let active: ActiveSpeech | null = null;
+
+function clearActive(): void {
+  if (active?.keepAlive) clearInterval(active.keepAlive);
+  active = null;
+}
+
+/** Interval (ms) for the Chrome long-utterance keep-alive nudge. */
+const KEEP_ALIVE_MS = 10_000;
+
 /* ---------------------------- speak / stop --------------------------- */
 
 export interface SpeakOptions {
@@ -157,7 +180,12 @@ export function speak(text: string, profile: VoiceProfile, options?: SpeakOption
   if (!speechAvailable() || !text.trim()) return false;
 
   const synth = window.speechSynthesis;
-  synth.cancel();
+  try {
+    synth.cancel();
+  } catch {
+    /* ignore */
+  }
+  clearActive();
 
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.pitch = profile.pitch;
@@ -172,22 +200,67 @@ export function speak(text: string, profile: VoiceProfile, options?: SpeakOption
     if (voice) utterance.voice = voice;
   }
 
-  if (options?.onEnd) {
-    utterance.onend = options.onEnd;
-    utterance.onerror = options.onEnd;
-  }
+  const onDone = () => {
+    clearActive();
+    if (options?.onEnd) options.onEnd();
+  };
+  utterance.onend = onDone;
+  utterance.onerror = onDone;
+
+  active = { paused: false, keepAlive: null };
+  // Chrome bug workaround: long utterances silently stop after ~15s. A gentle
+  // periodic resume() keeps them going — and never runs while explicitly
+  // paused, so it can't fight the user.
+  active.keepAlive = setInterval(() => {
+    const current = active;
+    if (current && !current.paused) {
+      try {
+        window.speechSynthesis.resume();
+      } catch {
+        /* ignore */
+      }
+    }
+  }, KEEP_ALIVE_MS);
 
   try {
     synth.speak(utterance);
   } catch {
+    clearActive();
     if (options?.onEnd) options.onEnd();
     return false;
   }
   return true;
 }
 
+/** Pause the current narration (position is kept — Play resumes it). */
+export function pauseSpeaking(): void {
+  if (!speechAvailable() || !active || active.paused) return;
+  active.paused = true;
+  try {
+    window.speechSynthesis.pause();
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Resume a paused narration. */
+export function resumeSpeaking(): void {
+  if (!speechAvailable() || !active || !active.paused) return;
+  active.paused = false;
+  try {
+    window.speechSynthesis.resume();
+  } catch {
+    /* ignore */
+  }
+}
+
 /** Stop any narration immediately (leaving the screen, sending a message…). */
 export function stopSpeaking(): void {
   if (!speechAvailable()) return;
-  window.speechSynthesis.cancel();
+  try {
+    window.speechSynthesis.cancel();
+  } catch {
+    /* ignore */
+  }
+  clearActive();
 }

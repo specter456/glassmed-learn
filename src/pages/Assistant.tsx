@@ -21,6 +21,8 @@ import {
   VOICE_PROFILES,
   getInstalledVoices,
   onVoicesReady,
+  pauseSpeaking,
+  resumeSpeaking,
   speak,
   speechAvailable,
   stopSpeaking,
@@ -85,6 +87,7 @@ function AssistantInner() {
   const [input, setInput] = useState(() => searchParams.get("q") ?? "");
   const [busy, setBusy] = useState(false);
   const [speakingId, setSpeakingId] = useState<number | null>(null);
+  const [speechPaused, setSpeechPaused] = useState(false);
   // True when the last answer failed because no API key is configured — shows
   // a persistent setup banner instead of a toast that disappears.
   const [setupNeeded, setSetupNeeded] = useState(false);
@@ -133,6 +136,7 @@ function AssistantInner() {
 
       stopSpeaking();
       setSpeakingId(null);
+      setSpeechPaused(false);
       setInput("");
 
       const history: ChatMessage[] = [...messages, { role: "user", content: text }];
@@ -186,22 +190,32 @@ function AssistantInner() {
 
   const toggleSpeak = useCallback(
     (index: number, text: string) => {
+      // Same message: toggle pause/resume (true pause — position is kept).
       if (speakingId === index) {
-        stopSpeaking();
-        setSpeakingId(null);
+        if (speechPaused) {
+          resumeSpeaking();
+          setSpeechPaused(false);
+        } else {
+          pauseSpeaking();
+          setSpeechPaused(true);
+        }
         return;
       }
       stopSpeaking();
+      setSpeechPaused(false);
       setSpeakingId(index);
       const started = speak(text, profile, {
-        onEnd: () => setSpeakingId((cur) => (cur === index ? null : cur)),
+        onEnd: () => {
+          setSpeakingId((cur) => (cur === index ? null : cur));
+          setSpeechPaused(false);
+        },
       });
       if (!started) {
         setSpeakingId(null);
         toast.error("Speech isn't available in this browser.");
       }
     },
-    [speakingId, profile],
+    [speakingId, speechPaused, profile],
   );
 
   const voicesLoading = speechAvailable() && installedVoices.length === 0;
@@ -379,19 +393,26 @@ function AssistantInner() {
                             ? "bg-cloud/30 text-cloud"
                             : "bg-cloud/20 text-cloud hover:bg-cloud/30"
                         }`}
-                        aria-label={speakingId === i ? "Pause reading" : "Read answer aloud"}
+                        aria-label={
+                          speakingId === i
+                            ? speechPaused
+                              ? "Resume reading"
+                              : "Pause reading"
+                            : "Read answer aloud"
+                        }
                       >
-                        {speakingId === i ? (
+                        {speakingId === i && !speechPaused ? (
                           <Pause className="size-3.5" />
                         ) : (
                           <Play className="size-3.5" />
                         )}
-                        {speakingId === i ? "Pause" : "Play"}
+                        {speakingId === i && !speechPaused ? "Pause" : "Play"}
                       </button>
                       <button
                         onClick={() => {
                           stopSpeaking();
                           setSpeakingId(null);
+                          setSpeechPaused(false);
                         }}
                         className="flex size-8 items-center justify-center rounded-full bg-white/5 text-muted-foreground transition-colors hover:bg-[#e2666f]/15 hover:text-[#e2666f]"
                         aria-label="Stop reading"
@@ -400,7 +421,11 @@ function AssistantInner() {
                         <Square className="size-3" />
                       </button>
                       <span className="ml-auto text-[10px] font-medium text-muted-foreground">
-                        {speakingId === i ? "Reading…" : `Voice: ${profile.label}`}
+                        {speakingId === i
+                          ? speechPaused
+                            ? "Paused"
+                            : "Reading…"
+                          : `Voice: ${profile.label}`}
                       </span>
                     </div>
                   </motion.div>
