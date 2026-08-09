@@ -10,7 +10,7 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
@@ -75,7 +75,7 @@ function DeckList() {
                 whileHover={{ y: -6, scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => navigate(`/flashcards?topic=${t.slug}`)}
-                className="glass-panel group flex flex-col gap-4 rounded-3xl p-5 text-left"
+                className="glass-panel shine group flex flex-col gap-4 rounded-3xl p-5 text-left"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div
@@ -155,6 +155,7 @@ function StudySession({ slug }: { slug: string }) {
   const [correctCount, setCorrectCount] = useState(0);
   const [answered, setAnswered] = useState(0);
   const [finished, setFinished] = useState(false);
+  const [leaving, setLeaving] = useState(false);
 
   const queue = useMemo(() => {
     if (!deck || !progress) return null;
@@ -187,6 +188,7 @@ function StudySession({ slug }: { slug: string }) {
   );
 
   const advance = useCallback(() => {
+    setLeaving(false);
     setResult(null);
     if (index + 1 >= (queue?.length ?? 0)) {
       setFinished(true);
@@ -195,10 +197,23 @@ function StudySession({ slug }: { slug: string }) {
     setIndex((i) => i + 1);
   }, [index, queue]);
 
+  // After a WON!, let the celebration play, then slowly fade the card
+  // out and glide on to the next one. (`leaving` resets in `advance`.)
+  useEffect(() => {
+    if (result !== "won") return;
+    const fade = setTimeout(() => setLeaving(true), 950);
+    const next = setTimeout(() => advance(), 2000);
+    return () => {
+      clearTimeout(fade);
+      clearTimeout(next);
+    };
+  }, [result, advance]);
+
   const restart = () => {
     setIndex(0);
     setFlipped(false);
     setResult(null);
+    setLeaving(false);
     setCorrectCount(0);
     setAnswered(0);
     setFinished(false);
@@ -228,7 +243,7 @@ function StudySession({ slug }: { slug: string }) {
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="glass-strong w-full max-w-md rounded-3xl p-10"
+          className="glass-strong shine w-full max-w-md rounded-3xl p-10"
         >
           <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-[#6fb5b0]/20 text-[#3e8f88]">
             <BookOpenCheck className="size-8" />
@@ -307,8 +322,16 @@ function StudySession({ slug }: { slug: string }) {
           <div className="mx-auto mt-4 max-w-xl [perspective:1600px]">
             <motion.div
               className="relative h-[22rem] w-full cursor-pointer [transform-style:preserve-3d]"
-              animate={{ rotateY: flipped ? 180 : 0 }}
-              transition={{ duration: 0.55, ease: [0.4, 0.2, 0.2, 1] }}
+              animate={{
+                rotateY: flipped ? 180 : 0,
+                opacity: leaving ? 0 : 1,
+                scale: leaving ? 0.92 : 1,
+                y: leaving ? 26 : 0,
+              }}
+              transition={{
+                duration: leaving ? 0.9 : 0.55,
+                ease: leaving ? [0.4, 0, 0.7, 1] : [0.4, 0.2, 0.2, 1],
+              }}
               onClick={() => setFlipped((f) => !f)}
               role="button"
               aria-label={flipped ? "Show question" : "Show answer"}
@@ -396,12 +419,19 @@ function StudySession({ slug }: { slug: string }) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
+                {/* soft pale-blue glow halo + slow shimmer ring */}
+                <div className="absolute left-1/2 top-1/2 size-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cloud/25 blur-[90px]" />
+                <motion.div
+                  className="absolute left-1/2 top-1/2 size-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-cloud/30"
+                  animate={{ scale: [1, 1.12, 1], opacity: [0.5, 0.9, 0.5], rotate: [0, 12, 0] }}
+                  transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                />
                 <motion.h2
                   initial={{ scale: 0.4, opacity: 0 }}
                   animate={{ scale: [0.4, 1.15, 1], opacity: 1 }}
                   exit={{ scale: 1.3, opacity: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="text-7xl font-extrabold tracking-tight text-wistaria drop-shadow-[0_10px_30px_rgba(162,162,208,0.6)]"
+                  className="glow-text text-7xl font-extrabold tracking-tight text-wistaria"
                 >
                   WON!
                 </motion.h2>
@@ -413,11 +443,20 @@ function StudySession({ slug }: { slug: string }) {
                 >
                   Back in {1} day · then 3 · then 7
                 </motion.p>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 0.6, 0.9] }}
+                  transition={{ delay: 0.6 }}
+                  className="mt-1 flex items-center gap-1.5 text-xs font-semibold text-cloud"
+                >
+                  <Sparkles className="size-3.5" />
+                  Gliding to the next card…
+                </motion.p>
                 {WIN_SPARKS.map((s, i) => (
                   <motion.span
                     key={i}
                     className="absolute left-1/2 top-1/2 size-2.5 rounded-full"
-                    style={{ backgroundColor: s.color }}
+                    style={{ backgroundColor: s.color, boxShadow: `0 0 10px ${s.color}` }}
                     initial={{ x: 0, y: 0, opacity: 1, scale: 0.6 }}
                     animate={{
                       x: s.x,
@@ -461,24 +500,7 @@ function StudySession({ slug }: { slug: string }) {
             )}
           </AnimatePresence>
 
-          {/* auto-advance after WON */}
-          {result === "won" && (
-            <motion.div
-              key="advance-timer"
-              className="mx-auto mt-6 flex max-w-xl justify-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              <Button
-                variant="ghost"
-                className="gap-2 text-muted-foreground"
-                onClick={advance}
-              >
-                Next card
-                <ArrowRight className="size-4" />
-              </Button>
-            </motion.div>
-          )}
+
         </>
       ) : null}
     </main>

@@ -87,7 +87,7 @@ function DashboardInner() {
           <p className="text-sm font-semibold text-muted-foreground">
             {greeting}, {firstName}
           </p>
-          <h1 className="mt-1 text-balance text-3xl font-extrabold tracking-tight text-wistaria sm:text-4xl">
+          <h1 className="glow-text mt-1 text-balance text-3xl font-extrabold tracking-tight text-wistaria sm:text-4xl">
             Where Medicine Becomes Energetic
           </h1>
           <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
@@ -116,7 +116,7 @@ function DashboardInner() {
                 whileHover={{ y: -8, scale: 1.03 }}
                 whileTap={{ scale: 0.96 }}
                 onClick={() => navigate(m.path)}
-                className="glass-panel group relative flex flex-col items-start gap-4 overflow-hidden rounded-3xl p-5 text-left sm:p-6"
+                className="glass-panel shine group relative flex flex-col items-start gap-4 overflow-hidden rounded-3xl p-5 text-left sm:p-6"
               >
                 <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full opacity-60 blur-2xl transition-opacity duration-300 group-hover:opacity-100" style={{ backgroundColor: m.color + "55" }} />
 
@@ -177,7 +177,7 @@ function DashboardInner() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.35 + i * 0.08 }}
-                  className="glass-panel rounded-3xl p-5"
+                  className="glass-panel shine rounded-3xl p-5"
                 >
                   {loading ? (
                     <div className="flex flex-col gap-3">
@@ -239,7 +239,7 @@ function DashboardInner() {
                     transition={{ duration: 0.5, delay: 0.4 + i * 0.06 }}
                     whileHover={{ x: 6 }}
                     onClick={() => navigate(`/basics?topic=${t.slug}`)}
-                    className="glass-chip flex w-full items-center gap-4 rounded-2xl p-4 text-left"
+                    className="glass-chip shine flex w-full items-center gap-4 rounded-2xl p-4 text-left"
                   >
                     <div
                       className="flex size-11 shrink-0 items-center justify-center rounded-xl"
@@ -293,7 +293,7 @@ function DashboardInner() {
             ) : (orders ?? []).filter((o) => o.status !== "refunded").length === 0 ? (
               <button
                 onClick={() => navigate("/catalog")}
-                className="glass-chip flex w-full items-center justify-between gap-4 rounded-2xl p-5 text-left transition-colors hover:border-white/20"
+                className="glass-chip shine flex w-full items-center justify-between gap-4 rounded-2xl p-5 text-left transition-colors hover:border-white/20"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex size-11 items-center justify-center rounded-xl bg-[#a2a2d0]/15 text-wistaria">
@@ -323,7 +323,7 @@ function DashboardInner() {
                       transition={{ duration: 0.5, delay: 0.3 + i * 0.06 }}
                       whileHover={{ x: 6 }}
                       onClick={() => navigate(`/catalog/${item.slug}`)}
-                      className="glass-chip mb-3 flex w-full items-center gap-4 rounded-2xl p-4 text-left"
+                      className="glass-chip shine mb-3 flex w-full items-center gap-4 rounded-2xl p-4 text-left"
                     >
                       <div
                         className="flex size-11 shrink-0 items-center justify-center rounded-xl"

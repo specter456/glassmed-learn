@@ -25,7 +25,7 @@ export function ComingSoon({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="glass-panel relative overflow-hidden rounded-3xl p-8 text-center sm:p-12"
+        className="glass-panel shine relative overflow-hidden rounded-3xl p-8 text-center sm:p-12"
       >
         <div
           className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-20 blur-3xl"

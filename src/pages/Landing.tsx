@@ -91,7 +91,7 @@ export default function Landing() {
         transition={{ duration: 0.6, delay: 0.1 }}
         className="sticky top-0 z-[60] px-4 pt-4"
       >
-        <div className="glass-panel mx-auto flex max-w-6xl items-center justify-between rounded-2xl px-4 py-2.5">
+        <div className="glass-panel shine mx-auto flex max-w-6xl items-center justify-between rounded-2xl px-4 py-2.5">
           <GlassMedLogo size="sm" />
           <div className="flex items-center gap-2">
             <Button
@@ -147,7 +147,7 @@ export default function Landing() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.35 }}
-            className="mt-8 max-w-3xl text-balance text-4xl font-extrabold leading-tight tracking-tight text-wistaria sm:text-5xl"
+            className="glow-text mt-8 max-w-3xl text-balance text-4xl font-extrabold leading-tight tracking-tight text-wistaria sm:text-5xl"
           >
             Where Medicine Becomes{" "}
             <span className="relative inline-block">
@@ -238,7 +238,7 @@ export default function Landing() {
                   onClick={() => goAuth(m.path)}
                   whileHover={{ y: -6, scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
-                  className="glass-panel group flex flex-col items-start gap-4 rounded-3xl p-6 text-left"
+                  className="glass-panel shine group flex flex-col items-start gap-4 rounded-3xl p-6 text-left"
                 >
                   <div
                     className="flex size-14 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
@@ -287,7 +287,7 @@ export default function Landing() {
                   whileHover={{ y: -6, scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => navigate(`/catalog/${item.slug}`)}
-                  className="glass-panel group flex flex-col gap-4 rounded-3xl p-6 text-left"
+                  className="glass-panel shine group flex flex-col gap-4 rounded-3xl p-6 text-left"
                 >
                   <div className="flex items-start justify-between">
                     <div
@@ -317,7 +317,7 @@ export default function Landing() {
         <section className="pb-24">
           <motion.div
             {...reveal(0)}
-            className="glass-panel relative overflow-hidden rounded-3xl p-8 sm:p-12"
+            className="glass-panel shine relative overflow-hidden rounded-3xl p-8 sm:p-12"
           >
             <div className="tech-grid pointer-events-none absolute inset-0 opacity-30" />
             <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-cloud/15 blur-3xl" />
@@ -409,7 +409,7 @@ export default function Landing() {
               <motion.div
                 key={s.day}
                 {...reveal(i * 0.1)}
-                className="glass-panel flex flex-col items-center gap-3 rounded-3xl p-7 text-center"
+                className="glass-panel shine flex flex-col items-center gap-3 rounded-3xl p-7 text-center"
               >
                 <div
                   className="flex size-14 items-center justify-center rounded-full font-mono text-lg font-extrabold text-white"
@@ -426,7 +426,7 @@ export default function Landing() {
 
         {/* Quote strip */}
         <motion.section {...reveal(0)} className="pb-24">
-          <figure className="glass-panel relative mx-auto max-w-3xl rounded-3xl p-8 text-center sm:p-10">
+          <figure className="glass-panel shine relative mx-auto max-w-3xl rounded-3xl p-8 text-center sm:p-10">
             <Quote className="mx-auto size-8 text-wistaria/60" />
             <blockquote className="mt-4 text-balance text-lg font-medium leading-8 text-foreground sm:text-xl">
               "Medicine is a mountain of facts. GlassMed builds the path — one
@@ -440,7 +440,7 @@ export default function Landing() {
         <section className="pb-10">
           <motion.div
             {...reveal(0)}
-            className="glass-strong relative overflow-hidden rounded-3xl p-10 text-center sm:p-14"
+            className="glass-strong shine relative overflow-hidden rounded-3xl p-10 text-center sm:p-14"
           >
             <div className="tech-grid pointer-events-none absolute inset-0 opacity-30" />
             <div className="pointer-events-none absolute inset-0">

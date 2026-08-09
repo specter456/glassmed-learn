@@ -80,7 +80,7 @@ export function TopicDetailView({
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-panel relative mt-4 overflow-hidden rounded-3xl p-6 sm:p-8"
+        className="glass-panel shine relative mt-4 overflow-hidden rounded-3xl p-6 sm:p-8"
       >
         <div
           className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full opacity-20 blur-3xl"
@@ -129,7 +129,7 @@ export function TopicDetailView({
           <div className="mt-6 space-y-6">
             <TopicDiagram diagram={topic.diagram} accent={topic.accent} />
 
-            <div className="glass-panel rounded-3xl p-6">
+            <div className="glass-panel shine rounded-3xl p-6">
               <h2 className="flex items-center gap-2 text-base font-extrabold tracking-tight">
                 <Sparkles className="size-4" style={{ color: topic.accent }} />
                 Key points to remember
@@ -161,7 +161,7 @@ export function TopicDetailView({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ delay: i * 0.05 }}
-                className="glass-panel rounded-3xl p-6"
+                className="glass-panel shine rounded-3xl p-6"
               >
                 <h2 className="text-lg font-extrabold tracking-tight text-wistaria">
                   {i + 1}. {b.heading}
@@ -197,7 +197,7 @@ export function TopicDetailView({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ delay: i * 0.05 }}
-                className="glass-panel rounded-3xl p-6"
+                className="glass-panel shine rounded-3xl p-6"
               >
                 <h2 className="text-lg font-extrabold tracking-tight text-wistaria">
                   {b.heading}
@@ -209,7 +209,7 @@ export function TopicDetailView({
         )}
       </Tabs>
 
-      <div className="glass-strong mt-8 flex flex-col items-center gap-3 rounded-3xl p-6 text-center sm:flex-row sm:justify-between sm:text-left">
+      <div className="glass-strong shine mt-8 flex flex-col items-center gap-3 rounded-3xl p-6 text-center sm:flex-row sm:justify-between sm:text-left">
         <div>
           <p className="text-base font-extrabold">Now lock it in</p>
           <p className="text-sm text-muted-foreground">

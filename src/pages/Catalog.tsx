@@ -92,7 +92,7 @@ function CheckoutModal({
             role="dialog"
             aria-modal="true"
             aria-label="Checkout"
-            className="glass-strong relative w-full max-w-md rounded-3xl p-7"
+            className="glass-strong shine relative w-full max-w-md rounded-3xl p-7"
             initial={{ opacity: 0, y: 24, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
@@ -249,7 +249,7 @@ function CatalogItemPage({ slug }: { slug: string }) {
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-panel relative mt-4 overflow-hidden rounded-3xl p-6 sm:p-10"
+        className="glass-panel shine relative mt-4 overflow-hidden rounded-3xl p-6 sm:p-10"
       >
         <div
           className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-20 blur-3xl"
@@ -401,7 +401,7 @@ function CatalogBrowse() {
               whileHover={{ y: -6, scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate(`/catalog/${item.slug}`)}
-              className={`glass-panel group flex flex-col gap-4 rounded-3xl p-5 text-left ${
+              className={`glass-panel shine group flex flex-col gap-4 rounded-3xl p-5 text-left ${
                 premium ? "ring-1 ring-white/8" : ""
               }`}
             >

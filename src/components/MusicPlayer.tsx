@@ -155,7 +155,7 @@ export function MusicPlayer() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 300, damping: 26 }}
-            className="glass-strong fixed bottom-5 right-5 z-[80] w-[min(92vw,340px)] rounded-3xl p-4"
+            className="glass-strong shine fixed bottom-5 right-5 z-[80] w-[min(92vw,340px)] rounded-3xl p-4"
           >
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2.5 overflow-hidden">

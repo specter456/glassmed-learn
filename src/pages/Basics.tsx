@@ -48,7 +48,7 @@ function TopicPicker() {
                   whileHover={{ y: -6, scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => navigate(`/basics?topic=${t.slug}`)}
-                  className="glass-panel group flex flex-col gap-4 rounded-3xl p-5 text-left"
+                  className="glass-panel shine group flex flex-col gap-4 rounded-3xl p-5 text-left"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div

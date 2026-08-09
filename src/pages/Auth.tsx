@@ -118,7 +118,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             <GlassMedLogo size="lg" />
           </button>
 
-          <Card className="glass-strong mt-8 w-full rounded-3xl border-0 pb-0 shadow-none">
+          <Card className="glass-strong shine mt-8 w-full rounded-3xl border-0 pb-0 shadow-none">
             {step === "signIn" ? (
               <>
                 <CardHeader className="text-center">
