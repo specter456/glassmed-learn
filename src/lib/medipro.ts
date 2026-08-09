@@ -162,3 +162,26 @@ export function xpProgress(xp: number): number {
 export function savePoints(combo: number): number {
   return 100 + 25 * Math.max(0, combo - 1);
 }
+
+/** Fisher–Yates shuffle — returns a new array, never mutates the input. */
+export function shuffle<T>(arr: readonly T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/**
+ * Shuffle a scenario's answer options into a random order and report where
+ * the correct answer landed, so it's never predictably the first option.
+ */
+export function shuffleOptions<T>(
+  options: readonly T[],
+  correctIndex: number,
+): { options: T[]; correctIndex: number } {
+  const correct = options[correctIndex];
+  const shuffled = shuffle(options);
+  return { options: shuffled, correctIndex: shuffled.indexOf(correct) };
+}

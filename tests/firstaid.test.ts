@@ -7,6 +7,7 @@ import {
   levelFromXp,
   rankTitle,
   savePoints,
+  shuffleOptions,
   xpForLevel,
   xpProgress,
 } from "../src/lib/medipro";
@@ -124,5 +125,50 @@ describe("a perfect 8-shift run", () => {
     combo = 0;
     expect(xp).toBe(100);
     expect(levelFromXp(xp)).toBe(1);
+  });
+});
+
+describe("shuffleOptions (randomized answer order)", () => {
+  const OPTIONS = [
+    "Give 5 back blows, then 5 abdominal thrusts (Heimlich)",
+    "Slap them on the back once and shrug",
+    "Hand them a glass of water",
+    "Start filming for the group chat",
+  ];
+
+  it("keeps all four options, with no additions or losses", () => {
+    const { options } = shuffleOptions(OPTIONS, 0);
+    expect([...options].sort()).toEqual([...OPTIONS].sort());
+    expect(new Set(options).size).toBe(4);
+  });
+
+  it("always points correctIndex at the correct option text", () => {
+    for (let run = 0; run < 50; run++) {
+      const { options, correctIndex } = shuffleOptions(OPTIONS, 0);
+      expect(options[correctIndex]).toBe(OPTIONS[0]);
+      expect(correctIndex).toBeGreaterThanOrEqual(0);
+      expect(correctIndex).toBeLessThan(4);
+    }
+  });
+
+  it("does not always put the correct answer first", () => {
+    const positions = new Set<number>();
+    for (let run = 0; run < 120; run++) {
+      positions.add(shuffleOptions(OPTIONS, 0).correctIndex);
+    }
+    // With four options, all four positions should occur within 120 shuffles
+    // (P(missing one position) ~ (3/4)^120, effectively zero).
+    expect(positions.size).toBe(4);
+  });
+
+  it("handles a correct answer that starts mid-list", () => {
+    const { options, correctIndex } = shuffleOptions(OPTIONS, 2);
+    expect(options[correctIndex]).toBe(OPTIONS[2]);
+  });
+
+  it("does not mutate the input array", () => {
+    const copy = [...OPTIONS];
+    shuffleOptions(OPTIONS, 0);
+    expect(OPTIONS).toEqual(copy);
   });
 });

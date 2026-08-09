@@ -20,7 +20,14 @@ import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { Button } from "@/components/ui/button";
-import { levelFromXp, rankTitle, savePoints, xpProgress } from "@/lib/medipro";
+import {
+  levelFromXp,
+  rankTitle,
+  savePoints,
+  shuffle,
+  shuffleOptions,
+  xpProgress,
+} from "@/lib/medipro";
 
 /* ----------------------------- data -------------------------------- */
 
@@ -226,16 +233,6 @@ const SCENARIOS: Scenario[] = [
       "For hypoglycemia: give fast-acting sugar (juice, glucose tabs), then recheck in ~15 minutes. If still low or unconscious, call emergency services.",
   },
 ];
-
-/** Fisher–Yates shuffle (returns a new array). */
-function shuffle<T>(arr: readonly T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
 
 /* ------------------------- persistence ----------------------------- */
 
@@ -997,7 +994,17 @@ function GameInner() {
   }, [stats]);
 
   const startRun = () => {
-    setScenarios(shuffle(SCENARIOS));
+    // Randomize the shift order AND each scenario's answer options, so the
+    // correct move is never predictably the first option.
+    setScenarios(
+      shuffle(SCENARIOS).map((s) => {
+        const { options, correctIndex } = shuffleOptions(
+          s.options,
+          s.correctIndex,
+        );
+        return { ...s, options, correctIndex };
+      }),
+    );
     setCount(3);
     setScreen("countdown");
   };
