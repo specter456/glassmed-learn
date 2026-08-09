@@ -1,7 +1,7 @@
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { GlassMedLockup } from "@/components/GlassMedLogo";
-import { ArrowLeft, LogOut, Store } from "lucide-react";
+import { ArrowLeft, Bot, LogOut, Store } from "lucide-react";
 import { useNavigate } from "react-router";
 
 interface AppHeaderProps {
@@ -51,6 +51,15 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/assistant")}
+            className="gap-1.5 font-mono text-xs tracking-wide text-muted-foreground"
+          >
+            <Bot className="size-3.5" />
+            Assistant
+          </Button>
           <Button
             variant="ghost"
             size="sm"

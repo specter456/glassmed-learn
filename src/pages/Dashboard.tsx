@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import {
   ArrowRight,
+  Bot,
   Box,
   CalendarClock,
   CheckCircle2,
@@ -98,6 +99,34 @@ function DashboardInner() {
             <Button onClick={() => navigate("/catalog")} className="gap-2 rounded-full">
               <Store className="size-4" />
               Browse the catalog
+            </Button>
+          </div>
+        </motion.div>
+
+        {/* Ask MediPro — AI study assistant */}
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.12 }}
+          className="glass-strong shine relative mt-10 overflow-hidden rounded-3xl p-6 sm:p-8"
+        >
+          <div className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full bg-wistaria/20 blur-3xl" />
+          <div className="relative flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#a2a2d0]/15 text-wistaria">
+                <Bot className="size-6" />
+              </div>
+              <div>
+                <h2 className="text-lg font-extrabold tracking-tight text-wistaria">Ask MediPro</h2>
+                <p className="mt-1 max-w-md text-sm leading-6 text-muted-foreground">
+                  Stuck on a concept? Get an accurate, source-minded study answer —
+                  then have it read aloud in a voice that helps it stick.
+                </p>
+              </div>
+            </div>
+            <Button onClick={() => navigate("/assistant")} className="gap-2 rounded-full">
+              Open assistant
+              <ArrowRight className="size-4" />
             </Button>
           </div>
         </motion.div>

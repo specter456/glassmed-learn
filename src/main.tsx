@@ -19,6 +19,7 @@ const Basics = lazy(() => import("./pages/Basics.tsx"));
 const Catalog = lazy(() => import("./pages/Catalog.tsx"));
 const Game = lazy(() => import("./pages/Game.tsx"));
 const Research = lazy(() => import("./pages/Research.tsx"));
+const Assistant = lazy(() => import("./pages/Assistant.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 // Skeleton fallback for route transitions
@@ -207,6 +208,14 @@ createRoot(document.getElementById("root")!).render(
                 element={
                   <RequireAuth>
                     <Research />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/assistant"
+                element={
+                  <RequireAuth>
+                    <Assistant />
                   </RequireAuth>
                 }
               />
