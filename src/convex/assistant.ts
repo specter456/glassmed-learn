@@ -56,14 +56,24 @@ export const askAssistant = action({
     //   OpenAI  → AI_API_KEY (or OPENAI_API_KEY), base https://api.openai.com/v1
     //   Google  → Gemini key from AI Studio, base
     //             https://generativelanguage.googleapis.com/v1beta/openai
-    const key = process.env.AI_API_KEY ?? process.env.OPENAI_API_KEY;
+    // The key may be stored under any of these names in the Keys tab — all
+    // are accepted so a slightly different variable name can never break it.
+    const key =
+      process.env.AI_API_KEY ??
+      process.env.GEMINI_API_KEY ??
+      process.env.GOOGLE_API_KEY ??
+      process.env.OPENAI_API_KEY;
     if (!key) throw new ConvexError("ASSISTANT_NOT_CONFIGURED");
 
     // If no base URL was configured, guess the provider from the key format:
     // Google Gemini keys start with AIza / AQ., OpenAI keys with sk-. This way
-    // the user only needs to add AI_API_KEY and it just works.
+    // the user only needs to add the key and it just works.
     const configuredBase = (process.env.AI_BASE_URL ?? "").trim().replace(/\/+$/, "");
-    const looksGoogle = key.startsWith("AIza") || key.startsWith("AQ.");
+    const looksGoogle =
+      key.startsWith("AIza") ||
+      key.startsWith("AQ.") ||
+      !!process.env.GEMINI_API_KEY ||
+      !!process.env.GOOGLE_API_KEY;
     const baseUrl =
       configuredBase ||
       (looksGoogle
