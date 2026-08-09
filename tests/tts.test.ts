@@ -10,9 +10,12 @@
 import { describe, expect, it, beforeEach, afterEach } from "bun:test";
 import {
   VOICE_PROFILES,
+  VOICE_QUALITIES,
+  applyQuality,
   getInstalledVoices,
   onVoicesReady,
   pauseSpeaking,
+  qualityById,
   resumeSpeaking,
   speak,
   speechAvailable,
@@ -108,6 +111,7 @@ beforeEach(() => {
   synth.cancelCalls = 0;
   synth.pauseCalls = 0;
   synth.resumeCalls = 0;
+  synth.getVoices = () => VOICES;
   installSpeech();
 });
 
@@ -246,6 +250,89 @@ describe("pause / resume / stop", () => {
   it("stop with nothing playing never throws", () => {
     stopSpeaking();
     stopSpeaking();
+  });
+});
+
+describe("voice quality presets", () => {
+  it("defines exactly the three requested presets with the right tuning", () => {
+    expect(VOICE_QUALITIES).toHaveLength(3);
+    const byId = Object.fromEntries(VOICE_QUALITIES.map((q) => [q.id, q]));
+    expect(byId["smooth-calm"]).toMatchObject({
+      label: "Smooth & Calm",
+      pitch: 1.0,
+      rate: 0.85,
+    });
+    expect(byId["professional"]).toMatchObject({
+      label: "Professional",
+      pitch: 0.95,
+      rate: 0.95,
+    });
+    expect(byId["energetic"]).toMatchObject({
+      label: "Energetic",
+      pitch: 1.05,
+      rate: 1.1,
+    });
+  });
+
+  it("qualityById falls back to Smooth & Calm for unknown ids", () => {
+    expect(qualityById(null).id).toBe("smooth-calm");
+    expect(qualityById("bogus").id).toBe("smooth-calm");
+    expect(qualityById("professional").id).toBe("professional");
+  });
+
+  it("applyQuality overlays pitch and rate but preserves the voice choice", () => {
+    const tuned = applyQuality(profile("husky"), qualityById("professional"));
+    expect(tuned.pitch).toBe(0.95);
+    expect(tuned.rate).toBe(0.95);
+    expect(tuned.gender).toBe("male");
+
+    const custom = applyQuality(
+      { ...profile("custom"), customVoiceName: "Google US English" },
+      qualityById("energetic"),
+    );
+    expect(custom.customVoiceName).toBe("Google US English");
+    expect(custom.rate).toBe(1.1);
+  });
+
+  it("applyQuality with no preset leaves the profile untouched", () => {
+    expect(applyQuality(profile("husky"), null).pitch).toBe(0.8);
+  });
+
+  it("an applied quality preset reaches the utterance", () => {
+    speak("text", applyQuality(profile("smooth"), qualityById("energetic")));
+    const u = lastUtterance();
+    expect(u.pitch).toBe(1.05);
+    expect(u.rate).toBe(1.1);
+  });
+});
+
+describe("best available voice selection", () => {
+  it("prefers a network/natural voice over a local one within the same gender", () => {
+    synth.getVoices = () => [
+      { name: "Samantha", lang: "en-US", default: false, localService: true, voiceURI: "sam" },
+      { name: "Zira", lang: "en-US", default: false, localService: false, voiceURI: "zira" },
+      { name: "Google UK English Female", lang: "en-GB", default: false, localService: false, voiceURI: "guk" },
+    ];
+    speak("text", profile("female"));
+    expect(lastUtterance().voice?.name).toBe("Google UK English Female");
+  });
+
+  it("still respects gender before naturalness", () => {
+    synth.getVoices = () => [
+      { name: "David", lang: "en-US", default: false, localService: true, voiceURI: "david" },
+      { name: "Google US English", lang: "en-US", default: false, localService: false, voiceURI: "gus" },
+    ];
+    speak("text", profile("male"));
+    expect(lastUtterance().voice?.name).toBe("David");
+  });
+
+  it("falls back to the best available voice when no gender match exists", () => {
+    synth.getVoices = () => [
+      { name: "Samantha", lang: "en-US", default: false, localService: true, voiceURI: "sam" },
+      { name: "Google UK English Female", lang: "en-GB", default: false, localService: false, voiceURI: "guk" },
+    ];
+    speak("text", profile("male")); // no male voice installed
+    expect(lastUtterance().voice?.name).toBe("Google UK English Female");
   });
 });
 

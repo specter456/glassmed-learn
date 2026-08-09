@@ -4,6 +4,7 @@ import {
   AlertTriangle,
   ArrowLeft,
   BookOpen,
+  Check,
   ChevronRight,
   Clock3,
   Lightbulb,
@@ -25,6 +26,11 @@ import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   ARTICLE_CATEGORIES,
   ARTICLES,
   articleBySlug,
@@ -35,13 +41,17 @@ import {
 } from "@/lib/articles";
 import {
   VOICE_PROFILES,
+  VOICE_QUALITIES,
+  applyQuality,
   pauseSpeaking,
+  qualityById,
   resumeSpeaking,
   speak,
   speechAvailable,
   stopSpeaking,
   type VoiceProfile,
   type VoiceProfileId,
+  type VoiceQualityId,
 } from "@/lib/tts";
 
 /* ------------------------- safe preferences ------------------------- */
@@ -272,10 +282,23 @@ function ArticleReader({ article }: { article: Article }) {
   const [customVoiceName] = useState<string | null>(
     () => loadPref("medipro-tts-custom-voice") || null,
   );
+  const [qualityId, setQualityId] = useState<VoiceQualityId>(
+    () => (loadPref("medipro-tts-quality") as VoiceQualityId | null) ?? "smooth-calm",
+  );
   const profile: VoiceProfile = useMemo(() => {
     const base = VOICE_PROFILES.find((p) => p.id === profileId) ?? VOICE_PROFILES[3];
     return base.id === "custom" ? { ...base, customVoiceName: customVoiceName ?? undefined } : base;
   }, [profileId, customVoiceName]);
+  const quality = useMemo(() => qualityById(qualityId), [qualityId]);
+
+  // Persist the quality choice (shared with the Assistant via the same key).
+  useEffect(() => {
+    try {
+      localStorage.setItem("medipro-tts-quality", qualityId);
+    } catch {
+      /* storage unavailable */
+    }
+  }, [qualityId]);
 
   // Stop any narration when leaving the article.
   useEffect(() => () => stopSpeaking(), []);
@@ -296,7 +319,7 @@ function ArticleReader({ article }: { article: Article }) {
     stopSpeaking();
     setPaused(false);
     setSpeakingSlug(article.slug);
-    const started = speak(articleToSpeech(article), profile, {
+    const started = speak(articleToSpeech(article), applyQuality(profile, quality), {
       onEnd: () => {
         setSpeakingSlug(null);
         setPaused(false);
@@ -386,11 +409,48 @@ function ArticleReader({ article }: { article: Article }) {
         >
           <Square className="size-3.5" />
         </button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="glass-chip flex items-center gap-1.5 rounded-full px-3 py-2 text-[11px] font-bold text-muted-foreground transition-colors hover:text-foreground">
+              {quality.label}
+            </button>
+          </PopoverTrigger>
+          <PopoverContent align="end" className="glass-strong w-64 border-white/10">
+            <p className="text-sm font-extrabold tracking-tight">Voice quality</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              Tunes pitch and speed so narration sounds natural, not robotic.
+            </p>
+            <div className="mt-3 space-y-1.5">
+              {VOICE_QUALITIES.map((q) => {
+                const active = qualityId === q.id;
+                return (
+                  <button
+                    key={q.id}
+                    onClick={() => setQualityId(q.id)}
+                    className={`flex w-full items-center justify-between gap-2 rounded-xl border px-3 py-2 text-left transition-colors ${
+                      active
+                        ? "border-wistaria/40 bg-wistaria/10"
+                        : "border-white/10 hover:border-white/20"
+                    }`}
+                  >
+                    <span>
+                      <span className="block text-sm font-bold">{q.label}</span>
+                      <span className="block text-[11px] leading-4 text-muted-foreground">
+                        {q.description}
+                      </span>
+                    </span>
+                    {active && <Check className="size-4 shrink-0 text-wistaria" />}
+                  </button>
+                );
+              })}
+            </div>
+          </PopoverContent>
+        </Popover>
         <div className="ml-auto flex items-center gap-2 text-[11px] font-semibold">
           <Volume2 className="size-3.5 text-wistaria" />
           {isReading ? (paused ? "Paused" : "Reading…") : "Ready"}
           <span className="hidden text-muted-foreground sm:inline">
-            · Voice: {profile.label}
+            · {profile.label} · {quality.label}
           </span>
         </div>
       </motion.div>

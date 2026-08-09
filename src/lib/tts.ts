@@ -52,7 +52,7 @@ export const VOICE_PROFILES: VoiceProfile[] = [
   {
     id: "husky",
     label: "Husky",
-    description: "Deeper, rougher tone — male voice, pitch 0.8",
+    description: "Deep, gravelly male voice",
     pitch: 0.8,
     rate: 0.9,
     gender: "male",
@@ -60,7 +60,7 @@ export const VOICE_PROFILES: VoiceProfile[] = [
   {
     id: "smooth",
     label: "Smooth",
-    description: "Softer, calming tone — female voice, pitch 1.1",
+    description: "Soft, gentle female voice",
     pitch: 1.1,
     rate: 0.95,
     gender: "female",
@@ -135,16 +135,55 @@ const FEMALE_HINTS = [
   "moira",
   "susan",
   "serena",
+  "aria",
+  "jenny",
+  "natasha",
 ];
 
+/** Does the voice name signal the requested gender? */
+function voiceMatchesGender(name: string, gender: "male" | "female"): boolean {
+  if (/\b(male|female)\b/i.test(name)) return name.toLowerCase().includes(gender);
+  const hints = gender === "male" ? MALE_HINTS : FEMALE_HINTS;
+  return hints.some((h) => name.toLowerCase().includes(h));
+}
+
+/**
+ * Naturalness score for a voice name. Network/neural voices (Google, Microsoft
+ * neural, enhanced, online) sound far less robotic than local system voices,
+ * so they rank above the browser's built-in ones.
+ */
+function voiceQualityScore(name: string): number {
+  const n = name.toLowerCase();
+  if (/(natural|neural|premium|enhanced|online|wavenet|cloud|highquality)/.test(n)) return 30;
+  if (/(google|microsoft|siri|apple|amazon)/.test(n)) return 20;
+  if (/(david|samantha|zira|karen|moira|victoria|daniel|alex|serena|susan|jenny|aria|natasha)/.test(n)) return 10;
+  return 0;
+}
+
+/**
+ * Pick the best available voice for a gender. Always prefers a voice that
+ * matches the requested gender first, then ranks by naturalness (neural and
+ * network voices over local robotic ones), then the browser's default voice.
+ */
 function pickByGender(gender: "male" | "female"): SpeechSynthesisVoice | null {
   const voices = getInstalledVoices();
   if (voices.length === 0) return null;
   const en = voices.filter((v) => v.lang.toLowerCase().startsWith("en"));
   const pool = en.length > 0 ? en : voices;
-  const hints = gender === "male" ? MALE_HINTS : FEMALE_HINTS;
-  const found = pool.find((v) => hints.some((h) => v.name.toLowerCase().includes(h)));
-  return found ?? null;
+
+  const gendered = pool.filter((v) => voiceMatchesGender(v.name, gender));
+  const candidates = gendered.length > 0 ? gendered : pool;
+
+  let best: SpeechSynthesisVoice | null = null;
+  let bestScore = -1;
+  for (const v of candidates) {
+    const score = voiceQualityScore(v.name) * 100 + (v.default ? 5 : 0);
+    if (score > bestScore) {
+      bestScore = score;
+      best = v;
+    }
+  }
+  return best;
 }
 
 /* ------------------------- active utterance ------------------------- */
@@ -159,6 +198,60 @@ let active: ActiveSpeech | null = null;
 function clearActive(): void {
   if (active?.keepAlive) clearInterval(active.keepAlive);
   active = null;
+}
+
+/* --------------------------- voice quality -------------------------- */
+
+/**
+ * Voice-quality presets that tune pitch + rate on top of the chosen voice.
+ * These make narration sound smooth and calm, professionally clear, or
+ * energetic — instead of robotic.
+ */
+export type VoiceQualityId = "smooth-calm" | "professional" | "energetic";
+
+export interface VoiceQuality {
+  id: VoiceQualityId;
+  label: string;
+  description: string;
+  pitch: number;
+  rate: number;
+}
+
+export const VOICE_QUALITIES: VoiceQuality[] = [
+  {
+    id: "smooth-calm",
+    label: "Smooth & Calm",
+    description: "Pleasant, relaxed listening · rate 0.85",
+    pitch: 1.0,
+    rate: 0.85,
+  },
+  {
+    id: "professional",
+    label: "Professional",
+    description: "Clear, composed narration · rate 0.95",
+    pitch: 0.95,
+    rate: 0.95,
+  },
+  {
+    id: "energetic",
+    label: "Energetic",
+    description: "Lively and engaging · rate 1.1",
+    pitch: 1.05,
+    rate: 1.1,
+  },
+];
+
+export function qualityById(id: string | null | undefined): VoiceQuality {
+  return VOICE_QUALITIES.find((q) => q.id === id) ?? VOICE_QUALITIES[0];
+}
+
+/** Overlay a voice-quality preset onto a voice profile (pitch + rate). */
+export function applyQuality(
+  profile: VoiceProfile,
+  quality: VoiceQuality | null | undefined,
+): VoiceProfile {
+  if (!quality) return profile;
+  return { ...profile, pitch: quality.pitch, rate: quality.rate };
 }
 
 /** Interval (ms) for the Chrome long-utterance keep-alive nudge. */

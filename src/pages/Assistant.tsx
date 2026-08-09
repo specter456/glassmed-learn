@@ -19,15 +19,19 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import {
   VOICE_PROFILES,
+  VOICE_QUALITIES,
+  applyQuality,
   getInstalledVoices,
   onVoicesReady,
   pauseSpeaking,
+  qualityById,
   resumeSpeaking,
   speak,
   speechAvailable,
   stopSpeaking,
   type VoiceProfile,
   type VoiceProfileId,
+  type VoiceQualityId,
 } from "@/lib/tts";
 
 /* ------------------------- safe preferences ------------------------- */
@@ -100,6 +104,9 @@ function AssistantInner() {
   const [customVoiceName, setCustomVoiceName] = useState<string | null>(
     () => loadPref("medipro-tts-custom-voice") || null,
   );
+  const [qualityId, setQualityId] = useState<VoiceQualityId>(
+    () => (loadPref("medipro-tts-quality") as VoiceQualityId | null) ?? "smooth-calm",
+  );
   const [installedVoices, setInstalledVoices] = useState<SpeechSynthesisVoice[]>(() =>
     getInstalledVoices(),
   );
@@ -110,6 +117,7 @@ function AssistantInner() {
     const base = VOICE_PROFILES.find((p) => p.id === profileId) ?? VOICE_PROFILES[3];
     return base.id === "custom" ? { ...base, customVoiceName: customVoiceName ?? undefined } : base;
   }, [profileId, customVoiceName]);
+  const quality = useMemo(() => qualityById(qualityId), [qualityId]);
 
   // Load installed voices (Chrome fills them in asynchronously).
   useEffect(
@@ -120,6 +128,7 @@ function AssistantInner() {
   // Persist voice preferences.
   useEffect(() => savePref("medipro-tts-voice", profileId), [profileId]);
   useEffect(() => savePref("medipro-tts-custom-voice", customVoiceName ?? ""), [customVoiceName]);
+  useEffect(() => savePref("medipro-tts-quality", qualityId), [qualityId]);
 
   // Stop any narration when leaving the page.
   useEffect(() => () => stopSpeaking(), []);
@@ -204,7 +213,7 @@ function AssistantInner() {
       stopSpeaking();
       setSpeechPaused(false);
       setSpeakingId(index);
-      const started = speak(text, profile, {
+      const started = speak(text, applyQuality(profile, quality), {
         onEnd: () => {
           setSpeakingId((cur) => (cur === index ? null : cur));
           setSpeechPaused(false);
@@ -215,7 +224,7 @@ function AssistantInner() {
         toast.error("Speech isn't available in this browser.");
       }
     },
-    [speakingId, speechPaused, profile],
+    [speakingId, speechPaused, profile, quality],
   );
 
   const voicesLoading = speechAvailable() && installedVoices.length === 0;
@@ -276,6 +285,34 @@ function AssistantInner() {
                         <span className="block text-sm font-bold">{p.label}</span>
                         <span className="block text-[11px] leading-4 text-muted-foreground">
                           {p.description}
+                        </span>
+                      </span>
+                      {active && <Check className="size-4 shrink-0 text-wistaria" />}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <p className="mt-4 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                Voice quality
+              </p>
+              <div className="mt-1.5 space-y-1.5">
+                {VOICE_QUALITIES.map((q) => {
+                  const active = qualityId === q.id;
+                  return (
+                    <button
+                      key={q.id}
+                      onClick={() => setQualityId(q.id)}
+                      className={`flex w-full items-center justify-between gap-2 rounded-xl border px-3 py-2 text-left transition-colors ${
+                        active
+                          ? "border-wistaria/40 bg-wistaria/10"
+                          : "border-white/10 hover:border-white/20"
+                      }`}
+                    >
+                      <span>
+                        <span className="block text-sm font-bold">{q.label}</span>
+                        <span className="block text-[11px] leading-4 text-muted-foreground">
+                          {q.description}
                         </span>
                       </span>
                       {active && <Check className="size-4 shrink-0 text-wistaria" />}
@@ -425,7 +462,7 @@ function AssistantInner() {
                           ? speechPaused
                             ? "Paused"
                             : "Reading…"
-                          : `Voice: ${profile.label}`}
+                          : `Voice: ${profile.label} · ${quality.label}`}
                       </span>
                     </div>
                   </motion.div>
