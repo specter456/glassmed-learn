@@ -1,0 +1,1 @@
+import{e as n,d as a}from"./index-BDUB81O0.js";import{r}from"./framer-motion-BwjtH68j.js";function c(){const e=n(a.content.ensureSeeded),t=r.useRef(!1);r.useEffect(()=>{t.current||(t.current=!0,e().catch(s=>{console.warn("Seeding skipped (content may already exist):",s)}))},[e])}export{c as u};

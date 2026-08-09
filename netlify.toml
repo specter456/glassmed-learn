@@ -1,0 +1,37 @@
+# GlassMed Learn — Netlify deployment config
+#
+# This deploys the FRONTEND only. The app's backend (database, auth, and the
+# AI assistant) is a separate Convex deployment — see the notes at the bottom.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Pin a modern Node runtime (Vite 7 + React 19 require Node 20.19+ / 22.12+).
+[build.environment]
+  NODE_VERSION = "22"
+
+# SPA fallback: client-side routes like /flashcards, /research and /assistant
+# must serve index.html instead of returning 404.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ---------------------------------------------------------------------------
+# REQUIRED environment variables — set these in the Netlify UI
+# (Site settings -> Environment variables) before/after your first build:
+#
+#   VITE_CONVEX_URL = https://<your-project>.convex.cloud
+#
+#   This is the URL of your deployed Convex backend. Without it the app
+#   cannot start (the Convex client is created from this value in main.tsx).
+#   You get it by deploying the backend first:
+#
+#       npx convex deploy        # run once from the project root
+#
+# ---------------------------------------------------------------------------
+# Backend secrets (AI_API_KEY, AI_BASE_URL, AI_MODEL) are read server-side by
+# the Convex deployment — set them in the Convex dashboard (or `npx convex env
+# set AI_API_KEY <key>`) so they never touch the browser or Netlify.
+# ---------------------------------------------------------------------------
