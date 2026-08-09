@@ -51,13 +51,38 @@ export function isDue(progress?: { nextReviewAt?: number } | null): boolean {
   return progress.nextReviewAt <= Date.now();
 }
 
-export function formatNextReview(timestamp: number): string {
-  const diff = timestamp - Date.now();
-  const hours = Math.round(diff / (60 * 60 * 1000));
-  if (hours <= 0) return "due now";
-  if (hours < 24) return `in ${hours}h`;
-  const days = Math.round(hours / 24);
-  return days === 1 ? "tomorrow" : `in ${days} days`;
+/** One flashcard paired with its due status, used for session ordering. */
+export interface StudyCardEntry<C> {
+  card: C;
+  due: boolean;
+}
+
+/**
+ * Build the study-session order: cards that are due now first, then the rest.
+ * Kept as a pure function so the ordering rules can be unit-tested.
+ */
+export function buildStudyQueue<C extends { _id: string }>(
+  cards: readonly C[],
+  progressByCard: Map<string, { nextReviewAt?: number } | null | undefined>,
+): StudyCardEntry<C>[] {
+  const withDue = cards.map((card) => ({
+    card,
+    due: isDue(progressByCard.get(card._id)),
+  }));
+  return [...withDue.filter((c) => c.due), ...withDue.filter((c) => !c.due)];
+}
+
+/**
+ * Pick the next card to study: the first not-yet-answered entry in the queue.
+ * Because selection is based on card identity (not an index), the queue can
+ * re-sort reactively (e.g. after an answer updates progress) without ever
+ * skipping or repeating a card.
+ */
+export function selectNextCard<C extends { _id: string }>(
+  queue: StudyCardEntry<C>[],
+  answeredIds: ReadonlySet<string>,
+): StudyCardEntry<C> | null {
+  return queue.find((entry) => !answeredIds.has(entry.card._id)) ?? null;
 }
 
 /** Feature set shared by the placeholders (structured for audio + 3D). */

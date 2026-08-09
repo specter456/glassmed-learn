@@ -21,7 +21,12 @@ import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { DeckGridSkeleton, FlashcardSkeleton } from "@/components/Skeletons";
 import { Button } from "@/components/ui/button";
 import { useEnsureSeeded } from "@/hooks/use-ensure-seeded";
-import { isDue, randomQuote, topicIcon } from "@/lib/medipro";
+import {
+  buildStudyQueue,
+  randomQuote,
+  selectNextCard,
+  topicIcon,
+} from "@/lib/medipro";
 
 /* ---------------------------- deck list ---------------------------- */
 
@@ -148,54 +153,65 @@ function StudySession({ slug }: { slug: string }) {
   const progress = useQuery(api.progress.myProgress);
   const recordAnswer = useMutation(api.progress.recordAnswer);
 
-  const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [result, setResult] = useState<"won" | "missed" | null>(null);
   const [quote, setQuote] = useState("");
   const [correctCount, setCorrectCount] = useState(0);
-  const [answered, setAnswered] = useState(0);
-  const [finished, setFinished] = useState(false);
+  const [answeredOrder, setAnsweredOrder] = useState<string[]>([]);
   const [leaving, setLeaving] = useState(false);
-
-  const queue = useMemo(() => {
-    if (!deck || !progress) return null;
-    const progressByCard = new Map(progress.map((p) => [p.cardId, p]));
-    const withDue = deck.cards.map((c) => ({
-      card: c,
-      due: isDue(progressByCard.get(c._id)),
-    }));
-    return [...withDue.filter((c) => c.due), ...withDue.filter((c) => !c.due)];
-  }, [deck, progress]);
 
   const loading = deck === undefined || progress === undefined;
 
+  // The reactive queue (due-first) is fine to recompute on every progress
+  // update — the current card is picked by identity below, so re-sorting can
+  // never skip or repeat a card mid-session.
+  const queue = useMemo(() => {
+    if (!deck || !progress) return null;
+    const progressByCard = new Map(progress.map((p) => [p.cardId, p]));
+    return buildStudyQueue(deck.cards, progressByCard);
+  }, [deck, progress]);
+
+  const answeredIds = new Set(answeredOrder);
+  const total = queue?.length ?? 0;
+  const answeredCount = answeredOrder.length;
+
+  // While a result is showing, pin the card that was just answered so the
+  // celebration sits over the card it celebrates. Otherwise show the next
+  // unanswered card (identity-based — immune to queue re-sorting).
+  const current = (() => {
+    if (!queue) return null;
+    if (result && answeredOrder.length > 0) {
+      const lastId = answeredOrder[answeredOrder.length - 1];
+      return queue.find((e) => e.card._id === lastId)?.card ?? null;
+    }
+    return selectNextCard(queue, answeredIds)?.card ?? null;
+  })();
+
+  const finished = !result && queue !== null && answeredCount >= total;
+
   const handleAnswer = useCallback(
     async (correct: boolean) => {
-      if (!queue || !queue[index]) return;
-      const { card } = queue[index];
+      if (!queue || !current) return;
       setFlipped(false);
       setResult(correct ? "won" : "missed");
-      setAnswered((a) => a + 1);
+      setAnsweredOrder((prev) => [...prev, current._id]);
       if (correct) setCorrectCount((c) => c + 1);
       else setQuote(randomQuote());
 
       // Fire-and-forget persistence; toast on failure.
-      recordAnswer({ cardId: card._id, correct }).catch(() => {
+      recordAnswer({ cardId: current._id, correct }).catch(() => {
         toast.error("Couldn't save your progress — check your connection.");
       });
     },
-    [queue, index, recordAnswer],
+    [queue, current, recordAnswer],
   );
 
+  // Stable identity: the effect below can depend on it without re-arming its
+  // timers every time progress re-syncs.
   const advance = useCallback(() => {
     setLeaving(false);
     setResult(null);
-    if (index + 1 >= (queue?.length ?? 0)) {
-      setFinished(true);
-      return;
-    }
-    setIndex((i) => i + 1);
-  }, [index, queue]);
+  }, []);
 
   // After a WON!, let the celebration play, then slowly fade the card
   // out and glide on to the next one. (`leaving` resets in `advance`.)
@@ -210,13 +226,11 @@ function StudySession({ slug }: { slug: string }) {
   }, [result, advance]);
 
   const restart = () => {
-    setIndex(0);
     setFlipped(false);
     setResult(null);
     setLeaving(false);
     setCorrectCount(0);
-    setAnswered(0);
-    setFinished(false);
+    setAnsweredOrder([]);
   };
 
   if (!loading && queue && queue.length === 0) {
@@ -236,8 +250,8 @@ function StudySession({ slug }: { slug: string }) {
   }
 
   if (finished && queue) {
-    const total = queue.length;
-    const pct = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+    const totalCards = queue.length;
+    const pct = totalCards > 0 ? Math.round((correctCount / totalCards) * 100) : 0;
     return (
       <main className="mx-auto flex max-w-6xl flex-col items-center px-4 pb-32 pt-16 text-center sm:px-6">
         <motion.div
@@ -252,11 +266,11 @@ function StudySession({ slug }: { slug: string }) {
             Session complete!
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            You answered {total} cards with {pct}% accuracy.
+            You answered {totalCards} cards with {pct}% accuracy.
           </p>
           <p className="mt-4 text-4xl font-extrabold tracking-tight">
             {correctCount}
-            <span className="text-lg font-semibold text-muted-foreground"> / {total} correct</span>
+            <span className="text-lg font-semibold text-muted-foreground"> / {totalCards} correct</span>
           </p>
           <div className="mt-6 flex flex-col gap-2">
             <Button onClick={restart} className="gap-2">
@@ -271,9 +285,6 @@ function StudySession({ slug }: { slug: string }) {
       </main>
     );
   }
-
-  const current = queue?.[index]?.card;
-  const total = queue?.length ?? 0;
 
   return (
     <main className="mx-auto max-w-3xl px-4 pb-32 pt-10 sm:px-6">
@@ -299,12 +310,12 @@ function StudySession({ slug }: { slug: string }) {
         <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10">
           <motion.div
             className="h-full rounded-full bg-gradient-to-r from-cloud to-wistaria"
-            animate={{ width: `${total > 0 ? (answered / total) * 100 : 0}%` }}
+            animate={{ width: `${total > 0 ? (answeredCount / total) * 100 : 0}%` }}
             transition={{ type: "spring", stiffness: 120, damping: 20 }}
           />
         </div>
         <span className="text-xs font-bold tabular-nums text-muted-foreground">
-          {answered}/{total}
+          {answeredCount}/{total}
         </span>
       </div>
 
@@ -321,7 +332,9 @@ function StudySession({ slug }: { slug: string }) {
           {/* 3D flip card — Butter face, dark blue-gray ink */}
           <div className="mx-auto mt-4 max-w-xl [perspective:1600px]">
             <motion.div
+              key={current._id}
               className="relative h-[22rem] w-full cursor-pointer [transform-style:preserve-3d]"
+              initial={{ opacity: 0, y: 14 }}
               animate={{
                 rotateY: flipped ? 180 : 0,
                 opacity: leaving ? 0 : 1,
@@ -329,7 +342,7 @@ function StudySession({ slug }: { slug: string }) {
                 y: leaving ? 26 : 0,
               }}
               transition={{
-                duration: leaving ? 0.9 : 0.55,
+                duration: leaving ? 0.9 : 0.45,
                 ease: leaving ? [0.4, 0, 0.7, 1] : [0.4, 0.2, 0.2, 1],
               }}
               onClick={() => setFlipped((f) => !f)}
@@ -344,7 +357,7 @@ function StudySession({ slug }: { slug: string }) {
                     Question
                   </span>
                   <span className="text-[11px] font-bold text-[#8a93b5]">
-                    {index + 1} / {total}
+                    {answeredCount + 1} / {total}
                   </span>
                 </div>
                 <div className="flex flex-1 items-center justify-center">
@@ -365,7 +378,7 @@ function StudySession({ slug }: { slug: string }) {
                     Answer
                   </span>
                   <span className="text-[11px] font-bold text-[#8a93b5]">
-                    {index + 1} / {total}
+                    {answeredCount + 1} / {total}
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col items-center justify-center gap-5">
@@ -499,8 +512,6 @@ function StudySession({ slug }: { slug: string }) {
               </motion.div>
             )}
           </AnimatePresence>
-
-
         </>
       ) : null}
     </main>
