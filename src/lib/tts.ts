@@ -85,8 +85,12 @@ const voiceSubscribers = new Set<() => void>();
 /** Current installed voices (best-effort cache; may be empty until loaded). */
 export function getInstalledVoices(): SpeechSynthesisVoice[] {
   if (!speechAvailable()) return [];
-  const voices = window.speechSynthesis.getVoices();
-  if (voices.length > 0) cachedVoices = voices;
+  try {
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) cachedVoices = voices;
+  } catch {
+    /* some webviews throw until voices are ready — never crash the page */
+  }
   return cachedVoices ?? [];
 }
 
@@ -96,7 +100,11 @@ export function onVoicesReady(callback: () => void): () => void {
   if (!speechAvailable()) return () => voiceSubscribers.delete(callback);
 
   const announce = () => {
-    cachedVoices = window.speechSynthesis.getVoices();
+    try {
+      cachedVoices = window.speechSynthesis.getVoices();
+    } catch {
+      cachedVoices = null;
+    }
     voiceSubscribers.forEach((fn) => fn());
   };
   window.speechSynthesis.onvoiceschanged = announce;
@@ -169,7 +177,12 @@ export function speak(text: string, profile: VoiceProfile, options?: SpeakOption
     utterance.onerror = options.onEnd;
   }
 
-  synth.speak(utterance);
+  try {
+    synth.speak(utterance);
+  } catch {
+    if (options?.onEnd) options.onEnd();
+    return false;
+  }
   return true;
 }
 

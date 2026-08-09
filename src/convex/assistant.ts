@@ -62,21 +62,29 @@ export const askAssistant = action({
 
     const model = process.env.OPENAI_MODEL ?? "gpt-4o";
 
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${key}`,
-      },
-      body: JSON.stringify({
-        model,
-        temperature: 0.2,
-        max_tokens: 700,
-        messages: [{ role: "system", content: SYSTEM_PROMPT }, ...safe],
-      }),
-    });
+    let res: Response;
+    try {
+      res = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${key}`,
+        },
+        body: JSON.stringify({
+          model,
+          temperature: 0.2,
+          max_tokens: 700,
+          messages: [{ role: "system", content: SYSTEM_PROMPT }, ...safe],
+        }),
+      });
+    } catch (err) {
+      // Network failure to OpenAI (no key content is logged).
+      console.error("Assistant: network error reaching OpenAI", err);
+      throw new ConvexError("ASSISTANT_UPSTREAM");
+    }
 
     if (!res.ok) {
+      console.error("Assistant: OpenAI responded with", res.status);
       if (res.status === 401 || res.status === 403) {
         throw new ConvexError("ASSISTANT_BAD_KEY");
       }

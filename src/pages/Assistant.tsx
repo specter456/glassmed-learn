@@ -3,6 +3,7 @@ import { Bot, Check, Pause, Play, Send, Settings2, Square, Sparkles } from "luci
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { api } from "@/convex/_generated/api";
+import { ConvexError } from "convex/values";
 import { useAction } from "convex/react";
 import { toast } from "sonner";
 import { AppHeader } from "@/components/AppHeader";
@@ -84,6 +85,11 @@ function AssistantInner() {
   const [input, setInput] = useState(() => searchParams.get("q") ?? "");
   const [busy, setBusy] = useState(false);
   const [speakingId, setSpeakingId] = useState<number | null>(null);
+  // True when the last answer failed because no API key is configured — shows
+  // a persistent setup banner instead of a toast that disappears.
+  const [setupNeeded, setSetupNeeded] = useState(false);
+  // Transient inline error note (visible, unlike a toast that auto-dismisses).
+  const [lastError, setLastError] = useState<string | null>(null);
 
   const [profileId, setProfileId] = useState<VoiceProfileId>(
     () => (loadPref("medipro-tts-voice") as VoiceProfileId | null) ?? "smooth",
@@ -137,15 +143,30 @@ function AssistantInner() {
           messages: history.map((m) => ({ role: m.role, content: m.content })),
         });
         setMessages((prev) => [...prev, { role: "assistant", content }]);
+        setSetupNeeded(false);
+        setLastError(null);
       } catch (err) {
-        const message = err instanceof Error ? err.message : String(err);
+        const data = err instanceof ConvexError ? err.data : undefined;
+        const message =
+          typeof data === "string"
+            ? data
+            : err instanceof Error
+              ? err.message
+              : String(err);
         if (message.includes("ASSISTANT_NOT_CONFIGURED")) {
-          toast.error("The assistant isn't configured yet — add OPENAI_API_KEY in your project's Keys tab.");
+          setSetupNeeded(true);
+          setLastError(
+            "The assistant needs an OpenAI API key before it can answer — see the banner below.",
+          );
+        } else if (message.includes("RATE_LIMITED")) {
+          setLastError("You're sending questions very fast — give it a minute, then try again.");
         } else if (message.includes("ASSISTANT_BAD_KEY")) {
-          toast.error("The AI key looks invalid — check OPENAI_API_KEY in your project's Keys tab.");
+          setSetupNeeded(true);
+          setLastError("The AI key looks invalid — double-check OPENAI_API_KEY in the Keys tab.");
         } else {
-          toast.error("The AI couldn't answer right now — please try again.");
+          setLastError("The AI couldn't answer right now. Please try again in a moment.");
         }
+        toast.error("MediPro couldn't answer this time.");
       } finally {
         setBusy(false);
       }
@@ -185,7 +206,12 @@ function AssistantInner() {
         style={{ height: "calc(100dvh - 5.5rem)" }}
       >
         {/* top row */}
-        <div className="flex items-center justify-between gap-3">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex items-center justify-between gap-3"
+        >
           <div className="flex items-center gap-2.5">
             <div className="flex size-10 items-center justify-center rounded-2xl bg-[#a2a2d0]/15 text-wistaria">
               <Bot className="size-5" />
@@ -278,7 +304,7 @@ function AssistantInner() {
               )}
             </PopoverContent>
           </Popover>
-        </div>
+        </motion.div>
 
         {/* chat area */}
         <div className="nice-scroll mt-4 flex-1 space-y-4 overflow-y-auto rounded-3xl">
@@ -377,12 +403,64 @@ function AssistantInner() {
           <div ref={bottomRef} />
         </div>
 
+        {/* persistent setup banner — the AI will not answer without a key */}
+        {setupNeeded && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-strong mt-3 flex flex-col gap-3 rounded-2xl border border-[#e0a458]/30 p-4 sm:flex-row sm:items-center"
+          >
+            <div className="flex items-start gap-3">
+              <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#e0a458]/15 text-[#e0a458]">
+                <Bot className="size-4" />
+              </div>
+              <div>
+                <p className="text-sm font-bold">One step to switch me on</p>
+                <p className="mt-0.5 text-xs leading-5 text-muted-foreground">
+                  Add an OpenAI API key in the project's{" "}
+                  <span className="font-semibold text-foreground">Keys tab</span> (variable{" "}
+                  <code className="rounded bg-white/10 px-1 font-mono text-[10px]">OPENAI_API_KEY</code>
+                  ). It's read server-side only — never shipped to the browser.
+                </p>
+              </div>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <a
+                href="https://index.trygravity.ai/go/50733258-e7d6-4b52-aaea-c11c2a67d2d8"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[#e0a458] px-4 text-xs font-bold text-[#191922] transition-colors hover:bg-[#eeb86b]"
+              >
+                Get an OpenAI key
+              </a>
+              <button
+                onClick={() => setSetupNeeded(false)}
+                className="rounded-full px-2 py-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Dismiss
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {/* inline error note — visible until the next message */}
+        {lastError && !setupNeeded && (
+          <motion.p
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-3 px-1 text-xs font-semibold text-[#e0a458]"
+          >
+            {lastError}
+          </motion.p>
+        )}
+
         {/* composer */}
         <div className="glass-panel shine mt-4 rounded-2xl p-3">
           <div className="flex items-end gap-2">
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              aria-invalid={lastError !== null && !setupNeeded}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
