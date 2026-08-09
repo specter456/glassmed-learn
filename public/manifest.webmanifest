@@ -1,0 +1,17 @@
+{
+  "name": "MediPro — Where Medicine Becomes Energetic",
+  "short_name": "MediPro",
+  "description": "Medical education for NEET aspirants and 1st-year MBBS students. Flashcards with 1-3-7 spaced repetition, basics-first topics, and local study music.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#eef4fd",
+  "theme_color": "#a2a2d0",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
