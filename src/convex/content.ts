@@ -5,6 +5,9 @@ import { SEED_FLASHCARDS, SEED_TOPICS } from "./seedData";
 /**
  * Idempotently seeds the content tables on first run.
  * Safe to call on every page load — it no-ops once topics exist.
+ *
+ * Each insert is individually guarded (by slug / by content) so that two
+ * clients racing the very first run cannot double-seed the tables.
  */
 export const ensureSeeded = mutation({
   args: {},
@@ -12,16 +15,38 @@ export const ensureSeeded = mutation({
     const existing = await ctx.db.query("topics").first();
     if (existing) return { seeded: false, topics: 0, cards: 0 };
 
+    let insertedTopics = 0;
+    let insertedCards = 0;
+
     for (const topic of SEED_TOPICS) {
-      await ctx.db.insert("topics", topic);
+      const found = await ctx.db
+        .query("topics")
+        .withIndex("by_slug", (q) => q.eq("slug", topic.slug))
+        .unique();
+      if (!found) {
+        await ctx.db.insert("topics", topic);
+        insertedTopics += 1;
+      }
     }
+
+    const seenCards = new Set(
+      (await ctx.db.query("flashcards").collect()).map(
+        (c) => `${c.topicSlug}|${c.front}|${c.back}`,
+      ),
+    );
     for (const card of SEED_FLASHCARDS) {
-      await ctx.db.insert("flashcards", card);
+      const key = `${card.topicSlug}|${card.front}|${card.back}`;
+      if (!seenCards.has(key)) {
+        await ctx.db.insert("flashcards", card);
+        seenCards.add(key);
+        insertedCards += 1;
+      }
     }
+
     return {
-      seeded: true,
-      topics: SEED_TOPICS.length,
-      cards: SEED_FLASHCARDS.length,
+      seeded: insertedTopics > 0 || insertedCards > 0,
+      topics: insertedTopics,
+      cards: insertedCards,
     };
   },
 });

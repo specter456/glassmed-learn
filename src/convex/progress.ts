@@ -1,5 +1,6 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
+import { api } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 
@@ -17,6 +18,17 @@ export const recordAnswer = mutation({
   handler: async (ctx, { cardId, correct }) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Not authenticated");
+
+    // Only accept answers for cards that actually exist — otherwise a caller
+    // could inject arbitrary card ids and pollute the progress table.
+    const card = await ctx.db.get(cardId);
+    if (!card) throw new Error("Card not found.");
+
+    await ctx.runMutation(api.rateLimit.checkRateLimit, {
+      name: "recordAnswer",
+      key: userId,
+      limit: 60,
+    });
 
     const existing = await ctx.db
       .query("cardProgress")

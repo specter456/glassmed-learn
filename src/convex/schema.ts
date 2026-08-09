@@ -86,6 +86,16 @@ const schema = defineSchema(
       status: v.union(v.literal("demo"), v.literal("paid"), v.literal("refunded")),
       createdAt: v.number(),
     }).index("by_user", ["userId"]),
+
+    // Sliding-window rate-limit counters (see convex/rateLimit.ts).
+    // One document per (name, key) pair; counts reset when the window passes.
+    rateLimits: defineTable({
+      name: v.string(), // allow-listed limiter name
+      key: v.string(), // usually the user id
+      windowStart: v.number(),
+      windowMs: v.number(),
+      count: v.number(),
+    }).index("by_name_key", ["name", "key"]),
   },
   {
     schemaValidation: false,

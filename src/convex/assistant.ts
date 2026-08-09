@@ -1,4 +1,6 @@
+import { getAuthUserId } from "@convex-dev/auth/server";
 import { ConvexError, v } from "convex/values";
+import { api } from "./_generated/api";
 import { action } from "./_generated/server";
 
 /**
@@ -37,7 +39,19 @@ export const askAssistant = action({
       }),
     ),
   },
-  handler: async (_ctx, { messages }) => {
+  handler: async (ctx, { messages }) => {
+    // Must be a signed-in user: the OpenAI call costs money, so anonymous
+    // callers (with the deployment URL) must not be able to burn the key.
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new ConvexError("AUTH_REQUIRED");
+
+    // Cost-abuse guard: per-user sliding window, 10 calls / minute.
+    await ctx.runMutation(api.rateLimit.checkRateLimit, {
+      name: "assistant",
+      key: userId,
+      limit: 10,
+    });
+
     const key = process.env.OPENAI_API_KEY;
     if (!key) throw new ConvexError("ASSISTANT_NOT_CONFIGURED");
 

@@ -67,7 +67,8 @@ function CheckoutModal({
     try {
       // Simulated processing delay (a real Stripe redirect would replace this).
       await new Promise((r) => setTimeout(r, 1100));
-      await checkout({ itemId, itemTitle: title, amountCents: priceCents });
+      // The server derives title + price from `itemId` — never trust the client.
+      await checkout({ itemId });
       setProcessing(false);
       toast.success("Purchase recorded — welcome aboard!");
       onSuccess();
