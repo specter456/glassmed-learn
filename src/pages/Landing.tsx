@@ -6,7 +6,6 @@ import {
   Headphones,
   HeartPulse,
   Layers,
-  Package,
   Quote,
   Scissors,
   Search,
@@ -18,9 +17,8 @@ import {
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
-import { GlassMedLogo } from "@/components/GlassMedLogo";
+import { GlassMedLogo, MedicalEmblems } from "@/components/GlassMedLogo";
 import { SplashScreen } from "@/components/SplashScreen";
-import { PREMIUM_ITEMS, formatPrice } from "@/lib/catalog";
 
 const MODULES = [
   {
@@ -97,21 +95,13 @@ export default function Landing() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate("/catalog")}
-              className="font-mono text-xs tracking-wide text-muted-foreground"
-            >
-              Catalog
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
               onClick={() => goAuth()}
               className="text-muted-foreground"
             >
               Sign in
             </Button>
             <Button size="sm" onClick={() => goAuth("/dashboard")} className="gap-1.5">
-              Get started
+              Start
               <ArrowRight className="size-4" />
             </Button>
           </div>
@@ -131,7 +121,7 @@ export default function Landing() {
           >
             <Sparkles className="size-3.5 text-wistaria" />
             <span className="tech-label text-[0.62rem]">
-              Precision study · 5 packs · 30 flashcards
+              Precision study · 5 topics · 30 flashcards
             </span>
           </motion.div>
 
@@ -139,8 +129,10 @@ export default function Landing() {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
+            className="relative"
           >
             <GlassMedLogo size="lg" />
+            <MedicalEmblems />
           </motion.div>
 
           <motion.h1
@@ -181,19 +173,19 @@ export default function Landing() {
           >
             <Button
               size="lg"
-              onClick={() => navigate("/catalog")}
-              className="gap-2 rounded-full px-8 shadow-[0_16px_40px_-12px_rgba(122,122,216,0.5)]"
+              onClick={() => goAuth("/dashboard")}
+              className="gap-2 rounded-full px-10 shadow-[0_16px_40px_-12px_rgba(122,122,216,0.5)]"
             >
-              Browse the catalog
+              Start
               <ArrowRight className="size-4" />
             </Button>
             <Button
               size="lg"
               variant="outline"
-              onClick={() => goAuth("/dashboard")}
+              onClick={() => goAuth("/flashcards")}
               className="rounded-full px-8"
             >
-              Start free
+              Explore flashcards
             </Button>
           </motion.div>
 
@@ -251,62 +243,6 @@ export default function Landing() {
                     <p className="mt-2 text-[13px] leading-5 text-muted-foreground">{m.desc}</p>
                   </div>
                   <ArrowRight className="mt-auto size-4 text-muted-foreground transition-transform duration-300 group-hover:translate-x-1" />
-                </motion.button>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Catalog preview */}
-        <section className="pb-24">
-          <motion.div {...reveal(0)} className="mb-8 flex items-end justify-between gap-4">
-            <div>
-              <span className="tech-label">The catalog</span>
-              <h2 className="mt-2 text-balance text-2xl font-extrabold tracking-tight text-wistaria sm:text-3xl">
-                Study packs and passes
-              </h2>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate("/catalog")}
-              className="gap-1.5"
-            >
-              View all
-              <ArrowRight className="size-3.5" />
-            </Button>
-          </motion.div>
-
-          <div className="grid gap-5 sm:grid-cols-3">
-            {PREMIUM_ITEMS.map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <motion.button
-                  key={item.slug}
-                  {...reveal(i * 0.08)}
-                  whileHover={{ y: -6, scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => navigate(`/catalog/${item.slug}`)}
-                  className="glass-panel shine group flex flex-col gap-4 rounded-3xl p-6 text-left"
-                >
-                  <div className="flex items-start justify-between">
-                    <div
-                      className="flex size-12 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
-                      style={{ backgroundColor: item.accent + "1f", color: item.accent }}
-                    >
-                      <Icon className="size-6" />
-                    </div>
-                    <span className="font-mono text-sm font-bold" style={{ color: item.accent }}>
-                      {formatPrice(item.priceCents)}
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-extrabold tracking-tight">{item.title}</h3>
-                    <p className="mt-1 text-xs font-medium text-muted-foreground">{item.category}</p>
-                  </div>
-                  <p className="mt-auto line-clamp-3 text-[13px] leading-5 text-muted-foreground">
-                    {item.description}
-                  </p>
                 </motion.button>
               );
             })}
@@ -452,7 +388,7 @@ export default function Landing() {
                 Your first session starts free
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-muted-foreground">
-                All five fundamentals packs are free. Sign up with your email —
+                All five fundamentals topics are free. Sign up with your email —
                 or jump straight in as a guest — and your 1-3-7 schedule is
                 created the moment you flip your first card.
               </p>
@@ -462,17 +398,16 @@ export default function Landing() {
                   onClick={() => goAuth("/dashboard")}
                   className="gap-2 rounded-full px-10 shadow-[0_16px_40px_-12px_rgba(122,122,216,0.5)]"
                 >
-                  Create free account
+                  Start
                   <ArrowRight className="size-4" />
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
-                  onClick={() => navigate("/catalog")}
+                  onClick={() => goAuth("/flashcards")}
                   className="rounded-full px-8"
                 >
-                  <Package className="size-4" />
-                  See the catalog
+                  Explore flashcards
                 </Button>
               </div>
             </div>

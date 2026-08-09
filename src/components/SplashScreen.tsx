@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { GlassMedLogo } from "@/components/GlassMedLogo";
+import { GlassMedLogo, MedicalEmblems } from "@/components/GlassMedLogo";
 
 const SPLASH_MS = 2300;
 
@@ -54,7 +54,10 @@ export function SplashScreen() {
         transition={{ duration: 0.9, ease: "easeOut", delay: 0.1 }}
         className="relative flex flex-col items-center gap-6 px-6"
       >
-        <GlassMedLogo variant="night" size="xl" />
+        <div className="relative">
+          <GlassMedLogo variant="night" size="xl" />
+          <MedicalEmblems />
+        </div>
 
         <motion.p
           initial={{ opacity: 0 }}

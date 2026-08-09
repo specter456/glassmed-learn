@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+import { Cross, HeartPulse, Shirt, Stethoscope, Syringe } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface GlassMedLogoProps {
@@ -45,7 +47,35 @@ function Sparkle({
   );
 }
 
-/** The crescent moon that wraps around the wordmark tail. */
+/** A tiny 4-point sparkle used for the stars inside the crescent moon. */
+function MoonStar({
+  x,
+  y,
+  scale,
+  delay,
+}: {
+  x: number;
+  y: number;
+  scale: number;
+  delay: number;
+}) {
+  return (
+    <g transform={`translate(${x} ${y}) scale(${scale})`}>
+      <motion.g
+        animate={{ opacity: [0.3, 1, 0.3] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay }}
+      >
+        <path
+          d="M12 0 C12.8 6.8 17.2 11.2 24 12 C17.2 12.8 12.8 17.2 12 24 C11.2 17.2 6.8 12.8 0 12 C6.8 11.2 11.2 6.8 12 0 Z"
+          fill="#FEFFAF"
+        />
+      </motion.g>
+    </g>
+  );
+}
+
+/** The crescent moon that wraps around the wordmark tail — filled with
+ *  twinkling "hopes" stars along its body. */
 function CrescentMoon({
   className,
   style,
@@ -66,7 +96,51 @@ function CrescentMoon({
            A 36 36 0 1 1 58 6 Z"
         fill="#78A2D2"
       />
+      {/* hopes — three twinkling stars set into the moon's body */}
+      <MoonStar x={18} y={50} scale={0.42} delay={0} />
+      <MoonStar x={24} y={30} scale={0.3} delay={0.8} />
+      <MoonStar x={24} y={70} scale={0.3} delay={1.6} />
     </svg>
+  );
+}
+
+/* ----------------------------------------------------------------------- */
+/* Floating medical emblems — small attractive "gif-like" accents that     */
+/* drift around the logo (first aid, white coat, stethoscope, syringe).     */
+/* Pure CSS/Framer motion — no real GIFs, so battery stays happy.          */
+/* ----------------------------------------------------------------------- */
+
+const EMBLEM_LAYOUT = [
+  { Icon: Stethoscope, pos: "-top-9 -left-10", color: "#a2a2d0", delay: 0, duration: 6 },
+  { Icon: Cross, pos: "-top-8 -right-9", color: "#feffaf", delay: 0.9, duration: 7 },
+  { Icon: Shirt, pos: "-bottom-8 -right-10", color: "#feffaf", delay: 0.4, duration: 7.2 },
+  { Icon: Syringe, pos: "-bottom-9 -left-8", color: "#78a2d2", delay: 1.6, duration: 6.4 },
+  { Icon: HeartPulse, pos: "top-1/2 -right-16 -translate-y-1/2", color: "#e896b4", delay: 2.1, duration: 5.6 },
+];
+
+/** A scatter of small frosted medical icons that gently float around the
+ *  logo — the "small attractive gifs" for the splash and hero. */
+export function MedicalEmblems({ className }: { className?: string }) {
+  return (
+    <div aria-hidden className={cn("pointer-events-none absolute inset-0", className)}>
+      {EMBLEM_LAYOUT.map(({ Icon, pos, color, delay, duration }) => (
+        <motion.span
+          key={pos}
+          className={cn("absolute", pos)}
+          animate={{ y: [0, -10, 0], rotate: [0, 6, 0] }}
+          transition={{ duration, repeat: Infinity, ease: "easeInOut", delay }}
+        >
+          <motion.span
+            className="flex size-11 items-center justify-center rounded-2xl bg-white/5 ring-1 ring-white/15 backdrop-blur-sm"
+            style={{ color, boxShadow: `0 0 22px ${color}59, inset 0 1px 0 rgba(255,255,255,0.12)` }}
+            animate={{ opacity: [0.85, 1, 0.85] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay }}
+          >
+            <Icon className="size-5" />
+          </motion.span>
+        </motion.span>
+      ))}
+    </div>
   );
 }
 
