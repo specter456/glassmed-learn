@@ -1,8 +1,11 @@
 import type { LucideIcon } from "lucide-react";
 import {
+  AudioLines,
+  Box,
   Dna,
   HeartPulse,
   Layers,
+  Mic2,
   Network,
   RefreshCw,
   Zap,
@@ -56,6 +59,25 @@ export function formatNextReview(timestamp: number): string {
   const days = Math.round(hours / 24);
   return days === 1 ? "tomorrow" : `in ${days} days`;
 }
+
+/** Feature set shared by the placeholders (structured for audio + 3D). */
+export const AUDIO_3D_FEATURES = [
+  {
+    icon: Mic2,
+    label: "Audio rounds",
+    desc: "Narration & sound cues",
+  },
+  {
+    icon: Box,
+    label: "3D models",
+    desc: "Lightweight, capped at 30fps",
+  },
+  {
+    icon: AudioLines,
+    label: "Voice feedback",
+    desc: "Instant spoken answers",
+  },
+];
 
 /** Human-friendly "time to read" label for content blocks. */
 export function wordsToRead(words: number): string {

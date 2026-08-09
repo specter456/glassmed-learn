@@ -386,7 +386,7 @@ function PlexusDiagram({ accent }: { accent: string }) {
       })}
 
       {/* labels */}
-      {roots.map((r, i) => (
+      {roots.map((r) => (
         <text key={r.id} x={x.roots - 24} y={r.y + 3.5} textAnchor="middle" fill={INK} fontSize={9.5} fontWeight={700} fontFamily="Manrope, sans-serif">
           {r.id}
         </text>

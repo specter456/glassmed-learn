@@ -1,7 +1,8 @@
 import { Scissors } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
-import { AUDIO_3D_FEATURES, ComingSoon } from "@/components/ComingSoon";
+import { ComingSoon } from "@/components/ComingSoon";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
+import { AUDIO_3D_FEATURES } from "@/lib/medipro";
 
 export default function Game() {
   return (

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import { AudioLines, Box, Mic2, Sparkles, Timer } from "lucide-react";
+import { Timer } from "lucide-react";
 
 interface ComingSoonProps {
   icon: LucideIcon;
@@ -85,25 +85,3 @@ export function ComingSoon({
   );
 }
 
-/** Feature set shared by the placeholders (structured for audio + 3D). */
-export const AUDIO_3D_FEATURES = [
-  {
-    icon: Mic2,
-    label: "Audio rounds",
-    desc: "Narration & sound cues",
-  },
-  {
-    icon: Box,
-    label: "3D models",
-    desc: "Lightweight, capped at 30fps",
-  },
-  {
-    icon: AudioLines,
-    label: "Voice feedback",
-    desc: "Instant spoken answers",
-  },
-];
-
-export function SparkleNote({ accent }: { accent: string }) {
-  return <Sparkles className="size-4" style={{ color: accent }} />;
-}

@@ -324,7 +324,6 @@ function CatalogBrowse() {
   const [filter, setFilter] = useState<Filter>("all");
 
   const items = useMemo(() => {
-    const q = query.trim().toLowerCase();
     const matched = searchCatalog(query);
     if (filter === "free") return matched.filter((i) => i.priceCents === 0);
     if (filter === "premium") return matched.filter((i) => i.priceCents > 0);

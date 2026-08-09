@@ -180,7 +180,7 @@ export function MusicPlayer() {
               </button>
             </div>
 
-            {fileName && audioRef.current && (
+            {fileName && (
               <>
                 <div className="mt-3 flex items-center gap-3">
                   <input

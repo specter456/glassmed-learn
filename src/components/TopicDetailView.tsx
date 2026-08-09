@@ -18,7 +18,7 @@ import { TextBlockSkeleton } from "@/components/Skeletons";
 import { TopicDiagram } from "@/components/TopicDiagram";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { topicIcon } from "@/lib/medipro";
+import { TOPIC_ICONS } from "@/lib/medipro";
 
 export function TopicDetailView({
   slug,
@@ -64,7 +64,7 @@ export function TopicDetailView({
     );
   }
 
-  const Icon = topicIcon(topic.icon);
+  const Icon = TOPIC_ICONS[topic.icon] ?? Layers;
 
   return (
     <main className="mx-auto max-w-4xl px-4 pb-32 pt-8 sm:px-6">
