@@ -162,7 +162,15 @@ function AssistantInner() {
           setLastError("You're sending questions very fast — give it a minute, then try again.");
         } else if (message.includes("ASSISTANT_BAD_KEY")) {
           setSetupNeeded(true);
-          setLastError("The AI key looks invalid — double-check OPENAI_API_KEY in the Keys tab.");
+          setLastError("The AI key looks invalid — double-check AI_API_KEY in the Keys tab.");
+        } else if (message.includes("AI_QUOTA_EXCEEDED")) {
+          setLastError(
+            "Your AI key's quota is currently 0/exhausted. Enable billing or free-tier quota at ai.google.dev/gemini-api/docs/rate-limits, then try again.",
+          );
+        } else if (message.includes("AI_MODEL_UNAVAILABLE")) {
+          setLastError(
+            "That AI model isn't available on this key — check the AI_MODEL value in your Keys tab (try gemini-2.0-flash).",
+          );
         } else {
           setLastError("The AI couldn't answer right now. Please try again in a moment.");
         }
@@ -361,14 +369,22 @@ function AssistantInner() {
                     <p className="whitespace-pre-wrap text-sm leading-6 text-foreground">
                       {m.content}
                     </p>
-                    <div className="mt-3 flex items-center gap-1.5">
+                    <div className="mt-3 flex items-center gap-2">
                       <button
                         onClick={() => toggleSpeak(i, m.content)}
-                        className="flex size-8 items-center justify-center rounded-full bg-cloud/20 text-cloud transition-colors hover:bg-cloud/35"
-                        aria-label={speakingId === i ? "Pause reading" : "Read aloud"}
-                        title={speakingId === i ? "Pause" : "Read aloud"}
+                        className={`flex h-8 items-center gap-1.5 rounded-full px-3.5 text-xs font-bold transition-colors ${
+                          speakingId === i
+                            ? "bg-cloud/30 text-cloud"
+                            : "bg-cloud/20 text-cloud hover:bg-cloud/30"
+                        }`}
+                        aria-label={speakingId === i ? "Pause reading" : "Read answer aloud"}
                       >
-                        {speakingId === i ? <Pause className="size-3.5" /> : <Play className="ml-0.5 size-3.5" />}
+                        {speakingId === i ? (
+                          <Pause className="size-3.5" />
+                        ) : (
+                          <Play className="size-3.5" />
+                        )}
+                        {speakingId === i ? "Pause" : "Play"}
                       </button>
                       <button
                         onClick={() => {
@@ -381,8 +397,8 @@ function AssistantInner() {
                       >
                         <Square className="size-3" />
                       </button>
-                      <span className="ml-1 text-[10px] font-medium text-muted-foreground">
-                        {speakingId === i ? "Reading…" : profile.label}
+                      <span className="ml-auto text-[10px] font-medium text-muted-foreground">
+                        {speakingId === i ? "Reading…" : `Voice: ${profile.label}`}
                       </span>
                     </div>
                   </motion.div>

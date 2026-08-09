@@ -7,8 +7,8 @@
  * Voice profiles:
  *  - Male    → a male voice, pitch 1.0 / rate 1.0
  *  - Female  → a female voice, pitch 1.0 / rate 1.0
- *  - Husky   → male voice, pitch 0.75 / rate 0.9 (deeper, rougher)
- *  - Smooth  → female voice, pitch 1.12 / rate 0.95 (softer, calming)
+ *  - Husky   → male voice, pitch 0.8 / rate 0.9 (deeper, rougher)
+ *  - Smooth  → female voice, pitch 1.1 / rate 0.95 (softer, calming)
  *  - Custom  → any installed system voice the user picks
  */
 
@@ -46,16 +46,16 @@ export const VOICE_PROFILES: VoiceProfile[] = [
   {
     id: "husky",
     label: "Husky",
-    description: "Deeper, rougher tone — male voice, lowered pitch & rate",
-    pitch: 0.75,
+    description: "Deeper, rougher tone — male voice, pitch 0.8",
+    pitch: 0.8,
     rate: 0.9,
     gender: "male",
   },
   {
     id: "smooth",
     label: "Smooth",
-    description: "Softer, calming tone — female voice, gently adjusted",
-    pitch: 1.12,
+    description: "Softer, calming tone — female voice, pitch 1.1",
+    pitch: 1.1,
     rate: 0.95,
     gender: "female",
   },

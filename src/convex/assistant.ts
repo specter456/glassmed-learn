@@ -60,7 +60,10 @@ export const askAssistant = action({
     if (!key) throw new ConvexError("ASSISTANT_NOT_CONFIGURED");
 
     const baseUrl = (process.env.AI_BASE_URL ?? "https://api.openai.com/v1").replace(/\/+$/, "");
-    const model = process.env.AI_MODEL ?? "gpt-4o";
+    // Sensible defaults per provider: OpenAI → gpt-4o, Google Gemini → the
+    // widely available gemini-2.0-flash (2.5-flash is retired for new users).
+    const isGoogle = baseUrl.includes("generativelanguage.googleapis.com");
+    const model = process.env.AI_MODEL ?? (isGoogle ? "gemini-2.0-flash" : "gpt-4o");
 
     const safe = messages
       .filter((m) => m.content.trim().length > 0 && m.content.length <= MAX_MESSAGE_CHARS)
@@ -89,9 +92,15 @@ export const askAssistant = action({
     }
 
     if (!res.ok) {
-      console.error("Assistant: OpenAI responded with", res.status);
+      console.error("Assistant: AI provider responded with", res.status);
       if (res.status === 401 || res.status === 403) {
         throw new ConvexError("ASSISTANT_BAD_KEY");
+      }
+      if (res.status === 429) {
+        throw new ConvexError("AI_QUOTA_EXCEEDED");
+      }
+      if (res.status === 404) {
+        throw new ConvexError("AI_MODEL_UNAVAILABLE");
       }
       throw new ConvexError("ASSISTANT_UPSTREAM");
     }
