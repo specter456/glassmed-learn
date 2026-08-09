@@ -10,13 +10,24 @@ const SPLASH_MS = 2300;
  * Shows once per browser session.
  */
 export function SplashScreen() {
-  const [visible, setVisible] = useState(
-    () => !sessionStorage.getItem("medipro-splash-seen"),
-  );
+  // sessionStorage can throw a SecurityError in sandboxed preview iframes,
+  // which would crash the landing page — so treat storage as unavailable
+  // (and just show the splash each load) when access is denied.
+  const [visible, setVisible] = useState(() => {
+    try {
+      return !sessionStorage.getItem("medipro-splash-seen");
+    } catch {
+      return true;
+    }
+  });
 
   useEffect(() => {
     if (!visible) return;
-    sessionStorage.setItem("medipro-splash-seen", "1");
+    try {
+      sessionStorage.setItem("medipro-splash-seen", "1");
+    } catch {
+      /* storage blocked — the splash will show again on the next load */
+    }
     const t = setTimeout(() => setVisible(false), SPLASH_MS);
     return () => clearTimeout(t);
   }, [visible]);
