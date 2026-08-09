@@ -1,4 +1,5 @@
 import '@vly-ai/integrations';
+import { MotionConfig } from "framer-motion";
 import { Toaster } from "@/components/ui/sonner";
 import { RequireAuth } from "@/components/RequireAuth";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
@@ -93,11 +94,18 @@ const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
 function RouteSyncer() {
   const location = useLocation();
+
+  // Best-effort route sync with the host frame — must never throw in a
+  // sandboxed/cross-origin preview, or it would take down the whole app.
   useEffect(() => {
-    window.parent.postMessage(
-      { type: "iframe-route-change", path: location.pathname },
-      "*",
-    );
+    try {
+      window.parent.postMessage(
+        { type: "iframe-route-change", path: location.pathname },
+        "*",
+      );
+    } catch {
+      /* cross-origin or sandboxed host — sync is optional */
+    }
   }, [location.pathname]);
 
   useEffect(() => {
@@ -111,6 +119,20 @@ function RouteSyncer() {
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
+  // Battery & thermal: pause every CSS animation while the tab is hidden
+  // (Framer Motion loops are rAF-driven and browsers throttle those already).
+  useEffect(() => {
+    const onVisibility = () => {
+      document.documentElement.classList.toggle(
+        "animations-paused",
+        document.hidden,
+      );
+    };
+    onVisibility();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
   return null;
 }
 
@@ -122,6 +144,7 @@ createRoot(document.getElementById("root")!).render(
         <VlyToolbar />
       </ToolbarErrorBoundary>
       <ConvexAuthProvider client={convex}>
+        <MotionConfig reducedMotion="user">
         <BrowserRouter>
           <RouteSyncer />
           <Suspense fallback={<RouteLoading />}>
@@ -191,6 +214,7 @@ createRoot(document.getElementById("root")!).render(
             </Routes>
           </Suspense>
         </BrowserRouter>
+        </MotionConfig>
         <Toaster />
       </ConvexAuthProvider>
     </RootErrorBoundary>
