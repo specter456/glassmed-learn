@@ -89,7 +89,7 @@ export default function Landing() {
         transition={{ duration: 0.6, delay: 0.1 }}
         className="sticky top-0 z-[60] px-4 pt-4"
       >
-        <div className="glass-panel shine mx-auto flex max-w-6xl items-center justify-between rounded-2xl px-4 py-2.5">
+        <div className="glass-panel mx-auto flex max-w-6xl items-center justify-between rounded-2xl px-4 py-2.5">
           <GlassMedLogo size="sm" />
           <div className="flex items-center gap-2">
             <Button
@@ -132,7 +132,7 @@ export default function Landing() {
             className="relative"
           >
             <GlassMedLogo size="lg" />
-            <MedicalEmblems />
+            <MedicalEmblems compact />
           </motion.div>
 
           <motion.h1

@@ -52,19 +52,24 @@ export const askAssistant = action({
       limit: 10,
     });
 
-    const key = process.env.OPENAI_API_KEY;
+    // Provider-agnostic: any OpenAI-compatible chat completions endpoint works.
+    //   OpenAI  → AI_API_KEY (or OPENAI_API_KEY), base https://api.openai.com/v1
+    //   Google  → Gemini key from AI Studio, base
+    //             https://generativelanguage.googleapis.com/v1beta/openai
+    const key = process.env.AI_API_KEY ?? process.env.OPENAI_API_KEY;
     if (!key) throw new ConvexError("ASSISTANT_NOT_CONFIGURED");
+
+    const baseUrl = (process.env.AI_BASE_URL ?? "https://api.openai.com/v1").replace(/\/+$/, "");
+    const model = process.env.AI_MODEL ?? "gpt-4o";
 
     const safe = messages
       .filter((m) => m.content.trim().length > 0 && m.content.length <= MAX_MESSAGE_CHARS)
       .slice(-MAX_HISTORY);
     if (safe.length === 0) throw new ConvexError("ASSISTANT_EMPTY");
 
-    const model = process.env.OPENAI_MODEL ?? "gpt-4o";
-
     let res: Response;
     try {
-      res = await fetch("https://api.openai.com/v1/chat/completions", {
+      res = await fetch(`${baseUrl}/chat/completions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

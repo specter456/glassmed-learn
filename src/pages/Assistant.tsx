@@ -417,10 +417,11 @@ function AssistantInner() {
               <div>
                 <p className="text-sm font-bold">One step to switch me on</p>
                 <p className="mt-0.5 text-xs leading-5 text-muted-foreground">
-                  Add an OpenAI API key in the project's{" "}
-                  <span className="font-semibold text-foreground">Keys tab</span> (variable{" "}
-                  <code className="rounded bg-white/10 px-1 font-mono text-[10px]">OPENAI_API_KEY</code>
-                  ). It's read server-side only — never shipped to the browser.
+                  Add an AI key in the project's{" "}
+                  <span className="font-semibold text-foreground">Keys tab</span> —{" "}
+                  <code className="rounded bg-white/10 px-1 font-mono text-[10px]">AI_API_KEY</code>{" "}
+                  (works for OpenAI or Google Gemini). It's read server-side only — never
+                  shipped to the browser.
                 </p>
               </div>
             </div>

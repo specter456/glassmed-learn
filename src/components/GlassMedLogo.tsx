@@ -16,6 +16,9 @@ const SIZE_CLASSES = {
   xl: "text-6xl sm:text-8xl",
 } as const;
 
+/** Crescent size relative to the wordmark font size (em). */
+const MARK_EM = { sm: 1.15, md: 1.1, lg: 1, xl: 0.9 } as const;
+
 /** Small 4-point sparkle used for the twinkling stars. */
 function Sparkle({
   className,
@@ -47,7 +50,7 @@ function Sparkle({
   );
 }
 
-/** A tiny 4-point sparkle used for the stars inside the crescent moon. */
+/** A tiny 4-point sparkle used for the star inside the crescent moon. */
 function MoonStar({
   x,
   y,
@@ -74,20 +77,17 @@ function MoonStar({
   );
 }
 
-/** The crescent moon that wraps around the wordmark tail — filled with
- *  twinkling "hopes" stars along its body. */
-function CrescentMoon({
-  className,
-  style,
-}: {
-  className?: string;
-  style?: React.CSSProperties;
-}) {
+/**
+ * The crescent moon mark, drawn at a fixed size next to the name. It carries
+ * one tiny twinkling "hope" star inside its bowl. Rendered inline (not
+ * absolutely behind text) so it can never be clipped by a parent panel.
+ */
+function CrescentMark({ em }: { em: number }) {
   return (
     <svg
       viewBox="0 0 100 100"
-      className={cn("drop-shadow-[0_0_14px_rgba(120,162,210,0.8)]", className)}
-      style={style}
+      className="shrink-0 drop-shadow-[0_0_10px_rgba(120,162,210,0.7)]"
+      style={{ width: `${em}em`, height: `${em}em` }}
       aria-hidden
     >
       <path
@@ -96,17 +96,69 @@ function CrescentMoon({
            A 36 36 0 1 1 58 6 Z"
         fill="#78A2D2"
       />
-      {/* hopes — three twinkling stars set into the moon's body */}
-      <MoonStar x={18} y={50} scale={0.42} delay={0} />
-      <MoonStar x={24} y={30} scale={0.3} delay={0.8} />
-      <MoonStar x={24} y={70} scale={0.3} delay={1.6} />
+      <MoonStar x={24} y={50} scale={0.3} delay={0.5} />
     </svg>
+  );
+}
+
+export function GlassMedLogo({
+  variant = "night",
+  className,
+  size = "md",
+}: GlassMedLogoProps) {
+  const night = variant === "night";
+  const starScale =
+    size === "xl" ? 22 : size === "lg" ? 16 : size === "md" ? 12 : 9;
+
+  return (
+    <div
+      className={cn(
+        "relative inline-flex select-none items-center gap-2 sm:gap-2.5",
+        className,
+      )}
+      aria-label="GlassMed"
+    >
+      {/* the crescent moon diagram, beside the name */}
+      <CrescentMark em={MARK_EM[size]} />
+
+      {/* wordmark with three twinkling stars above */}
+      <span className="relative">
+        <span
+          className={cn(
+            "font-calligraphy leading-none tracking-wide",
+            SIZE_CLASSES[size],
+            night ? "text-olean" : "text-olean",
+          )}
+        >
+          GlassMed
+        </span>
+        <div
+          className="pointer-events-none absolute -top-1 left-0 flex items-end gap-1.5 sm:gap-2"
+          style={{ transform: "translateY(-55%)" }}
+          aria-hidden
+        >
+          <Sparkle size={starScale * 0.6} delay="0s" className="text-butter" />
+          <Sparkle size={starScale} delay="0.8s" className="text-butter" />
+          <Sparkle size={starScale * 0.5} delay="1.6s" className="text-butter" />
+        </div>
+      </span>
+    </div>
+  );
+}
+
+/** Compact horizontal lockup used in headers, navs and footers. */
+export function GlassMedLockup({ className }: { className?: string }) {
+  return (
+    <div className={cn("flex items-center gap-2.5", className)}>
+      <GlassMedLogo size="sm" />
+      <span className="tech-label hidden sm:inline">Learn</span>
+    </div>
   );
 }
 
 /* ----------------------------------------------------------------------- */
 /* Floating medical emblems — small attractive "gif-like" accents that     */
-/* drift around the logo (first aid, white coat, stethoscope, syringe).     */
+/* drift around the logo (first aid, white coat, stethoscope, syringe).    */
 /* Pure CSS/Framer motion — no real GIFs, so battery stays happy.          */
 /* ----------------------------------------------------------------------- */
 
@@ -118,12 +170,22 @@ const EMBLEM_LAYOUT = [
   { Icon: HeartPulse, pos: "top-1/2 -right-16 -translate-y-1/2", color: "#e896b4", delay: 2.1, duration: 5.6 },
 ];
 
-/** A scatter of small frosted medical icons that gently float around the
- *  logo — the "small attractive gifs" for the splash and hero. */
-export function MedicalEmblems({ className }: { className?: string }) {
+/**
+ * A scatter of small frosted medical icons that gently float around the
+ * logo. Pass `compact` for a quieter look (3 icons instead of 5) so the
+ * hero stays clear rather than overloaded.
+ */
+export function MedicalEmblems({
+  className,
+  compact = false,
+}: {
+  className?: string;
+  compact?: boolean;
+}) {
+  const layout = compact ? EMBLEM_LAYOUT.slice(0, 3) : EMBLEM_LAYOUT;
   return (
     <div aria-hidden className={cn("pointer-events-none absolute inset-0", className)}>
-      {EMBLEM_LAYOUT.map(({ Icon, pos, color, delay, duration }) => (
+      {layout.map(({ Icon, pos, color, delay, duration }) => (
         <motion.span
           key={pos}
           className={cn("absolute", pos)}
@@ -140,100 +202,6 @@ export function MedicalEmblems({ className }: { className?: string }) {
           </motion.span>
         </motion.span>
       ))}
-    </div>
-  );
-}
-
-export function GlassMedLogo({
-  variant = "night",
-  className,
-  size = "md",
-}: GlassMedLogoProps) {
-  const night = variant === "night";
-  const textClass = night ? "text-olean" : "text-olean";
-  const tailColor = night ? "#FEFFAF" : "#d8d8f4";
-  const starColor = night ? "#FEFFAF" : "#a2a2d0";
-  const starScale =
-    size === "xl" ? 24 : size === "lg" ? 18 : size === "md" ? 13 : 10;
-
-  return (
-    <div
-      className={cn(
-        "relative inline-flex select-none items-baseline",
-        className,
-      )}
-      aria-label="GlassMed"
-    >
-      {/* Three twinkling stars above the wordmark */}
-      <div
-        className="pointer-events-none absolute -top-1 left-0 flex items-end gap-1.5 sm:gap-2"
-        style={{ transform: "translateY(-45%)" }}
-        aria-hidden
-      >
-        <Sparkle size={starScale * 0.7} delay="0s" className={starColor} />
-        <Sparkle size={starScale} delay="0.8s" className={starColor} />
-        <Sparkle size={starScale * 0.55} delay="1.6s" className={starColor} />
-      </div>
-
-      <span
-        className={cn(
-          "font-calligraphy leading-none tracking-wide",
-          SIZE_CLASSES[size],
-          textClass,
-        )}
-      >
-        Glass
-      </span>
-
-      {/* "Med" wrapped by the crescent moon */}
-      <span className="relative ml-[0.06em] inline-block">
-        <span
-          className={cn(
-            "relative z-10 font-calligraphy leading-none tracking-wide",
-            SIZE_CLASSES[size],
-          )}
-          style={{ color: tailColor }}
-        >
-          Med
-        </span>
-        <CrescentMoon
-          className={cn(
-            "absolute z-0",
-            size === "xl"
-              ? "h-[1.7em] w-[1.7em] -bottom-[0.42em] -right-[0.5em]"
-              : size === "lg"
-                ? "h-[1.75em] w-[1.75em] -bottom-[0.4em] -right-[0.48em]"
-                : size === "md"
-                  ? "h-[1.8em] w-[1.8em] -bottom-[0.38em] -right-[0.44em]"
-                  : "h-[1.85em] w-[1.85em] -bottom-[0.36em] -right-[0.4em]",
-          )}
-          style={{ transform: "rotate(24deg)" }}
-        />
-      </span>
-    </div>
-  );
-}
-
-/** Compact horizontal lockup used in headers, navs and footers. */
-export function GlassMedLockup({
-  className,
-}: {
-  className?: string;
-}) {
-  return (
-    <div className={cn("flex items-center gap-2.5", className)}>
-      <div className="glass-chip flex size-9 items-center justify-center rounded-xl">
-        <svg width={20} height={20} viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path
-            d="M14 1.5 A 10.5 10.5 0 1 0 14 22.5 A 8.5 8.5 0 1 1 14 1.5 Z"
-            fill="#78A2D2"
-          />
-        </svg>
-      </div>
-      <div className="flex items-baseline gap-1.5">
-        <GlassMedLogo size="sm" />
-        <span className="tech-label hidden sm:inline">Learn</span>
-      </div>
     </div>
   );
 }

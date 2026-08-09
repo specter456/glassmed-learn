@@ -28,7 +28,7 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
 
   return (
     <header className="sticky top-0 z-[60] px-4 pt-4 sm:px-6">
-      <div className="glass-panel shine mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-2xl px-4 py-3">
+      <div className="glass-panel mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-2xl px-4 py-3">
         <div className="flex min-w-0 items-center gap-3">
           <button
             onClick={handleBack}
