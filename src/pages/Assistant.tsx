@@ -162,7 +162,9 @@ function AssistantInner() {
           setLastError("You're sending questions very fast — give it a minute, then try again.");
         } else if (message.includes("ASSISTANT_BAD_KEY")) {
           setSetupNeeded(true);
-          setLastError("The AI key looks invalid — double-check AI_API_KEY in the Keys tab.");
+          setLastError(
+            "The AI key looks invalid — double-check AI_API_KEY (and AI_BASE_URL if set) in the Keys tab.",
+          );
         } else if (message.includes("AI_QUOTA_EXCEEDED")) {
           setLastError(
             "Your AI key's quota is currently 0/exhausted. Enable billing or free-tier quota at ai.google.dev/gemini-api/docs/rate-limits, then try again.",

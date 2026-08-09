@@ -59,7 +59,16 @@ export const askAssistant = action({
     const key = process.env.AI_API_KEY ?? process.env.OPENAI_API_KEY;
     if (!key) throw new ConvexError("ASSISTANT_NOT_CONFIGURED");
 
-    const baseUrl = (process.env.AI_BASE_URL ?? "https://api.openai.com/v1").replace(/\/+$/, "");
+    // If no base URL was configured, guess the provider from the key format:
+    // Google Gemini keys start with AIza / AQ., OpenAI keys with sk-. This way
+    // the user only needs to add AI_API_KEY and it just works.
+    const configuredBase = (process.env.AI_BASE_URL ?? "").trim().replace(/\/+$/, "");
+    const looksGoogle = key.startsWith("AIza") || key.startsWith("AQ.");
+    const baseUrl =
+      configuredBase ||
+      (looksGoogle
+        ? "https://generativelanguage.googleapis.com/v1beta/openai"
+        : "https://api.openai.com/v1");
     // Sensible defaults per provider: OpenAI → gpt-4o, Google Gemini → the
     // widely available gemini-2.0-flash (2.5-flash is retired for new users).
     const isGoogle = baseUrl.includes("generativelanguage.googleapis.com");
