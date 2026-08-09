@@ -93,6 +93,11 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
+    // Embla is fully initialized by the time the ref attaches, so the initial
+    // canScroll snapshot must be pushed synchronously — the select/reInit
+    // events only fire on later changes. Intentional (canonical shadcn
+    // pattern): this primes the prev/next button state before any event.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     onSelect(api)
     api.on("reInit", onSelect)
     api.on("select", onSelect)
