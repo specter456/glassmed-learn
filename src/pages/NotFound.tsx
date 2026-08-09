@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
-import { MediProLogo } from "@/components/MediProLogo";
+import { GlassMedLogo } from "@/components/GlassMedLogo";
 
 export default function NotFound() {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export default function NotFound() {
           >
             <p className="text-6xl font-extrabold tracking-tight text-wistaria">404</p>
             <div className="mt-4 flex justify-center">
-              <MediProLogo variant="day" size="md" />
+              <GlassMedLogo size="md" />
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
               This page slipped out of the anatomy atlas. Let's get you back to

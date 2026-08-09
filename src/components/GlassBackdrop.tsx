@@ -13,14 +13,14 @@ export function GlassBackdrop({ className }: { className?: string }) {
         className,
       )}
     >
-      {/* base wash */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#eef4fd] via-[#f1f0fb] to-[#f8eef7]" />
+      {/* base wash — deep navy, cool */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#121830] via-[#10152b] to-[#151230]" />
 
       {/* glowing orbs */}
-      <div className="absolute -top-32 right-[8%] h-[420px] w-[420px] animate-orb rounded-full bg-cloud/35 blur-3xl" />
-      <div className="absolute top-[30%] -left-40 h-[460px] w-[460px] animate-orb-slow rounded-full bg-wistaria/35 blur-3xl" />
-      <div className="absolute bottom-[-140px] right-[20%] h-[380px] w-[380px] animate-orb rounded-full bg-[#e8b7cf]/40 blur-3xl" />
-      <div className="absolute top-[55%] right-[-120px] h-[320px] w-[320px] animate-orb-slow rounded-full bg-cloud/25 blur-3xl" />
+      <div className="absolute -top-32 right-[8%] h-[420px] w-[420px] animate-orb rounded-full bg-cloud/25 blur-3xl" />
+      <div className="absolute top-[30%] -left-40 h-[460px] w-[460px] animate-orb-slow rounded-full bg-wistaria/25 blur-3xl" />
+      <div className="absolute bottom-[-140px] right-[20%] h-[380px] w-[380px] animate-orb rounded-full bg-[#e8b7cf]/20 blur-3xl" />
+      <div className="absolute top-[55%] right-[-120px] h-[320px] w-[320px] animate-orb-slow rounded-full bg-cloud/20 blur-3xl" />
 
       {/* faint dot grid for spatial depth */}
       <div

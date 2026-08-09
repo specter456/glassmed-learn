@@ -143,7 +143,7 @@ export function MusicPlayer() {
             whileHover={{ y: -4, scale: 1.05 }}
             whileTap={{ scale: 0.94 }}
             onClick={() => setCollapsed(false)}
-            className="glass-chip fixed bottom-5 right-5 z-[80] flex size-14 items-center justify-center rounded-full text-[#5b5ba3]"
+            className="glass-chip fixed bottom-5 right-5 z-[80] flex size-14 items-center justify-center rounded-full text-wistaria"
             aria-label="Open music player"
           >
             <Disc3 className="size-6" />
@@ -217,7 +217,7 @@ export function MusicPlayer() {
                   "flex size-11 items-center justify-center rounded-full transition-all disabled:opacity-40",
                   playing
                     ? "bg-[#7b9ee8] text-white shadow-[0_8px_20px_-6px_rgba(123,158,232,0.6)]"
-                    : "glass-chip text-[#5b5ba3]",
+                    : "glass-chip text-wistaria",
                 )}
                 aria-label={playing ? "Pause" : "Play"}
               >

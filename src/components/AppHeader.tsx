@@ -1,7 +1,7 @@
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { MediProLockup } from "@/components/MediProLogo";
-import { ArrowLeft, LogOut } from "lucide-react";
+import { GlassMedLockup } from "@/components/GlassMedLogo";
+import { ArrowLeft, LogOut, Store } from "lucide-react";
 import { useNavigate } from "react-router";
 
 interface AppHeaderProps {
@@ -32,13 +32,13 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
         <div className="flex min-w-0 items-center gap-3">
           <button
             onClick={handleBack}
-            className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white/50 text-[#5b5ba3] transition-all hover:bg-white/80"
+            className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white/10 text-wistaria transition-all hover:bg-white/20"
             aria-label="Go back"
           >
             <ArrowLeft className="size-4" />
           </button>
           <button onClick={() => navigate("/dashboard")} aria-label="Go home">
-            <MediProLockup />
+            <GlassMedLockup />
           </button>
           {title && (
             <div className="ml-2 hidden min-w-0 flex-col sm:flex">
@@ -51,6 +51,15 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/catalog")}
+            className="gap-1.5 font-mono text-xs tracking-wide text-muted-foreground"
+          >
+            <Store className="size-3.5" />
+            Catalog
+          </Button>
           {firstName && (
             <span className="hidden text-sm font-semibold text-muted-foreground md:block">
               {firstName}

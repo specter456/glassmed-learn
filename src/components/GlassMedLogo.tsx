@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
-interface MediProLogoProps {
-  /** Tonal variant — night (on dark splash) or day (on light glass). */
+interface GlassMedLogoProps {
+  /** Tonal variant — night (on dark splash) or day (on dark glass). */
   variant?: "night" | "day";
   className?: string;
   size?: "sm" | "md" | "lg" | "xl";
@@ -31,7 +31,7 @@ function Sparkle({
       viewBox="0 0 24 24"
       fill="none"
       className={cn(
-        "animate-twinkle drop-shadow-[0_0_8px_rgba(254,255,175,0.9)]",
+        "animate-twinkle drop-shadow-[0_0_8px_rgba(254,255,175,0.8)]",
         className,
       )}
       style={{ animationDelay: delay }}
@@ -45,7 +45,7 @@ function Sparkle({
   );
 }
 
-/** The crescent moon that wraps around "Pro". */
+/** The crescent moon that wraps around the wordmark tail. */
 function CrescentMoon({
   className,
   style,
@@ -56,7 +56,7 @@ function CrescentMoon({
   return (
     <svg
       viewBox="0 0 100 100"
-      className={cn("drop-shadow-[0_0_14px_rgba(120,162,210,0.85)]", className)}
+      className={cn("drop-shadow-[0_0_14px_rgba(120,162,210,0.8)]", className)}
       style={style}
       aria-hidden
     >
@@ -70,27 +70,27 @@ function CrescentMoon({
   );
 }
 
-export function MediProLogo({
+export function GlassMedLogo({
   variant = "night",
   className,
   size = "md",
-}: MediProLogoProps) {
+}: GlassMedLogoProps) {
   const night = variant === "night";
-  const textClass = night ? "text-olean" : "text-[#4a4a8f]";
-  const proColor = night ? "#FEFFAF" : "#6e6eb3";
-  const starColor = night ? "#FEFFAF" : "#8f9bd8";
+  const textClass = night ? "text-olean" : "text-olean";
+  const tailColor = night ? "#FEFFAF" : "#d8d8f4";
+  const starColor = night ? "#FEFFAF" : "#a2a2d0";
   const starScale =
-    size === "xl" ? 26 : size === "lg" ? 20 : size === "md" ? 15 : 11;
+    size === "xl" ? 24 : size === "lg" ? 18 : size === "md" ? 13 : 10;
 
   return (
     <div
       className={cn(
-        "relative inline-flex items-baseline select-none",
+        "relative inline-flex select-none items-baseline",
         className,
       )}
-      aria-label="MediPro"
+      aria-label="GlassMed"
     >
-      {/* Three twinkling stars above "Medi" */}
+      {/* Three twinkling stars above the wordmark */}
       <div
         className="pointer-events-none absolute -top-1 left-0 flex items-end gap-1.5 sm:gap-2"
         style={{ transform: "translateY(-45%)" }}
@@ -108,19 +108,19 @@ export function MediProLogo({
           textClass,
         )}
       >
-        Medi
+        Glass
       </span>
 
-      {/* "Pro" wrapped by the crescent moon */}
+      {/* "Med" wrapped by the crescent moon */}
       <span className="relative ml-[0.06em] inline-block">
         <span
           className={cn(
             "relative z-10 font-calligraphy leading-none tracking-wide",
             SIZE_CLASSES[size],
           )}
-          style={{ color: proColor }}
+          style={{ color: tailColor }}
         >
-          Pro
+          Med
         </span>
         <CrescentMoon
           className={cn(
@@ -140,22 +140,15 @@ export function MediProLogo({
   );
 }
 
-/** Compact horizontal lockup used in headers and footers. */
-export function MediProLockup({
-  variant = "day",
+/** Compact horizontal lockup used in headers, navs and footers. */
+export function GlassMedLockup({
   className,
 }: {
-  variant?: "night" | "day";
   className?: string;
 }) {
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
-      <div
-        className={cn(
-          "flex size-9 items-center justify-center rounded-xl",
-          variant === "night" ? "night-board" : "glass-chip",
-        )}
-      >
+      <div className="glass-chip flex size-9 items-center justify-center rounded-xl">
         <svg width={20} height={20} viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
             d="M14 1.5 A 10.5 10.5 0 1 0 14 22.5 A 8.5 8.5 0 1 1 14 1.5 Z"
@@ -163,7 +156,10 @@ export function MediProLockup({
           />
         </svg>
       </div>
-      <MediProLogo variant={variant} size="sm" />
+      <div className="flex items-baseline gap-1.5">
+        <GlassMedLogo size="sm" />
+        <span className="tech-label hidden sm:inline">Learn</span>
+      </div>
     </div>
   );
 }

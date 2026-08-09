@@ -90,7 +90,7 @@ function DeckList() {
                       {stat.due} due
                     </span>
                   ) : (
-                    <span className="rounded-full bg-black/5 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
+                    <span className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
                       {stat ? `${stat.done}/${stat.total}` : "—"} reviewed
                     </span>
                   )}
@@ -104,7 +104,7 @@ function DeckList() {
                 </div>
 
                 <div className="mt-auto space-y-2">
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5">
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
                     <div
                       className="h-full rounded-full transition-all duration-700"
                       style={{ width: `${pct}%`, backgroundColor: t.accent }}
@@ -281,7 +281,7 @@ function StudySession({ slug }: { slug: string }) {
 
       {/* progress */}
       <div className="mt-5 flex items-center gap-3">
-        <div className="h-2 flex-1 overflow-hidden rounded-full bg-black/5">
+        <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10">
           <motion.div
             className="h-full rounded-full bg-gradient-to-r from-cloud to-wistaria"
             animate={{ width: `${total > 0 ? (answered / total) * 100 : 0}%` }}
@@ -369,7 +369,7 @@ function StudySession({ slug }: { slug: string }) {
               >
                 <Button
                   variant="outline"
-                  className="h-14 flex-1 gap-2 rounded-2xl border-[#e2666f]/30 bg-white/60 text-[#c2434d] hover:bg-[#e2666f]/10"
+                  className="h-14 flex-1 gap-2 rounded-2xl border-[#e2666f]/40 bg-white/5 text-[#e2666f] hover:bg-[#e2666f]/10"
                   onClick={() => void handleAnswer(false)}
                 >
                   <X className="size-5" />

@@ -1,10 +1,10 @@
 {
-  "name": "MediPro — Where Medicine Becomes Energetic",
-  "short_name": "MediPro",
-  "description": "Medical education for NEET aspirants and 1st-year MBBS students. Flashcards with 1-3-7 spaced repetition, basics-first topics, and local study music.",
+  "name": "GlassMed Learn — Where Medicine Becomes Energetic",
+  "short_name": "GlassMed Learn",
+  "description": "Precision study tools for future physicians. Catalog of medical fundamentals, 3D-flip flashcards on a 1-3-7 schedule, focus audio and quiz arenas.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#eef4fd",
+  "background_color": "#12182b",
   "theme_color": "#a2a2d0",
   "icons": [
     {

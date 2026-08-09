@@ -1,236 +1,15 @@
 import { motion } from "framer-motion";
-import {
-  ArrowLeft,
-  ArrowRight,
-  BookOpen,
-  ChevronDown,
-  GraduationCap,
-  Layers,
-  Lightbulb,
-  Sparkles,
-} from "lucide-react";
-import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
-import { RichText } from "@/components/RichText";
-import { TextBlockSkeleton, TopicCardSkeleton } from "@/components/Skeletons";
-import { TopicDiagram } from "@/components/TopicDiagram";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TopicCardSkeleton } from "@/components/Skeletons";
+import { TopicDetailView } from "@/components/TopicDetailView";
 import { useEnsureSeeded } from "@/hooks/use-ensure-seeded";
 import { topicIcon } from "@/lib/medipro";
-
-/* ----------------------------- detail ------------------------------ */
-
-function TopicDetail({ slug }: { slug: string }) {
-  const navigate = useNavigate();
-  const topic = useQuery(api.content.topicBySlug, { slug });
-  const [mode, setMode] = useState<"basics" | "inDepth">("basics");
-
-  if (topic === undefined) {
-    return (
-      <main className="mx-auto max-w-3xl space-y-6 px-4 pb-32 pt-10 sm:px-6">
-        <div className="skeleton h-5 w-28 rounded-md" />
-        <div className="glass-panel space-y-4 p-6">
-          <div className="flex items-center gap-3">
-            <div className="skeleton size-12 rounded-2xl" />
-            <div className="flex-1 space-y-2">
-              <div className="skeleton h-4 w-1/2 rounded-md" />
-              <div className="skeleton h-3 w-1/3 rounded-md" />
-            </div>
-          </div>
-          <TextBlockSkeleton />
-          <TextBlockSkeleton />
-        </div>
-      </main>
-    );
-  }
-
-  if (!topic) {
-    return (
-      <main className="mx-auto max-w-3xl px-4 pb-32 pt-10 text-center sm:px-6">
-        <p className="text-lg font-bold text-wistaria">Topic not found</p>
-        <Button variant="outline" className="mt-4" onClick={() => navigate("/basics")}>
-          <ArrowLeft className="size-4" />
-          Back to topics
-        </Button>
-      </main>
-    );
-  }
-
-  const Icon = topicIcon(topic.icon);
-  const basicBlocks = topic.basicBlocks;
-  const inDepthBlocks = topic.inDepthBlocks;
-
-  return (
-    <main className="mx-auto max-w-4xl px-4 pb-32 pt-8 sm:px-6">
-      <button
-        onClick={() => navigate("/basics")}
-        className="flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
-      >
-        <ArrowLeft className="size-4" />
-        All topics
-      </button>
-
-      {/* topic hero */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass-panel relative mt-4 overflow-hidden rounded-3xl p-6 sm:p-8"
-      >
-        <div
-          className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full opacity-25 blur-3xl"
-          style={{ backgroundColor: topic.accent }}
-        />
-        <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start">
-          <div
-            className="flex size-16 shrink-0 items-center justify-center rounded-2xl"
-            style={{ backgroundColor: topic.accent + "1f", color: topic.accent }}
-          >
-            <Icon className="size-8" />
-          </div>
-          <div>
-            <span className="glass-chip inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-[#5b5ba3]">
-              <GraduationCap className="size-3.5" />
-              {topic.subject}
-            </span>
-            <h1 className="mt-3 text-balance text-3xl font-extrabold tracking-tight text-wistaria">
-              {topic.title}
-            </h1>
-            <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-              {topic.blurb}
-            </p>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* mode toggle */}
-      <Tabs
-        value={mode}
-        onValueChange={(v) => setMode(v as "basics" | "inDepth")}
-        className="mt-6"
-      >
-        <TabsList className="glass-chip grid w-full grid-cols-2 gap-1 rounded-2xl p-1">
-          <TabsTrigger value="basics" className="gap-1.5 rounded-xl py-2.5 font-bold">
-            <Lightbulb className="size-4" />
-            Basics first
-          </TabsTrigger>
-          <TabsTrigger value="inDepth" className="gap-1.5 rounded-xl py-2.5 font-bold">
-            <BookOpen className="size-4" />
-            In-depth
-          </TabsTrigger>
-        </TabsList>
-
-        {mode === "basics" ? (
-          <div className="mt-6 space-y-6">
-            {/* diagram */}
-            <TopicDiagram diagram={topic.diagram} accent={topic.accent} />
-
-            {/* key points */}
-            <div className="glass-panel rounded-3xl p-6">
-              <h2 className="flex items-center gap-2 text-base font-extrabold tracking-tight">
-                <Sparkles className="size-4" style={{ color: topic.accent }} />
-                Key points to remember
-              </h2>
-              <ul className="mt-4 space-y-2.5">
-                {topic.keyPoints.map((k, i) => (
-                  <motion.li
-                    key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.06 }}
-                    className="flex items-start gap-2.5 text-sm leading-6 text-muted-foreground"
-                  >
-                    <span
-                      className="mt-2 size-2 shrink-0 rounded-full"
-                      style={{ backgroundColor: topic.accent }}
-                    />
-                    {k}
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-
-            {/* basic blocks */}
-            {basicBlocks.map((b, i) => (
-              <motion.div
-                key={b.heading}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ delay: i * 0.05 }}
-                className="glass-panel rounded-3xl p-6"
-              >
-                <h2 className="text-lg font-extrabold tracking-tight text-wistaria">
-                  {i + 1}. {b.heading}
-                </h2>
-                <RichText text={b.body} className="mt-3 text-[15px]" />
-              </motion.div>
-            ))}
-
-            {/* link to in-depth */}
-            <div className="glass-chip flex flex-col items-center gap-3 rounded-3xl p-6 text-center sm:flex-row sm:justify-between sm:text-left">
-              <div>
-                <p className="text-sm font-extrabold">Ready to go deeper?</p>
-                <p className="text-xs text-muted-foreground">
-                  The full detail — enzymes, pressures, waveforms and exam traps.
-                </p>
-              </div>
-              <Button onClick={() => setMode("inDepth")} className="gap-2">
-                In-depth lesson
-                <ChevronDown className="size-4" />
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div className="mt-6 space-y-6">
-            <div className="glass-chip flex items-center gap-3 rounded-3xl p-5 text-sm text-muted-foreground">
-              <Layers className="size-5 shrink-0 text-wistaria" />
-              You're on the advanced layer. If anything feels heavy, switch back
-              to Basics — the skeleton is still there.
-            </div>
-            {inDepthBlocks.map((b, i) => (
-              <motion.div
-                key={b.heading}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ delay: i * 0.05 }}
-                className="glass-panel rounded-3xl p-6"
-              >
-                <h2 className="text-lg font-extrabold tracking-tight text-wistaria">
-                  {b.heading}
-                </h2>
-                <RichText text={b.body} className="mt-3 text-[15px]" />
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </Tabs>
-
-      {/* practice CTA */}
-      <div className="glass-strong mt-8 flex flex-col items-center gap-3 rounded-3xl p-6 text-center sm:flex-row sm:justify-between sm:text-left">
-        <div>
-          <p className="text-base font-extrabold">Now lock it in</p>
-          <p className="text-sm text-muted-foreground">
-            Six flashcards for this topic, scheduled on the 1-3-7 ladder.
-          </p>
-        </div>
-        <Button onClick={() => navigate(`/flashcards?topic=${slug}`)} className="gap-2">
-          Practice flashcards
-          <ArrowRight className="size-4" />
-        </Button>
-      </div>
-    </main>
-  );
-}
-
-/* ---------------------------- picker ------------------------------- */
 
 function TopicPicker() {
   useEnsureSeeded();
@@ -244,11 +23,9 @@ function TopicPicker() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <p className="text-sm font-semibold text-muted-foreground">
-          Basics first · then in-depth
-        </p>
-        <h1 className="mt-1 text-balance text-3xl font-extrabold tracking-tight text-wistaria sm:text-4xl">
-          The fundamentals lab
+        <span className="tech-label">Fundamentals</span>
+        <h1 className="mt-2 text-balance text-3xl font-extrabold tracking-tight text-wistaria sm:text-4xl">
+          The five packs that matter first
         </h1>
         <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
           Five topics chosen because they trip up nearly every first-year.
@@ -280,8 +57,8 @@ function TopicPicker() {
                     >
                       <Icon className="size-6" />
                     </div>
-                    <span className="rounded-full bg-black/5 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
-                      {t.keyPoints.length} key points
+                    <span className="glass-chip px-2.5 py-1 font-mono text-[10px] font-semibold text-muted-foreground">
+                      FREE
                     </span>
                   </div>
                   <div>
@@ -306,8 +83,6 @@ function TopicPicker() {
   );
 }
 
-/* ------------------------------ page ------------------------------- */
-
 function BasicsInner() {
   useEnsureSeeded();
   const [searchParams] = useSearchParams();
@@ -316,15 +91,15 @@ function BasicsInner() {
   return (
     <div className="min-h-screen">
       <GlassBackdrop />
-      <AppHeader title={topicSlug ? "Basics" : undefined} />
-      {topicSlug ? <TopicDetail key={topicSlug} slug={topicSlug} /> : <TopicPicker />}
+      <AppHeader title={topicSlug ? "Fundamentals" : undefined} />
+      {topicSlug ? <TopicDetailView key={topicSlug} slug={topicSlug} /> : <TopicPicker />}
     </div>
   );
 }
 
 export default function Basics() {
   return (
-    <QueryErrorBoundary title="Couldn't load the fundamentals lab">
+    <QueryErrorBoundary title="Couldn't load the fundamentals">
       <BasicsInner />
     </QueryErrorBoundary>
   );

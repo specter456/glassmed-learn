@@ -654,7 +654,7 @@ function FallbackVisual({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex h-40 flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-wistaria/50 bg-white/40 p-6 text-center",
+        "flex h-40 flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-wistaria/40 bg-white/5 p-6 text-center",
         className,
       )}
     >

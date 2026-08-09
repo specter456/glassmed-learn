@@ -32,7 +32,7 @@ const schema = defineSchema(
       role: v.optional(roleValidator), // role of the user. do not remove
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
-    // ---------- MediPro content tables ----------
+    // ---------- GlassMed Learn content tables ----------
 
     // Foundational topics with a "Basics first, then In-Depth" learning path
     topics: defineTable({
@@ -74,6 +74,18 @@ const schema = defineSchema(
     })
       .index("by_user", ["userId"])
       .index("by_user_card", ["userId", "cardId"]),
+
+    // Purchases of premium catalog packs. In sandbox mode orders are recorded
+    // with status "demo" until real card processing (Stripe) is configured.
+    orders: defineTable({
+      userId: v.id("users"),
+      itemId: v.string(), // catalog item slug
+      itemTitle: v.string(),
+      amountCents: v.number(),
+      currency: v.string(),
+      status: v.union(v.literal("demo"), v.literal("paid"), v.literal("refunded")),
+      createdAt: v.number(),
+    }).index("by_user", ["userId"]),
   },
   {
     schemaValidation: false,

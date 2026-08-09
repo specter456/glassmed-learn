@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/input-otp";
 
 import { GlassBackdrop } from "@/components/GlassBackdrop";
-import { MediProLogo } from "@/components/MediProLogo";
+import { GlassMedLogo } from "@/components/GlassMedLogo";
 import { useAuth } from "@/hooks/use-auth";
 import { ArrowRight, Loader2, Mail, UserX } from "lucide-react";
 import { Suspense, useEffect, useState } from "react";
@@ -115,7 +115,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       <div className="flex min-h-screen flex-1 items-center justify-center px-4 py-10">
         <div className="flex w-full max-w-md flex-col items-center">
           <button onClick={() => navigate("/")} aria-label="Back to home">
-            <MediProLogo variant="day" size="lg" />
+            <GlassMedLogo size="lg" />
           </button>
 
           <Card className="glass-strong mt-8 w-full rounded-3xl border-0 pb-0 shadow-none">
@@ -165,7 +165,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                     <div className="mt-4">
                       <div className="relative">
                         <div className="absolute inset-0 flex items-center">
-                          <span className="w-full border-t border-white/50" />
+                          <span className="w-full border-t border-white/10" />
                         </div>
                         <div className="relative flex justify-center text-xs uppercase">
                           <span className="glass-chip rounded-full px-2 text-muted-foreground">
@@ -271,8 +271,8 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
               </>
             )}
 
-            <div className="rounded-b-3xl border-t border-white/50 bg-white/30 px-6 py-4 text-center text-xs text-muted-foreground backdrop-blur">
-              Your study data stays private to your account.
+            <div className="rounded-b-3xl border-t border-white/10 bg-white/5 px-6 py-4 text-center text-xs text-muted-foreground backdrop-blur">
+              Your study data stays private to your account. Checkout is sandboxed until Stripe keys are configured.
             </div>
           </Card>
         </div>

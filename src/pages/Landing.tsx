@@ -3,9 +3,10 @@ import {
   ArrowRight,
   Box,
   Brain,
+  Headphones,
   HeartPulse,
   Layers,
-  Music2,
+  Package,
   Quote,
   Scissors,
   Search,
@@ -17,42 +18,47 @@ import {
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
-import { MediProLogo } from "@/components/MediProLogo";
+import { GlassMedLogo } from "@/components/GlassMedLogo";
 import { SplashScreen } from "@/components/SplashScreen";
+import { PREMIUM_ITEMS, formatPrice } from "@/lib/catalog";
 
 const MODULES = [
   {
     title: "FLASHCARDS",
     icon: Layers,
-    desc: "3D flip cards with a 1-3-7 spaced-repetition ladder. Get it right and the card schedules itself.",
+    desc: "3D flip cards scheduled on a 1-3-7 spacing ladder.",
     color: "#7b9ee8",
-    soft: "bg-[#7b9ee8]/15",
     path: "/flashcards",
   },
   {
-    title: "BASICS",
+    title: "FUNDAMENTALS",
     icon: Box,
-    desc: "The 5 topics every med student stumbles on first — with light visuals and a Basics→In-Depth path.",
+    desc: "The five high-yield topics, basics first, then in-depth.",
     color: "#a88bd4",
-    soft: "bg-[#a88bd4]/15",
     path: "/basics",
   },
   {
     title: "GAME",
     icon: Scissors,
-    desc: "Quick-fire challenges in the OR. Under construction — structured for audio & interactive rounds.",
+    desc: "Timed quiz arenas and streak challenges. In the OR soon.",
     color: "#e896b4",
-    soft: "bg-[#e896b4]/15",
     path: "/game",
   },
   {
     title: "RESEARCH",
     icon: Search,
-    desc: "Dive deeper into the literature. Under construction — built for rich 3D & audio later.",
+    desc: "A library of narrated deep-dives and 3D models. Growing.",
     color: "#6fb5b0",
-    soft: "bg-[#6fb5b0]/15",
     path: "/research",
   },
+];
+
+const PATH_TOPICS = [
+  { icon: HeartPulse, title: "The Cardiac Cycle", subject: "Physiology", color: "#e2666f" },
+  { icon: Zap, title: "The Action Potential", subject: "Neurophysiology", color: "#7b9ee8" },
+  { icon: Box, title: "The Brachial Plexus", subject: "Anatomy", color: "#e0a458" },
+  { icon: Sparkles, title: "The Krebs Cycle", subject: "Biochemistry", color: "#5fa88b" },
+  { icon: Brain, title: "DNA Replication", subject: "Genetics", color: "#8f7bc4" },
 ];
 
 function reveal(delay: number) {
@@ -71,14 +77,6 @@ export default function Landing() {
     navigate(returnTo ? `/auth?returnTo=${encodeURIComponent(returnTo)}` : "/auth");
   };
 
-  const pathTopics = [
-    { icon: HeartPulse, title: "The Cardiac Cycle", subject: "Physiology", color: "#e2666f" },
-    { icon: Zap, title: "The Action Potential", subject: "Neurophysiology", color: "#7b9ee8" },
-    { icon: Box, title: "The Brachial Plexus", subject: "Anatomy", color: "#e0a458" },
-    { icon: Sparkles, title: "The Krebs Cycle", subject: "Biochemistry", color: "#5fa88b" },
-    { icon: Brain, title: "DNA Replication", subject: "Genetics", color: "#8f7bc4" },
-  ];
-
   return (
     <div className="relative min-h-screen overflow-x-clip">
       <GlassBackdrop />
@@ -94,8 +92,16 @@ export default function Landing() {
         className="sticky top-0 z-[60] px-4 pt-4"
       >
         <div className="glass-panel mx-auto flex max-w-6xl items-center justify-between rounded-2xl px-4 py-2.5">
-          <MediProLogo variant="day" size="sm" />
+          <GlassMedLogo size="sm" />
           <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/catalog")}
+              className="font-mono text-xs tracking-wide text-muted-foreground"
+            >
+              Catalog
+            </Button>
             <Button
               variant="ghost"
               size="sm"
@@ -114,15 +120,19 @@ export default function Landing() {
 
       <main className="relative mx-auto max-w-6xl px-4 pb-24">
         {/* Hero */}
-        <section className="flex flex-col items-center pb-20 pt-16 text-center sm:pt-24">
+        <section className="relative flex flex-col items-center pb-20 pt-16 text-center sm:pt-24">
+          <div className="tech-grid pointer-events-none absolute inset-0 -z-10 opacity-40 [mask-image:radial-gradient(60%_50%_at_50%_30%,black,transparent)]" />
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="glass-chip mb-6 flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold text-[#5b5ba3]"
+            className="glass-chip mb-6 flex items-center gap-2 rounded-full px-4 py-1.5"
           >
-            <Sparkles className="size-3.5" />
-            Built for NEET & 1st-year MBBS
+            <Sparkles className="size-3.5 text-wistaria" />
+            <span className="tech-label text-[0.62rem]">
+              Precision study · 5 packs · 30 flashcards
+            </span>
           </motion.div>
 
           <motion.div
@@ -130,7 +140,7 @@ export default function Landing() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <MediProLogo variant="day" size="xl" />
+            <GlassMedLogo size="lg" />
           </motion.div>
 
           <motion.h1
@@ -158,10 +168,9 @@ export default function Landing() {
             transition={{ duration: 0.7, delay: 0.45 }}
             className="mt-6 max-w-2xl text-balance text-base leading-7 text-muted-foreground sm:text-lg"
           >
-            The five topics that trip up every first-year — Cardiac Cycle, Action
-            Potential, Brachial Plexus, Krebs Cycle, DNA Replication — taught
-            basics-first, then taken in-depth. Flip cards, trace the diagrams,
-            and let a 1-3-7 rhythm lock them in.
+            GlassMed Learn turns the topics that trip up every first-year into
+            an exact study system — animated diagrams, 3D-flip flashcards on a
+            1-3-7 schedule, and focus audio, all in one clean workspace.
           </motion.p>
 
           <motion.div
@@ -172,19 +181,19 @@ export default function Landing() {
           >
             <Button
               size="lg"
-              onClick={() => goAuth("/dashboard")}
-              className="gap-2 rounded-full px-8 shadow-[0_16px_36px_-12px_rgba(107,107,179,0.55)]"
+              onClick={() => navigate("/catalog")}
+              className="gap-2 rounded-full px-8 shadow-[0_16px_40px_-12px_rgba(122,122,216,0.5)]"
             >
-              Start learning free
+              Browse the catalog
               <ArrowRight className="size-4" />
             </Button>
             <Button
               size="lg"
               variant="outline"
-              onClick={() => goAuth("/basics")}
+              onClick={() => goAuth("/dashboard")}
               className="rounded-full px-8"
             >
-              Explore the basics
+              Start free
             </Button>
           </motion.div>
 
@@ -195,13 +204,13 @@ export default function Landing() {
             className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-muted-foreground"
           >
             <span className="flex items-center gap-1.5">
-              <ShieldCheck className="size-3.5 text-[#6fb5b0]" /> Your progress is private
+              <ShieldCheck className="size-3.5 text-[#6fb5b0]" /> Private per-account progress
             </span>
             <span className="flex items-center gap-1.5">
-              <Timer className="size-3.5 text-[#7b9ee8]" /> 5–10 min daily sessions
+              <Timer className="size-3.5 text-[#7b9ee8]" /> 5–10 minute daily sessions
             </span>
             <span className="flex items-center gap-1.5">
-              <Music2 className="size-3.5 text-[#e896b4]" /> Study with your own music
+              <Headphones className="size-3.5 text-[#e896b4]" /> Study with focus audio
             </span>
           </motion.div>
         </section>
@@ -209,11 +218,12 @@ export default function Landing() {
         {/* Modules */}
         <section className="pb-24">
           <motion.div {...reveal(0)} className="mb-10 text-center">
-            <h2 className="text-balance text-2xl font-extrabold tracking-tight text-wistaria sm:text-3xl">
-              Four ways to learn
+            <span className="tech-label">The workspace</span>
+            <h2 className="mt-2 text-balance text-2xl font-extrabold tracking-tight text-wistaria sm:text-3xl">
+              Four tools, one rhythm
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
-              Everything runs on hardware-accelerated animation — smooth on low-end
+              Every animation is hardware-accelerated — smooth on low-end
               devices, gentle on the battery.
             </p>
           </motion.div>
@@ -231,15 +241,13 @@ export default function Landing() {
                   className="glass-panel group flex flex-col items-start gap-4 rounded-3xl p-6 text-left"
                 >
                   <div
-                    className={`flex size-14 items-center justify-center rounded-2xl ${m.soft} text-white transition-transform duration-300 group-hover:scale-110`}
-                    style={{ backgroundColor: m.color + "22", color: m.color }}
+                    className="flex size-14 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
+                    style={{ backgroundColor: m.color + "1f", color: m.color }}
                   >
                     <Icon className="size-7" />
                   </div>
                   <div>
-                    <h3 className="text-base font-extrabold tracking-wide text-foreground">
-                      {m.title}
-                    </h3>
+                    <h3 className="text-base font-extrabold tracking-wide">{m.title}</h3>
                     <p className="mt-2 text-[13px] leading-5 text-muted-foreground">{m.desc}</p>
                   </div>
                   <ArrowRight className="mt-auto size-4 text-muted-foreground transition-transform duration-300 group-hover:translate-x-1" />
@@ -249,45 +257,102 @@ export default function Landing() {
           </div>
         </section>
 
+        {/* Catalog preview */}
+        <section className="pb-24">
+          <motion.div {...reveal(0)} className="mb-8 flex items-end justify-between gap-4">
+            <div>
+              <span className="tech-label">The catalog</span>
+              <h2 className="mt-2 text-balance text-2xl font-extrabold tracking-tight text-wistaria sm:text-3xl">
+                Study packs and passes
+              </h2>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate("/catalog")}
+              className="gap-1.5"
+            >
+              View all
+              <ArrowRight className="size-3.5" />
+            </Button>
+          </motion.div>
+
+          <div className="grid gap-5 sm:grid-cols-3">
+            {PREMIUM_ITEMS.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <motion.button
+                  key={item.slug}
+                  {...reveal(i * 0.08)}
+                  whileHover={{ y: -6, scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => navigate(`/catalog/${item.slug}`)}
+                  className="glass-panel group flex flex-col gap-4 rounded-3xl p-6 text-left"
+                >
+                  <div className="flex items-start justify-between">
+                    <div
+                      className="flex size-12 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
+                      style={{ backgroundColor: item.accent + "1f", color: item.accent }}
+                    >
+                      <Icon className="size-6" />
+                    </div>
+                    <span className="font-mono text-sm font-bold" style={{ color: item.accent }}>
+                      {formatPrice(item.priceCents)}
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-extrabold tracking-tight">{item.title}</h3>
+                    <p className="mt-1 text-xs font-medium text-muted-foreground">{item.category}</p>
+                  </div>
+                  <p className="mt-auto line-clamp-3 text-[13px] leading-5 text-muted-foreground">
+                    {item.description}
+                  </p>
+                </motion.button>
+              );
+            })}
+          </div>
+        </section>
+
         {/* Learning path */}
         <section className="pb-24">
-          <motion.div {...reveal(0)} className="glass-panel relative overflow-hidden rounded-3xl p-8 sm:p-12">
-            <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-cloud/20 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-[#e8b7cf]/25 blur-3xl" />
+          <motion.div
+            {...reveal(0)}
+            className="glass-panel relative overflow-hidden rounded-3xl p-8 sm:p-12"
+          >
+            <div className="tech-grid pointer-events-none absolute inset-0 opacity-30" />
+            <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-cloud/15 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-[#e8b7cf]/15 blur-3xl" />
 
             <div className="relative grid items-center gap-10 lg:grid-cols-2">
               <div>
-                <span className="glass-chip inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-[#5b5ba3]">
-                  <Zap className="size-3.5" />
-                  Basics first, then in-depth
+                <span className="glass-chip inline-flex items-center gap-2 rounded-full px-3 py-1">
+                  <Zap className="size-3.5 text-wistaria" />
+                  <span className="tech-label text-[0.6rem]">Method · basics first</span>
                 </span>
                 <h2 className="mt-5 text-balance text-2xl font-extrabold tracking-tight text-wistaria sm:text-3xl">
-                  The 5 topics everyone gets wrong first
+                  The five topics everyone gets wrong first
                 </h2>
                 <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                  Every topic opens with a plain-language basics layer — one
+                  Every pack opens with a plain-language basics layer — one
                   diagram, a handful of memory hooks — and only then unlocks the
                   full in-depth text. Learn the skeleton first; the detail
                   sticks to it.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-2">
-                  {pathTopics.map((t) => {
-                    const Icon = t.icon;
-                    return (
-                      <span
-                        key={t.title}
-                        className="glass-chip flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold"
-                      >
-                        <span className="size-2 rounded-full" style={{ backgroundColor: t.color }} />
-                        {t.title}
-                      </span>
-                    );
-                  })}
+                  {PATH_TOPICS.map((t) => (
+                    <span
+                      key={t.title}
+                      className="glass-chip flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold"
+                    >
+                      <span className="size-2 rounded-full" style={{ backgroundColor: t.color }} />
+                      {t.title}
+                    </span>
+                  ))}
                 </div>
               </div>
 
               <div className="space-y-3">
-                {pathTopics.map((t, i) => {
+                {PATH_TOPICS.map((t, i) => {
                   const Icon = t.icon;
                   return (
                     <motion.div
@@ -324,7 +389,8 @@ export default function Landing() {
         {/* Spaced repetition */}
         <section className="pb-24">
           <motion.div {...reveal(0)} className="mb-10 text-center">
-            <h2 className="text-balance text-2xl font-extrabold tracking-tight text-wistaria sm:text-3xl">
+            <span className="tech-label">Method · retention</span>
+            <h2 className="mt-2 text-balance text-2xl font-extrabold tracking-tight text-wistaria sm:text-3xl">
               The 1-3-7 rhythm
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
@@ -336,9 +402,9 @@ export default function Landing() {
 
           <div className="grid gap-5 sm:grid-cols-3">
             {[
-              { day: "Day 1", label: "First review", desc: "New card → review tomorrow", color: "#7b9ee8" },
-              { day: "Day 3", label: "Lock it in", desc: "Correct again → see it in 3 days", color: "#a88bd4" },
-              { day: "Day 7", label: "Mastered", desc: "Third straight correct → 7-day cycle", color: "#6fb5b0" },
+              { day: "Day 1", desc: "First review of a new card", color: "#7b9ee8" },
+              { day: "Day 3", desc: "Correct again — card returns in 3 days", color: "#a88bd4" },
+              { day: "Day 7", desc: "Third straight correct — mastered", color: "#6fb5b0" },
             ].map((s, i) => (
               <motion.div
                 key={s.day}
@@ -346,7 +412,7 @@ export default function Landing() {
                 className="glass-panel flex flex-col items-center gap-3 rounded-3xl p-7 text-center"
               >
                 <div
-                  className="flex size-14 items-center justify-center rounded-full text-lg font-extrabold text-white"
+                  className="flex size-14 items-center justify-center rounded-full font-mono text-lg font-extrabold text-white"
                   style={{ backgroundColor: s.color }}
                 >
                   {i + 1}
@@ -363,12 +429,10 @@ export default function Landing() {
           <figure className="glass-panel relative mx-auto max-w-3xl rounded-3xl p-8 text-center sm:p-10">
             <Quote className="mx-auto size-8 text-wistaria/60" />
             <blockquote className="mt-4 text-balance text-lg font-medium leading-8 text-foreground sm:text-xl">
-              "The cardiac cycle, the action potential, the brachial plexus — the
-              topics that separate the toppers from the crammers."
+              "Medicine is a mountain of facts. GlassMed builds the path — one
+              diagram, one card, one honest answer at a time."
             </blockquote>
-            <figcaption className="mt-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              — The 1st-year survival list
-            </figcaption>
+            <figcaption className="tech-label mt-4">The GlassMed promise</figcaption>
           </figure>
         </motion.section>
 
@@ -378,27 +442,37 @@ export default function Landing() {
             {...reveal(0)}
             className="glass-strong relative overflow-hidden rounded-3xl p-10 text-center sm:p-14"
           >
+            <div className="tech-grid pointer-events-none absolute inset-0 opacity-30" />
             <div className="pointer-events-none absolute inset-0">
-              <div className="absolute -left-16 top-0 h-48 w-48 animate-orb rounded-full bg-cloud/25 blur-3xl" />
-              <div className="absolute -right-16 bottom-0 h-48 w-48 animate-orb-slow rounded-full bg-[#e8b7cf]/30 blur-3xl" />
+              <div className="absolute -left-16 top-0 h-48 w-48 animate-orb rounded-full bg-cloud/20 blur-3xl" />
+              <div className="absolute -right-16 bottom-0 h-48 w-48 animate-orb-slow rounded-full bg-[#e8b7cf]/20 blur-3xl" />
             </div>
             <div className="relative">
               <h2 className="text-balance text-3xl font-extrabold tracking-tight text-wistaria sm:text-4xl">
-                Your first 5 minutes start here
+                Your first session starts free
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-muted-foreground">
-                Sign up free with your email — or jump straight in as a guest.
-                Your spaced-repetition schedule is created the moment you flip
-                your first card.
+                All five fundamentals packs are free. Sign up with your email —
+                or jump straight in as a guest — and your 1-3-7 schedule is
+                created the moment you flip your first card.
               </p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button
                   size="lg"
                   onClick={() => goAuth("/dashboard")}
-                  className="gap-2 rounded-full px-10 shadow-[0_16px_36px_-12px_rgba(107,107,179,0.55)]"
+                  className="gap-2 rounded-full px-10 shadow-[0_16px_40px_-12px_rgba(122,122,216,0.5)]"
                 >
                   Create free account
                   <ArrowRight className="size-4" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => navigate("/catalog")}
+                  className="rounded-full px-8"
+                >
+                  <Package className="size-4" />
+                  See the catalog
                 </Button>
               </div>
             </div>
@@ -406,11 +480,14 @@ export default function Landing() {
         </section>
       </main>
 
-      <footer className="border-t border-white/40 py-8">
+      <footer className="border-t border-white/10 py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 sm:flex-row">
-          <MediProLogo variant="day" size="sm" />
+          <div className="flex items-center gap-3">
+            <GlassMedLogo size="sm" />
+            <span className="tech-label hidden sm:inline">Learn</span>
+          </div>
           <p className="text-xs text-muted-foreground">
-            Made for medical students & NEET aspirants. Learn well, rest well.
+            GlassMed Learn — precision study tools for future physicians.
           </p>
         </div>
       </footer>
