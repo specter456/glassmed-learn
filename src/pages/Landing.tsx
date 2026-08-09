@@ -45,7 +45,7 @@ const MODULES = [
   {
     title: "RESEARCH",
     icon: Search,
-    desc: "A library of narrated deep-dives and 3D models. Growing.",
+    desc: "Ten professor-level first-aid guides, readable aloud.",
     color: "#6fb5b0",
     path: "/research",
   },

@@ -53,7 +53,7 @@ const MODULES = [
   {
     title: "RESEARCH",
     icon: Search,
-    desc: "Go deeper",
+    desc: "First-aid library",
     color: "#6fb5b0",
     path: "/research",
   },
