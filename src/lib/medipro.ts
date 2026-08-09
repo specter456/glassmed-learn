@@ -112,3 +112,53 @@ export function wordsToRead(words: number): string {
 export function pluralize(n: number, singular: string, plural?: string): string {
   return `${n} ${n === 1 ? singular : (plural ?? singular + "s")}`;
 }
+
+/* ------------------- First Aid Simulator (game) ------------------- */
+
+/** Ranks earned as a responder levels up. Index = level (1-based, capped). */
+export const FIRST_AID_RANKS = [
+  "Band-Aid Apprentice",
+  "Scraped-Knee Specialist",
+  "Triple-A Responder",
+  "Sterile Field Rookie",
+  "Ambulance Sidekick",
+  "Chest-Compression Machine",
+  "Trauma Team Operative",
+  "Golden Hour Guardian",
+  "First-Aid Commander",
+  "Legend of the ER",
+];
+
+/**
+ * Cumulative XP required to *reach* a level (1-based): the sum of
+ * 250, 500, 750, … (level 1 → 2 at 250 XP, 2 → 3 at 750 XP, …).
+ */
+export function xpForLevel(level: number): number {
+  const l = Math.max(1, Math.floor(level));
+  return (250 * (l - 1) * l) / 2;
+}
+
+/** The level a given amount of cumulative XP puts you at. */
+export function levelFromXp(xp: number): number {
+  const x = Math.max(0, Math.floor(xp));
+  return Math.max(1, Math.floor((125 + Math.sqrt(15625 + 500 * x)) / 250));
+}
+
+/** The rank title shown for a level (caps at the top title). */
+export function rankTitle(level: number): string {
+  return FIRST_AID_RANKS[Math.min(FIRST_AID_RANKS.length, level) - 1];
+}
+
+/** XP progress (0–1) through the current level, for the XP bar. */
+export function xpProgress(xp: number): number {
+  const level = levelFromXp(xp);
+  const base = xpForLevel(level);
+  const next = xpForLevel(level + 1);
+  const span = next - base;
+  return span > 0 ? Math.min(1, Math.max(0, (xp - base) / span)) : 1;
+}
+
+/** Points for saving a patient: 100 base, +25 for each combo step beyond 1. */
+export function savePoints(combo: number): number {
+  return 100 + 25 * Math.max(0, combo - 1);
+}

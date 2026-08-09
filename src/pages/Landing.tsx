@@ -38,7 +38,7 @@ const MODULES = [
   {
     title: "GAME",
     icon: Scissors,
-    desc: "Timed quiz arenas and streak challenges. In the OR soon.",
+    desc: "First Aid Simulator — save the patient, earn the points, level up.",
     color: "#e896b4",
     path: "/game",
   },
