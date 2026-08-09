@@ -58,11 +58,15 @@ export const askAssistant = action({
     //             https://generativelanguage.googleapis.com/v1beta/openai
     // The key may be stored under any of these names in the Keys tab — all
     // are accepted so a slightly different variable name can never break it.
-    const key =
+    // Trimmed: keys pasted into a Keys UI can carry stray whitespace/newlines
+    // that would otherwise make the provider reject a valid key with a 401.
+    const key = (
       process.env.AI_API_KEY ??
       process.env.GEMINI_API_KEY ??
       process.env.GOOGLE_API_KEY ??
-      process.env.OPENAI_API_KEY;
+      process.env.OPENAI_API_KEY ??
+      ""
+    ).trim();
     if (!key) throw new ConvexError("ASSISTANT_NOT_CONFIGURED");
 
     // If no base URL was configured, guess the provider from the key format:
