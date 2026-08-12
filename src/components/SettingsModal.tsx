@@ -5,6 +5,7 @@ import { useTheme } from "@/lib/theme";
 import { AnimatePresence, motion } from "framer-motion";
 import { LogOut, Mail, Moon, Settings2, Sun, X } from "lucide-react";
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 
 function formatMemberSince(ts?: number): string {
   if (!ts || !Number.isFinite(ts)) return "Unknown";
@@ -86,10 +87,10 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
   const initial = (user?.name?.[0] ?? user?.email?.[0] ?? "G").toUpperCase();
   const memberSince = formatMemberSince(user?._creationTime);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
           <motion.div
             className="absolute inset-0 bg-black/55 backdrop-blur-sm"
             initial={{ opacity: 0 }}
@@ -184,6 +185,7 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
           </motion.div>
         </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

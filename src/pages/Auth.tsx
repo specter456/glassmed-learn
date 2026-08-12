@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/input-otp";
 
 import { GlassBackdrop } from "@/components/GlassBackdrop";
-import { BrandLogo } from "@/components/BrandLogo";
+import { GlassMedEmblem } from "@/components/GlassMedLogo";
 import { LOGIN_ARRIVAL_KEY } from "@/components/Celebration";
 import { useAuth } from "@/hooks/use-auth";
 import { ArrowRight, Loader2, Mail, UserX } from "lucide-react";
@@ -194,7 +194,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       <div className="flex min-h-screen flex-1 items-center justify-center px-4 py-10">
         <div className="flex w-full max-w-md flex-col items-center">
           <button onClick={() => navigate("/")} aria-label="Back to home">
-            <BrandLogo height={68} fallback="lg" />
+            <GlassMedEmblem size="lg" />
           </button>
 
           <Card className="glass-strong shine mt-8 w-full rounded-3xl border-0 pb-0 shadow-none">

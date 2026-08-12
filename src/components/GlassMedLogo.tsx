@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Cross, HeartPulse, Shirt, Stethoscope, Syringe } from "lucide-react";
+import rabbitLogo from "@/assets/logo.svg";
 import { cn } from "@/lib/utils";
 
 interface GlassMedLogoProps {
@@ -152,6 +153,59 @@ export function GlassMedLockup({ className }: { className?: string }) {
     <div className={cn("flex items-center gap-2.5", className)}>
       <GlassMedLogo size="sm" />
       <span className="tech-label hidden sm:inline">Learn</span>
+    </div>
+  );
+}
+
+/* ----------------------------------------------------------------------- */
+/* GlassMedEmblem — the rabbit-on-the-moon logo as a soft circular glass    */
+/* backdrop BEHIND the wordmark. Used in the main header and the login      */
+/* screen so the emblem reads as a beautiful, integrated badge rather than  */
+/* a floating sticker. Text is centered over the circle at full opacity     */
+/* while the emblem sits at ~25% so the name always pops.                   */
+/* ----------------------------------------------------------------------- */
+
+const EMBLEM_SIZES = {
+  sm: { circle: 52, font: 12.5 },
+  lg: { circle: 184, font: 42 },
+} as const;
+
+export function GlassMedEmblem({
+  size = "sm",
+  className,
+}: {
+  size?: keyof typeof EMBLEM_SIZES;
+  className?: string;
+}) {
+  const s = EMBLEM_SIZES[size];
+  return (
+    <div
+      className={cn(
+        "relative flex shrink-0 select-none items-center justify-center rounded-full",
+        className,
+      )}
+      style={{ width: s.circle, height: s.circle }}
+      aria-label="GlassMed"
+    >
+      {/* the glass circle itself — soft blur, glowing edge, gentle halo */}
+      <div className="absolute inset-0 rounded-full bg-white/10 ring-1 ring-cloud/40 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_0_24px_rgba(120,162,210,0.35)]" />
+
+      {/* the rabbit emblem, dimmed so the text stays perfectly readable */}
+      <img
+        src={rabbitLogo}
+        alt=""
+        aria-hidden
+        draggable={false}
+        className="absolute inset-0 h-full w-full rounded-full object-cover opacity-25"
+      />
+
+      {/* centered wordmark, floating above the emblem */}
+      <span
+        className="relative whitespace-nowrap font-calligraphy font-medium leading-none tracking-wide text-wistaria drop-shadow-[0_0_10px_rgba(162,162,208,0.55)]"
+        style={{ fontSize: s.font }}
+      >
+        GlassMed
+      </span>
     </div>
   );
 }

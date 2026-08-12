@@ -1,5 +1,5 @@
 import { BirthdayCelebration } from "@/components/BirthdayCelebration";
-import { BrandLogo } from "@/components/BrandLogo";
+import { GlassMedEmblem } from "@/components/GlassMedLogo";
 import { LogoutBlobModal } from "@/components/LogoutBlob";
 import { SettingsModal } from "@/components/SettingsModal";
 import { useAuth } from "@/hooks/use-auth";
@@ -51,8 +51,12 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
           >
             <ArrowLeft className="size-4" />
           </button>
-          <button onClick={() => navigate("/dashboard")} aria-label="Go home">
-            <BrandLogo height={30} fallback="sm" className="shrink-0" />
+          <button
+            onClick={() => navigate("/dashboard")}
+            aria-label="Go home"
+            className="rounded-full transition-transform hover:scale-105"
+          >
+            <GlassMedEmblem size="sm" />
           </button>
           {title && (
             <div className="ml-2 hidden min-w-0 flex-col sm:flex">

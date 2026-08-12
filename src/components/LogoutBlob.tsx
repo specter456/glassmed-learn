@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import { LogOut, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 export type BlobMood = "worried" | "happy" | "crying";
 
@@ -213,10 +214,10 @@ export function LogoutBlobModal({ open, onClose, onConfirm }: LogoutBlobModalPro
     }
   };
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-[85] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
           <motion.div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             initial={{ opacity: 0 }}
@@ -289,6 +290,7 @@ export function LogoutBlobModal({ open, onClose, onConfirm }: LogoutBlobModalPro
           </motion.div>
         </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
