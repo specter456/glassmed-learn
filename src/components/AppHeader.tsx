@@ -1,3 +1,4 @@
+import { BirthdayCelebration } from "@/components/BirthdayCelebration";
 import { LogoutBlobModal } from "@/components/LogoutBlob";
 import { SettingsModal } from "@/components/SettingsModal";
 import { useAuth } from "@/hooks/use-auth";
@@ -64,6 +65,7 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
+          <BirthdayCelebration />
           <Button
             variant="ghost"
             size="sm"

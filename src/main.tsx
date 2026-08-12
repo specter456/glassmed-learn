@@ -121,6 +121,66 @@ class RootErrorBoundary extends React.Component<
   }
 }
 
+/** Last-resort guard against the blank white tab: React 19 unmounts the whole
+ *  root on an uncaught error inside an effect, which no error boundary can
+ *  catch. This plain-DOM guard is installed outside React (so it survives the
+ *  unmount) and swaps in a branded screen with the real error message plus a
+ *  reload. Listens to script errors only — unhandled promise rejections are
+ *  logged, not blocked, so benign failures never cover the app. */
+function installCrashGuard() {
+  const w = window as unknown as { __glassmedCrashGuardInstalled?: boolean };
+  if (w.__glassmedCrashGuardInstalled) return;
+  w.__glassmedCrashGuardInstalled = true;
+
+  const show = (message: string) => {
+    if (document.getElementById("glassmed-crash-guard")) return;
+    const overlay = document.createElement("div");
+    overlay.id = "glassmed-crash-guard";
+    overlay.style.cssText =
+      "position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;background:#0e1233;color:#fdf5e6;font-family:system-ui,sans-serif;";
+    const card = document.createElement("div");
+    card.style.cssText = "max-width:520px;text-align:center;";
+
+    const emoji = document.createElement("p");
+    emoji.textContent = "🩺";
+    emoji.style.cssText = "font-size:40px;margin:0 0 8px;";
+    const title = document.createElement("h1");
+    title.textContent = "Something went wrong";
+    title.style.cssText = "font-size:18px;font-weight:700;margin:0 0 8px;";
+    const body = document.createElement("p");
+    body.textContent = message || "An unexpected error occurred.";
+    body.style.cssText =
+      "font-size:14px;opacity:0.75;margin:0 0 12px;word-break:break-word;";
+
+    const row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px;justify-content:center;";
+    const reload = document.createElement("button");
+    reload.textContent = "Reload";
+    reload.style.cssText =
+      "padding:8px 18px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fdf5e6;cursor:pointer;font-size:14px;";
+    reload.onclick = () => window.location.reload();
+    const dismiss = document.createElement("button");
+    dismiss.textContent = "Dismiss";
+    dismiss.style.cssText =
+      "padding:8px 18px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#fdf5e6;cursor:pointer;font-size:14px;";
+    dismiss.onclick = () => overlay.remove();
+
+    row.append(reload, dismiss);
+    card.append(emoji, title, body, row);
+    overlay.append(card);
+    document.body.append(overlay);
+  };
+
+  window.addEventListener("error", (e) => show(e.message));
+  window.addEventListener("unhandledrejection", (e) => {
+    const reason = e.reason;
+    console.warn(
+      "[GlassMed] Unhandled promise rejection:",
+      reason instanceof Error ? reason.message : reason,
+    );
+  });
+}
+
 /** Sends route changes to the parent frame (if any) so the preview toolbar can
  *  track the current screen. */
 function RouteSyncer() {
@@ -218,4 +278,5 @@ function App() {
   );
 }
 
+installCrashGuard();
 createRoot(document.getElementById("root")!).render(<App />);
