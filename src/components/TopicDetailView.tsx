@@ -9,7 +9,7 @@ import {
   Lightbulb,
   Sparkles,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
@@ -32,6 +32,19 @@ export function TopicDetailView({
   const navigate = useNavigate();
   const topic = useQuery(api.content.topicBySlug, { slug });
   const [mode, setMode] = useState<"basics" | "inDepth">("basics");
+
+  // When the user switches between Basics and In-depth, glide back to the very
+  // top of the article so the new section starts fresh — smooth, no jump, no
+  // reload, no white flash. (Skips the first render: opening a topic shouldn't
+  // trigger an unnecessary scroll.)
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [mode]);
 
   if (topic === undefined) {
     return (
