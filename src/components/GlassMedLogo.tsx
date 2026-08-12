@@ -211,28 +211,6 @@ export function GlassMedEmblem({
   );
 }
 
-/**
- * The full GlassMed brand lockup: the original crescent-moon wordmark with
- * the rabbit watermark emblem on its right — used in the main header and the
- * login screen so both marks travel together.
- */
-export function GlassMedBrand({
-  size = "sm",
-  className,
-}: {
-  size?: "sm" | "md" | "lg";
-  className?: string;
-}) {
-  const word = size === "lg" ? "lg" : size === "md" ? "md" : "sm";
-  const emblem = size === "lg" ? "md" : "sm";
-  return (
-    <div className={cn("flex items-center gap-2.5", className)}>
-      <GlassMedLogo size={word} />
-      <GlassMedEmblem size={emblem} />
-    </div>
-  );
-}
-
 /* ----------------------------------------------------------------------- */
 /* Floating medical emblems — small attractive "gif-like" accents that     */
 /* drift around the logo (first aid, white coat, stethoscope, syringe).    */
