@@ -1,6 +1,7 @@
 import '@vly-ai/integrations';
 import { MotionConfig } from "framer-motion";
 import { Toaster } from "@/components/ui/sonner";
+import { LoginCelebration } from "@/components/Celebration";
 import { RequireAuth } from "@/components/RequireAuth";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
@@ -146,6 +147,7 @@ function App() {
           <MotionConfig reducedMotion="user">
             <BrowserRouter>
               <RouteSyncer />
+              <LoginCelebration />
               <ToolbarErrorBoundary>
                 <VlyToolbar />
               </ToolbarErrorBoundary>

@@ -16,9 +16,8 @@ import {
 
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { GlassMedLogo } from "@/components/GlassMedLogo";
-import { CelebrationOverlay, LOGIN_MESSAGES, pickMessage } from "@/components/Celebration";
+import { LOGIN_ARRIVAL_KEY } from "@/components/Celebration";
 import { useAuth } from "@/hooks/use-auth";
-import { AnimatePresence } from "framer-motion";
 import { ArrowRight, Loader2, Mail, UserX } from "lucide-react";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
@@ -73,20 +72,23 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     return 0;
   });
   const [resentNote, setResentNote] = useState(false);
-  // Celebration fires once after a successful login / guest entry, then the
-  // redirect happens. Picks a fun message once per session.
-  const [message] = useState(() =>
-    pickMessage(LOGIN_MESSAGES, Math.floor(Math.random() * LOGIN_MESSAGES.length)),
-  );
-  // Ref guard (not state): schedules the post-celebration redirect exactly once
-  // per auth completion, without triggering extra renders.
+  // Ref guard (not state): navigates exactly once per auth completion, without
+  // triggering extra renders. There is no wait screen — the welcome
+  // celebration plays over the destination page instead (see LoginCelebration).
   const redirectScheduled = useRef(false);
 
   useEffect(() => {
     if (!authLoading && isAuthenticated && !redirectScheduled.current) {
       redirectScheduled.current = true;
-      const t = setTimeout(() => navigate(redirect), 2500);
-      return () => clearTimeout(t);
+      // Hand the fanfare to the destination: the dashboard mounts underneath
+      // the translucent celebration, so the Yayy overlay fades in/out over the
+      // same screen instead of a separate login-success screen.
+      try {
+        sessionStorage.setItem(LOGIN_ARRIVAL_KEY, "1");
+      } catch {
+        // Non-fatal — the user just lands on the dashboard without the fanfare.
+      }
+      navigate(redirect);
     }
   }, [authLoading, isAuthenticated, navigate, redirect]);
 
@@ -186,19 +188,6 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   return (
     <div className="relative min-h-screen">
       <GlassBackdrop />
-
-      {/* Login celebration — brief, fun, then redirect to the dashboard */}
-      <AnimatePresence>
-        {!authLoading && isAuthenticated && (
-          <CelebrationOverlay
-            title={message.title}
-            subtitle={message.subtitle}
-            emoji="💙"
-            footer="Your study space is ready — keep the momentum going!"
-            durationMs={2500}
-          />
-        )}
-      </AnimatePresence>
 
       {/* Auth Content */}
       <div className="flex min-h-screen flex-1 items-center justify-center px-4 py-10">

@@ -1,5 +1,6 @@
-import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router";
 import { cn } from "@/lib/utils";
 
 /* ------------------------- success messages ------------------------ */
@@ -193,11 +194,11 @@ export function CelebrationOverlay({
     <motion.div
       role="status"
       aria-live="polite"
-      className="fixed inset-0 z-[95] flex flex-col items-center justify-center overflow-hidden bg-[#0e1233]/85 px-6 text-center backdrop-blur-md"
+      className="fixed inset-0 z-[95] flex flex-col items-center justify-center overflow-hidden bg-[#0e1233]/45 px-6 text-center backdrop-blur-[2px]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.35 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
       onAnimationComplete={() => {
         if (onDone) setTimeout(onDone, durationMs);
       }}
@@ -271,4 +272,60 @@ export function CelebrationOverlay({
 /** Pick a playful variant for a repeating event (e.g. consecutive wins). */
 export function pickMessage<T>(pool: T[], index: number): T {
   return pool[Math.abs(index) % pool.length];
+}
+
+/* --------------------- login arrival celebration -------------------
+ * Plays ON TOP of the destination page (not as a separate screen): Auth sets
+ * the flag below and navigates instantly, this component (mounted once in
+ * main.tsx) fades the welcome celebration in over the freshly loaded page,
+ * then fades it back out — the dashboard is visible beneath the whole time,
+ * so login and landing feel like the same tab. */
+
+export const LOGIN_ARRIVAL_KEY = "glassmed-login-just-arrived";
+
+/** Welcome-back celebration shown once right after sign-in/guest entry. */
+export function LoginCelebration() {
+  const location = useLocation();
+  const [celebrating, setCelebrating] = useState(false);
+  const [message] = useState(() =>
+    pickMessage(LOGIN_MESSAGES, Math.floor(Math.random() * LOGIN_MESSAGES.length)),
+  );
+
+  // Auth sets the flag right before navigating to the destination. This runs on
+  // every pathname change (and on mount for a stale flag) and fades the welcome
+  // overlay in over the freshly loaded page, then fades it back out — the
+  // destination is visible underneath the whole time.
+  useEffect(() => {
+    let flagged = false;
+    try {
+      flagged = sessionStorage.getItem(LOGIN_ARRIVAL_KEY) === "1";
+    } catch {
+      return;
+    }
+    if (!flagged) return;
+    try {
+      sessionStorage.removeItem(LOGIN_ARRIVAL_KEY);
+    } catch {
+      // Non-fatal — consumed below anyway.
+    }
+    // Defer a tick so the destination paints first; the veil then fades in
+    // over the same screen instead of a separate login-success screen.
+    const t = setTimeout(() => setCelebrating(true), 120);
+    return () => clearTimeout(t);
+  }, [location.pathname]);
+
+  return (
+    <AnimatePresence>
+      {celebrating && (
+        <CelebrationOverlay
+          title={message.title}
+          subtitle={message.subtitle}
+          emoji="💙"
+          footer="Your study space is ready — keep the momentum going!"
+          durationMs={2400}
+          onDone={() => setCelebrating(false)}
+        />
+      )}
+    </AnimatePresence>
+  );
 }
