@@ -1,4 +1,5 @@
 import { ConvexError, v } from "convex/values";
+import { getAuthUserId } from "@convex-dev/auth/server";
 import { mutation } from "./_generated/server";
 
 /**
@@ -10,8 +11,13 @@ import { mutation } from "./_generated/server";
  * runs each mutation as a transaction — concurrent mutations touching the same
  * document retry instead of interleaving — so the count is race-safe.
  *
- * Only allow-listed `name` values are accepted (an attacker must not be able
- * to grow the table with arbitrary keys), and every arg is clamped.
+ * Security: this is a PUBLIC mutation, so it is hardened in three ways —
+ *   1. Signed-in users only (blocks anonymous scripts from flooding the
+ *      `rateLimits` table with junk documents).
+ *   2. The effective key is always namespaced under the caller's own user id,
+ *      so no caller can create or bump buckets for anyone else.
+ *   3. Only allow-listed `name` values are accepted (an attacker must not be
+ *      able to grow the table with arbitrary names), and every arg is clamped.
  */
 
 const KNOWN_LIMITERS = new Set(["assistant", "recordAnswer"]);
@@ -29,9 +35,15 @@ export const checkRateLimit = mutation({
     windowMs: v.optional(v.number()),
   },
   handler: async (ctx, { name, key, limit, windowMs }) => {
+    // Signed-in only — the rate-limits table must not be growable anonymously.
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new ConvexError("AUTH_REQUIRED");
+
     if (!KNOWN_LIMITERS.has(name)) throw new ConvexError("RATE_LIMIT_UNKNOWN_NAME");
 
-    const safeKey = key.slice(0, MAX_KEY_LENGTH);
+    // Always namespace the bucket under the caller's own identity so a caller
+    // can never create or touch buckets for other users.
+    const safeKey = (userId + ":" + key).slice(0, MAX_KEY_LENGTH);
     if (!safeKey) throw new ConvexError("RATE_LIMIT_BAD_KEY");
 
     const safeLimit = Math.min(Math.max(Math.round(limit), 1), MAX_LIMIT);

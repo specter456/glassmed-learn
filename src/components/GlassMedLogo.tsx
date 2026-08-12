@@ -167,6 +167,7 @@ export function GlassMedLockup({ className }: { className?: string }) {
 
 const EMBLEM_SIZES = {
   sm: { circle: 52, font: 12.5 },
+  md: { circle: 96, font: 24 },
   lg: { circle: 184, font: 42 },
 } as const;
 
@@ -206,6 +207,28 @@ export function GlassMedEmblem({
       >
         GlassMed
       </span>
+    </div>
+  );
+}
+
+/**
+ * The full GlassMed brand lockup: the original crescent-moon wordmark with
+ * the rabbit watermark emblem on its right — used in the main header and the
+ * login screen so both marks travel together.
+ */
+export function GlassMedBrand({
+  size = "sm",
+  className,
+}: {
+  size?: "sm" | "md" | "lg";
+  className?: string;
+}) {
+  const word = size === "lg" ? "lg" : size === "md" ? "md" : "sm";
+  const emblem = size === "lg" ? "md" : "sm";
+  return (
+    <div className={cn("flex items-center gap-2.5", className)}>
+      <GlassMedLogo size={word} />
+      <GlassMedEmblem size={emblem} />
     </div>
   );
 }

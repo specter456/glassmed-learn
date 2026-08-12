@@ -3,12 +3,12 @@ import { AnimatePresence, motion } from "framer-motion";
 export type PuppyMood = "worried" | "happy" | "crying";
 
 /**
- * The GlassMed puppy — the MediPro mascot. A warm cream puppy with floppy
- * ears, a wistaria-blue collar with a little medical cross tag, and the same
- * mood system as the farewell blob: worried by default (big eyes), happy with
- * a wagging tail when you hover Cancel, and a tiny falling tear when you
- * really log out. Pure inline SVG (loads instantly, no assets) with
- * transform/opacity-only animations for battery-friendliness.
+ * The GlassMed puppy — the MediPro mascot. A warm cream puppy with big
+ * sparkly eyes, pink inner ears, a wistaria-blue collar with a little medical
+ * cross tag, and the same mood system as the farewell blob: worried by default
+ * (big eyes), happy with a wagging tail when you hover Cancel, and a tiny
+ * falling tear when you really log out. Pure inline SVG (loads instantly, no
+ * assets) with transform/opacity-only animations for battery-friendliness.
  */
 export function Puppy({
   mood = "worried",
@@ -44,48 +44,58 @@ export function Puppy({
       <svg viewBox="0 0 140 140" width={size} height={size} overflow="visible">
         <defs>
           <linearGradient id="glassmed-puppy-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#ffe6b8" />
-            <stop offset="55%" stopColor="#f7cf94" />
-            <stop offset="100%" stopColor="#efbd7d" />
+            <stop offset="0%" stopColor="#ffe9c0" />
+            <stop offset="55%" stopColor="#f8d29b" />
+            <stop offset="100%" stopColor="#f0c184" />
           </linearGradient>
         </defs>
 
         {/* Soft floor shadow */}
-        <ellipse cx="70" cy="132" rx="30" ry="6" fill="oklch(0.2 0.05 285 / 0.35)" />
+        <ellipse cx="70" cy="133" rx="31" ry="6" fill="oklch(0.2 0.05 285 / 0.35)" />
 
-        {/* Floppy ears (behind the head) */}
+        {/* Floppy ears with pink inner fluff (behind the head) */}
         <path
-          d="M40 34 C 24 44 18 68 27 90 C 31 98 42 93 45 77 C 48 60 46 43 40 34 Z"
+          d="M38 32 C 20 44 14 70 24 93 C 28 101 40 96 43 78 C 47 60 44 42 38 32 Z"
           fill="#8a5a33"
         />
         <path
-          d="M100 34 C 116 44 122 68 113 90 C 109 98 98 93 95 77 C 92 60 94 43 100 34 Z"
+          d="M36 46 C 26 54 24 71 30 84 C 32 88 38 84 39 73 C 41 62 40 52 36 46 Z"
+          fill="#f7b6c9"
+          opacity="0.9"
+        />
+        <path
+          d="M102 32 C 120 44 126 70 116 93 C 112 101 100 96 97 78 C 93 60 96 42 102 32 Z"
           fill="#8a5a33"
         />
+        <path
+          d="M104 46 C 114 54 116 71 110 84 C 108 88 102 84 101 73 C 99 62 100 52 104 46 Z"
+          fill="#f7b6c9"
+          opacity="0.9"
+        />
 
-        {/* Head */}
-        <ellipse cx="70" cy="62" rx="46" ry="44" fill="url(#glassmed-puppy-grad)" />
+        {/* Round, big head */}
+        <ellipse cx="70" cy="64" rx="48" ry="46" fill="url(#glassmed-puppy-grad)" />
 
         {/* Gloss */}
         <ellipse
-          cx="47"
-          cy="40"
-          rx="11"
-          ry="6.5"
-          fill="oklch(1 0 0 / 0.3)"
-          transform="rotate(-24 47 40)"
+          cx="46"
+          cy="42"
+          rx="12"
+          ry="7"
+          fill="oklch(1 0 0 / 0.32)"
+          transform="rotate(-24 46 42)"
         />
 
         {/* Muzzle */}
-        <ellipse cx="70" cy="84" rx="26" ry="17" fill="#fdf0dc" />
-        {/* Nose */}
-        <ellipse cx="70" cy="77" rx="8" ry="5.5" fill="#4a3218" />
-        <ellipse cx="67.5" cy="75.5" rx="2.6" ry="1.8" fill="oklch(1 0 0 / 0.5)" />
+        <ellipse cx="70" cy="86" rx="27" ry="18" fill="#fdf0dc" />
+        {/* Nose with shine */}
+        <ellipse cx="70" cy="78" rx="9" ry="6" fill="#4a3218" />
+        <ellipse cx="66.5" cy="76" rx="3" ry="2" fill="oklch(1 0 0 / 0.55)" />
 
         {/* Collar with medical cross tag */}
-        <path d="M44 103 Q 70 115 96 103 L 94 110 Q 70 122 46 110 Z" fill="#78A2D2" />
-        <rect x="62" y="111" width="16" height="16" rx="4" fill="#ffffff" stroke="#bcd0ea" strokeWidth="1" />
-        <path d="M68 114.5 h4 v2.5 h2.5 v4 H72 v2.5 h-4 v-2.5 h-2.5 v-4 H68 Z" fill="#e2555f" />
+        <path d="M42 104 Q 70 116 98 104 L 96 112 Q 70 124 44 112 Z" fill="#78A2D2" />
+        <rect x="62" y="112" width="16" height="16" rx="4" fill="#ffffff" stroke="#bcd0ea" strokeWidth="1" />
+        <path d="M68 115.5 h4 v2.5 h2.5 v4 H72 v2.5 h-4 v-2.5 h-2.5 v-4 H68 Z" fill="#e2555f" />
 
         {/* Mood-driven face + tail */}
         <AnimatePresence mode="wait" initial={false}>
@@ -100,36 +110,36 @@ export function Puppy({
               <>
                 {/* Wagging tail */}
                 <motion.path
-                  d="M104 84 Q 122 78 124 64"
+                  d="M104 86 Q 122 80 125 66"
                   fill="none"
                   stroke="#f3c98f"
                   strokeWidth="11"
                   strokeLinecap="round"
-                  animate={{ rotate: [-16, 16, -16] }}
+                  animate={{ rotate: [-18, 18, -18] }}
                   transition={{ duration: 0.45, repeat: Infinity, ease: "easeInOut" }}
-                  style={{ transformOrigin: "104px 84px" }}
+                  style={{ transformOrigin: "104px 86px" }}
                 />
                 {/* Happy closed eyes (∪) */}
                 <path
-                  d="M44 62 Q 52 53 60 62"
+                  d="M43 63 Q 52 53 61 63"
                   fill="none"
                   stroke="#4a3218"
                   strokeWidth="4.5"
                   strokeLinecap="round"
                 />
                 <path
-                  d="M80 62 Q 88 53 96 62"
+                  d="M79 63 Q 88 53 97 63"
                   fill="none"
                   stroke="#4a3218"
                   strokeWidth="4.5"
                   strokeLinecap="round"
                 />
                 {/* Open happy smile with tongue */}
-                <path d="M52 88 Q 70 108 88 88 Q 70 98 52 88 Z" fill="#4a3218" />
-                <path d="M60 94 Q 70 106 80 94 Z" fill="#ff9db8" />
+                <path d="M50 88 Q 70 110 90 88 Q 70 99 50 88 Z" fill="#4a3218" />
+                <path d="M58 95 Q 70 108 82 95 Z" fill="#ff9db8" />
                 {/* Blush */}
-                <ellipse cx="40" cy="84" rx="6" ry="3.5" fill="#ff9db8" opacity="0.65" />
-                <ellipse cx="100" cy="84" rx="6" ry="3.5" fill="#ff9db8" opacity="0.65" />
+                <ellipse cx="39" cy="86" rx="6.5" ry="4" fill="#ff9db8" opacity="0.75" />
+                <ellipse cx="101" cy="86" rx="6.5" ry="4" fill="#ff9db8" opacity="0.75" />
               </>
             )}
 
@@ -137,7 +147,7 @@ export function Puppy({
               <>
                 {/* Droopy tail */}
                 <path
-                  d="M104 84 Q 120 84 122 72"
+                  d="M104 86 Q 120 86 123 74"
                   fill="none"
                   stroke="#f3c98f"
                   strokeWidth="11"
@@ -145,26 +155,26 @@ export function Puppy({
                 />
                 {/* Sad closed eyes (∩) + worried brows */}
                 <path
-                  d="M46 62 Q 52 70 58 62"
+                  d="M45 63 Q 52 71 59 63"
                   fill="none"
                   stroke="#4a3218"
                   strokeWidth="4.5"
                   strokeLinecap="round"
                 />
                 <path
-                  d="M82 62 Q 88 70 94 62"
+                  d="M81 63 Q 88 71 95 63"
                   fill="none"
                   stroke="#4a3218"
                   strokeWidth="4.5"
                   strokeLinecap="round"
                 />
-                <path d="M48 53 L 62 57" stroke="#4a3218" strokeWidth="3.5" strokeLinecap="round" />
-                <path d="M78 57 L 92 53" stroke="#4a3218" strokeWidth="3.5" strokeLinecap="round" />
+                <path d="M47 53 L 62 57" stroke="#4a3218" strokeWidth="3.5" strokeLinecap="round" />
+                <path d="M78 57 L 93 53" stroke="#4a3218" strokeWidth="3.5" strokeLinecap="round" />
                 {/* Small frown */}
-                <path d="M60 92 Q 70 87 80 92" fill="none" stroke="#4a3218" strokeWidth="4.5" strokeLinecap="round" />
+                <path d="M58 94 Q 70 88 82 94" fill="none" stroke="#4a3218" strokeWidth="4.5" strokeLinecap="round" />
                 {/* Falling tear */}
                 <motion.path
-                  d="M50 74 Q 53 81 50 86 Q 47 81 50 74 Z"
+                  d="M49 76 Q 52 83 49 88 Q 46 83 49 76 Z"
                   fill="#9cc9ff"
                   stroke="#6da9e8"
                   strokeWidth="1"
@@ -178,22 +188,27 @@ export function Puppy({
               <>
                 {/* Still tail */}
                 <path
-                  d="M104 84 Q 122 80 124 66"
+                  d="M104 86 Q 122 82 125 68"
                   fill="none"
                   stroke="#f3c98f"
                   strokeWidth="11"
                   strokeLinecap="round"
                 />
-                {/* Big worried eyes */}
-                <circle cx="52" cy="62" r="7" fill="#4a3218" />
-                <circle cx="88" cy="62" r="7" fill="#4a3218" />
-                <circle cx="54.5" cy="60" r="2.4" fill="oklch(1 0 0 / 0.85)" />
-                <circle cx="90.5" cy="60" r="2.4" fill="oklch(1 0 0 / 0.85)" />
+                {/* Big sparkly eyes */}
+                <circle cx="52" cy="64" r="8" fill="#4a3218" />
+                <circle cx="88" cy="64" r="8" fill="#4a3218" />
+                <circle cx="54.5" cy="61.5" r="3" fill="oklch(1 0 0 / 0.9)" />
+                <circle cx="90.5" cy="61.5" r="3" fill="oklch(1 0 0 / 0.9)" />
+                <circle cx="56.5" cy="67" r="1.3" fill="oklch(1 0 0 / 0.7)" />
+                <circle cx="84.5" cy="67" r="1.3" fill="oklch(1 0 0 / 0.7)" />
                 {/* Worried brows (inner ends up) */}
-                <path d="M43 52 L 59 46" stroke="#4a3218" strokeWidth="3.5" strokeLinecap="round" />
-                <path d="M81 46 L 97 52" stroke="#4a3218" strokeWidth="3.5" strokeLinecap="round" />
+                <path d="M42 52 L 59 46" stroke="#4a3218" strokeWidth="3.5" strokeLinecap="round" />
+                <path d="M81 46 L 98 52" stroke="#4a3218" strokeWidth="3.5" strokeLinecap="round" />
                 {/* Small "o" mouth */}
-                <ellipse cx="70" cy="91" rx="4.5" ry="5.5" fill="#4a3218" />
+                <ellipse cx="70" cy="93" rx="4.5" ry="5.5" fill="#4a3218" />
+                {/* Soft blush */}
+                <ellipse cx="41" cy="88" rx="5.5" ry="3.5" fill="#ff9db8" opacity="0.4" />
+                <ellipse cx="99" cy="88" rx="5.5" ry="3.5" fill="#ff9db8" opacity="0.4" />
               </>
             )}
           </motion.g>
