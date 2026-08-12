@@ -57,7 +57,8 @@ export const askAssistant = action({
     //   OpenAI  → AI_API_KEY (or OPENAI_API_KEY), base https://api.openai.com/v1
     //   Google  → Gemini key from AI Studio, base
     //             https://generativelanguage.googleapis.com/v1beta/openai
-    //   SambaNova → free tier, base https://api.sambanova.ai/v1 (UUID keys)
+    //   SambaNova → base https://api.sambanova.ai/v1 (UUID keys)
+    //   Groq      → free tier, no credit card, base https://api.groq.com/openai/v1
     // The provider is guessed from the key format (see ./aiProvider) so the
     // user only has to add the key. Keys are trimmed: values pasted into a
     // Keys UI can carry stray whitespace/newlines that would otherwise make

@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   looksLikeGoogle,
+  looksLikeGroq,
   looksLikeSambaNova,
   resolveAiProvider,
 } from "../src/convex/aiProvider";
@@ -40,6 +41,28 @@ describe("resolveAiProvider", () => {
     expect(r.provider).toBe("sambanova");
     expect(r.baseUrl).toBe("https://api.sambanova.ai/v1");
     expect(r.model).toBe("Meta-Llama-3.3-70B-Instruct");
+  });
+
+  test("Groq gsk_ key routes to api.groq.com with llama-3.3-70b-versatile", () => {
+    const r = resolveAiProvider({ AI_API_KEY: "gsk_AbCdEf1234567890abcdef" });
+    expect(r.provider).toBe("groq");
+    expect(r.baseUrl).toBe("https://api.groq.com/openai/v1");
+    expect(r.model).toBe("llama-3.3-70b-versatile");
+  });
+
+  test("GROQ_API_KEY env name routes any key to Groq", () => {
+    const r = resolveAiProvider({ GROQ_API_KEY: "gsk_anything" });
+    expect(r.provider).toBe("groq");
+    expect(r.baseUrl).toBe("https://api.groq.com/openai/v1");
+  });
+
+  test("AI_MODEL overrides the Groq default", () => {
+    const r = resolveAiProvider({
+      AI_API_KEY: "gsk_AbCdEf1234567890abcdef",
+      AI_MODEL: "llama-3.1-8b-instant",
+    });
+    expect(r.provider).toBe("groq");
+    expect(r.model).toBe("llama-3.1-8b-instant");
   });
 
   test("SAMBANOVA_API_KEY env name routes any key to SambaNova", () => {
@@ -95,5 +118,13 @@ describe("key-shape helpers", () => {
     expect(looksLikeSambaNova("sk-proj-x")).toBe(false);
     expect(looksLikeSambaNova("AIzaSyDummy")).toBe(false);
     expect(looksLikeSambaNova("not-a-uuid")).toBe(false);
+  });
+
+  test("looksLikeGroq matches gsk_ keys only", () => {
+    expect(looksLikeGroq("gsk_AbCdEf1234567890abcdef")).toBe(true);
+    expect(looksLikeGroq("  GSK_anything  ")).toBe(true); // case + whitespace tolerant
+    expect(looksLikeGroq(SAMBANOVA_KEY)).toBe(false);
+    expect(looksLikeGroq("sk-proj-x")).toBe(false);
+    expect(looksLikeGroq("AIzaSyDummy")).toBe(false);
   });
 });

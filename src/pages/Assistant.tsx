@@ -180,7 +180,7 @@ function AssistantInner() {
           );
         } else if (message.includes("AI_QUOTA_EXCEEDED")) {
           setLastError(
-            "Your AI key's free quota is currently exhausted. Check your provider's rate limits (SambaNova free tier, Google free tier, or OpenAI credits), then try again.",
+            "Your AI key's free quota is currently exhausted. Check your provider's rate limits (Groq / SambaNova / Google free tiers, or OpenAI credits), then try again.",
           );
         } else if (message.includes("AI_MODEL_UNAVAILABLE")) {
           setLastError(
@@ -500,19 +500,19 @@ function AssistantInner() {
                   Add an AI key in the project's{" "}
                   <span className="font-semibold text-foreground">Keys tab</span> —{" "}
                   <code className="rounded bg-white/10 px-1 font-mono text-[10px]">AI_API_KEY</code>{" "}
-                  (works for OpenAI, Google Gemini, or SambaNova). It's read server-side only
-                  — never shipped to the browser.
+                  (works for OpenAI, Google Gemini, SambaNova, or Groq). It's read server-side
+                  only — never shipped to the browser.
                 </p>
               </div>
             </div>
             <div className="flex shrink-0 items-center gap-2">
               <a
-                href="https://index.trygravity.ai/go/e982bd80-283d-4bdb-9913-2f38c305c35c"
+                href="https://console.groq.com/keys"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[#e0a458] px-4 text-xs font-bold text-[#191922] transition-colors hover:bg-[#eeb86b]"
               >
-                Get a free SambaNova key
+                Get a free Groq key
               </a>
               <button
                 onClick={() => setSetupNeeded(false)}

@@ -282,14 +282,24 @@ export function pickMessage<T>(pool: T[], index: number): T {
  * so login and landing feel like the same tab. */
 
 export const LOGIN_ARRIVAL_KEY = "glassmed-login-just-arrived";
+/** Records the last successful login so we can greet returning users. */
+export const LAST_LOGIN_KEY = "glassmed-last-login";
 
-/** Welcome-back celebration shown once right after sign-in/guest entry. */
+const WELCOME_NEW = {
+  title: "Welcome to GlassMed! 🎉",
+  subtitle: "So happy you're here — where medicine becomes energetic! 💙",
+};
+
+const WELCOME_BACK = {
+  title: "Welcome back! 👋",
+  subtitle: "Yayyy! Great to see you again — let's keep going! 💪",
+};
+
+/** Welcome celebration shown once right after sign-in/guest entry. */
 export function LoginCelebration() {
   const location = useLocation();
   const [celebrating, setCelebrating] = useState(false);
-  const [message] = useState(() =>
-    pickMessage(LOGIN_MESSAGES, Math.floor(Math.random() * LOGIN_MESSAGES.length)),
-  );
+  const [message, setMessage] = useState(WELCOME_NEW);
 
   // Auth sets the flag right before navigating to the destination. This runs on
   // every pathname change (and on mount for a stale flag) and fades the welcome
@@ -308,9 +318,22 @@ export function LoginCelebration() {
     } catch {
       // Non-fatal — consumed below anyway.
     }
+    // Decide new vs returning BEFORE recording this login (otherwise a
+    // first-ever login would already look like a returning one), then record it
+    // so the next login says "Welcome back!".
+    let returning = false;
+    try {
+      returning = localStorage.getItem(LAST_LOGIN_KEY) !== null;
+      localStorage.setItem(LAST_LOGIN_KEY, String(Date.now()));
+    } catch {
+      // localStorage unavailable — treat as a brand-new arrival.
+    }
     // Defer a tick so the destination paints first; the veil then fades in
     // over the same screen instead of a separate login-success screen.
-    const t = setTimeout(() => setCelebrating(true), 120);
+    const t = setTimeout(() => {
+      setMessage(returning ? WELCOME_BACK : WELCOME_NEW);
+      setCelebrating(true);
+    }, 120);
     return () => clearTimeout(t);
   }, [location.pathname]);
 

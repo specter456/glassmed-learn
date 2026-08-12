@@ -82,7 +82,8 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       redirectScheduled.current = true;
       // Hand the fanfare to the destination: the dashboard mounts underneath
       // the translucent celebration, so the Yayy overlay fades in/out over the
-      // same screen instead of a separate login-success screen.
+      // same screen instead of a separate login-success screen. (LoginCelebration
+      // itself decides "Welcome" vs "Welcome back" and records the login.)
       try {
         sessionStorage.setItem(LOGIN_ARRIVAL_KEY, "1");
       } catch {
