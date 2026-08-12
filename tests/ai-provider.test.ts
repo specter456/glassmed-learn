@@ -56,6 +56,13 @@ describe("resolveAiProvider", () => {
     expect(r.baseUrl).toBe("https://api.groq.com/openai/v1");
   });
 
+  test("GROQ_AI_API_KEY env name routes any key to Groq", () => {
+    const r = resolveAiProvider({ GROQ_AI_API_KEY: "gsk_anything" });
+    expect(r.provider).toBe("groq");
+    expect(r.baseUrl).toBe("https://api.groq.com/openai/v1");
+    expect(r.model).toBe("llama-3.3-70b-versatile");
+  });
+
   test("AI_MODEL overrides the Groq default", () => {
     const r = resolveAiProvider({
       AI_API_KEY: "gsk_AbCdEf1234567890abcdef",

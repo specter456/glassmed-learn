@@ -8,6 +8,8 @@
  *   - SambaNova Cloud keys are UUIDs (8-4-4-4-12 hex)
  *   - Groq keys start with "gsk_" (genuine free tier, no credit card)
  *   - OpenAI keys start with "sk-"
+ * Env names accepted: AI_API_KEY (always preferred), plus provider-specific
+ * fallbacks (SAMBANOVA_API_KEY, GROQ_API_KEY, GROQ_AI_API_KEY, …).
  * An explicit AI_BASE_URL (and AI_MODEL) always wins over the guess.
  */
 
@@ -41,6 +43,7 @@ export function resolveAiProvider(
     env.AI_API_KEY ??
     env.SAMBANOVA_API_KEY ??
     env.GROQ_API_KEY ??
+    env.GROQ_AI_API_KEY ??
     env.GEMINI_API_KEY ??
     env.GOOGLE_API_KEY ??
     env.OPENAI_API_KEY ??
