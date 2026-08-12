@@ -27,6 +27,13 @@ interface AuthProps {
   redirectAfterAuth?: string;
 }
 
+// How long a user must wait before asking for a fresh code. It's persisted to
+// localStorage so a page reload can't reset it and spam the email relay.
+// Codes also expire after 15 minutes server-side, so this is a UX guard on
+// top of the backend's own limits.
+const RESEND_COOLDOWN_SECONDS = 30;
+const OTP_SEND_KEY = "glassmed-otp-sent-at";
+
 function resolveRedirectAfterAuth(
   returnTo: string | null,
   fallback = "/dashboard",
@@ -49,6 +56,23 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Seconds left before a code can be resent — seeded from localStorage so
+  // refreshing the page doesn't bypass the cooldown.
+  const [cooldownLeft, setCooldownLeft] = useState(() => {
+    try {
+      const lastSent = Number(localStorage.getItem(OTP_SEND_KEY));
+      if (Number.isFinite(lastSent) && lastSent > 0) {
+        return Math.max(
+          0,
+          RESEND_COOLDOWN_SECONDS - Math.floor((Date.now() - lastSent) / 1000),
+        );
+      }
+    } catch {
+      // localStorage unavailable — start the cooldown from scratch.
+    }
+    return 0;
+  });
+  const [resentNote, setResentNote] = useState(false);
   // Celebration fires once after a successful login / guest entry, then the
   // redirect happens. Picks a fun message once per session.
   const [message] = useState(() =>
@@ -66,23 +90,58 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     }
   }, [authLoading, isAuthenticated, navigate, redirect]);
 
-  const handleEmailSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  // Tick the resend cooldown down once a second while on the OTP screen.
+  useEffect(() => {
+    if (step === "signIn") return;
+    const timer = setInterval(() => {
+      setCooldownLeft((c) => Math.max(0, c - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [step]);
+
+  /** Send (or resend) the 6-digit code to an email. Returns true on success. */
+  const sendCode = async (email: string): Promise<boolean> => {
     setIsLoading(true);
     setError(null);
     try {
-      const formData = new FormData(event.currentTarget);
+      const formData = new FormData();
+      formData.set("email", email);
       await signIn("email-otp", formData);
-      setStep({ email: formData.get("email") as string });
-      setIsLoading(false);
+      const sentAt = Date.now();
+      try {
+        localStorage.setItem(OTP_SEND_KEY, String(sentAt));
+      } catch {
+        // Non-fatal — the in-memory cooldown still applies for this session.
+      }
+      setCooldownLeft(RESEND_COOLDOWN_SECONDS);
+      return true;
     } catch (error) {
-      console.error("Email sign-in error:", error);
+      console.error("Email code send error:", error);
       setError(
         error instanceof Error
           ? error.message
           : "Failed to send verification code. Please try again.",
       );
+      return false;
+    } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleEmailSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+    if (await sendCode(email)) {
+      setStep({ email });
+    }
+  };
+
+  const handleResend = async () => {
+    if (step === "signIn" || cooldownLeft > 0 || isLoading) return;
+    setResentNote(false);
+    if (await sendCode(step.email)) {
+      setResentNote(true);
     }
   };
 
@@ -96,7 +155,12 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       // isAuthenticated flips true → the celebration effect handles redirect.
     } catch (error) {
       console.error("OTP verification error:", error);
-      setError("The verification code you entered is incorrect.");
+      const message = error instanceof Error ? error.message : "";
+      setError(
+        /RATE_LIMITED|too many|throttled/i.test(message)
+          ? "Too many attempts — please wait a minute and try again."
+          : "The verification code you entered is incorrect or expired.",
+      );
       setIsLoading(false);
       setOtp("");
     }
@@ -257,11 +321,19 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       Didn't receive a code?{" "}
                       <Button
                         variant="link"
-                        className="h-auto p-0"
-                        onClick={() => setStep("signIn")}
+                        className="h-auto p-0 font-semibold"
+                        onClick={handleResend}
+                        disabled={cooldownLeft > 0 || isLoading}
                       >
-                        Try again
+                        {isLoading
+                          ? "Sending…"
+                          : cooldownLeft > 0
+                            ? `Resend in 0:${String(cooldownLeft).padStart(2, "0")}`
+                            : "Resend code"}
                       </Button>
+                      {resentNote && !error && (
+                        <span className="text-cloud"> · Fresh code sent ✉️</span>
+                      )}
                     </p>
                   </CardContent>
                   <CardFooter className="flex-col gap-2">
