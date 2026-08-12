@@ -1,9 +1,9 @@
 import { BirthdayCelebration } from "@/components/BirthdayCelebration";
+import { BrandLogo } from "@/components/BrandLogo";
 import { LogoutBlobModal } from "@/components/LogoutBlob";
 import { SettingsModal } from "@/components/SettingsModal";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { GlassMedLockup } from "@/components/GlassMedLogo";
 import { ArrowLeft, Bot, LogOut, Settings2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -52,7 +52,7 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
             <ArrowLeft className="size-4" />
           </button>
           <button onClick={() => navigate("/dashboard")} aria-label="Go home">
-            <GlassMedLockup />
+            <BrandLogo height={30} fallback="sm" className="shrink-0" />
           </button>
           {title && (
             <div className="ml-2 hidden min-w-0 flex-col sm:flex">

@@ -5,6 +5,18 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/logo.svg" />
   <link rel="manifest" href="/manifest.webmanifest" />
+  <script>
+    // Swap the favicon to the new logo.png the moment it's available,
+    // while keeping /logo.svg as the working default in the meantime.
+    (function () {
+      var probe = new Image();
+      probe.onload = function () {
+        var link = document.querySelector('link[rel="icon"]');
+        if (link) link.href = "/logo.png";
+      };
+      probe.src = "/logo.png";
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

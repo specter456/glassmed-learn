@@ -4,6 +4,7 @@ import confetti from "canvas-confetti";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 /**
  * GlassMed's universal birthday celebration 🎂
@@ -240,9 +241,10 @@ export function BirthdayCelebration() {
         <span className="absolute -right-0.5 -top-0.5 size-2 animate-pulse rounded-full bg-[#feffaf]" />
       </motion.button>
 
-      <AnimatePresence>
+      {createPortal(
+        <AnimatePresence>
         {open && (
-          <div className="fixed inset-0 z-[95] flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
             <motion.div
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               initial={{ opacity: 0 }}
@@ -408,7 +410,9 @@ export function BirthdayCelebration() {
             </motion.div>
           </div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>,
+        document.body,
+      )}
     </>
   );
 }
