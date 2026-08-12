@@ -1,5 +1,16 @@
 import { motion } from "framer-motion";
-import { Bot, Check, Pause, Play, Send, Settings2, Square, Sparkles } from "lucide-react";
+import {
+  Bot,
+  Check,
+  Pause,
+  Play,
+  Send,
+  Settings2,
+  ShieldCheck,
+  Sparkles,
+  Square,
+  Trash2,
+} from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { api } from "@/convex/_generated/api";
@@ -197,6 +208,16 @@ function AssistantInner() {
     [input, busy, messages, askAssistant],
   );
 
+  // Privacy in action: everything the user typed lives only in this component's
+  // state — clearing it wipes the whole conversation from this tab immediately.
+  const clearChat = useCallback(() => {
+    stopSpeaking();
+    setSpeakingId(null);
+    setSpeechPaused(false);
+    setMessages([]);
+    setLastError(null);
+  }, []);
+
   const toggleSpeak = useCallback(
     (index: number, text: string) => {
       // Same message: toggle pause/resume (true pause — position is kept).
@@ -255,6 +276,18 @@ function AssistantInner() {
             </div>
           </div>
 
+          {messages.length > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearChat}
+              className="gap-1.5 text-muted-foreground"
+              title="Erase this conversation from this browser"
+            >
+              <Trash2 className="size-3.5" />
+              Clear
+            </Button>
+          )}
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" size="sm" className="gap-1.5 rounded-full">
@@ -565,6 +598,12 @@ function AssistantInner() {
           </div>
           <p className="mt-2 px-1 text-[10px] leading-4 text-muted-foreground">
             AI answers can be wrong — always verify with your textbooks. Not a substitute for medical advice.
+          </p>
+          <p className="mt-1 flex items-start gap-1.5 px-1 text-[10px] leading-4 text-muted-foreground">
+            <ShieldCheck className="mt-px size-3 shrink-0 text-[#6fb5b0]" />
+            Privacy: your question is sent only to the AI provider to answer it — never your name
+            or email. We don't store your conversations, and the AI provider doesn't train on your
+            questions.
           </p>
         </div>
       </main>

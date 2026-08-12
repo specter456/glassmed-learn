@@ -18,6 +18,30 @@ function formatTime(sec: number): string {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
+/* ------------------------- one-time music tip ------------------------ */
+/* A gentle, one-time whisper near the player button so new users discover
+   the feature. Remembered in localStorage: never shown again on later visits. */
+
+const TIP_KEY = "glassmed-music-tip-seen";
+const TIP_DELAY_MS = 900; // let the page settle before the whisper
+const TIP_HOLD_MS = 4500; // stays ~4.5s, then slides back out
+
+function tipSeen(): boolean {
+  try {
+    return localStorage.getItem(TIP_KEY) === "1";
+  } catch {
+    return true; // storage unavailable — don't nag
+  }
+}
+
+function markTipSeen(): void {
+  try {
+    localStorage.setItem(TIP_KEY, "1");
+  } catch {
+    /* storage unavailable — nothing to remember */
+  }
+}
+
 /**
  * Floating low-impact local music player (the web stand-in for Expo-AV).
  * - Plays audio files picked from the user's device (nothing is uploaded).
@@ -31,6 +55,7 @@ export function MusicPlayer() {
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
+  const [tipVisible, setTipVisible] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const urlRef = useRef<string | null>(null);
@@ -65,6 +90,25 @@ export function MusicPlayer() {
     document.addEventListener("visibilitychange", onVisibility);
     return () => document.removeEventListener("visibilitychange", onVisibility);
   }, []);
+
+  // One-time tip: show after a beat on the first visit, then remember forever.
+  useEffect(() => {
+    if (tipSeen()) return;
+    const show = window.setTimeout(() => setTipVisible(true), TIP_DELAY_MS);
+    return () => window.clearTimeout(show);
+  }, []);
+
+  useEffect(() => {
+    if (!tipVisible) return;
+    markTipSeen(); // remembered even if the user lets it expire
+    const hide = window.setTimeout(() => setTipVisible(false), TIP_HOLD_MS);
+    return () => window.clearTimeout(hide);
+  }, [tipVisible]);
+
+  const dismissTip = () => {
+    markTipSeen();
+    setTipVisible(false);
+  };
 
   const handlePick = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -134,6 +178,39 @@ export function MusicPlayer() {
       />
 
       <AnimatePresence>
+        {tipVisible && collapsed && (
+          <motion.div
+            role="status"
+            aria-live="polite"
+            initial={{ opacity: 0, x: 44, y: 10 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            exit={{ opacity: 0, x: 26, y: 6 }}
+            transition={{ type: "spring", stiffness: 260, damping: 24 }}
+            className="glass-strong fixed bottom-[5.4rem] right-5 z-[79] flex w-[min(78vw,288px)] items-start gap-3 rounded-2xl p-3.5"
+          >
+            <div className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-cloud/25 text-cloud">
+              <Disc3 className="size-4" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-bold leading-5">
+                🎵 Your music is always here with you!
+              </p>
+              <p className="mt-0.5 text-[11px] leading-4 text-muted-foreground">
+                Load a track from your device — it plays offline and nothing uploads.
+              </p>
+            </div>
+            <button
+              onClick={dismissTip}
+              className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-white/10"
+              aria-label="Dismiss music tip"
+            >
+              <X className="size-3.5" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
         {collapsed ? (
           <motion.button
             key="fab"
@@ -142,7 +219,10 @@ export function MusicPlayer() {
             exit={{ opacity: 0, y: 16 }}
             whileHover={{ y: -4, scale: 1.05 }}
             whileTap={{ scale: 0.94 }}
-            onClick={() => setCollapsed(false)}
+            onClick={() => {
+              dismissTip();
+              setCollapsed(false);
+            }}
             className="glass-chip fixed bottom-5 right-5 z-[80] flex size-14 items-center justify-center rounded-full text-wistaria"
             aria-label="Open music player"
           >
