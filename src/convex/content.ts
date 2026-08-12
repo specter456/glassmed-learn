@@ -1,3 +1,4 @@
+import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { SEED_FLASHCARDS, SEED_TOPICS } from "./seedData";
@@ -12,6 +13,11 @@ import { SEED_FLASHCARDS, SEED_TOPICS } from "./seedData";
 export const ensureSeeded = mutation({
   args: {},
   handler: async (ctx) => {
+    // Only signed-in users may write seed data — the tables are global, so an
+    // unauthenticated caller must not be able to trigger writes at all.
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
+
     const existing = await ctx.db.query("topics").first();
     if (existing) return { seeded: false, topics: 0, cards: 0 };
 

@@ -16,6 +16,19 @@ export const emailOtp = Email({
     return generateRandomString(random, alphabet, 6);
   },
   async sendVerificationRequest({ identifier: email, token }) {
+    // The relay key is a secret: it must come from the Keys tab / env, never
+    // from source code. It is not needed for the OTP to be generated — only
+    // for the email to be delivered — so a missing key is reported clearly.
+    const apiKey = (
+      process.env.FREEBUFF_EMAIL_API_KEY ??
+      process.env.VLY_EMAIL_API_KEY ??
+      ""
+    ).trim();
+    if (!apiKey) {
+      throw new Error(
+        "Email relay key is not configured. Add FREEBUFF_EMAIL_API_KEY in the Keys tab.",
+      );
+    }
     try {
       await axios.post(
         "https://auth.freebuff.app/send_otp",
@@ -26,12 +39,15 @@ export const emailOtp = Email({
         },
         {
           headers: {
-            "x-api-key": "fb_email_2crN1hqIArZP2bEfvjp5Qik4",
+            "x-api-key": apiKey,
           },
         },
       );
     } catch (error) {
-      throw new Error(JSON.stringify(error));
+      // Never serialize the raw error: axios errors embed the request config,
+      // including headers — which would leak the API key into logs/UI.
+      console.error("Email OTP send failed:", error instanceof Error ? error.message : error);
+      throw new Error("We couldn't send the verification code. Please try again.");
     }
   },
 });
