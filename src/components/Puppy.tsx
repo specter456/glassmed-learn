@@ -10,7 +10,15 @@ export type PuppyMood = "worried" | "happy" | "crying";
  * really log out. Pure inline SVG (loads instantly, no assets) with
  * transform/opacity-only animations for battery-friendliness.
  */
-export function Puppy({ mood = "worried", size = 120 }: { mood?: PuppyMood; size?: number }) {
+export function Puppy({
+  mood = "worried",
+  size = 120,
+  className,
+}: {
+  mood?: PuppyMood;
+  size?: number;
+  className?: string;
+}) {
   const wrapperAnim =
     mood === "happy"
       ? { y: [0, -10, 0], scale: [1, 1.04, 1] }
@@ -30,6 +38,7 @@ export function Puppy({ mood = "worried", size = 120 }: { mood?: PuppyMood; size
       aria-hidden
       animate={wrapperAnim}
       transition={wrapperTransition}
+      className={className}
       style={{ width: size, height: size, display: "inline-block" }}
     >
       <svg viewBox="0 0 140 140" width={size} height={size} overflow="visible">

@@ -1,3 +1,4 @@
+import { Puppy } from "@/components/Puppy";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router";
@@ -42,52 +43,18 @@ interface MascotProps {
 }
 
 /**
- * Cute glass-style teddy mascot — a pure inline SVG (no assets, no network).
- * Holds a little heart and bobs gently; used in all celebrations.
+ * The GlassMed puppy mascot — used in every celebration (login, flashcards,
+ * game results, level-ups). A pure inline SVG (no assets, no network) with
+ * its own happy bounce and tail wag; the medical collar tag ties it to the
+ * MediPro brand.
  */
 export function Mascot({ size = 72, className }: MascotProps) {
   return (
-    <motion.svg
-      width={size}
-      height={size}
-      viewBox="0 0 120 120"
-      fill="none"
-      aria-hidden
+    <Puppy
+      mood="happy"
+      size={size}
       className={cn("drop-shadow-[0_10px_24px_rgba(120,162,210,0.45)]", className)}
-      animate={{ y: [0, -7, 0], rotate: [0, -2, 2, 0] }}
-      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-    >
-      {/* ears */}
-      <circle cx="34" cy="32" r="15" fill="#a2a2d0" />
-      <circle cx="86" cy="32" r="15" fill="#a2a2d0" />
-      <circle cx="34" cy="32" r="6.5" fill="#78A2D2" opacity="0.55" />
-      <circle cx="86" cy="32" r="6.5" fill="#78A2D2" opacity="0.55" />
-      {/* head */}
-      <circle cx="60" cy="62" r="34" fill="#78A2D2" />
-      {/* inner face glow */}
-      <circle cx="60" cy="64" r="27" fill="#ffffff" opacity="0.12" />
-      {/* eyes */}
-      <circle cx="48" cy="56" r="4.5" fill="#2b3a5e" />
-      <circle cx="72" cy="56" r="4.5" fill="#2b3a5e" />
-      <circle cx="49.6" cy="54.6" r="1.6" fill="#ffffff" />
-      <circle cx="73.6" cy="54.6" r="1.6" fill="#ffffff" />
-      {/* muzzle */}
-      <ellipse cx="60" cy="66" rx="14" ry="10" fill="#e8f1fb" opacity="0.9" />
-      {/* nose */}
-      <ellipse cx="60" cy="62" rx="4" ry="3" fill="#a2a2d0" />
-      {/* smile */}
-      <path d="M54 68 Q60 73 66 68" stroke="#5b5ba3" strokeWidth="2.4" strokeLinecap="round" />
-      {/* blush */}
-      <circle cx="42" cy="66" r="4.5" fill="#e8b7cf" opacity="0.75" />
-      <circle cx="78" cy="66" r="4.5" fill="#e8b7cf" opacity="0.75" />
-      {/* little heart in paw */}
-      <motion.path
-        d="M92 88 C90 82 82 82 80 88 C80 94 92 100 92 100 C92 100 104 94 104 88 C102 82 94 82 92 88 Z"
-        fill="#e896b4"
-        animate={{ scale: [1, 1.12, 1] }}
-        transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-      />
-    </motion.svg>
+    />
   );
 }
 

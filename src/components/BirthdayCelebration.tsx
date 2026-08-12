@@ -1,4 +1,4 @@
-import { Blob } from "@/components/LogoutBlob";
+import { Puppy } from "@/components/Puppy";
 import { Button } from "@/components/ui/button";
 import confetti from "canvas-confetti";
 import { AnimatePresence, motion } from "framer-motion";
@@ -11,7 +11,7 @@ import { createPortal } from "react-dom";
  *
  * - Trigger: a gently pulsing 🎂 button in the header.
  * - Flow: "Is today your special day?" → name → full-screen confetti party with
- *   the purple blob in a party hat, a candle to blow out, and a Make a Wish.
+ *   the puppy mascot in a party hat, a candle to blow out, and a Make a Wish.
  * - Memory: name + date are kept in localStorage, so re-opening on the same day
  *   skips straight to a quick "Happy Birthday again!" message.
  *
@@ -278,7 +278,7 @@ export function BirthdayCelebration() {
               {stage === "ask" && (
                 <>
                   <div className="flex justify-center">
-                    <Blob mood="happy" size={120} />
+                    <Puppy mood="happy" size={120} />
                   </div>
                   <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-wistaria">
                     Is today your special day? 🎂
@@ -309,7 +309,7 @@ export function BirthdayCelebration() {
               {stage === "name" && (
                 <>
                   <div className="flex justify-center">
-                    <Blob mood="happy" size={110} />
+                    <Puppy mood="happy" size={110} />
                   </div>
                   <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-wistaria">
                     What is your name? ✨
@@ -339,7 +339,7 @@ export function BirthdayCelebration() {
               {stage === "again" && againName && (
                 <>
                   <div className="flex justify-center">
-                    <Blob mood="happy" size={110} />
+                    <Puppy mood="happy" size={110} />
                   </div>
                   <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-wistaria">
                     Happy Birthday again, {againName}! 🎂✨
@@ -355,7 +355,7 @@ export function BirthdayCelebration() {
                   <div className="relative mx-auto flex h-40 w-44 items-end justify-center">
                     <PartyHat />
                     <Candle lit={stage === "celebrating"} />
-                    <Blob mood="happy" size={120} />
+                    <Puppy mood="happy" size={120} />
                   </div>
 
                   <h2 className="mt-3 text-3xl font-black tracking-tight text-wistaria sm:text-4xl">
