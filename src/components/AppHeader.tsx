@@ -1,7 +1,10 @@
+import { LogoutBlobModal } from "@/components/LogoutBlob";
+import { SettingsModal } from "@/components/SettingsModal";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { GlassMedLockup } from "@/components/GlassMedLogo";
-import { ArrowLeft, Bot, LogOut } from "lucide-react";
+import { ArrowLeft, Bot, LogOut, Settings2 } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 interface AppHeaderProps {
@@ -13,6 +16,8 @@ interface AppHeaderProps {
 export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
   const handleBack = () => {
     if (onBack) onBack();
@@ -30,6 +35,14 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
     <header className="sticky top-0 z-[60] px-4 pt-4 sm:px-6">
       <div className="glass-panel mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-2xl px-4 py-3">
         <div className="flex min-w-0 items-center gap-3">
+          <button
+            onClick={() => setSettingsOpen(true)}
+            className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white/10 text-wistaria transition-all hover:rotate-45 hover:bg-white/20"
+            aria-label="Open settings"
+            title="Settings"
+          >
+            <Settings2 className="size-4" />
+          </button>
           <button
             onClick={handleBack}
             className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-white/10 text-wistaria transition-all hover:bg-white/20"
@@ -68,7 +81,7 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
           <Button
             variant="ghost"
             size="sm"
-            onClick={handleSignOut}
+            onClick={() => setLogoutOpen(true)}
             className="gap-1.5 text-muted-foreground"
           >
             <LogOut className="size-4" />
@@ -76,6 +89,20 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
           </Button>
         </div>
       </div>
+
+      <SettingsModal
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        onRequestLogout={() => {
+          setSettingsOpen(false);
+          setLogoutOpen(true);
+        }}
+      />
+      <LogoutBlobModal
+        open={logoutOpen}
+        onClose={() => setLogoutOpen(false)}
+        onConfirm={handleSignOut}
+      />
     </header>
   );
 }
