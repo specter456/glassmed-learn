@@ -2,6 +2,7 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { ConvexError, v } from "convex/values";
 import { api } from "./_generated/api";
 import { action } from "./_generated/server";
+import { resolveAiProvider } from "./aiProvider";
 
 /**
  * The strict system prompt. It lives ONLY here — server-side — so users can
@@ -56,37 +57,13 @@ export const askAssistant = action({
     //   OpenAI  → AI_API_KEY (or OPENAI_API_KEY), base https://api.openai.com/v1
     //   Google  → Gemini key from AI Studio, base
     //             https://generativelanguage.googleapis.com/v1beta/openai
-    // The key may be stored under any of these names in the Keys tab — all
-    // are accepted so a slightly different variable name can never break it.
-    // Trimmed: keys pasted into a Keys UI can carry stray whitespace/newlines
-    // that would otherwise make the provider reject a valid key with a 401.
-    const key = (
-      process.env.AI_API_KEY ??
-      process.env.GEMINI_API_KEY ??
-      process.env.GOOGLE_API_KEY ??
-      process.env.OPENAI_API_KEY ??
-      ""
-    ).trim();
+    //   SambaNova → free tier, base https://api.sambanova.ai/v1 (UUID keys)
+    // The provider is guessed from the key format (see ./aiProvider) so the
+    // user only has to add the key. Keys are trimmed: values pasted into a
+    // Keys UI can carry stray whitespace/newlines that would otherwise make
+    // the provider reject a valid key with a 401.
+    const { key, baseUrl, model } = resolveAiProvider(process.env);
     if (!key) throw new ConvexError("ASSISTANT_NOT_CONFIGURED");
-
-    // If no base URL was configured, guess the provider from the key format:
-    // Google Gemini keys start with AIza / AQ., OpenAI keys with sk-. This way
-    // the user only needs to add the key and it just works.
-    const configuredBase = (process.env.AI_BASE_URL ?? "").trim().replace(/\/+$/, "");
-    const looksGoogle =
-      key.startsWith("AIza") ||
-      key.startsWith("AQ.") ||
-      !!process.env.GEMINI_API_KEY ||
-      !!process.env.GOOGLE_API_KEY;
-    const baseUrl =
-      configuredBase ||
-      (looksGoogle
-        ? "https://generativelanguage.googleapis.com/v1beta/openai"
-        : "https://api.openai.com/v1");
-    // Sensible defaults per provider: OpenAI → gpt-4o, Google Gemini → the
-    // widely available gemini-2.0-flash (2.5-flash is retired for new users).
-    const isGoogle = baseUrl.includes("generativelanguage.googleapis.com");
-    const model = process.env.AI_MODEL ?? (isGoogle ? "gemini-2.0-flash" : "gpt-4o");
 
     const safe = messages
       .filter((m) => m.content.trim().length > 0 && m.content.length <= MAX_MESSAGE_CHARS)
