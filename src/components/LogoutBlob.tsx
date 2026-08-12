@@ -1,3 +1,4 @@
+import { Puppy, type PuppyMood } from "@/components/Puppy";
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import { LogOut, X } from "lucide-react";
@@ -182,12 +183,12 @@ interface LogoutBlobModalProps {
   onConfirm: () => void | Promise<void>;
 }
 
-/** Playful confirmation modal — the blob reacts to whichever button you hover. */
+/** Playful confirmation modal — the puppy reacts to whichever button you hover. */
 export function LogoutBlobModal({ open, onClose, onConfirm }: LogoutBlobModalProps) {
-  const [mood, setMood] = useState<BlobMood>("worried");
+  const [mood, setMood] = useState<PuppyMood>("worried");
   const [confirming, setConfirming] = useState(false);
 
-  // Every way out of the modal resets the blob's mood, so reopening it always
+  // Every way out of the modal resets the puppy's mood, so reopening it always
   // starts with the worried face (no state resets inside effects).
   const closeModal = useCallback(() => {
     setMood("worried");
@@ -245,7 +246,7 @@ export function LogoutBlobModal({ open, onClose, onConfirm }: LogoutBlobModalPro
             </button>
 
             <div className="flex justify-center">
-              <Blob mood={mood} size={120} />
+              <Puppy mood={mood} size={120} />
             </div>
 
             <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-wistaria">
