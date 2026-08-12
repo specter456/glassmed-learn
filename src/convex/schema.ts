@@ -75,18 +75,6 @@ const schema = defineSchema(
       .index("by_user", ["userId"])
       .index("by_user_card", ["userId", "cardId"]),
 
-    // Purchases of premium catalog packs. In sandbox mode orders are recorded
-    // with status "demo" until real card processing (Stripe) is configured.
-    orders: defineTable({
-      userId: v.id("users"),
-      itemId: v.string(), // catalog item slug
-      itemTitle: v.string(),
-      amountCents: v.number(),
-      currency: v.string(),
-      status: v.union(v.literal("demo"), v.literal("paid"), v.literal("refunded")),
-      createdAt: v.number(),
-    }).index("by_user", ["userId"]),
-
     // Sliding-window rate-limit counters (see convex/rateLimit.ts).
     // One document per (name, key) pair; counts reset when the window passes.
     rateLimits: defineTable({

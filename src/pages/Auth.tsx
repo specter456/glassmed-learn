@@ -272,7 +272,8 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             )}
 
             <div className="rounded-b-3xl border-t border-white/10 bg-white/5 px-6 py-4 text-center text-xs text-muted-foreground backdrop-blur">
-              Your study data stays private to your account. Checkout is sandboxed until Stripe keys are configured.
+              Your study data stays private to your account — and every topic,
+              guide, and tool on GlassMed is free.
             </div>
           </Card>
         </div>

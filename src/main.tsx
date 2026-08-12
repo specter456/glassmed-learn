@@ -16,7 +16,6 @@ const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const Flashcards = lazy(() => import("./pages/Flashcards.tsx"));
 const Basics = lazy(() => import("./pages/Basics.tsx"));
-const Catalog = lazy(() => import("./pages/Catalog.tsx"));
 const Game = lazy(() => import("./pages/Game.tsx"));
 const Research = lazy(() => import("./pages/Research.tsx"));
 const Assistant = lazy(() => import("./pages/Assistant.tsx"));
@@ -58,26 +57,58 @@ class RootErrorBoundary extends React.Component<
 > {
   state = { hasError: false, message: "", stack: "" };
   static getDerivedStateFromError(error: Error) {
-    return {
-      hasError: true,
-      message: error.message || "Unknown runtime error",
-      stack: error.stack || "",
-    };
-  }
-  componentDidCatch(err: Error) {
-    console.error("[WebContainer preview] Root crash:", err);
+    return { hasError: true, message: error.message, stack: error.stack ?? "" };
   }
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-6">
-          <div className="max-w-lg text-center">
-            <p className="text-sm font-semibold">Preview runtime error</p>
-            <p className="mt-2 text-xs text-muted-foreground break-words">
-              {this.state.message}
+        <div
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 24,
+            background: "#0e1233",
+            color: "#fdf5e6",
+            fontFamily: "system-ui, sans-serif",
+          }}
+        >
+          <div style={{ maxWidth: 520, textAlign: "center" }}>
+            <p style={{ fontSize: 40, margin: "0 0 8px" }}>🩺</p>
+            <h1 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px" }}>
+              Something went wrong
+            </h1>
+            <p style={{ fontSize: 14, opacity: 0.75, margin: "0 0 12px", wordBreak: "break-word" }}>
+              {this.state.message || "An unexpected error occurred."}
             </p>
+            <button
+              onClick={() => window.location.reload()}
+              style={{
+                padding: "8px 18px",
+                borderRadius: 999,
+                border: "1px solid rgba(255,255,255,0.2)",
+                background: "rgba(255,255,255,0.08)",
+                color: "#fdf5e6",
+                cursor: "pointer",
+                fontSize: 14,
+              }}
+            >
+              Reload
+            </button>
             {this.state.stack && (
-              <pre className="mt-3 text-left text-[10px] leading-4 text-muted-foreground/80 max-h-40 overflow-auto rounded border border-border/60 p-2">
+              <pre
+                style={{
+                  marginTop: 16,
+                  textAlign: "left",
+                  fontSize: 11,
+                  opacity: 0.5,
+                  maxHeight: 160,
+                  overflow: "auto",
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                }}
+              >
                 {this.state.stack}
               </pre>
             )}
@@ -89,143 +120,100 @@ class RootErrorBoundary extends React.Component<
   }
 }
 
-const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
-
-
-
+/** Sends route changes to the parent frame (if any) so the preview toolbar can
+ *  track the current screen. */
 function RouteSyncer() {
   const location = useLocation();
-
-  // Best-effort route sync with the host frame — must never throw in a
-  // sandboxed/cross-origin preview, or it would take down the whole app.
   useEffect(() => {
     try {
-      window.parent.postMessage(
-        { type: "iframe-route-change", path: location.pathname },
-        "*",
-      );
+      window.parent?.postMessage({ type: "vly-route-change", path: location.pathname }, "*");
     } catch {
-      /* cross-origin or sandboxed host — sync is optional */
+      /* cross-origin parent — ignore */
     }
   }, [location.pathname]);
-
-  useEffect(() => {
-    function handleMessage(event: MessageEvent) {
-      if (event.data?.type === "navigate") {
-        if (event.data.direction === "back") window.history.back();
-        if (event.data.direction === "forward") window.history.forward();
-      }
-    }
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, []);
-
-  // Battery & thermal: pause every CSS animation while the tab is hidden
-  // (Framer Motion loops are rAF-driven and browsers throttle those already).
-  useEffect(() => {
-    const onVisibility = () => {
-      document.documentElement.classList.toggle(
-        "animations-paused",
-        document.hidden,
-      );
-    };
-    onVisibility();
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => document.removeEventListener("visibilitychange", onVisibility);
-  }, []);
-
   return null;
 }
 
+function App() {
+  const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string, {
+    unsavedChangesWarning: false,
+  });
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  return (
     <RootErrorBoundary>
-      <ToolbarErrorBoundary>
-        <VlyToolbar />
-      </ToolbarErrorBoundary>
-      <ConvexAuthProvider client={convex}>
-        <MotionConfig reducedMotion="user">
-        <BrowserRouter>
-          <RouteSyncer />
-          <Suspense fallback={<RouteLoading />}>
-            <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route
-                path="/auth"
-                element={<AuthPage redirectAfterAuth="/dashboard" />}
-              />
-              <Route
-                path="/dashboard"
-                element={
-                  <RequireAuth>
-                    <Dashboard />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/flashcards"
-                element={
-                  <RequireAuth>
-                    <Flashcards />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/basics"
-                element={
-                  <RequireAuth>
-                    <Basics />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/catalog"
-                element={
-                  <RequireAuth>
-                    <Catalog />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/catalog/:slug"
-                element={
-                  <RequireAuth>
-                    <Catalog />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/game"
-                element={
-                  <RequireAuth>
-                    <Game />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/research"
-                element={
-                  <RequireAuth>
-                    <Research />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/assistant"
-                element={
-                  <RequireAuth>
-                    <Assistant />
-                  </RequireAuth>
-                }
-              />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-        </MotionConfig>
-        <Toaster />
-      </ConvexAuthProvider>
+      <StrictMode>
+        <ConvexAuthProvider client={convex}>
+          <MotionConfig reducedMotion="user">
+            <BrowserRouter>
+              <RouteSyncer />
+              <ToolbarErrorBoundary>
+                <VlyToolbar />
+              </ToolbarErrorBoundary>
+              <Suspense fallback={<RouteLoading />}>
+                <Routes>
+                  <Route path="/" element={<Landing />} />
+                  <Route
+                    path="/auth"
+                    element={<AuthPage redirectAfterAuth="/dashboard" />}
+                  />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <RequireAuth>
+                        <Dashboard />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="/flashcards"
+                    element={
+                      <RequireAuth>
+                        <Flashcards />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="/basics"
+                    element={
+                      <RequireAuth>
+                        <Basics />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="/game"
+                    element={
+                      <RequireAuth>
+                        <Game />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="/research"
+                    element={
+                      <RequireAuth>
+                        <Research />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="/assistant"
+                    element={
+                      <RequireAuth>
+                        <Assistant />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </BrowserRouter>
+          </MotionConfig>
+          <Toaster />
+        </ConvexAuthProvider>
+      </StrictMode>
     </RootErrorBoundary>
-  </StrictMode>,
-);
+  );
+}
+
+createRoot(document.getElementById("root")!).render(<App />);

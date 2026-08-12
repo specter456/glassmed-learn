@@ -14,7 +14,7 @@ import { mutation } from "./_generated/server";
  * to grow the table with arbitrary keys), and every arg is clamped.
  */
 
-const KNOWN_LIMITERS = new Set(["assistant", "recordAnswer", "checkout"]);
+const KNOWN_LIMITERS = new Set(["assistant", "recordAnswer"]);
 const DEFAULT_WINDOW_MS = 60_000;
 const MAX_LIMIT = 1000;
 const MIN_WINDOW_MS = 1000;

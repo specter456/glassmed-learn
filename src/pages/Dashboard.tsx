@@ -6,11 +6,9 @@ import {
   CalendarClock,
   CheckCircle2,
   Layers,
-  Library,
   Scissors,
   Search,
   Sparkles,
-  Store,
   Target,
   Trophy,
 } from "lucide-react";
@@ -22,7 +20,6 @@ import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { Button } from "@/components/ui/button";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
-import { catalogItem } from "@/lib/catalog";
 import { topicIcon } from "@/lib/medipro";
 import { useEnsureSeeded } from "@/hooks/use-ensure-seeded";
 import { useAuth } from "@/hooks/use-auth";
@@ -66,9 +63,8 @@ function DashboardInner() {
   const { user } = useAuth();
   const topics = useQuery(api.content.topics);
   const summary = useQuery(api.progress.summary);
-  const orders = useQuery(api.store.myOrders);
 
-  const loading = topics === undefined || summary === undefined || orders === undefined;
+  const loading = topics === undefined || summary === undefined;
 
   const firstName = user?.name?.split(" ")[0] ?? (user?.isAnonymous ? "Guest" : "future doctor");
   const greeting = new Date().getHours() < 12 ? "Good morning" : new Date().getHours() < 17 ? "Good afternoon" : "Good evening";
@@ -96,9 +92,9 @@ function DashboardInner() {
             first-year topics. A few focused minutes today beats a cram later.
           </p>
           <div className="mt-5">
-            <Button onClick={() => navigate("/catalog")} className="gap-2 rounded-full">
-              <Store className="size-4" />
-              Browse the catalog
+            <Button onClick={() => navigate("/flashcards")} className="gap-2 rounded-full">
+              Start today's review
+              <ArrowRight className="size-4" />
             </Button>
           </div>
         </motion.div>
@@ -300,76 +296,6 @@ function DashboardInner() {
                   </motion.button>
                 );
               })
-            )}
-          </div>
-        </section>
-
-        {/* Your library */}
-        <section className="mt-12">
-          <h2 className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-wistaria">
-            <Library className="size-5" />
-            Your library
-          </h2>
-          <div className="mt-4">
-            {loading ? (
-              <div className="glass-panel flex items-center gap-4 rounded-2xl p-4">
-                <div className="skeleton size-11 rounded-xl" />
-                <div className="flex-1 space-y-2">
-                  <div className="skeleton h-3.5 w-1/2 rounded-md" />
-                  <div className="skeleton h-3 w-1/3 rounded-md" />
-                </div>
-              </div>
-            ) : (orders ?? []).filter((o) => o.status !== "refunded").length === 0 ? (
-              <button
-                onClick={() => navigate("/catalog")}
-                className="glass-chip shine flex w-full items-center justify-between gap-4 rounded-2xl p-5 text-left transition-colors hover:border-white/20"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex size-11 items-center justify-center rounded-xl bg-[#a2a2d0]/15 text-wistaria">
-                    <Store className="size-5" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold">Your library is empty</p>
-                    <p className="text-xs text-muted-foreground">
-                      Premium packs — focus audio, quiz passes, the mastery bundle — live here.
-                    </p>
-                  </div>
-                </div>
-                <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
-              </button>
-            ) : (
-              (orders ?? [])
-                .filter((o) => o.status !== "refunded")
-                .map((order, i) => {
-                  const item = catalogItem(order.itemId);
-                  if (!item) return null;
-                  const Icon = item.icon;
-                  return (
-                    <motion.button
-                      key={order._id}
-                      initial={{ opacity: 0, x: -16 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.3 + i * 0.06 }}
-                      whileHover={{ x: 6 }}
-                      onClick={() => navigate(`/catalog/${item.slug}`)}
-                      className="glass-chip shine mb-3 flex w-full items-center gap-4 rounded-2xl p-4 text-left"
-                    >
-                      <div
-                        className="flex size-11 shrink-0 items-center justify-center rounded-xl"
-                        style={{ backgroundColor: item.accent + "1f", color: item.accent }}
-                      >
-                        <Icon className="size-5" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-bold">{item.title}</p>
-                        <p className="text-xs text-muted-foreground">{item.category}</p>
-                      </div>
-                      <span className="shrink-0 rounded-full bg-[#6fb5b0]/15 px-2.5 py-1 font-mono text-[10px] font-bold text-[#6fb5b0]">
-                        OWNED
-                      </span>
-                    </motion.button>
-                  );
-                })
             )}
           </div>
         </section>

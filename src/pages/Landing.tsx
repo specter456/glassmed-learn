@@ -269,7 +269,7 @@ export default function Landing() {
                   The five topics everyone gets wrong first
                 </h2>
                 <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                  Every pack opens with a plain-language basics layer — one
+                  Every topic opens with a plain-language basics layer — one
                   diagram, a handful of memory hooks — and only then unlocks the
                   full in-depth text. Learn the skeleton first; the detail
                   sticks to it.
@@ -385,12 +385,13 @@ export default function Landing() {
             </div>
             <div className="relative">
               <h2 className="text-balance text-3xl font-extrabold tracking-tight text-wistaria sm:text-4xl">
-                Your first session starts free
+                Everything on GlassMed is free
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-muted-foreground">
-                All five fundamentals topics are free. Sign up with your email —
-                or jump straight in as a guest — and your 1-3-7 schedule is
-                created the moment you flip your first card.
+                All five topics, ten first-aid guides, the simulator, and the
+                assistant — free for every student. Sign up with your email, or
+                jump straight in as a guest, and your 1-3-7 schedule is created
+                the moment you flip your first card.
               </p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button
