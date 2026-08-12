@@ -16,9 +16,11 @@ import {
 
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { GlassMedLogo } from "@/components/GlassMedLogo";
+import { CelebrationOverlay, LOGIN_MESSAGES, pickMessage } from "@/components/Celebration";
 import { useAuth } from "@/hooks/use-auth";
+import { AnimatePresence } from "framer-motion";
 import { ArrowRight, Loader2, Mail, UserX } from "lucide-react";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 
 interface AuthProps {
@@ -47,10 +49,20 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Celebration fires once after a successful login / guest entry, then the
+  // redirect happens. Picks a fun message once per session.
+  const [message] = useState(() =>
+    pickMessage(LOGIN_MESSAGES, Math.floor(Math.random() * LOGIN_MESSAGES.length)),
+  );
+  // Ref guard (not state): schedules the post-celebration redirect exactly once
+  // per auth completion, without triggering extra renders.
+  const redirectScheduled = useRef(false);
 
   useEffect(() => {
-    if (!authLoading && isAuthenticated) {
-      navigate(redirect);
+    if (!authLoading && isAuthenticated && !redirectScheduled.current) {
+      redirectScheduled.current = true;
+      const t = setTimeout(() => navigate(redirect), 2500);
+      return () => clearTimeout(t);
     }
   }, [authLoading, isAuthenticated, navigate, redirect]);
 
@@ -81,7 +93,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     try {
       const formData = new FormData(event.currentTarget);
       await signIn("email-otp", formData);
-      navigate(redirect);
+      // isAuthenticated flips true → the celebration effect handles redirect.
     } catch (error) {
       console.error("OTP verification error:", error);
       setError("The verification code you entered is incorrect.");
@@ -95,7 +107,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     setError(null);
     try {
       await signIn("anonymous");
-      navigate(redirect);
+      // isAuthenticated flips true → the celebration effect handles redirect.
     } catch (error) {
       console.error("Guest login error:", error);
       setError(
@@ -110,6 +122,19 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   return (
     <div className="relative min-h-screen">
       <GlassBackdrop />
+
+      {/* Login celebration — brief, fun, then redirect to the dashboard */}
+      <AnimatePresence>
+        {!authLoading && isAuthenticated && (
+          <CelebrationOverlay
+            title={message.title}
+            subtitle={message.subtitle}
+            emoji="💙"
+            footer="Your study space is ready — keep the momentum going!"
+            durationMs={2500}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Auth Content */}
       <div className="flex min-h-screen flex-1 items-center justify-center px-4 py-10">

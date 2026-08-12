@@ -15,8 +15,15 @@ import {
   Trophy,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
+import {
+  ConfettiBurst,
+  Mascot,
+  QUIZ_PRAISE,
+  ROUND_COMPLETE_TITLES,
+  pickMessage,
+} from "@/components/Celebration";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { Button } from "@/components/ui/button";
@@ -287,39 +294,6 @@ interface RunResult {
 
 const MAX_LIVES = 3;
 const ADVANCE_MS = 1900;
-
-function ConfettiBurst() {
-  const pieces = useMemo(
-    () =>
-      Array.from({ length: 14 }, (_, i) => ({
-        angle: (i / 14) * Math.PI * 2,
-        distance: 70 + (i % 5) * 22,
-        color: ["#78A2D2", "#FEFFAF", "#A2A2D0", "#6fb5b0", "#e896b4"][i % 5],
-        delay: (i % 4) * 0.03,
-      })),
-    [],
-  );
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-visible">
-      {pieces.map((p, i) => (
-        <motion.span
-          key={i}
-          className="absolute left-1/2 top-10 size-2 rounded-sm"
-          style={{ backgroundColor: p.color }}
-          initial={{ x: 0, y: 0, opacity: 1, scale: 1, rotate: 0 }}
-          animate={{
-            x: Math.cos(p.angle) * p.distance,
-            y: Math.sin(p.angle) * p.distance * 0.8,
-            opacity: 0,
-            scale: 0.3,
-            rotate: 180,
-          }}
-          transition={{ duration: 0.9, delay: p.delay, ease: "easeOut" }}
-        />
-      ))}
-    </div>
-  );
-}
 
 /* ------------------------------ lobby ------------------------------ */
 
@@ -794,7 +768,7 @@ function Mission({
                 >
                   {answered.wrong
                     ? `Not great, not terrible. ${answered.points} pts.`
-                    : `Patient saved! +${answered.points} pts`}
+                    : `${pickMessage(QUIZ_PRAISE, saves)} · +${answered.points} pts`}
                 </p>
                 <p className="mt-1 text-sm leading-6">
                   {answered.wrong ? scenario.sarcasm : scenario.praise}
@@ -837,8 +811,9 @@ function Mission({
             >
               <Sparkles className="size-8" />
             </motion.div>
-            <p className="mt-4 text-xs font-bold uppercase tracking-[0.3em] text-[#e0a458]">
-              Level up
+            <Mascot size={64} className="mx-auto mt-3" />
+            <p className="mt-2 text-xs font-bold uppercase tracking-[0.3em] text-[#e0a458]">
+              Level Up! 🚀 Keep going!
             </p>
             <p className="mt-1 text-5xl font-extrabold tracking-tight">
               {levelUpTo}
@@ -886,12 +861,14 @@ function Results({
         initial={{ opacity: 0, scale: 0.92 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.45 }}
-        className="glass-strong shine w-full max-w-md rounded-3xl p-8 sm:p-10"
+        className="glass-strong shine relative w-full max-w-md overflow-hidden rounded-3xl p-8 sm:p-10"
       >
+        {!result.patientLost && <ConfettiBurst count={24} />}
+
         <motion.div
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-          className="mx-auto flex size-16 items-center justify-center rounded-full bg-[#e896b4]/20 text-[#d96a8f]"
+          className="relative mx-auto flex size-16 items-center justify-center rounded-full bg-[#e896b4]/20 text-[#d96a8f]"
         >
           {result.patientLost ? (
             <Skull className="size-8" />
@@ -900,8 +877,12 @@ function Results({
           )}
         </motion.div>
 
-        <h1 className="mt-5 text-3xl font-extrabold tracking-tight text-wistaria">
-          {result.patientLost ? "Shift over" : "Shift complete!"}
+        {!result.patientLost && <Mascot size={72} className="relative -mt-2" />}
+
+        <h1 className="relative mt-5 text-3xl font-extrabold tracking-tight text-wistaria">
+          {result.patientLost
+            ? "Shift over"
+            : pickMessage(ROUND_COMPLETE_TITLES, result.score)}
         </h1>
         <p className="mt-1.5 text-sm text-muted-foreground">
           {result.patientLost

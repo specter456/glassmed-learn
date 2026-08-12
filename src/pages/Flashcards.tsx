@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
+import { ConfettiBurst, FLASHCARD_WINS, Mascot, pickMessage } from "@/components/Celebration";
 import { DeckGridSkeleton, FlashcardSkeleton } from "@/components/Skeletons";
 import { Button } from "@/components/ui/button";
 import { useEnsureSeeded } from "@/hooks/use-ensure-seeded";
@@ -135,17 +136,6 @@ function DeckList() {
 }
 
 /* ------------------------- study session --------------------------- */
-
-const WIN_SPARKS = Array.from({ length: 14 }, (_, i) => {
-  const angle = (i / 14) * Math.PI * 2;
-  const dist = 60 + (i % 4) * 26;
-  return {
-    x: Math.cos(angle) * dist,
-    y: Math.sin(angle) * dist - 18,
-    delay: i * 0.03,
-    color: ["#7b9ee8", "#a2a2d0", "#feffaf", "#e896b4", "#6fb5b0"][i % 5],
-  };
-});
 
 function StudySession({ slug }: { slug: string }) {
   const navigate = useNavigate();
@@ -422,7 +412,7 @@ function StudySession({ slug }: { slug: string }) {
             ) : null}
           </AnimatePresence>
 
-          {/* WON! celebration */}
+          {/* WON! celebration — rotating messages + mascot + confetti */}
           <AnimatePresence>
             {result === "won" && (
               <motion.div
@@ -439,14 +429,18 @@ function StudySession({ slug }: { slug: string }) {
                   animate={{ scale: [1, 1.12, 1], opacity: [0.5, 0.9, 0.5], rotate: [0, 12, 0] }}
                   transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
                 />
+                <ConfettiBurst count={20} />
+
+                <Mascot size={84} />
+
                 <motion.h2
                   initial={{ scale: 0.4, opacity: 0 }}
                   animate={{ scale: [0.4, 1.15, 1], opacity: 1 }}
                   exit={{ scale: 1.3, opacity: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="glow-text text-7xl font-extrabold tracking-tight text-wistaria"
+                  className="glow-text mt-3 text-6xl font-extrabold tracking-tight text-wistaria"
                 >
-                  WON!
+                  {pickMessage(FLASHCARD_WINS, correctCount - 1)}
                 </motion.h2>
                 <motion.p
                   initial={{ opacity: 0, y: 8 }}
@@ -465,26 +459,6 @@ function StudySession({ slug }: { slug: string }) {
                   <Sparkles className="size-3.5" />
                   Gliding to the next card…
                 </motion.p>
-                {WIN_SPARKS.map((s, i) => (
-                  <motion.span
-                    key={i}
-                    className="absolute left-1/2 top-1/2 size-2.5 rounded-full"
-                    style={{ backgroundColor: s.color, boxShadow: `0 0 10px ${s.color}` }}
-                    initial={{ x: 0, y: 0, opacity: 1, scale: 0.6 }}
-                    animate={{
-                      x: s.x,
-                      y: s.y,
-                      opacity: 0,
-                      scale: 1,
-                      rotate: 180,
-                    }}
-                    transition={{
-                      duration: 0.9,
-                      delay: 0.15 + s.delay,
-                      ease: "easeOut",
-                    }}
-                  />
-                ))}
               </motion.div>
             )}
           </AnimatePresence>
