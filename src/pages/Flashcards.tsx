@@ -19,6 +19,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { ConfettiBurst, FLASHCARD_WINS, Mascot, pickMessage } from "@/components/Celebration";
+import { PandaMascot } from "@/components/mascots";
 import { DeckGridSkeleton, FlashcardSkeleton } from "@/components/Skeletons";
 import { Button } from "@/components/ui/button";
 import { useEnsureSeeded } from "@/hooks/use-ensure-seeded";
@@ -28,6 +29,16 @@ import {
   selectNextCard,
   topicIcon,
 } from "@/lib/medipro";
+
+/** Encouraging messages shown after a card needs another look. */
+const KEEP_GOING_MESSAGES = [
+  "Keep Going! 💪",
+  "Almost There! ✨",
+  "So Close! 🌟",
+  "You've Got This! 💙",
+  "One More Try! 🚀",
+  "Right on Track! 🌱",
+];
 
 /* ---------------------------- deck list ---------------------------- */
 
@@ -203,12 +214,14 @@ function StudySession({ slug }: { slug: string }) {
     setResult(null);
   }, []);
 
-  // After a WON!, let the celebration play, then slowly fade the card
-  // out and glide on to the next one. (`leaving` resets in `advance`.)
+  // After either verdict, let the celebration / encouragement play, then fade
+  // the card out and glide on to the next one. Clicking either overlay skips
+  // ahead immediately. (`leaving` resets in `advance`.)
   useEffect(() => {
-    if (result !== "won") return;
-    const fade = setTimeout(() => setLeaving(true), 950);
-    const next = setTimeout(() => advance(), 2000);
+    if (!result) return;
+    const won = result === "won";
+    const fade = setTimeout(() => setLeaving(true), won ? 950 : 800);
+    const next = setTimeout(() => advance(), won ? 2000 : 1750);
     return () => {
       clearTimeout(fade);
       clearTimeout(next);
@@ -324,15 +337,16 @@ function StudySession({ slug }: { slug: string }) {
             <motion.div
               key={current._id}
               className="relative h-[22rem] w-full cursor-pointer [transform-style:preserve-3d]"
-              initial={{ opacity: 0, y: 14 }}
+              // Verdict shown: slide down/out. New card: glides in from the top.
+              initial={{ opacity: 0, y: -48 }}
               animate={{
                 rotateY: flipped ? 180 : 0,
                 opacity: leaving ? 0 : 1,
-                scale: leaving ? 0.92 : 1,
-                y: leaving ? 26 : 0,
+                scale: leaving ? 0.94 : 1,
+                y: leaving ? 70 : 0,
               }}
               transition={{
-                duration: leaving ? 0.9 : 0.45,
+                duration: leaving ? 0.55 : 0.45,
                 ease: leaving ? [0.4, 0, 0.7, 1] : [0.4, 0.2, 0.2, 1],
               }}
               onClick={() => setFlipped((f) => !f)}
@@ -417,10 +431,13 @@ function StudySession({ slug }: { slug: string }) {
             {result === "won" && (
               <motion.div
                 key="won"
-                className="pointer-events-none fixed inset-0 z-[85] flex flex-col items-center justify-center"
+                className="fixed inset-0 z-[85] flex cursor-pointer flex-col items-center justify-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
+                onClick={advance}
+                role="button"
+                aria-label="Skip ahead to the next card"
               >
                 {/* soft pale-blue glow halo + slow shimmer ring */}
                 <div className="absolute left-1/2 top-1/2 size-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cloud/25 blur-[90px]" />
@@ -457,32 +474,75 @@ function StudySession({ slug }: { slug: string }) {
                   className="mt-1 flex items-center gap-1.5 text-xs font-semibold text-cloud"
                 >
                   <Sparkles className="size-3.5" />
-                  Gliding to the next card…
+                  Gliding to the next card… tap to skip
                 </motion.p>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* missed — motivational quote */}
+          {/* Keep going! — encouraging overlay, just as polished as WON! */}
           <AnimatePresence>
             {result === "missed" && (
               <motion.div
                 key="missed"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="glass-strong mx-auto mt-6 max-w-xl rounded-3xl p-6 text-center"
+                className="fixed inset-0 z-[85] flex cursor-pointer flex-col items-center justify-center px-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={advance}
+                role="button"
+                aria-label="Keep going — move to the next card"
               >
-                <p className="text-balance text-base font-semibold leading-7 text-foreground">
-                  "{quote}"
-                </p>
-                <p className="mt-2 text-xs font-semibold text-muted-foreground">
-                  This card returns tomorrow — that's the point.
-                </p>
-                <Button className="mt-4 gap-2" onClick={advance}>
-                  Keep going
-                  <ArrowRight className="size-4" />
-                </Button>
+                {/* warm golden glow + slow shimmer ring */}
+                <div className="pointer-events-none absolute left-1/2 top-1/2 size-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-butter/15 blur-[100px]" />
+                <motion.div
+                  className="pointer-events-none absolute left-1/2 top-1/2 size-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-butter/25"
+                  animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.85, 0.4], rotate: [0, -10, 0] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <ConfettiBurst count={12} />
+
+                <motion.div
+                  initial={{ scale: 0.6, opacity: 0, y: 10 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  transition={{ type: "spring", stiffness: 240, damping: 18 }}
+                  className="relative flex w-full max-w-md flex-col items-center rounded-3xl border border-white/15 bg-white/[0.07] px-6 py-9 text-center backdrop-blur-xl sm:px-9"
+                >
+                  <PandaMascot mood="encouraging" size={96} />
+                  <motion.h2
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: [0.5, 1.1, 1], opacity: 1 }}
+                    transition={{ duration: 0.45 }}
+                    className="glow-text mt-3 text-4xl font-extrabold tracking-tight text-butter sm:text-5xl"
+                  >
+                    {pickMessage(KEEP_GOING_MESSAGES, answeredCount - 1)}
+                  </motion.h2>
+                  <motion.p
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="mt-3 text-balance text-sm font-semibold leading-6 text-foreground sm:text-base"
+                  >
+                    "{quote}"
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.35 }}
+                    className="mt-2 text-xs font-semibold text-muted-foreground"
+                  >
+                    This card returns tomorrow — that's the point. 💪
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0, 0.7, 1] }}
+                    transition={{ delay: 0.5 }}
+                    className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-cloud"
+                  >
+                    <Sparkles className="size-3.5" />
+                    Gliding to the next card… tap to skip
+                  </motion.p>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
