@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Cross, HeartPulse, Shirt, Stethoscope, Syringe } from "lucide-react";
-import rabbitLogo from "@/assets/logo.svg";
+import rabbitMoon from "@/assets/rabbit-moon.svg";
 import { cn } from "@/lib/utils";
 
 interface GlassMedLogoProps {
@@ -166,7 +166,7 @@ export function GlassMedLockup({ className }: { className?: string }) {
 /* ----------------------------------------------------------------------- */
 
 const BRAND_SIZES = {
-  sm: { rabbit: 38, font: 20 },
+  sm: { rabbit: 40, font: 20 },
   md: { rabbit: 56, font: 28 },
   lg: { rabbit: 118, font: 46 },
 } as const;
@@ -182,7 +182,7 @@ export function GlassMedBrand({
   return (
     <div
       className={cn(
-        "flex select-none items-center gap-2.5 sm:gap-3",
+        "flex select-none items-center gap-2.5",
         className,
       )}
       aria-label="GlassMed"
@@ -193,11 +193,11 @@ export function GlassMedBrand({
         style={{ width: s.rabbit, height: s.rabbit }}
       >
         <img
-          src={rabbitLogo}
+          src={rabbitMoon}
           alt=""
           aria-hidden
           draggable={false}
-          className="h-full w-full rounded-full object-cover"
+          className="h-full w-full rounded-full object-contain"
         />
       </span>
 
