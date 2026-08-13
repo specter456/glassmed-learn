@@ -10,26 +10,36 @@ import { createPortal } from "react-dom";
  * GlassMed's universal birthday celebration 🎂
  *
  * - Trigger: a gently pulsing 🎂 button in the header.
- * - Flow: "Is today your special day?" → name → full-screen confetti party with
- *   the puppy mascot in a party hat, a candle to blow out, and a Make a Wish.
- * - Memory: name + date are kept in localStorage, so re-opening on the same day
- *   skips straight to a quick "Happy Birthday again!" message.
+ * - Flow: name input → instant fireworks + confetti party with the puppy
+ *   mascot jumping in the middle, then everything fades away by itself.
+ * - Auto-fade: the party plays for ~9 seconds, then the modal and confetti
+ *   fade out smoothly — hands-free. A tiny ✕ in the corner dismisses early.
+ * - Memory: name + date are kept in localStorage, so re-opening on the same
+ *   day skips straight to a quick "Happy Birthday again!" burst.
  *
  * All animations are transform/opacity-only (plus canvas-confetti's one-off
  * bursts), keeping with the app's battery-friendly policy.
  */
 
 const BIRTHDAY_KEY = "glassmed-birthday";
+const CELEBRATION_MS = 9000; // auto-fade after 9s of party
+const FIREWORKS_MS = 8000; // rockets keep launching for the first 8s
+
 const CONFETTI_COLORS = [
   "#78A2D2", // cloud blue
   "#FEFFAF", // butter yellow
   "#A2A2D0", // wistaria
   "#8be9c8", // mint
   "#ffb3c6", // soft pink
+  "#FFD700", // gold
+  "#e63946", // red
+  "#3b82f6", // blue
   "#ffffff",
 ];
 
-type Stage = "ask" | "name" | "celebrating" | "wished" | "again";
+const FIREWORK_COLORS = ["#FFD700", "#e63946", "#3b82f6", "#ffffff"];
+
+type Stage = "name" | "celebrating" | "again";
 
 interface BirthdayMemory {
   name: string;
@@ -55,7 +65,7 @@ function readMemory(): BirthdayMemory | null {
   return null;
 }
 
-/** Tiny swaying party hat for the blob. */
+/** Tiny swaying party hat for the mascot. */
 function PartyHat() {
   return (
     <motion.svg
@@ -80,64 +90,21 @@ function PartyHat() {
   );
 }
 
-/** Candle with a flickering flame that goes out (with a puff of smoke) on wish. */
-function Candle({ lit }: { lit: boolean }) {
-  return (
-    <motion.div
-      className="absolute -right-2 bottom-6 z-10"
-      animate={{ rotate: [0, 3, -3, 0], y: [0, -2, 0] }}
-      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-      aria-hidden
-    >
-      <svg viewBox="0 0 36 56" className="w-9">
-        <defs>
-          <linearGradient id="birthday-candle-body" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#ffe9a8" />
-            <stop offset="100%" stopColor="#ffcf5e" />
-          </linearGradient>
-        </defs>
-        <rect x="12" y="18" width="12" height="34" rx="4" fill="url(#birthday-candle-body)" />
-        <rect x="12" y="18" width="12" height="10" rx="4" fill="#ffffff" opacity="0.25" />
-        <line x1="18" y1="18" x2="18" y2="12" stroke="#5b4a2e" strokeWidth="2" strokeLinecap="round" />
-        <AnimatePresence>
-          {lit && (
-            <motion.path
-              d="M18 4 C 22 10 22 14 18 16 C 14 14 14 10 18 4 Z"
-              fill="#ffb347"
-              initial={{ scale: 0.6, opacity: 0 }}
-              animate={{ scale: [1, 1.18, 0.94, 1], opacity: 1 }}
-              exit={{ scale: 0.4, opacity: 0, y: -6, transition: { duration: 0.5 } }}
-              transition={{
-                scale: { duration: 0.45, repeat: Infinity, ease: "easeInOut" },
-                opacity: { duration: 0.2 },
-              }}
-              style={{ transformOrigin: "18px 16px" }}
-            />
-          )}
-        </AnimatePresence>
-        {!lit && (
-          <motion.circle
-            cx="18"
-            cy="8"
-            r="2"
-            fill="#9aa7b5"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 0.8, 0], y: [-2, -9] }}
-            transition={{ duration: 1.4, repeat: Infinity }}
-          />
-        )}
-      </svg>
-    </motion.div>
-  );
-}
-
 export function BirthdayCelebration() {
   const [open, setOpen] = useState(false);
-  const [stage, setStage] = useState<Stage>("ask");
+  const [stage, setStage] = useState<Stage>("name");
   const [name, setName] = useState("");
   const [celebrateName, setCelebrateName] = useState("");
   const [againName, setAgainName] = useState<string | null>(null);
   const nameRef = useRef<HTMLInputElement>(null);
+  const autoCloseRef = useRef<number | null>(null);
+
+  const clearAutoClose = () => {
+    if (autoCloseRef.current !== null) {
+      window.clearTimeout(autoCloseRef.current);
+      autoCloseRef.current = null;
+    }
+  };
 
   const openModal = () => {
     const memory = readMemory();
@@ -146,21 +113,81 @@ export function BirthdayCelebration() {
       setStage("again");
     } else {
       setAgainName(null);
-      setStage("ask");
+      setName("");
+      setStage("name");
     }
     setOpen(true);
   };
 
   const closeModal = () => {
+    clearAutoClose();
     setOpen(false);
     setName("");
-    setStage("ask");
+    setStage("name");
   };
 
-  // Side cannons rain confetti while the full celebration is up.
+  // Clean up the auto-close timer if the component ever unmounts mid-party.
   useEffect(() => {
-    if (!open || (stage !== "celebrating" && stage !== "wished")) return;
-    const end = Date.now() + 3200;
+    return () => {
+      if (autoCloseRef.current !== null) window.clearTimeout(autoCloseRef.current);
+    };
+  }, []);
+
+  // Fireworks: rockets shoot up from the bottom and burst in mid-air.
+  useEffect(() => {
+    if (!open || stage !== "celebrating") return;
+    const fireworksEnd = Date.now() + FIREWORKS_MS;
+    const burstTimers: number[] = [];
+    let raf = 0;
+
+    const launchRocket = () => {
+      const x = 0.12 + Math.random() * 0.76;
+      const color = FIREWORK_COLORS[Math.floor(Math.random() * FIREWORK_COLORS.length)];
+      confetti({
+        particleCount: 4,
+        angle: 90,
+        spread: 14,
+        startVelocity: 58,
+        gravity: 1.25,
+        ticks: 42,
+        origin: { x, y: 1 },
+        colors: [color, "#ffffff"],
+        scalar: 1.05,
+        zIndex: 10000,
+        disableForReducedMotion: true,
+      });
+      burstTimers.push(
+        window.setTimeout(() => {
+          confetti({
+            particleCount: 80,
+            angle: 90,
+            spread: 360,
+            startVelocity: 24,
+            gravity: 0.85,
+            ticks: 85,
+            origin: { x, y: 0.5 + Math.random() * 0.3 },
+            colors: FIREWORK_COLORS,
+            scalar: 0.9,
+            zIndex: 10000,
+            disableForReducedMotion: true,
+          });
+        }, 190),
+      );
+      if (Date.now() < fireworksEnd) raf = requestAnimationFrame(launchRocket);
+    };
+
+    raf = requestAnimationFrame(launchRocket);
+    return () => {
+      cancelAnimationFrame(raf);
+      burstTimers.forEach((t) => window.clearTimeout(t));
+      confetti.reset();
+    };
+  }, [open, stage]);
+
+  // Confetti cannons from both sides while the celebration is up.
+  useEffect(() => {
+    if (!open || stage !== "celebrating") return;
+    const end = Date.now() + CELEBRATION_MS;
     let raf = 0;
     const tick = () => {
       confetti({
@@ -169,6 +196,8 @@ export function BirthdayCelebration() {
         spread: 55,
         origin: { x: 0, y: 0.7 },
         colors: CONFETTI_COLORS,
+        zIndex: 10000,
+        disableForReducedMotion: true,
       });
       confetti({
         particleCount: 3,
@@ -176,6 +205,8 @@ export function BirthdayCelebration() {
         spread: 55,
         origin: { x: 1, y: 0.7 },
         colors: CONFETTI_COLORS,
+        zIndex: 10000,
+        disableForReducedMotion: true,
       });
       if (Date.now() < end) raf = requestAnimationFrame(tick);
     };
@@ -189,13 +220,19 @@ export function BirthdayCelebration() {
   // "Happy birthday again" — one quick burst, auto-closes.
   useEffect(() => {
     if (!open || stage !== "again") return;
-    confetti({ particleCount: 120, spread: 110, origin: { y: 0.6 }, colors: CONFETTI_COLORS });
-    const t = setTimeout(() => {
+    confetti({
+      particleCount: 120,
+      spread: 110,
+      origin: { y: 0.6 },
+      colors: CONFETTI_COLORS,
+      disableForReducedMotion: true,
+    });
+    const t = window.setTimeout(() => {
       setOpen(false);
-      setStage("ask");
+      setStage("name");
     }, 2600);
     return () => {
-      clearTimeout(t);
+      window.clearTimeout(t);
       confetti.reset();
     };
   }, [open, stage]);
@@ -210,22 +247,19 @@ export function BirthdayCelebration() {
     const finalName = clean || "Wonderful Student";
     setCelebrateName(finalName);
     try {
-      localStorage.setItem(BIRTHDAY_KEY, JSON.stringify({ name: finalName, date: todayStr() }));
+      localStorage.setItem(
+        BIRTHDAY_KEY,
+        JSON.stringify({ name: finalName, date: todayStr() }),
+      );
     } catch {
       // Storage unavailable — the party still happens for this session.
     }
     setStage("celebrating");
+    clearAutoClose();
+    autoCloseRef.current = window.setTimeout(closeModal, CELEBRATION_MS);
   };
 
-  const makeAWish = () => {
-    setStage("wished");
-    confetti({ particleCount: 180, spread: 120, startVelocity: 42, origin: { y: 0.6 }, colors: CONFETTI_COLORS });
-    confetti({ particleCount: 80, angle: 60, spread: 70, origin: { x: 0, y: 0.7 }, colors: CONFETTI_COLORS });
-    confetti({ particleCount: 80, angle: 120, spread: 70, origin: { x: 1, y: 0.7 }, colors: CONFETTI_COLORS });
-  };
-
-  const isParty = stage === "celebrating" || stage === "wished";
-  const isQuick = stage === "again";
+  const isParty = stage === "celebrating";
 
   return (
     <>
@@ -249,7 +283,7 @@ export function BirthdayCelebration() {
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              exit={{ opacity: 0, transition: { duration: 0.6 } }}
               onClick={isParty ? undefined : closeModal}
             />
 
@@ -262,49 +296,16 @@ export function BirthdayCelebration() {
               }`}
               initial={{ opacity: 0, y: 24, scale: 0.94 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 16, scale: 0.96 }}
+              exit={{ opacity: 0, y: 12, scale: 0.96, transition: { duration: 0.6 } }}
               transition={{ type: "spring", stiffness: 320, damping: 26 }}
             >
-              {!isParty && !isQuick && (
-                <button
-                  onClick={closeModal}
-                  className="absolute right-4 top-4 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-white/10"
-                  aria-label="Close"
-                >
-                  <X className="size-4" />
-                </button>
-              )}
-
-              {stage === "ask" && (
-                <>
-                  <div className="flex justify-center">
-                    <Puppy mood="happy" size={120} />
-                  </div>
-                  <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-wistaria">
-                    Is today your special day? 🎂
-                  </h2>
-                  <p className="mx-auto mt-2 max-w-[22rem] text-sm leading-6 text-muted-foreground">
-                    If it is, we have a little celebration waiting just for you!
-                  </p>
-                  <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      className="flex-1 border border-white/15"
-                      onClick={closeModal}
-                    >
-                      Not today
-                    </Button>
-                    <Button
-                      type="button"
-                      className="flex-1 bg-gradient-to-r from-[#78A2D2] to-[#A2A2D0] text-[#0e1233] hover:from-[#8db3de] hover:to-[#b0b0da]"
-                      onClick={() => setStage("name")}
-                    >
-                      Yes, it's my birthday! 🎉
-                    </Button>
-                  </div>
-                </>
-              )}
+              <button
+                onClick={closeModal}
+                className="absolute right-4 top-4 z-10 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-white/10"
+                aria-label="Close"
+              >
+                <X className="size-4" />
+              </button>
 
               {stage === "name" && (
                 <>
@@ -331,7 +332,7 @@ export function BirthdayCelebration() {
                     className="mt-4 w-full bg-gradient-to-r from-[#78A2D2] to-[#A2A2D0] text-[#0e1233] hover:from-[#8db3de] hover:to-[#b0b0da] disabled:opacity-50"
                     onClick={celebrate}
                   >
-                    Celebrate Me! 🎂
+                    Celebrate! 🎂
                   </Button>
                 </>
               )}
@@ -352,59 +353,22 @@ export function BirthdayCelebration() {
 
               {isParty && (
                 <>
-                  <div className="relative mx-auto flex h-40 w-44 items-end justify-center">
+                  <motion.div
+                    className="relative mx-auto flex h-44 w-48 items-end justify-center"
+                    animate={{ y: [0, -22, 0] }}
+                    transition={{ duration: 0.85, repeat: Infinity, ease: "easeInOut" }}
+                  >
                     <PartyHat />
-                    <Candle lit={stage === "celebrating"} />
-                    <Puppy mood="happy" size={120} />
-                  </div>
+                    <Puppy mood="happy" size={128} />
+                  </motion.div>
 
-                  <h2 className="mt-3 text-3xl font-black tracking-tight text-wistaria sm:text-4xl">
-                    Happy Birthday, {celebrateName}! 🎂✨
+                  <h2 className="mt-3 bg-gradient-to-b from-[#FEFFAF] via-white to-[#A2A2D0] bg-clip-text text-4xl font-black tracking-tight text-transparent drop-shadow-[0_0_18px_rgba(162,162,208,0.65)] sm:text-5xl">
+                    🎉 Happy Birthday, {celebrateName}! 🎂✨
                   </h2>
                   <p className="mx-auto mt-3 max-w-[24rem] text-sm leading-6 text-muted-foreground">
                     May your day be filled with joy, laughter, and all the things you
                     love most. You are amazing!
                   </p>
-
-                  <AnimatePresence mode="wait">
-                    {stage === "celebrating" ? (
-                      <motion.div
-                        key="wish"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -8 }}
-                        transition={{ delay: 0.3, duration: 0.35 }}
-                      >
-                        <Button
-                          type="button"
-                          className="mt-6 w-full bg-gradient-to-r from-[#feffaf] via-[#ffd98a] to-[#ffb98a] text-[#5a4a1f] hover:from-[#ffffc4] hover:to-[#ffc9a0]"
-                          onClick={makeAWish}
-                        >
-                          Make a Wish 🌠
-                        </Button>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="granted"
-                        initial={{ opacity: 0, scale: 0.92 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.4 }}
-                        className="mt-6"
-                      >
-                        <p className="text-lg font-extrabold text-cloud">
-                          Wish granted! Have the best year ever! 💫
-                        </p>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          className="mt-3 border border-white/15"
-                          onClick={closeModal}
-                        >
-                          Keep celebrating 🥳
-                        </Button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </>
               )}
             </motion.div>
