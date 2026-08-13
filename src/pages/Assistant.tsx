@@ -19,6 +19,7 @@ import { useAction } from "convex/react";
 import { toast } from "sonner";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
+import { FoxMascot } from "@/components/mascots";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { Button } from "@/components/ui/button";
 import {
@@ -267,9 +268,7 @@ function AssistantInner() {
           className="flex items-center justify-between gap-3"
         >
           <div className="flex items-center gap-2.5">
-            <div className="flex size-10 items-center justify-center rounded-2xl bg-[#a2a2d0]/15 text-wistaria">
-              <Bot className="size-5" />
-            </div>
+            <FoxMascot mood="happy" size={40} />
             <div>
               <h1 className="text-lg font-extrabold tracking-tight text-wistaria">MediPro Assistant</h1>
               <p className="text-xs text-muted-foreground">Accurate study answers · read aloud</p>
@@ -403,9 +402,10 @@ function AssistantInner() {
         {/* chat area */}
         <div className="nice-scroll mt-4 flex-1 space-y-4 overflow-y-auto rounded-3xl">
           {messages.length === 0 && !busy ? (
-            <div className="flex h-full flex-col items-center justify-center gap-5 px-4 text-center">
-              <div className="glass-chip flex size-14 items-center justify-center rounded-2xl text-wistaria">
-                <Sparkles className="size-7" />
+            <div className="flex h-full flex-col items-center justify-center gap-4 px-4 text-center">
+              <FoxMascot mood="happy" size={84} />
+              <div className="glass-chip flex size-12 items-center justify-center rounded-2xl text-wistaria">
+                <Sparkles className="size-6" />
               </div>
               <div>
                 <p className="text-base font-extrabold text-wistaria">
@@ -505,9 +505,9 @@ function AssistantInner() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="glass-chip mr-auto flex items-center gap-2.5 rounded-2xl rounded-bl-md p-4"
+                  className="glass-chip mr-auto flex items-center gap-3 rounded-2xl rounded-bl-md p-4"
                 >
-                  <Bot className="size-4 text-wistaria" />
+                  <FoxMascot mood="thinking" size={30} />
                   <ThinkingDots />
                 </motion.div>
               )}

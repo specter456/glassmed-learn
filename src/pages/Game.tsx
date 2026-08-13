@@ -811,7 +811,7 @@ function Mission({
             >
               <Sparkles className="size-8" />
             </motion.div>
-            <Mascot size={64} className="mx-auto mt-3" />
+            <Mascot variant="panda" size={64} className="mx-auto mt-3" />
             <p className="mt-2 text-xs font-bold uppercase tracking-[0.3em] text-[#e0a458]">
               Level Up! 🚀 Keep going!
             </p>
@@ -877,7 +877,7 @@ function Results({
           )}
         </motion.div>
 
-        {!result.patientLost && <Mascot size={72} className="relative -mt-2" />}
+        {!result.patientLost && <Mascot variant="panda" size={72} className="relative -mt-2" />}
 
         <h1 className="relative mt-5 text-3xl font-extrabold tracking-tight text-wistaria">
           {result.patientLost

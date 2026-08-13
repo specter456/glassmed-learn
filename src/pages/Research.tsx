@@ -22,6 +22,7 @@ import { useSearchParams } from "react-router";
 import { toast } from "sonner";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
+import { RabbitMascot } from "@/components/mascots";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -561,6 +562,17 @@ function ArticleReader({ article }: { article: Article }) {
         follow current certified training (e.g., American Heart Association or your
         national equivalent).
       </p>
+
+      {/* the reading rabbit, tucked into the corner of every article */}
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7, duration: 0.5 }}
+        className="pointer-events-none fixed bottom-24 right-5 z-30 hidden sm:block"
+        aria-hidden
+      >
+        <RabbitMascot mood="reading" size={62} />
+      </motion.div>
     </main>
   );
 }

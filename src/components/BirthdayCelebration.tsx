@@ -1,4 +1,4 @@
-import { Puppy } from "@/components/Puppy";
+import { CatMascot } from "@/components/mascots";
 import { Button } from "@/components/ui/button";
 import confetti from "canvas-confetti";
 import { AnimatePresence, motion } from "framer-motion";
@@ -10,8 +10,8 @@ import { createPortal } from "react-dom";
  * GlassMed's universal birthday celebration 🎂
  *
  * - Trigger: a gently pulsing 🎂 button in the header.
- * - Flow: name input → instant fireworks + confetti party with the puppy
- *   mascot jumping in the middle, then everything fades away by itself.
+ * - Flow: name input → instant fireworks + confetti party with the white
+ *   cat mascot jumping in the middle, then everything fades away by itself.
  * - Auto-fade: the party plays for ~9 seconds, then the modal and confetti
  *   fade out smoothly — hands-free. A tiny ✕ in the corner dismisses early.
  * - Memory: name + date are kept in localStorage, so re-opening on the same
@@ -310,7 +310,7 @@ export function BirthdayCelebration() {
               {stage === "name" && (
                 <>
                   <div className="flex justify-center">
-                    <Puppy mood="happy" size={110} />
+                    <CatMascot mood="excited" size={110} />
                   </div>
                   <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-wistaria">
                     What is your name? ✨
@@ -340,7 +340,7 @@ export function BirthdayCelebration() {
               {stage === "again" && againName && (
                 <>
                   <div className="flex justify-center">
-                    <Puppy mood="happy" size={110} />
+                    <CatMascot mood="excited" size={110} />
                   </div>
                   <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-wistaria">
                     Happy Birthday again, {againName}! 🎂✨
@@ -359,7 +359,7 @@ export function BirthdayCelebration() {
                     transition={{ duration: 0.85, repeat: Infinity, ease: "easeInOut" }}
                   >
                     <PartyHat />
-                    <Puppy mood="happy" size={128} />
+                    <CatMascot mood="excited" size={128} />
                   </motion.div>
 
                   <h2 className="mt-3 bg-gradient-to-b from-[#FEFFAF] via-white to-[#A2A2D0] bg-clip-text text-4xl font-black tracking-tight text-transparent drop-shadow-[0_0_18px_rgba(162,162,208,0.65)] sm:text-5xl">

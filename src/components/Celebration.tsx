@@ -1,4 +1,4 @@
-import { Puppy } from "@/components/Puppy";
+import { CatMascot, PandaMascot } from "@/components/mascots";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router";
@@ -40,21 +40,22 @@ export const ROUND_COMPLETE_TITLES = [
 interface MascotProps {
   size?: number;
   className?: string;
+  /** Which mascot celebrates here — the white cat by default (celebrations),
+   * or the panda for game results. */
+  variant?: "cat" | "panda";
 }
 
 /**
- * The GlassMed puppy mascot — used in every celebration (login, flashcards,
- * game results, level-ups). A pure inline SVG (no assets, no network) with
- * its own happy bounce and tail wag; the medical collar tag ties it to the
- * MediPro brand.
+ * The celebration mascot — white cat for welcome/celebration moments
+ * (login, flashcards, level-ups), panda for the Game section. Pure inline
+ * SVG (no assets, no network) with its own happy bounce.
  */
-export function Mascot({ size = 72, className }: MascotProps) {
-  return (
-    <Puppy
-      mood="happy"
-      size={size}
-      className={cn("drop-shadow-[0_10px_24px_rgba(120,162,210,0.45)]", className)}
-    />
+export function Mascot({ size = 72, className, variant = "cat" }: MascotProps) {
+  const glow = cn("drop-shadow-[0_10px_24px_rgba(120,162,210,0.45)]", className);
+  return variant === "panda" ? (
+    <PandaMascot mood="happy" size={size} className={glow} />
+  ) : (
+    <CatMascot mood="excited" size={size} className={glow} />
   );
 }
 

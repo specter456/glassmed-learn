@@ -14,6 +14,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 
+import { BeeTutorial } from "@/components/BeeTutorial";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { GlassMedBrand } from "@/components/GlassMedLogo";
 import { LOGIN_ARRIVAL_KEY } from "@/components/Celebration";
@@ -189,6 +190,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   return (
     <div className="relative min-h-screen">
       <GlassBackdrop />
+      <BeeTutorial />
 
       {/* Auth Content */}
       <div className="flex min-h-screen flex-1 items-center justify-center px-4 py-10">
