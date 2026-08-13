@@ -129,29 +129,39 @@ export function VoiceRecorderModal({ open, onClose }: VoiceRecorderModalProps) {
     }
   }, [notes]);
 
-  // Full cleanup on unmount (page navigation etc.).
+  // Full cleanup on unmount (page navigation etc.). The ref reads live in a
+  // stable callback rather than the effect cleanup, so they always see the
+  // latest values — the recorder/stream/timer refs are reassigned while
+  // recording, so capturing them when the effect runs would leak the mic.
+  const stopEverything = useCallback(() => {
+    if (timerRef.current !== null) window.clearInterval(timerRef.current);
+    timerRef.current = null;
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+    const recorder = recorderRef.current;
+    recorderRef.current = null;
+    if (recorder && recorder.state !== "inactive") {
+      try {
+        recorder.stop();
+      } catch {
+        /* already stopped */
+      }
+    }
+    for (const url of urlMapRef.current.values()) URL.revokeObjectURL(url);
+    urlMapRef.current.clear();
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
+    }
+  }, []);
+
   useEffect(() => {
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
-      for (const url of urlMapRef.current.values()) URL.revokeObjectURL(url);
-      urlMapRef.current.clear();
-      if (previewUrlRef.current) {
-        URL.revokeObjectURL(previewUrlRef.current);
-        previewUrlRef.current = null;
-      }
-      if (timerRef.current !== null) window.clearInterval(timerRef.current);
-      streamRef.current?.getTracks().forEach((t) => t.stop());
-      const recorder = recorderRef.current;
-      if (recorder && recorder.state !== "inactive") {
-        try {
-          recorder.stop();
-        } catch {
-          /* already stopped */
-        }
-      }
+      stopEverything();
     };
-  }, []);
+  }, [stopEverything]);
 
   const clearTimer = useCallback(() => {
     if (timerRef.current !== null) {
