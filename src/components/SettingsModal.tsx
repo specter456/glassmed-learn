@@ -1,3 +1,4 @@
+import { InstallModal } from "@/components/InstallModal";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Puppy, type PuppyMood } from "@/components/Puppy";
@@ -5,6 +6,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/lib/theme";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  ArrowRight,
   Download,
   Headphones,
   LogOut,
@@ -18,7 +20,6 @@ import {
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router";
-import { toast } from "sonner";
 
 function formatMemberSince(ts?: number): string {
   if (!ts || !Number.isFinite(ts)) return "Unknown";
@@ -149,10 +150,7 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
   const { theme } = useTheme();
   const navigate = useNavigate();
   const [hover, setHover] = useState<HoverKey | null>(null);
-  const [installPrompt, setInstallPrompt] = useState<{
-    prompt: () => Promise<void>;
-    userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
-  } | null>(null);
+  const [installOpen, setInstallOpen] = useState(false);
 
   // Close on Escape.
   useEffect(() => {
@@ -163,19 +161,6 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
-
-  // Capture the PWA install prompt so "Install App" can trigger it directly.
-  useEffect(() => {
-    const onBeforeInstall = (e: Event) => {
-      e.preventDefault();
-      setInstallPrompt(e as unknown as {
-        prompt: () => Promise<void>;
-        userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
-      });
-    };
-    window.addEventListener("beforeinstallprompt", onBeforeInstall);
-    return () => window.removeEventListener("beforeinstallprompt", onBeforeInstall);
-  }, []);
 
   // Fresh welcome every time the modal opens.
   useEffect(() => {
@@ -190,21 +175,11 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
   const initial = (user?.name?.[0] ?? user?.email?.[0] ?? "G").toUpperCase();
   const memberSince = formatMemberSince(user?._creationTime);
 
-  const handleInstall = async () => {
-    if (!installPrompt) {
-      toast.info(
-        "Install GlassMed from your browser: menu (⋮) → “Install app”, or “Add to Home Screen” on mobile.",
-      );
-      return;
-    }
-    await installPrompt.prompt();
-    await installPrompt.userChoice.catch(() => undefined);
-    setInstallPrompt(null);
-  };
-
-  return createPortal(
-    <AnimatePresence>
-      {open && (
+  return (
+    <>
+      {createPortal(
+        <AnimatePresence>
+          {open && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
           <motion.div
             className="absolute inset-0 bg-black/55 backdrop-blur-sm"
@@ -277,9 +252,31 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
               </div>
             </div>
 
+            {/* Install App — prominent, right at the top so it's seen immediately */}
+            <button
+              onClick={() => setInstallOpen(true)}
+              onMouseEnter={() => setHover("install")}
+              onMouseLeave={() => setHover(null)}
+              className="group relative mt-5 flex w-full items-center justify-between gap-3 overflow-hidden rounded-2xl border border-[#78A2D2]/30 bg-gradient-to-r from-[#78A2D2]/20 via-[#a2a2d0]/20 to-[#feffaf]/15 px-4 py-4 text-left transition-transform duration-200 hover:scale-[1.015]"
+            >
+              <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-[#78A2D2]/25 blur-2xl" />
+              <div className="relative flex items-center gap-3">
+                <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#78A2D2] to-[#a2a2d0] text-white shadow-[0_10px_22px_-10px_rgba(120,162,210,0.9)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                  <Download className="size-5" />
+                </div>
+                <div>
+                  <p className="text-sm font-extrabold">Install App</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    Add to Home Screen — works offline
+                  </p>
+                </div>
+              </div>
+              <ArrowRight className="relative size-4 shrink-0 text-wistaria transition-transform duration-300 group-hover:translate-x-1" />
+            </button>
+
             {/* Profile */}
             <div
-              className="glass-panel mt-5 flex items-center gap-3.5 rounded-2xl p-4 transition-transform duration-200 hover:scale-[1.015]"
+              className="glass-panel mt-3 flex items-center gap-3.5 rounded-2xl p-4 transition-transform duration-200 hover:scale-[1.015]"
               onMouseEnter={() => setHover("profile")}
               onMouseLeave={() => setHover(null)}
             >
@@ -334,22 +331,6 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
               />
             </div>
 
-            {/* Install app (PWA) */}
-            <div className="mt-3">
-              <SettingsRow
-                icon={<Download className="size-4" />}
-                title="Install App"
-                subtitle={
-                  installPrompt
-                    ? "Ready — tap to add GlassMed to your device"
-                    : "Add to Home Screen for the app feel"
-                }
-                onHover={() => setHover("install")}
-                onLeave={() => setHover(null)}
-                onClick={() => void handleInstall()}
-              />
-            </div>
-
             {/* Account */}
             <div className="mt-3">
               <Button
@@ -370,8 +351,11 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
             </div>
           </motion.div>
         </div>
+          )}
+        </AnimatePresence>,
+        document.body,
       )}
-    </AnimatePresence>,
-    document.body,
+      <InstallModal open={installOpen} onClose={() => setInstallOpen(false)} />
+    </>
   );
 }
