@@ -1,5 +1,5 @@
 import { BirthdayCelebration } from "@/components/BirthdayCelebration";
-import { GlassMedEmblem } from "@/components/GlassMedLogo";
+import { GlassMedBrand } from "@/components/GlassMedLogo";
 import { LogoutBlobModal } from "@/components/LogoutBlob";
 import { SettingsModal } from "@/components/SettingsModal";
 import { useAuth } from "@/hooks/use-auth";
@@ -56,7 +56,7 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
             aria-label="Go home"
             className="rounded-full transition-transform hover:scale-105"
           >
-            <GlassMedEmblem size="sm" />
+            <GlassMedBrand size="sm" />
           </button>
           {title && (
             <div className="ml-2 hidden min-w-0 flex-col sm:flex">

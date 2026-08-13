@@ -158,51 +158,52 @@ export function GlassMedLockup({ className }: { className?: string }) {
 }
 
 /* ----------------------------------------------------------------------- */
-/* GlassMedEmblem — the rabbit-on-the-moon logo as a soft circular glass    */
-/* backdrop BEHIND the wordmark. Used in the main header and the login      */
-/* screen so the emblem reads as a beautiful, integrated badge rather than  */
-/* a floating sticker. Text is centered over the circle at full opacity     */
-/* while the emblem sits at ~25% so the name always pops.                   */
+/* GlassMedBrand — the rabbit-on-the-moon logo sitting BESIDE the           */
+/* calligraphy wordmark: [Rabbit] [GlassMed]. The text keeps its original   */
+/* style — no circle, no background — just the beautiful calligraphy with   */
+/* its soft glow, perfectly centered against the rabbit medallion.          */
+/* Used in the main header and the login screen.                            */
 /* ----------------------------------------------------------------------- */
 
-const EMBLEM_SIZES = {
-  sm: { circle: 52, font: 12.5 },
-  md: { circle: 96, font: 24 },
-  lg: { circle: 184, font: 42 },
+const BRAND_SIZES = {
+  sm: { rabbit: 38, font: 20 },
+  md: { rabbit: 56, font: 28 },
+  lg: { rabbit: 118, font: 46 },
 } as const;
 
-export function GlassMedEmblem({
+export function GlassMedBrand({
   size = "sm",
   className,
 }: {
-  size?: keyof typeof EMBLEM_SIZES;
+  size?: keyof typeof BRAND_SIZES;
   className?: string;
 }) {
-  const s = EMBLEM_SIZES[size];
+  const s = BRAND_SIZES[size];
   return (
     <div
       className={cn(
-        "relative flex shrink-0 select-none items-center justify-center rounded-full",
+        "flex select-none items-center gap-2.5 sm:gap-3",
         className,
       )}
-      style={{ width: s.circle, height: s.circle }}
       aria-label="GlassMed"
     >
-      {/* the glass circle itself — soft blur, glowing edge, gentle halo */}
-      <div className="absolute inset-0 rounded-full bg-white/10 ring-1 ring-cloud/40 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_0_24px_rgba(120,162,210,0.35)]" />
-
-      {/* the rabbit emblem, dimmed so the text stays perfectly readable */}
-      <img
-        src={rabbitLogo}
-        alt=""
-        aria-hidden
-        draggable={false}
-        className="absolute inset-0 h-full w-full rounded-full object-cover opacity-25"
-      />
-
-      {/* centered wordmark, floating above the emblem */}
+      {/* the rabbit-on-the-moon medallion, beside the name */}
       <span
-        className="relative whitespace-nowrap font-calligraphy font-medium leading-none tracking-wide text-wistaria drop-shadow-[0_0_10px_rgba(162,162,208,0.55)]"
+        className="relative block shrink-0 overflow-hidden rounded-full ring-1 ring-cloud/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_0_18px_rgba(120,162,210,0.4)]"
+        style={{ width: s.rabbit, height: s.rabbit }}
+      >
+        <img
+          src={rabbitLogo}
+          alt=""
+          aria-hidden
+          draggable={false}
+          className="h-full w-full rounded-full object-cover"
+        />
+      </span>
+
+      {/* the wordmark — original calligraphy style with its glow */}
+      <span
+        className="whitespace-nowrap font-calligraphy leading-none tracking-wide text-wistaria drop-shadow-[0_0_10px_rgba(162,162,208,0.55)]"
         style={{ fontSize: s.font }}
       >
         GlassMed
