@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { BottomNav } from "@/components/BottomNav";
 import { LoginCelebration } from "@/components/Celebration";
 import { RequireAuth } from "@/components/RequireAuth";
+import { SplashScreen } from "@/components/SplashScreen";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { ConvexReactClient } from "convex/react";
@@ -242,6 +243,16 @@ function App() {
     unsavedChangesWarning: false,
   });
 
+  // PWA installability: register the service worker in production builds
+  // (dev keeps the module graph untouched so previews stay snappy).
+  useEffect(() => {
+    if (!import.meta.env.PROD) return;
+    if (!("serviceWorker" in navigator)) return;
+    navigator.serviceWorker.register("/sw.js").catch((err) => {
+      console.warn("[GlassMed] Service worker registration failed:", err);
+    });
+  }, []);
+
   return (
     <RootErrorBoundary>
       <StrictMode>
@@ -249,6 +260,7 @@ function App() {
           <MotionConfig reducedMotion="user">
             <BrowserRouter>
               <RouteSyncer />
+              <SplashScreen />
               <LoginCelebration />
               <ToolbarErrorBoundary>
                 <VlyToolbar />

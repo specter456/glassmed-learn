@@ -22,7 +22,7 @@ const ITEMS: NavItem[] = [
   { id: "research", label: "Research", icon: BookOpen, path: "/research" },
   { id: "diagrams", label: "Diagrams", icon: HeartPulse, path: "/diagrams", center: true },
   { id: "assistant", label: "AI Chat", icon: Bot, path: "/assistant" },
-  { id: "profile", label: "Profile", icon: User, action: "settings" },
+  { id: "profile", label: "Settings", icon: User, action: "settings" },
 ];
 
 export function BottomNav() {

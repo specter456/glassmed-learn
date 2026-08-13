@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="GlassMed Learn — rabbit on a crescent moon">
+  <defs>
+    <linearGradient id="iconBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a2147" />
+      <stop offset="0.5" stop-color="#0e1233" />
+      <stop offset="1" stop-color="#2a2350" />
+    </linearGradient>
+    <radialGradient id="iconGlow" cx="0.5" cy="0.42" r="0.58">
+      <stop offset="0" stop-color="#78a2d2" stop-opacity="0.4" />
+      <stop offset="1" stop-color="#78a2d2" stop-opacity="0" />
+    </radialGradient>
+    <mask id="iconMoon">
+      <rect width="512" height="512" fill="white" />
+      <circle cx="256" cy="196" r="150" fill="black" />
+    </mask>
+    <linearGradient id="iconMoonGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fb6e0" />
+      <stop offset="0.55" stop-color="#78a2d2" />
+      <stop offset="1" stop-color="#6691c4" />
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="118" fill="url(#iconBg)" />
+  <rect width="512" height="512" rx="118" fill="url(#iconGlow)" />
+
+  <!-- crescent moon (smile ∪, horns up) -->
+  <circle cx="256" cy="300" r="170" fill="url(#iconMoonGrad)" mask="url(#iconMoon)" />
+
+  <!-- tiny sparkle stars -->
+  <path d="M128 108 L135 121 L148 128 L135 135 L128 148 L121 135 L108 128 L121 121 Z" fill="#feffaf" opacity="0.9" />
+  <path d="M396 84 L401.5 94 L411.5 99.5 L401.5 105 L396 115 L390.5 105 L380.5 99.5 L390.5 94 Z" fill="#feffaf" />
+  <path d="M368 188 L372 194.5 L378.5 198.5 L372 202.5 L368 209 L364 202.5 L357.5 198.5 L364 194.5 Z" fill="#feffaf" opacity="0.75" />
+
+  <!-- rabbit sitting on the crescent -->
+  <g>
+    <g transform="rotate(-10 222 170)">
+      <ellipse cx="222" cy="170" rx="15" ry="42" fill="#ffffff" />
+      <ellipse cx="222" cy="174" rx="6.5" ry="27" fill="#f7c7d4" />
+    </g>
+    <g transform="rotate(10 290 170)">
+      <ellipse cx="290" cy="170" rx="15" ry="42" fill="#ffffff" />
+      <ellipse cx="290" cy="174" rx="6.5" ry="27" fill="#f7c7d4" />
+    </g>
+    <circle cx="256" cy="240" r="50" fill="#ffffff" />
+    <ellipse cx="256" cy="318" rx="56" ry="44" fill="#ffffff" />
+    <circle cx="240" cy="236" r="6.5" fill="#33415c" />
+    <circle cx="272" cy="236" r="6.5" fill="#33415c" />
+    <circle cx="243.5" cy="233" r="2" fill="#ffffff" />
+    <circle cx="275.5" cy="233" r="2" fill="#ffffff" />
+    <ellipse cx="256" cy="254" rx="6" ry="4.5" fill="#f2a3b8" />
+    <circle cx="218" cy="252" r="9" fill="#ffd9e3" opacity="0.85" />
+    <circle cx="294" cy="252" r="9" fill="#ffd9e3" opacity="0.85" />
+    <path d="M249 262 Q256 269 263 262" stroke="#c77b93" stroke-width="4" fill="none" stroke-linecap="round" />
+    <ellipse cx="214" cy="330" rx="14" ry="10" fill="#ffffff" />
+    <ellipse cx="298" cy="330" rx="14" ry="10" fill="#ffffff" />
+  </g>
+</svg>

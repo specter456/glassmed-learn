@@ -24,7 +24,7 @@ function DiagramsInner() {
           </div>
 
           <h1 className="glow-text mt-7 text-balance text-3xl font-extrabold tracking-tight text-wistaria sm:text-4xl">
-            Anatomy Diagrams — Coming Soon
+            Anatomy Diagrams — Heatwave Style, Coming Soon
           </h1>
           <p className="mt-3 max-w-md text-sm leading-6 text-muted-foreground">
             Ultra-light, labelled diagrams for every fundamentals topic are on
