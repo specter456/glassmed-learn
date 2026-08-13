@@ -2,6 +2,7 @@ import { InstallModal } from "@/components/InstallModal";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Puppy, type PuppyMood } from "@/components/Puppy";
+import { VoiceRecorderModal } from "@/components/VoiceRecorderModal";
 import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/lib/theme";
 import { AnimatePresence, motion } from "framer-motion";
@@ -19,7 +20,6 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useNavigate } from "react-router";
 
 function formatMemberSince(ts?: number): string {
   if (!ts || !Number.isFinite(ts)) return "Unknown";
@@ -148,15 +148,16 @@ function SettingsRow({
 export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalProps) {
   const { user } = useAuth();
   const { theme } = useTheme();
-  const navigate = useNavigate();
   const [hover, setHover] = useState<HoverKey | null>(null);
   const [installOpen, setInstallOpen] = useState(false);
+  const [voiceOpen, setVoiceOpen] = useState(false);
 
   // Every way out of the modal resets the puppy to its welcome state, so
   // reopening always starts fresh (no setState inside an effect).
   const handleClose = useCallback(() => {
     setHover(null);
     setInstallOpen(false);
+    setVoiceOpen(false);
     onClose();
   }, [onClose]);
 
@@ -319,18 +320,15 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
               />
             </div>
 
-            {/* Voice notes — read-aloud lives in the AI assistant */}
+            {/* Voice notes — a real audio recorder, fully separate from the AI chat */}
             <div className="mt-3">
               <SettingsRow
                 icon={<Headphones className="size-4" />}
                 title="Voice Notes"
-                subtitle="AI read-aloud & narration"
+                subtitle="Record & play back your study memos"
                 onHover={() => setHover("voice")}
                 onLeave={() => setHover(null)}
-                onClick={() => {
-                  handleClose();
-                  navigate("/assistant");
-                }}
+                onClick={() => setVoiceOpen(true)}
               />
             </div>
 
@@ -359,6 +357,7 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
         document.body,
       )}
       <InstallModal open={installOpen} onClose={() => setInstallOpen(false)} />
+      <VoiceRecorderModal open={voiceOpen} onClose={() => setVoiceOpen(false)} />
     </>
   );
 }
