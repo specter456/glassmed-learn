@@ -16,8 +16,13 @@ import "./index.css";
 // Lazy load route components for better code splitting. `lazyWithRetry` wraps
 // every import so a transient "Failed to fetch dynamically imported module"
 // (stale chunk reference after a rebuild, brief network blip while the module
-// graph is mid-update) retries a few times before surfacing to the error
-// boundary. Permanently-broken imports still show the branded error screen.
+// graph is mid-update) retries a few times. If retries can't help, the chunk
+// reference itself is stale — the dev server restarted or a new deploy replaced
+// the old hashed chunk names — so a single page reload per session fetches the
+// fresh module graph and the route loads. Only if that still fails does the
+// error boundary surface the branded error screen.
+const LAZY_RELOAD_KEY = "glassmed-lazy-reload";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- React.lazy requires ComponentType<any>
 function lazyWithRetry<T extends React.ComponentType<any>>(
   factory: () => Promise<{ default: T }>,
@@ -37,6 +42,19 @@ function lazyWithRetry<T extends React.ComponentType<any>>(
             retryError,
           );
         }
+      }
+      // Retrying the same (now-stale) URL can't succeed. Reload once per
+      // session so the browser pulls the fresh index + chunk manifest; the
+      // sessionStorage marker stops it looping if the route is genuinely broken.
+      try {
+        if (sessionStorage.getItem(LAZY_RELOAD_KEY) !== "1") {
+          sessionStorage.setItem(LAZY_RELOAD_KEY, "1");
+          window.location.reload();
+        }
+      } catch {
+        // sessionStorage unavailable — reload anyway (worst case: a second
+        // failure lands on the error boundary instead of looping).
+        window.location.reload();
       }
       throw error;
     });

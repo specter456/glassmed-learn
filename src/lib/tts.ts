@@ -4,11 +4,14 @@
  * and Safari on both desktop and mobile. All access is guarded so the app
  * never crashes in environments where speech is unavailable.
  *
- * Voice profiles:
- *  - Male    → a male voice, pitch 1.0 / rate 1.0
- *  - Female  → a female voice, pitch 1.0 / rate 1.0
- *  - Husky   → male voice, pitch 0.8 / rate 0.9 (deeper, rougher)
- *  - Smooth  → female voice, pitch 1.1 / rate 0.95 (softer, calming)
+ * Voice profiles — each has its own character so the profiles sound clearly
+ *  different even on devices that only expose a single English voice (where
+ *  gender-based voice picking has nothing to choose from, the pitch/rate still
+ *  separates them):
+ *  - Male    → a male voice, pitch 0.9 / rate 0.98 (deeper)
+ *  - Female  → a female voice, pitch 1.12 / rate 1.0 (brighter)
+ *  - Husky   → male voice, pitch 0.75 / rate 0.9 (deepest, roughest)
+ *  - Smooth  → female voice, pitch 1.18 / rate 0.95 (softest, calming)
  *  - Custom  → any installed system voice the user picks
  *
  * Reliability notes:
@@ -37,15 +40,15 @@ export const VOICE_PROFILES: VoiceProfile[] = [
     id: "male",
     label: "Male",
     description: "Standard deep male voice",
-    pitch: 1,
-    rate: 1,
+    pitch: 0.9,
+    rate: 0.98,
     gender: "male",
   },
   {
     id: "female",
     label: "Female",
     description: "Standard clear female voice",
-    pitch: 1,
+    pitch: 1.12,
     rate: 1,
     gender: "female",
   },
@@ -53,7 +56,7 @@ export const VOICE_PROFILES: VoiceProfile[] = [
     id: "husky",
     label: "Husky",
     description: "Deep, gravelly male voice",
-    pitch: 0.8,
+    pitch: 0.75,
     rate: 0.9,
     gender: "male",
   },
@@ -61,7 +64,7 @@ export const VOICE_PROFILES: VoiceProfile[] = [
     id: "smooth",
     label: "Smooth",
     description: "Soft, gentle female voice",
-    pitch: 1.1,
+    pitch: 1.18,
     rate: 0.95,
     gender: "female",
   },
@@ -245,13 +248,27 @@ export function qualityById(id: string | null | undefined): VoiceQuality {
   return VOICE_QUALITIES.find((q) => q.id === id) ?? VOICE_QUALITIES[0];
 }
 
-/** Overlay a voice-quality preset onto a voice profile (pitch + rate). */
+/** Round to two decimals so combined pitch/rate stay clean. */
+function round2(n: number): number {
+  return Math.round(n * 100) / 100;
+}
+
+/**
+ * Overlay a voice-quality preset onto a voice profile. The preset tunes ON TOP
+ * of the profile's own character (combined, not replaced) — so a male voice
+ * stays deeper than a female one even when the same quality is selected, which
+ * keeps every profile audibly distinct on devices with very few voices.
+ */
 export function applyQuality(
   profile: VoiceProfile,
   quality: VoiceQuality | null | undefined,
 ): VoiceProfile {
   if (!quality) return profile;
-  return { ...profile, pitch: quality.pitch, rate: quality.rate };
+  return {
+    ...profile,
+    pitch: round2(profile.pitch * quality.pitch),
+    rate: round2(profile.rate * quality.rate),
+  };
 }
 
 /** Interval (ms) for the Chrome long-utterance keep-alive nudge. */

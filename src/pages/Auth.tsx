@@ -85,11 +85,11 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       // the translucent celebration, so the Yayy overlay fades in/out over the
       // same screen instead of a separate login-success screen. (LoginCelebration
       // itself decides "Welcome" vs "Welcome back" and records the login.)
-      try {
-        sessionStorage.setItem(LOGIN_ARRIVAL_KEY, "1");
-      } catch {
-        // Non-fatal — the user just lands on the dashboard without the fanfare.
-      }
+      //
+      // The arrival flag is set by the sign-in handlers below, NOT here — this
+      // effect only navigates. That keeps the celebration tied to an explicit
+      // login action in this session: remounting this page while already
+      // signed in (e.g. browser Back after login) never re-triggers it.
       navigate(redirect);
     }
   }, [authLoading, isAuthenticated, navigate, redirect]);
@@ -156,7 +156,13 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     try {
       const formData = new FormData(event.currentTarget);
       await signIn("email-otp", formData);
-      // isAuthenticated flips true → the celebration effect handles redirect.
+      // Explicit login: flag the welcome celebration before isAuthenticated
+      // flips and the effect above navigates. Only an actual sign-in sets this.
+      try {
+        sessionStorage.setItem(LOGIN_ARRIVAL_KEY, "1");
+      } catch {
+        // Non-fatal — the user just lands on the dashboard without the fanfare.
+      }
     } catch (error) {
       console.error("OTP verification error:", error);
       const message = error instanceof Error ? error.message : "";
@@ -175,7 +181,13 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     setError(null);
     try {
       await signIn("anonymous");
-      // isAuthenticated flips true → the celebration effect handles redirect.
+      // Explicit login: flag the welcome celebration before isAuthenticated
+      // flips and the effect above navigates. Only an actual sign-in sets this.
+      try {
+        sessionStorage.setItem(LOGIN_ARRIVAL_KEY, "1");
+      } catch {
+        // Non-fatal — the user just lands on the dashboard without the fanfare.
+      }
     } catch (error) {
       console.error("Guest login error:", error);
       setError(

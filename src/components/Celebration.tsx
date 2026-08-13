@@ -252,6 +252,9 @@ export function pickMessage<T>(pool: T[], index: number): T {
 export const LOGIN_ARRIVAL_KEY = "glassmed-login-just-arrived";
 /** Records the last successful login so we can greet returning users. */
 export const LAST_LOGIN_KEY = "glassmed-last-login";
+/** Marks that the welcome celebration already played this session, so it can
+ *  never fire again from page-to-page navigation — only a fresh sign-in. */
+export const WELCOME_SHOWN_KEY = "glassmed-welcome-shown";
 
 const WELCOME_NEW = {
   title: "Welcome to GlassMed! 🎉",
@@ -280,11 +283,26 @@ export function LoginCelebration() {
     } catch {
       return;
     }
-    if (!flagged) return;
     try {
       sessionStorage.removeItem(LOGIN_ARRIVAL_KEY);
     } catch {
       // Non-fatal — consumed below anyway.
+    }
+    if (!flagged) return;
+    // At most once per session: even if a stale arrival flag somehow survives,
+    // the welcome never replays while navigating between pages. A fresh login
+    // in a later session re-arms it because this marker is session-scoped.
+    let alreadyShown = false;
+    try {
+      alreadyShown = sessionStorage.getItem(WELCOME_SHOWN_KEY) === "1";
+    } catch {
+      // sessionStorage unavailable — celebrate anyway (best effort).
+    }
+    if (alreadyShown) return;
+    try {
+      sessionStorage.setItem(WELCOME_SHOWN_KEY, "1");
+    } catch {
+      // Non-fatal — the in-session guard just won't persist.
     }
     // Decide new vs returning BEFORE recording this login (otherwise a
     // first-ever login would already look like a returning one), then record it

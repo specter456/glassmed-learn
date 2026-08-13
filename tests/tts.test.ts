@@ -139,34 +139,43 @@ describe("speech availability", () => {
 });
 
 describe("voice profiles", () => {
-  it("male → pitch 1.0, rate 1.0, and a male-named voice", () => {
+  it("male → deeper pitch (0.9) and a male-named voice", () => {
     speak("text", profile("male"));
     const u = lastUtterance();
-    expect(u.pitch).toBe(1);
-    expect(u.rate).toBe(1);
+    expect(u.pitch).toBe(0.9);
+    expect(u.rate).toBe(0.98);
     expect(u.voice?.name).toBe("David");
   });
 
-  it("female → pitch 1.0, rate 1.0, and a female-named voice", () => {
+  it("female → brighter pitch (1.12) and a female-named voice", () => {
     speak("text", profile("female"));
     const u = lastUtterance();
-    expect(u.pitch).toBe(1);
+    expect(u.pitch).toBe(1.12);
     expect(u.rate).toBe(1);
     expect(u.voice?.name).toBe("Samantha");
   });
 
-  it("husky → male voice with pitch 0.8 and slower rate (per spec)", () => {
+  it("every profile keeps its own character so voices differ even on one-voice devices", () => {
+    // Even with a single installed voice (no gender match), the pitch differs
+    // enough between profiles that Male vs Female vs Husky vs Smooth are audible.
+    const pitches = new Set(
+      VOICE_PROFILES.filter((p) => p.id !== "custom").map((p) => p.pitch),
+    );
+    expect(pitches.size).toBe(4);
+  });
+
+  it("husky → male voice with deepest pitch (0.75) and slower rate", () => {
     speak("text", profile("husky"));
     const u = lastUtterance();
-    expect(u.pitch).toBe(0.8);
+    expect(u.pitch).toBe(0.75);
     expect(u.rate).toBe(0.9);
     expect(u.voice?.name).toBe("David");
   });
 
-  it("smooth → female voice with pitch 1.1 and slower rate (per spec)", () => {
+  it("smooth → female voice with softest pitch (1.18) and slower rate", () => {
     speak("text", profile("smooth"));
     const u = lastUtterance();
-    expect(u.pitch).toBe(1.1);
+    expect(u.pitch).toBe(1.18);
     expect(u.rate).toBe(0.95);
     expect(u.voice?.name).toBe("Samantha");
   });
@@ -280,29 +289,38 @@ describe("voice quality presets", () => {
     expect(qualityById("professional").id).toBe("professional");
   });
 
-  it("applyQuality overlays pitch and rate but preserves the voice choice", () => {
+  it("applyQuality combines with (not replaces) the profile character, preserving the voice choice", () => {
+    // Husky (0.75) × Professional (0.95) stays deeper than a neutral profile —
+    // the preset tunes on top instead of wiping the profile's identity.
     const tuned = applyQuality(profile("husky"), qualityById("professional"));
-    expect(tuned.pitch).toBe(0.95);
-    expect(tuned.rate).toBe(0.95);
+    expect(tuned.pitch).toBeCloseTo(0.71, 5);
+    expect(tuned.rate).toBeCloseTo(0.86, 5);
     expect(tuned.gender).toBe("male");
+
+    // Male vs female keep their relative difference under the SAME quality,
+    // which is what makes the voice picker audible on one-voice devices.
+    const male = applyQuality(profile("male"), qualityById("smooth-calm"));
+    const female = applyQuality(profile("female"), qualityById("smooth-calm"));
+    expect(male.pitch).toBeLessThan(female.pitch);
 
     const custom = applyQuality(
       { ...profile("custom"), customVoiceName: "Google US English" },
       qualityById("energetic"),
     );
     expect(custom.customVoiceName).toBe("Google US English");
+    expect(custom.pitch).toBe(1.05);
     expect(custom.rate).toBe(1.1);
   });
 
   it("applyQuality with no preset leaves the profile untouched", () => {
-    expect(applyQuality(profile("husky"), null).pitch).toBe(0.8);
+    expect(applyQuality(profile("husky"), null).pitch).toBe(0.75);
   });
 
-  it("an applied quality preset reaches the utterance", () => {
+  it("an applied quality preset reaches the utterance (profile × preset)", () => {
     speak("text", applyQuality(profile("smooth"), qualityById("energetic")));
     const u = lastUtterance();
-    expect(u.pitch).toBe(1.05);
-    expect(u.rate).toBe(1.1);
+    expect(u.pitch).toBeCloseTo(1.24, 5);
+    expect(u.rate).toBeCloseTo(1.05, 5);
   });
 });
 
