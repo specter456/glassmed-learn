@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import {
   Bot,
   Check,
+  Mic,
   Pause,
   Play,
   Send,
@@ -45,6 +46,12 @@ import {
   type VoiceProfileId,
   type VoiceQualityId,
 } from "@/lib/tts";
+import {
+  createSpeechRecognizer,
+  speechRecognitionSupported,
+  type SpeechRecognizer,
+} from "@/lib/speech";
+import { cn } from "@/lib/utils";
 
 /* ------------------------- safe preferences ------------------------- */
 /* localStorage can throw in sandboxed previews — never let it crash the page. */
@@ -123,6 +130,13 @@ function AssistantInner() {
     getInstalledVoices(),
   );
 
+  // Voice-to-text in the composer (Web Speech API — free, browser-native,
+  // audio never leaves the device). Separate from the TTS read-aloud feature.
+  const [listening, setListening] = useState(false);
+  const recognizerRef = useRef<SpeechRecognizer | null>(null);
+  const speechPrefixRef = useRef("");
+  const speechFinalRef = useRef("");
+
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   const profile: VoiceProfile = useMemo(() => {
@@ -142,16 +156,108 @@ function AssistantInner() {
   useEffect(() => savePref("medipro-tts-custom-voice", customVoiceName ?? ""), [customVoiceName]);
   useEffect(() => savePref("medipro-tts-quality", qualityId), [qualityId]);
 
-  // Stop any narration when leaving the page.
-  useEffect(() => () => stopSpeaking(), []);
+  // Stop narration + free the microphone when leaving the page.
+  useEffect(
+    () => () => {
+      stopSpeaking();
+      const recognizer = recognizerRef.current;
+      if (recognizer) {
+        try {
+          recognizer.abort();
+        } catch {
+          /* already stopped */
+        }
+      }
+    },
+    [],
+  );
 
   // Keep the newest message in view.
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, busy]);
 
+  const stopListening = useCallback(() => {
+    const recognizer = recognizerRef.current;
+    recognizerRef.current = null;
+    setListening(false);
+    if (recognizer) {
+      try {
+        // stop() (not abort()) commits any pending final transcript first.
+        recognizer.stop();
+      } catch {
+        /* already stopped */
+      }
+    }
+  }, []);
+
+  const startListening = useCallback(() => {
+    if (listening) return;
+    if (!speechRecognitionSupported()) {
+      toast.error("Voice input isn't supported in this browser — try Chrome, Edge, or Safari.");
+      return;
+    }
+
+    // Don't record while the assistant is reading an answer aloud — the
+    // speaker would get transcribed into the question.
+    stopSpeaking();
+    setSpeakingId(null);
+    setSpeechPaused(false);
+
+    const recognizer = createSpeechRecognizer({
+      onResult: (finalDelta, interim) => {
+        speechFinalRef.current += finalDelta;
+        const prefix = speechPrefixRef.current;
+        const finalPart = speechFinalRef.current.trim();
+        const interimPart = interim.trim();
+        const base =
+          prefix + (finalPart ? (prefix && !prefix.endsWith(" ") ? " " : "") + finalPart : "");
+        setInput(base + (interimPart ? (base ? " " : "") + interimPart : ""));
+      },
+      onError: (error) => {
+        if (error === "not-allowed" || error === "service-not-allowed") {
+          toast.error(
+            "Microphone access was denied — allow it in your browser to use voice input.",
+          );
+        } else if (error === "network") {
+          toast.error(
+            "Speech recognition needs a connection right now — check yours and try again.",
+          );
+        }
+        // "no-speech" and "aborted" end quietly.
+      },
+      onEnd: () => {
+        // Only the current recognizer may clear the listening state, so a
+        // stale onend from a manually-stopped session can't clobber a new one.
+        if (recognizerRef.current !== null) {
+          recognizerRef.current = null;
+          setListening(false);
+        }
+      },
+    });
+
+    if (!recognizer) {
+      toast.error("Voice input isn't supported in this browser — try Chrome, Edge, or Safari.");
+      return;
+    }
+
+    recognizerRef.current = recognizer;
+    // Preserve anything already typed in the box, then append the dictation.
+    speechPrefixRef.current = input.trim() ? `${input.trim()} ` : "";
+    speechFinalRef.current = "";
+    setListening(true);
+    try {
+      recognizer.start();
+    } catch {
+      recognizerRef.current = null;
+      setListening(false);
+      toast.error("Couldn't start the microphone. Please try again.");
+    }
+  }, [input, listening]);
+
   const send = useCallback(
     async (textOverride?: string) => {
+      if (listening) stopListening();
       const text = (textOverride ?? input).trim().slice(0, 2000);
       if (!text || busy) return;
 
@@ -206,18 +312,19 @@ function AssistantInner() {
         setBusy(false);
       }
     },
-    [input, busy, messages, askAssistant],
+    [input, busy, messages, askAssistant, listening, stopListening],
   );
 
   // Privacy in action: everything the user typed lives only in this component's
   // state — clearing it wipes the whole conversation from this tab immediately.
   const clearChat = useCallback(() => {
     stopSpeaking();
+    stopListening();
     setSpeakingId(null);
     setSpeechPaused(false);
     setMessages([]);
     setLastError(null);
-  }, []);
+  }, [stopListening]);
 
   const toggleSpeak = useCallback(
     (index: number, text: string) => {
@@ -571,22 +678,59 @@ function AssistantInner() {
         {/* composer */}
         <div className="glass-panel shine mt-4 rounded-2xl p-3">
           <div className="flex items-end gap-2">
-            <Textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              aria-invalid={lastError !== null && !setupNeeded}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  void send();
+            <div className="relative flex-1">
+              <Textarea
+                value={input}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  // A manual edit ends any live listening session so the
+                  // recognizer can't overwrite what the user typed.
+                  if (listening) stopListening();
+                }}
+                aria-invalid={lastError !== null && !setupNeeded}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    void send();
+                  }
+                }}
+                placeholder={
+                  listening
+                    ? "Listening… speak your question 🎤"
+                    : "Ask a question… (Enter to send, Shift+Enter for a new line)"
                 }
-              }}
-              placeholder="Ask a question… (Enter to send, Shift+Enter for a new line)"
-              maxLength={2000}
-              rows={1}
-              className="nice-scroll max-h-32 min-h-0 flex-1 resize-none rounded-xl border-white/10 bg-white/5"
-              aria-label="Ask the assistant"
-            />
+                maxLength={2000}
+                rows={1}
+                className="nice-scroll max-h-32 min-h-0 w-full resize-none rounded-xl border-white/10 bg-white/5 pb-7 pr-11"
+                aria-label="Ask the assistant"
+              />
+              <button
+                type="button"
+                onClick={listening ? stopListening : startListening}
+                aria-label={listening ? "Stop voice input" : "Speak your question"}
+                title={
+                  listening
+                    ? "Stop listening"
+                    : "Voice input — speak your question (free, browser-native)"
+                }
+                className={cn(
+                  "absolute bottom-1.5 right-1.5 flex size-8 items-center justify-center rounded-full transition-colors",
+                  listening
+                    ? "bg-[#e2666f]/20 text-[#e2666f]"
+                    : "text-muted-foreground hover:bg-white/10 hover:text-foreground",
+                )}
+              >
+                {listening && (
+                  <motion.span
+                    className="absolute inset-0 rounded-full border-2 border-[#e2666f]"
+                    animate={{ scale: [1, 1.8], opacity: [0.8, 0] }}
+                    transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut" }}
+                    aria-hidden
+                  />
+                )}
+                <Mic className="size-4" />
+              </button>
+            </div>
             <Button
               onClick={() => void send()}
               disabled={busy || !input.trim()}
