@@ -17,6 +17,9 @@ function render(svg: string, size: number, out: string) {
   console.log(`wrote ${out} (${png.length} bytes)`);
 }
 
+// The transparent rabbit-fishing logo used on the splash screen.
+render(readFileSync("src/assets/rabbit-fishing.svg", "utf8"), 512, "public/logo.png");
+
 render(source, 512, "public/app-icon-512.png");
 render(source, 512, "public/app-icon.png");
 render(source, 192, "public/app-icon-192.png");

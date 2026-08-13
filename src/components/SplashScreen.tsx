@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import rabbitMoon from "@/assets/rabbit-moon.svg";
 
 const SPLASH_MS = 3000;
 
@@ -62,14 +61,14 @@ export function SplashScreen() {
                 aria-hidden
               />
               <motion.img
-                src={rabbitMoon}
+                src="/logo.png"
                 alt=""
                 aria-hidden
                 draggable={false}
-                className="relative h-44 w-44 object-contain drop-shadow-[0_0_28px_rgba(120,162,210,0.55)]"
+                className="relative h-56 w-56 object-contain drop-shadow-[0_0_34px_rgba(120,162,210,0.55)] sm:h-64 sm:w-64"
                 style={{ transformOrigin: "top center" }}
-                animate={{ rotate: [-7, 7, -7] }}
-                transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ rotate: [-6, 6, -6] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               />
             </motion.div>
 
