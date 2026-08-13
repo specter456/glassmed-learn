@@ -1,4 +1,4 @@
-import '@vly-ai/integrations';
+import "@vly-ai/integrations";
 import { MotionConfig } from "framer-motion";
 import { Toaster } from "@/components/ui/sonner";
 import { BottomNav } from "@/components/BottomNav";
@@ -13,51 +13,136 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import "./index.css";
 
-// Lazy load route components for better code splitting. `lazyWithRetry` wraps
-// every import so a transient "Failed to fetch dynamically imported module"
-// (stale chunk reference after a rebuild, brief network blip while the module
-// graph is mid-update) retries a few times. If retries can't help, the chunk
-// reference itself is stale — the dev server restarted or a new deploy replaced
-// the old hashed chunk names — so a single page reload per session fetches the
-// fresh module graph and the route loads. Only if that still fails does the
-// error boundary surface the branded error screen.
-const LAZY_RELOAD_KEY = "glassmed-lazy-reload";
+/* ------------------------------------------------------------------ */
+/* Convex client — module-level singleton. Creating the client inside  */
+/* the App render would construct a fresh client (and a fresh         */
+/* websocket) on every render, and twice under StrictMode's double    */
+/* render. One instance, created once, is the documented pattern.     */
+/* ------------------------------------------------------------------ */
+const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string, {
+  unsavedChangesWarning: false,
+});
+
+/* ------------------------------------------------------------------ */
+/* Resilient lazy routes                                              */
+/*                                                                     */
+/* The preview/dev server restarts and file-syncs invalidate the       */
+/* browser's module graph, which makes `import()` reject with          */
+/* "Failed to fetch dynamically imported module". That's a *transient* */
+/* failure — the module itself is fine. We:                            */
+/*   1. retry with exponential backoff (the dev server is usually      */
+/*      back within a few seconds),                                    */
+/*   2. if every retry fails, do ONE full page reload per session to   */
+/*      fetch a fresh module graph — the guard is a URL marker, so it  */
+/*      survives the reload even when sessionStorage is sandboxed,     */
+/*   3. never loop: a genuinely broken route falls through to the      */
+/*      error screen instead of reloading forever.                     */
+/* ------------------------------------------------------------------ */
+
+const ROUTE_RELOAD_MARK = "gmreload";
+const ROUTE_RETRIES = 4;
+
+// Raw import factories — also used by `preloadRoutes()` to warm the
+// module graph in the background so navigation never hits a cold import.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- same looseness as lazy() itself
+const routeFactories: Array<() => Promise<{ default: React.ComponentType<any> }>> = [
+  () => import("./pages/Landing.tsx"),
+  () => import("./pages/Auth.tsx"),
+  () => import("./pages/Dashboard.tsx"),
+  () => import("./pages/Flashcards.tsx"),
+  () => import("./pages/Basics.tsx"),
+  () => import("./pages/Game.tsx"),
+  () => import("./pages/Research.tsx"),
+  () => import("./pages/Assistant.tsx"),
+  () => import("./pages/Diagrams.tsx"),
+  () => import("./pages/NotFound.tsx"),
+];
+
+/** One full reload per session, guarded by a URL marker so it can't loop. */
+function reloadOnce(): boolean {
+  try {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get(ROUTE_RELOAD_MARK) === "1") return false;
+    url.searchParams.set(ROUTE_RELOAD_MARK, "1");
+    window.history.replaceState(window.history.state, "", url.toString());
+    window.location.reload();
+    return true;
+  } catch {
+    // URL manipulation unavailable — fall back to sessionStorage, and if
+    // that's sandboxed too, allow the single reload anyway.
+    try {
+      if (sessionStorage.getItem("glassmed-lazy-reload") === "1") return false;
+      sessionStorage.setItem("glassmed-lazy-reload", "1");
+    } catch {
+      /* storage blocked — proceed with the one reload */
+    }
+    window.location.reload();
+    return true;
+  }
+}
+
+/** Import a route module, retrying transient failures with backoff. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- React.lazy requires ComponentType<any>
+async function importWithRetry<T extends React.ComponentType<any>>(
+  factory: () => Promise<{ default: T }>,
+): Promise<{ default: T }> {
+  let lastError: unknown;
+  for (let i = 0; i <= ROUTE_RETRIES; i++) {
+    try {
+      return await factory();
+    } catch (error) {
+      lastError = error;
+      console.warn(
+        `[GlassMed] Lazy route load failed (attempt ${i + 1}/${ROUTE_RETRIES + 1}):`,
+        error,
+      );
+      if (i < ROUTE_RETRIES) {
+        // 0.5s → 1s → 2s → 4s — enough to ride out a dev-server restart.
+        await new Promise((resolve) => setTimeout(resolve, 500 * 2 ** i));
+      }
+    }
+  }
+  if (reloadOnce()) {
+    // The reload navigation tears this document down; keep the promise
+    // pending so React's Suspense just keeps showing the loader meanwhile.
+    return new Promise<{ default: T }>(() => {});
+  }
+  throw lastError;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- React.lazy requires ComponentType<any>
 function lazyWithRetry<T extends React.ComponentType<any>>(
   factory: () => Promise<{ default: T }>,
-  maxRetries = 3,
 ): React.LazyExoticComponent<T> {
-  return lazy(() => {
-    const attempt = (): Promise<{ default: T }> => factory();
-    return attempt().catch(async (error) => {
-      console.warn("[GlassMed] Lazy route load failed, retrying…", error);
-      for (let i = 1; i <= maxRetries; i++) {
-        await new Promise((resolve) => setTimeout(resolve, 400 * i));
-        try {
-          return await attempt();
-        } catch (retryError) {
-          console.warn(
-            `[GlassMed] Lazy route retry ${i}/${maxRetries} failed`,
-            retryError,
-          );
-        }
-      }
-      // Retrying the same (now-stale) URL can't succeed. Reload once per
-      // session so the browser pulls the fresh index + chunk manifest; the
-      // sessionStorage marker stops it looping if the route is genuinely broken.
-      try {
-        if (sessionStorage.getItem(LAZY_RELOAD_KEY) !== "1") {
-          sessionStorage.setItem(LAZY_RELOAD_KEY, "1");
-          window.location.reload();
-        }
-      } catch {
-        // sessionStorage unavailable — reload anyway (worst case: a second
-        // failure lands on the error boundary instead of looping).
-        window.location.reload();
-      }
-      throw error;
-    });
+  return lazy(() => importWithRetry(factory));
+}
+
+/** Remove the ?gmreload=1 marker once the app has booted cleanly. */
+function stripReloadMarker() {
+  try {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has(ROUTE_RELOAD_MARK)) return;
+    url.searchParams.delete(ROUTE_RELOAD_MARK);
+    window.history.replaceState(window.history.state, "", url.toString());
+  } catch {
+    /* ignore — cosmetic only */
+  }
+}
+
+/** Warm every route chunk in the background so navigating never triggers a
+ *  cold dynamic import during a flaky window. Failures are swallowed here;
+ *  a real navigation retries through lazyWithRetry's own logic. */
+function preloadRoutes() {
+  const schedule =
+    (window as unknown as { requestIdleCallback?: (cb: () => void) => void })
+      .requestIdleCallback?.bind(window) ??
+    ((cb: () => void) => setTimeout(cb, 1));
+  schedule(() => {
+    for (const factory of routeFactories) {
+      factory().catch(() => {
+        /* retried on real navigation via lazyWithRetry */
+      });
+    }
   });
 }
 
@@ -257,10 +342,6 @@ function RouteSyncer() {
 }
 
 function App() {
-  const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string, {
-    unsavedChangesWarning: false,
-  });
-
   // PWA installability: register the service worker in production builds
   // (dev keeps the module graph untouched so previews stay snappy).
   useEffect(() => {
@@ -372,5 +453,7 @@ function App() {
   );
 }
 
+stripReloadMarker();
+preloadRoutes();
 installCrashGuard();
 createRoot(document.getElementById("root")!).render(<App />);
