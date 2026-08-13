@@ -186,7 +186,7 @@ export function MusicPlayer() {
             animate={{ opacity: 1, x: 0, y: 0 }}
             exit={{ opacity: 0, x: 26, y: 6 }}
             transition={{ type: "spring", stiffness: 260, damping: 24 }}
-            className="glass-strong fixed bottom-[5.4rem] right-5 z-[79] flex w-[min(78vw,288px)] items-start gap-3 rounded-2xl p-3.5"
+            className="glass-strong fixed bottom-[10rem] right-5 z-[79] flex w-[min(78vw,288px)] items-start gap-3 rounded-2xl p-3.5"
           >
             <div className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-cloud/25 text-cloud">
               <Disc3 className="size-4" />
@@ -223,7 +223,7 @@ export function MusicPlayer() {
               dismissTip();
               setCollapsed(false);
             }}
-            className="glass-chip fixed bottom-5 right-5 z-[80] flex size-14 items-center justify-center rounded-full text-wistaria"
+            className="glass-chip fixed bottom-[5.6rem] right-5 z-[80] flex size-14 items-center justify-center rounded-full text-wistaria"
             aria-label="Open music player"
           >
             <Disc3 className="size-6" />
@@ -235,7 +235,7 @@ export function MusicPlayer() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 300, damping: 26 }}
-            className="glass-strong shine fixed bottom-5 right-5 z-[80] w-[min(92vw,340px)] rounded-3xl p-4"
+            className="glass-strong shine fixed bottom-[5.6rem] right-5 z-[80] w-[min(92vw,340px)] rounded-3xl p-4"
           >
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2.5 overflow-hidden">

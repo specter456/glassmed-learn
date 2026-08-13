@@ -4,7 +4,7 @@ import { LogoutBlobModal } from "@/components/LogoutBlob";
 import { SettingsModal } from "@/components/SettingsModal";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Bot, LogOut, Settings2 } from "lucide-react";
+import { ArrowLeft, LogOut, Settings2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -70,15 +70,6 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
 
         <div className="flex shrink-0 items-center gap-2">
           <BirthdayCelebration />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate("/assistant")}
-            className="gap-1.5 font-mono text-xs tracking-wide text-muted-foreground"
-          >
-            <Bot className="size-3.5" />
-            Assistant
-          </Button>
           {firstName && (
             <span className="hidden text-sm font-semibold text-muted-foreground md:block">
               {firstName}

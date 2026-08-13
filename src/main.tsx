@@ -1,6 +1,7 @@
 import '@vly-ai/integrations';
 import { MotionConfig } from "framer-motion";
 import { Toaster } from "@/components/ui/sonner";
+import { BottomNav } from "@/components/BottomNav";
 import { LoginCelebration } from "@/components/Celebration";
 import { RequireAuth } from "@/components/RequireAuth";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
@@ -11,16 +12,57 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import "./index.css";
 
-// Lazy load route components for better code splitting
-const Landing = lazy(() => import("./pages/Landing.tsx"));
-const AuthPage = lazy(() => import("./pages/Auth.tsx"));
-const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
-const Flashcards = lazy(() => import("./pages/Flashcards.tsx"));
-const Basics = lazy(() => import("./pages/Basics.tsx"));
-const Game = lazy(() => import("./pages/Game.tsx"));
-const Research = lazy(() => import("./pages/Research.tsx"));
-const Assistant = lazy(() => import("./pages/Assistant.tsx"));
-const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+// Lazy load route components for better code splitting. `lazyWithRetry` wraps
+// every import so a transient "Failed to fetch dynamically imported module"
+// (stale chunk reference after a rebuild, brief network blip while the module
+// graph is mid-update) retries a few times before surfacing to the error
+// boundary. Permanently-broken imports still show the branded error screen.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- React.lazy requires ComponentType<any>
+function lazyWithRetry<T extends React.ComponentType<any>>(
+  factory: () => Promise<{ default: T }>,
+  maxRetries = 3,
+): React.LazyExoticComponent<T> {
+  return lazy(() => {
+    const attempt = (): Promise<{ default: T }> => factory();
+    return attempt().catch(async (error) => {
+      console.warn("[GlassMed] Lazy route load failed, retrying…", error);
+      for (let i = 1; i <= maxRetries; i++) {
+        await new Promise((resolve) => setTimeout(resolve, 400 * i));
+        try {
+          return await attempt();
+        } catch (retryError) {
+          console.warn(
+            `[GlassMed] Lazy route retry ${i}/${maxRetries} failed`,
+            retryError,
+          );
+        }
+      }
+      throw error;
+    });
+  });
+}
+
+const Landing = lazyWithRetry(() => import("./pages/Landing.tsx"));
+const AuthPage = lazyWithRetry(() => import("./pages/Auth.tsx"));
+const Dashboard = lazyWithRetry(() => import("./pages/Dashboard.tsx"));
+const Flashcards = lazyWithRetry(() => import("./pages/Flashcards.tsx"));
+const Basics = lazyWithRetry(() => import("./pages/Basics.tsx"));
+const Game = lazyWithRetry(() => import("./pages/Game.tsx"));
+const Research = lazyWithRetry(() => import("./pages/Research.tsx"));
+const Assistant = lazyWithRetry(() => import("./pages/Assistant.tsx"));
+const Diagrams = lazyWithRetry(() => import("./pages/Diagrams.tsx"));
+const NotFound = lazyWithRetry(() => import("./pages/NotFound.tsx"));
+
+/** Shared shell for authenticated pages: page content + the fixed bottom
+ *  navigation bar. */
+function ProtectedLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      {children}
+      <BottomNav />
+    </>
+  );
+}
 
 // Skeleton fallback for route transitions
 function RouteLoading() {
@@ -222,7 +264,9 @@ function App() {
                     path="/dashboard"
                     element={
                       <RequireAuth>
-                        <Dashboard />
+                        <ProtectedLayout>
+                          <Dashboard />
+                        </ProtectedLayout>
                       </RequireAuth>
                     }
                   />
@@ -230,7 +274,9 @@ function App() {
                     path="/flashcards"
                     element={
                       <RequireAuth>
-                        <Flashcards />
+                        <ProtectedLayout>
+                          <Flashcards />
+                        </ProtectedLayout>
                       </RequireAuth>
                     }
                   />
@@ -238,7 +284,9 @@ function App() {
                     path="/basics"
                     element={
                       <RequireAuth>
-                        <Basics />
+                        <ProtectedLayout>
+                          <Basics />
+                        </ProtectedLayout>
                       </RequireAuth>
                     }
                   />
@@ -246,7 +294,9 @@ function App() {
                     path="/game"
                     element={
                       <RequireAuth>
-                        <Game />
+                        <ProtectedLayout>
+                          <Game />
+                        </ProtectedLayout>
                       </RequireAuth>
                     }
                   />
@@ -254,7 +304,9 @@ function App() {
                     path="/research"
                     element={
                       <RequireAuth>
-                        <Research />
+                        <ProtectedLayout>
+                          <Research />
+                        </ProtectedLayout>
                       </RequireAuth>
                     }
                   />
@@ -262,7 +314,19 @@ function App() {
                     path="/assistant"
                     element={
                       <RequireAuth>
-                        <Assistant />
+                        <ProtectedLayout>
+                          <Assistant />
+                        </ProtectedLayout>
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="/diagrams"
+                    element={
+                      <RequireAuth>
+                        <ProtectedLayout>
+                          <Diagrams />
+                        </ProtectedLayout>
                       </RequireAuth>
                     }
                   />
