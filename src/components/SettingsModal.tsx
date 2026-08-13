@@ -1,11 +1,24 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Puppy, type PuppyMood } from "@/components/Puppy";
 import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/lib/theme";
 import { AnimatePresence, motion } from "framer-motion";
-import { LogOut, Mail, Moon, Settings2, Sun, X } from "lucide-react";
-import { useEffect } from "react";
+import {
+  Download,
+  Headphones,
+  LogOut,
+  Mail,
+  Moon,
+  Settings2,
+  Sun,
+  UserRound,
+  X,
+} from "lucide-react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 function formatMemberSince(ts?: number): string {
   if (!ts || !Number.isFinite(ts)) return "Unknown";
@@ -24,6 +37,27 @@ interface SettingsModalProps {
   onClose: () => void;
   onRequestLogout: () => void;
 }
+
+/** Which settings row is currently hovered — drives the puppy's reaction. */
+type HoverKey = "profile" | "appearance" | "voice" | "install" | "logout";
+
+const HOVER_MOOD: Record<HoverKey, PuppyMood> = {
+  profile: "happy",
+  appearance: "curious",
+  voice: "listening",
+  install: "excited",
+  logout: "crying",
+};
+
+const HOVER_CAPTION: Record<HoverKey, string> = {
+  profile: "That's you — my favorite student! ✨",
+  appearance: "Ooh, curious about a brighter glass? 😮",
+  voice: "Shh… I'm all ears! 🎧",
+  install: "Yes! Take me everywhere! 📲",
+  logout: "Don't leave me… 🥺",
+};
+
+const WELCOME_CAPTION = "Hey there! 👋 Manage your settings here!";
 
 /** Playful animated Dark/Light switch. */
 function ThemeSwitch() {
@@ -68,9 +102,57 @@ function ThemeSwitch() {
   );
 }
 
+/** A settings row — hovering it makes the puppy react. */
+function SettingsRow({
+  icon,
+  title,
+  subtitle,
+  onHover,
+  onLeave,
+  onClick,
+  right,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  subtitle: string;
+  onHover: () => void;
+  onLeave: () => void;
+  onClick?: () => void;
+  right?: React.ReactNode;
+}) {
+  const Comp = onClick ? "button" : "div";
+  return (
+    <Comp
+      onClick={onClick}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      onFocus={onHover}
+      onBlur={onLeave}
+      className="glass-chip flex w-full items-center justify-between gap-3 rounded-2xl px-4 py-3.5 text-left transition-transform duration-200 hover:scale-[1.015]"
+    >
+      <div className="flex min-w-0 items-center gap-3">
+        <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-wistaria/15 text-wistaria">
+          {icon}
+        </div>
+        <div className="min-w-0">
+          <p className="text-sm font-bold">{title}</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>
+        </div>
+      </div>
+      {right}
+    </Comp>
+  );
+}
+
 export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalProps) {
   const { user } = useAuth();
   const { theme } = useTheme();
+  const navigate = useNavigate();
+  const [hover, setHover] = useState<HoverKey | null>(null);
+  const [installPrompt, setInstallPrompt] = useState<{
+    prompt: () => Promise<void>;
+    userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+  } | null>(null);
 
   // Close on Escape.
   useEffect(() => {
@@ -82,10 +164,43 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
+  // Capture the PWA install prompt so "Install App" can trigger it directly.
+  useEffect(() => {
+    const onBeforeInstall = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e as unknown as {
+        prompt: () => Promise<void>;
+        userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+      });
+    };
+    window.addEventListener("beforeinstallprompt", onBeforeInstall);
+    return () => window.removeEventListener("beforeinstallprompt", onBeforeInstall);
+  }, []);
+
+  // Fresh welcome every time the modal opens.
+  useEffect(() => {
+    if (open) setHover(null);
+  }, [open]);
+
+  const mood = hover ? HOVER_MOOD[hover] : "worried";
+  const caption = hover ? HOVER_CAPTION[hover] : WELCOME_CAPTION;
+
   const displayName = user?.name?.trim() || (user?.isAnonymous ? "Guest" : "");
   const email = user?.email ?? (user?.isAnonymous ? "Guest account" : "No email on file");
   const initial = (user?.name?.[0] ?? user?.email?.[0] ?? "G").toUpperCase();
   const memberSince = formatMemberSince(user?._creationTime);
+
+  const handleInstall = async () => {
+    if (!installPrompt) {
+      toast.info(
+        "Install GlassMed from your browser: menu (⋮) → “Install app”, or “Add to Home Screen” on mobile.",
+      );
+      return;
+    }
+    await installPrompt.prompt();
+    await installPrompt.userChoice.catch(() => undefined);
+    setInstallPrompt(null);
+  };
 
   return createPortal(
     <AnimatePresence>
@@ -102,7 +217,7 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
             role="dialog"
             aria-modal="true"
             aria-label="Settings"
-            className="glass-strong shine relative w-full max-w-md rounded-3xl p-6 sm:p-7"
+            className="glass-strong shine relative w-full max-w-md overflow-y-auto rounded-3xl p-6 sm:p-7"
             initial={{ opacity: 0, y: 24, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
@@ -132,15 +247,50 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
               </button>
             </div>
 
+            {/* Mascot — the puppy greets you and reacts to every row */}
+            <div className="glass-panel mt-5 flex flex-col items-center rounded-2xl px-4 pb-4 pt-5 text-center">
+              <div
+                className="relative"
+                role="img"
+                aria-label="GlassMed puppy mascot"
+              >
+                {/* soft glow behind the puppy */}
+                <div className="pointer-events-none absolute -inset-4 rounded-full bg-[#a78bfa]/25 blur-2xl" />
+                <Puppy mood={mood} size={112} />
+              </div>
+
+              {/* Speech bubble */}
+              <div className="relative mt-3 w-full max-w-[19rem]">
+                <div className="pointer-events-none absolute -top-1.5 left-1/2 size-3 -translate-x-1/2 rotate-45 bg-white/10" />
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.p
+                    key={caption}
+                    initial={{ opacity: 0, y: 6, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -4, scale: 0.97 }}
+                    transition={{ duration: 0.22 }}
+                    className="rounded-2xl border border-white/15 bg-white/10 px-4 py-2.5 text-xs font-semibold leading-5 text-foreground"
+                  >
+                    {caption}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
+            </div>
+
             {/* Profile */}
-            <div className="glass-panel mt-5 flex items-center gap-3.5 rounded-2xl p-4">
+            <div
+              className="glass-panel mt-5 flex items-center gap-3.5 rounded-2xl p-4 transition-transform duration-200 hover:scale-[1.015]"
+              onMouseEnter={() => setHover("profile")}
+              onMouseLeave={() => setHover(null)}
+            >
               <Avatar className="size-12 rounded-2xl">
                 <AvatarFallback className="bg-gradient-to-br from-[#a78bfa] to-[#6d5ae8] text-base font-extrabold text-white">
                   {initial}
                 </AvatarFallback>
               </Avatar>
               <div className="min-w-0">
-                <p className="truncate text-sm font-bold">
+                <p className="flex items-center gap-1.5 truncate text-sm font-bold">
+                  <UserRound className="size-3.5 shrink-0 text-wistaria" />
                   {displayName || "MediPro student"}
                 </p>
                 <p className="flex items-center gap-1.5 truncate text-xs text-muted-foreground">
@@ -154,16 +304,50 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
             </div>
 
             {/* Appearance */}
-            <div className="glass-chip mt-3 flex items-center justify-between gap-3 rounded-2xl px-4 py-3.5">
-              <div>
-                <p className="text-sm font-bold">Appearance</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  {theme === "light"
+            <div className="mt-3">
+              <SettingsRow
+                icon={<Moon className="size-4" />}
+                title="Appearance"
+                subtitle={
+                  theme === "light"
                     ? "Light glass — bright & breezy"
-                    : "Dark glass — calm night board"}
-                </p>
-              </div>
-              <ThemeSwitch />
+                    : "Dark glass — calm night board"
+                }
+                onHover={() => setHover("appearance")}
+                onLeave={() => setHover(null)}
+                right={<ThemeSwitch />}
+              />
+            </div>
+
+            {/* Voice notes — read-aloud lives in the AI assistant */}
+            <div className="mt-3">
+              <SettingsRow
+                icon={<Headphones className="size-4" />}
+                title="Voice Notes"
+                subtitle="AI read-aloud & narration"
+                onHover={() => setHover("voice")}
+                onLeave={() => setHover(null)}
+                onClick={() => {
+                  onClose();
+                  navigate("/assistant");
+                }}
+              />
+            </div>
+
+            {/* Install app (PWA) */}
+            <div className="mt-3">
+              <SettingsRow
+                icon={<Download className="size-4" />}
+                title="Install App"
+                subtitle={
+                  installPrompt
+                    ? "Ready — tap to add GlassMed to your device"
+                    : "Add to Home Screen for the app feel"
+                }
+                onHover={() => setHover("install")}
+                onLeave={() => setHover(null)}
+                onClick={() => void handleInstall()}
+              />
             </div>
 
             {/* Account */}
@@ -171,6 +355,8 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
               <Button
                 type="button"
                 variant="ghost"
+                onMouseEnter={() => setHover("logout")}
+                onMouseLeave={() => setHover(null)}
                 onClick={onRequestLogout}
                 className="w-full gap-2 border border-[#e2666f]/30 bg-[#e2666f]/10 text-[#e2666f] transition-colors hover:bg-[#e2666f]/20 hover:text-[#e2666f]"
               >
