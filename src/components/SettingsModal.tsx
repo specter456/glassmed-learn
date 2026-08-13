@@ -17,7 +17,7 @@ import {
   UserRound,
   X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router";
 
@@ -152,20 +152,23 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
   const [hover, setHover] = useState<HoverKey | null>(null);
   const [installOpen, setInstallOpen] = useState(false);
 
+  // Every way out of the modal resets the puppy to its welcome state, so
+  // reopening always starts fresh (no setState inside an effect).
+  const handleClose = useCallback(() => {
+    setHover(null);
+    setInstallOpen(false);
+    onClose();
+  }, [onClose]);
+
   // Close on Escape.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") handleClose();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
-
-  // Fresh welcome every time the modal opens.
-  useEffect(() => {
-    if (open) setHover(null);
-  }, [open]);
+  }, [open, handleClose]);
 
   const mood = hover ? HOVER_MOOD[hover] : "worried";
   const caption = hover ? HOVER_CAPTION[hover] : WELCOME_CAPTION;
@@ -186,7 +189,7 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={handleClose}
           />
           <motion.div
             role="dialog"
@@ -214,7 +217,7 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
                 </div>
               </div>
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-white/10"
                 aria-label="Close settings"
               >
@@ -325,7 +328,7 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
                 onHover={() => setHover("voice")}
                 onLeave={() => setHover(null)}
                 onClick={() => {
-                  onClose();
+                  handleClose();
                   navigate("/assistant");
                 }}
               />
