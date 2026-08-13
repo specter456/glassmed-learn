@@ -1,43 +1,90 @@
 import { motion } from "framer-motion";
-import { HeartPulse, Hourglass } from "lucide-react";
+import { HeartPulse, Layers, MousePointerClick, Sparkles } from "lucide-react";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
+import { HeartDiagram } from "@/components/HeartDiagram";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
+
+const UP_NEXT = ["Brachial Plexus", "Krebs Cycle", "DNA Replication Fork", "Cardiac Cycle ECG"];
 
 function DiagramsInner() {
   return (
     <div className="min-h-screen">
       <GlassBackdrop />
-      <AppHeader title="Diagrams" />
-      <main className="mx-auto flex max-w-3xl flex-col items-center px-4 pb-40 pt-16 text-center sm:px-6">
+      <AppHeader title="Diagrams" subtitle="Heatwave & Anatomy" />
+
+      <main className="mx-auto max-w-5xl px-4 pb-40 pt-10 sm:px-6">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55 }}
-          className="flex flex-col items-center"
         >
-          <div className="relative">
-            <div className="absolute inset-0 rounded-3xl bg-wistaria/25 blur-2xl" aria-hidden />
-            <div className="relative flex size-20 items-center justify-center rounded-3xl bg-wistaria/15 text-wistaria">
-              <HeartPulse className="size-10" />
+          <div className="flex items-center gap-2.5">
+            <div className="flex size-11 items-center justify-center rounded-2xl bg-[#ff5f7a]/15 text-[#ff5f7a]">
+              <HeartPulse className="size-6" />
+            </div>
+            <div>
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-muted-foreground">
+                Diagram 01 · The Human Heart
+              </p>
+              <h1 className="glow-text mt-0.5 text-2xl font-extrabold tracking-tight text-wistaria sm:text-3xl">
+                Where Every Beat Glows
+              </h1>
             </div>
           </div>
-
-          <h1 className="glow-text mt-7 text-balance text-3xl font-extrabold tracking-tight text-wistaria sm:text-4xl">
-            Anatomy Diagrams — Heatwave Style, Coming Soon
-          </h1>
-          <p className="mt-3 max-w-md text-sm leading-6 text-muted-foreground">
-            Ultra-light, labelled diagrams for every fundamentals topic are on
-            their way — from the cardiac cycle to the brachial plexus. Tap one
-            to rotate, pinch to zoom, and study the structure the way it really
-            looks.
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
+            A living blueprint, not a textbook page — every chamber and vessel
+            pulses with the energy of the blood it carries. Glide your cursor
+            over a part to make it glow, then tap it for a quick breakdown.
           </p>
-
-          <span className="glass-chip mt-7 flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-muted-foreground">
-            <Hourglass className="size-3.5 text-wistaria" />
-            Under construction — check back soon
-          </span>
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <span className="glass-chip flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold text-muted-foreground">
+              <Sparkles className="size-3.5 text-wistaria" />
+              9 interactive parts
+            </span>
+            <span className="glass-chip flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold text-muted-foreground">
+              <MousePointerClick className="size-3.5 text-wistaria" />
+              Hover to glow · click to explore
+            </span>
+            <span className="glass-chip flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold text-muted-foreground">
+              <Layers className="size-3.5 text-wistaria" />
+              Heatwave rendering
+            </span>
+          </div>
         </motion.div>
+
+        {/* The heart */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.12 }}
+          className="mt-7"
+        >
+          <HeartDiagram />
+        </motion.div>
+
+        {/* Up next */}
+        <motion.section
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.28 }}
+          className="mt-10"
+        >
+          <p className="text-center text-[11px] font-extrabold uppercase tracking-[0.2em] text-muted-foreground">
+            Next heatwave diagrams on the bench
+          </p>
+          <div className="mt-3 flex flex-wrap justify-center gap-2">
+            {UP_NEXT.map((t) => (
+              <span
+                key={t}
+                className="glass-chip rounded-full px-3.5 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        </motion.section>
       </main>
     </div>
   );
