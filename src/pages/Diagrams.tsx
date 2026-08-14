@@ -1,15 +1,16 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Activity, HeartPulse, Layers, MousePointerClick, Sparkles, Zap } from "lucide-react";
+import { Activity, Brain, HeartPulse, Layers, MousePointerClick, Sparkles, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { BodyDiagram } from "@/components/BodyDiagram";
+import { BrainDiagram } from "@/components/BrainDiagram";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { HeartDiagram } from "@/components/HeartDiagram";
 import { PlexusDiagram } from "@/components/PlexusDiagram";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { cn } from "@/lib/utils";
 
-type DiagramId = "anatomy" | "heart" | "plexus";
+type DiagramId = "anatomy" | "heart" | "plexus" | "brain";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -57,6 +58,17 @@ const DIAGRAMS: Record<
     tag: "⚡",
     Component: PlexusDiagram,
   },
+  brain: {
+    kicker: "Diagram 03 · The Brain & Nervous System",
+    title: "The Electric Storm Between Your Ears",
+    blurb:
+      "Four lobes, one cerebellum and a brainstem that never sleeps — wired together by glowing pathways of thought. Hover a region to make it blaze, tap it to meet the part of you running your life.",
+    parts: 7,
+    accent: "#a78bfa",
+    label: "Brain & Nervous System",
+    tag: "🧠",
+    Component: BrainDiagram,
+  },
 };
 
 const COMING_SOON = ["Krebs Cycle", "DNA Replication Fork", "Cardiac Cycle ECG"];
@@ -102,6 +114,8 @@ function DiagramsInner() {
                   <Activity className="size-6" />
                 ) : active === "heart" ? (
                   <HeartPulse className="size-6" />
+                ) : active === "brain" ? (
+                  <Brain className="size-6" />
                 ) : (
                   <Zap className="size-6" />
                 )}
