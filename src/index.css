@@ -182,10 +182,12 @@
   }
   html {
     scroll-behavior: smooth;
+    cursor: default;
   }
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
+    cursor: default;
     background-image:
       radial-gradient(1100px 620px at 85% -10%, oklch(0.42 0.1 265 / 0.4), transparent 60%),
       radial-gradient(900px 650px at -10% 25%, oklch(0.38 0.09 300 / 0.28), transparent 55%),
@@ -193,8 +195,33 @@
     background-attachment: fixed;
     min-height: 100vh;
   }
+  /* ---------- Cursor policy ----------
+     Standard system cursors only — no custom/emoji/SVG cursors anywhere.
+
+     1. Default (plain arrow): the entire app by default. `cursor` is
+        inherited, so `html, body` default covers every non-interactive
+        element (backgrounds, plain text, images, mascots) automatically.
+     2. Text (I-beam): ONLY genuine editable fields — text inputs,
+        textareas and contenteditable regions. Never plain text, never
+        buttons.
+     3. Pointer (hand): ONLY genuinely clickable controls — buttons,
+        links, navigation icons, and the interactive anatomy-diagram parts
+        (which opt in via `role="button"`). Everything else keeps the arrow.
+  */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="color"]):not([type="file"]),
+  textarea,
+  [contenteditable="true"] {
+    cursor: text;
+  }
   button:not([disabled]),
-  [role="button"]:not([disabled]) {
+  [role="button"]:not([disabled]),
+  a[href],
+  summary,
+  select:not([disabled]),
+  label[for],
+  input[type="checkbox"]:not([disabled]),
+  input[type="radio"]:not([disabled]),
+  input[type="range"]:not([disabled]) {
     cursor: pointer;
   }
   ::selection {
