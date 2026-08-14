@@ -17,7 +17,7 @@ import {
 import { BeeTutorial } from "@/components/BeeTutorial";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { GlassMedBrand } from "@/components/GlassMedLogo";
-import { LOGIN_ARRIVAL_KEY } from "@/components/Celebration";
+import { markLoginArrival } from "@/components/Celebration";
 import { useAuth } from "@/hooks/use-auth";
 import { ArrowRight, Loader2, Mail, UserX } from "lucide-react";
 import { Suspense, useEffect, useRef, useState } from "react";
@@ -157,12 +157,9 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       const formData = new FormData(event.currentTarget);
       await signIn("email-otp", formData);
       // Explicit login: flag the welcome celebration before isAuthenticated
-      // flips and the effect above navigates. Only an actual sign-in sets this.
-      try {
-        sessionStorage.setItem(LOGIN_ARRIVAL_KEY, "1");
-      } catch {
-        // Non-fatal — the user just lands on the dashboard without the fanfare.
-      }
+      // flips and the effect above navigates. Only an actual sign-in sets this
+      // (memory + sessionStorage, so it survives even sandboxed storage).
+      markLoginArrival();
     } catch (error) {
       console.error("OTP verification error:", error);
       const message = error instanceof Error ? error.message : "";
@@ -182,12 +179,9 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     try {
       await signIn("anonymous");
       // Explicit login: flag the welcome celebration before isAuthenticated
-      // flips and the effect above navigates. Only an actual sign-in sets this.
-      try {
-        sessionStorage.setItem(LOGIN_ARRIVAL_KEY, "1");
-      } catch {
-        // Non-fatal — the user just lands on the dashboard without the fanfare.
-      }
+      // flips and the effect above navigates. Only an actual sign-in sets this
+      // (memory + sessionStorage, so it survives even sandboxed storage).
+      markLoginArrival();
     } catch (error) {
       console.error("Guest login error:", error);
       setError(

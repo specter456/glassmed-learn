@@ -256,6 +256,26 @@ export const LAST_LOGIN_KEY = "glassmed-last-login";
  *  never fire again from page-to-page navigation — only a fresh sign-in. */
 export const WELCOME_SHOWN_KEY = "glassmed-welcome-shown";
 
+/**
+ * Module-level arrival flag — the primary signal that a login just happened.
+ * It survives SPA navigation even when sessionStorage is sandboxed (preview
+ * iframes throw SecurityError on access), and it resets on a full page reload,
+ * which is exactly the intended semantics: only an explicit sign-in in THIS
+ * page session triggers the welcome celebration. sessionStorage is written as
+ * a backup so a reload mid-celebration doesn't lose it either.
+ */
+let arrivalFlag = false;
+
+/** Called by the sign-in handlers right before they navigate. */
+export function markLoginArrival() {
+  arrivalFlag = true;
+  try {
+    sessionStorage.setItem(LOGIN_ARRIVAL_KEY, "1");
+  } catch {
+    /* storage blocked — the in-memory flag still fires the celebration */
+  }
+}
+
 const WELCOME_NEW = {
   title: "Welcome to GlassMed! 🎉",
   subtitle: "So happy you're here — where medicine becomes energetic! 💙",
@@ -272,21 +292,24 @@ export function LoginCelebration() {
   const [celebrating, setCelebrating] = useState(false);
   const [message, setMessage] = useState(WELCOME_NEW);
 
-  // Auth sets the flag right before navigating to the destination. This runs on
-  // every pathname change (and on mount for a stale flag) and fades the welcome
-  // overlay in over the freshly loaded page, then fades it back out — the
-  // destination is visible underneath the whole time.
+  // Auth calls markLoginArrival() right before navigating to the destination.
+  // This runs on every pathname change (and on mount for a stale flag) and fades
+  // the welcome overlay in over the freshly loaded page, then fades it back out
+  // — the destination is visible underneath the whole time. The flag is
+  // consumed atomically (memory + storage), so it can never fire twice.
   useEffect(() => {
     let flagged = false;
     try {
       flagged = sessionStorage.getItem(LOGIN_ARRIVAL_KEY) === "1";
     } catch {
-      return;
+      // storage blocked — fall through to the in-memory flag below.
     }
+    flagged = flagged || arrivalFlag;
+    arrivalFlag = false;
     try {
       sessionStorage.removeItem(LOGIN_ARRIVAL_KEY);
     } catch {
-      // Non-fatal — consumed below anyway.
+      // Non-fatal — consumed in memory anyway.
     }
     if (!flagged) return;
     // At most once per session: even if a stale arrival flag somehow survives,

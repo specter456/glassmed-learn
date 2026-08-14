@@ -6,31 +6,18 @@ const SPLASH_MS = 3000;
 /**
  * App-launch splash — deep navy→purple gradient with the rabbit swinging
  * gently left to right and the "GlassMed" wordmark sliding in from the left.
- * Plays for 3 seconds, then fades smoothly into the app. Shows once per
- * browser session.
+ * Plays on EVERY page load (a smooth loading veil while the app mounts and
+ * the route chunks hydrate underneath), then fades into the app. No storage
+ * is consulted, so sandboxed preview iframes and repeated reloads behave
+ * identically — the loading animation never randomly skips.
  */
 export function SplashScreen() {
-  // sessionStorage can throw a SecurityError in sandboxed preview iframes,
-  // which would crash the app — so treat storage as unavailable (and just
-  // show the splash each load) when access is denied.
-  const [visible, setVisible] = useState(() => {
-    try {
-      return !sessionStorage.getItem("medipro-splash-seen");
-    } catch {
-      return true;
-    }
-  });
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    if (!visible) return;
-    try {
-      sessionStorage.setItem("medipro-splash-seen", "1");
-    } catch {
-      /* storage blocked — the splash will show again on the next load */
-    }
     const t = setTimeout(() => setVisible(false), SPLASH_MS);
     return () => clearTimeout(t);
-  }, [visible]);
+  }, []);
 
   return (
     <AnimatePresence>

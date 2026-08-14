@@ -13,6 +13,7 @@ import {
   LogOut,
   Mail,
   Moon,
+  RotateCcw,
   Settings2,
   Sun,
   UserRound,
@@ -20,6 +21,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { toast } from "sonner";
 
 function formatMemberSince(ts?: number): string {
   if (!ts || !Number.isFinite(ts)) return "Unknown";
@@ -40,13 +42,14 @@ interface SettingsModalProps {
 }
 
 /** Which settings row is currently hovered — drives the puppy's reaction. */
-type HoverKey = "profile" | "appearance" | "voice" | "install" | "logout";
+type HoverKey = "profile" | "appearance" | "voice" | "install" | "reset" | "logout";
 
 const HOVER_MOOD: Record<HoverKey, PuppyMood> = {
   profile: "happy",
   appearance: "curious",
   voice: "listening",
   install: "excited",
+  reset: "happy",
   logout: "crying",
 };
 
@@ -55,6 +58,7 @@ const HOVER_CAPTION: Record<HoverKey, string> = {
   appearance: "Ooh, curious about a brighter glass? 😮",
   voice: "Shh… I'm all ears! 🎧",
   install: "Yes! Take me everywhere! 📲",
+  reset: "A fresh start — the bee will visit again! 🐝",
   logout: "Don't leave me… 🥺",
 };
 
@@ -170,6 +174,35 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, handleClose]);
+
+  /** Clear the first-time onboarding markers so the bee tour, splash screen and
+   *  welcome celebration can be experienced again (for testing / re-onboarding).
+   *  Storage can throw in sandboxed preview iframes — clear what we can. */
+  const handleResetTutorial = () => {
+    const keys = [
+      "glassmed-bee-tutorial-done", // localStorage — bee tour
+      "glassmed-last-login", // localStorage — "Welcome" vs "Welcome back"
+      "medipro-splash-seen", // sessionStorage — splash
+      "glassmed-welcome-shown", // sessionStorage — welcome once-per-session
+      "glassmed-login-just-arrived", // sessionStorage — arrival flag
+    ];
+    for (const key of keys) {
+      try {
+        localStorage.removeItem(key);
+      } catch {
+        /* ignore */
+      }
+      try {
+        sessionStorage.removeItem(key);
+      } catch {
+        /* ignore */
+      }
+    }
+    toast("First-time tutorial reset 🐝", {
+      description:
+        "Log out, then open the login page again to meet the bee and replay the welcome.",
+    });
+  };
 
   const mood = hover ? HOVER_MOOD[hover] : "worried";
   const caption = hover ? HOVER_CAPTION[hover] : WELCOME_CAPTION;
@@ -329,6 +362,18 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
                 onHover={() => setHover("voice")}
                 onLeave={() => setHover(null)}
                 onClick={() => setVoiceOpen(true)}
+              />
+            </div>
+
+            {/* Reset first-time tutorial — lets you replay the bee welcome tour */}
+            <div className="mt-3">
+              <SettingsRow
+                icon={<RotateCcw className="size-4" />}
+                title="Reset First-Time Tutorial"
+                subtitle="Replay the bee welcome tour & splash"
+                onHover={() => setHover("reset")}
+                onLeave={() => setHover(null)}
+                onClick={handleResetTutorial}
               />
             </div>
 

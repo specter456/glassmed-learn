@@ -121,22 +121,12 @@ const PARTS: Record<PartId, BrainPart> = {
   },
 };
 
-/* Connected parts — hovering or selecting one brightens its partners */
-const LINKS: Partial<Record<PartId, PartId[]>> = {
-  frontal: ["parietal", "corpus-callosum", "temporal", "neural-pathways"],
-  parietal: ["frontal", "occipital", "corpus-callosum", "neural-pathways"],
-  temporal: ["occipital", "frontal", "corpus-callosum", "neural-pathways"],
-  occipital: ["parietal", "temporal", "cerebellum", "corpus-callosum", "neural-pathways"],
-  cerebellum: ["brainstem", "occipital"],
-  brainstem: ["cerebellum", "frontal", "parietal", "spinal-cord"],
-  "corpus-callosum": ["frontal", "parietal", "temporal", "occipital"],
-  "spinal-cord": ["brainstem", "peripheral-nerves", "neural-pathways"],
-  "peripheral-nerves": ["spinal-cord"],
-  "neural-pathways": ["frontal", "parietal", "brainstem", "spinal-cord"],
-};
-
 /* ------------------------------------------------------------------ */
 /* Shared interactivity                                                */
+/*                                                                    */
+/* Every region is INDEPENDENT: hovering or clicking one part never    */
+/* lights up its neighbours. Each lobe/cord/nerve has its own closed   */
+/* path, so the pointer hits exactly one part and only that one glows. */
 /* ------------------------------------------------------------------ */
 
 interface PartHandlers {
@@ -209,7 +199,8 @@ function PartShape({ id, active }: { id: PartId; active: boolean }) {
             fill={c}
             fillOpacity={active ? 0.5 : 0.22}
             stroke={c}
-            strokeWidth={active ? 2.5 : 1.6}
+            strokeWidth={active ? 3 : 2}
+            strokeOpacity={active ? 1 : 0.85}
             strokeLinejoin="round"
           />
           <path d="M 116 96 C 128 88, 146 86, 158 92" stroke={c} strokeWidth="1.5" fill="none" opacity="0.55" />
@@ -225,7 +216,8 @@ function PartShape({ id, active }: { id: PartId; active: boolean }) {
             fill={c}
             fillOpacity={active ? 0.5 : 0.22}
             stroke={c}
-            strokeWidth={active ? 2.5 : 1.6}
+            strokeWidth={active ? 3 : 2}
+            strokeOpacity={active ? 1 : 0.85}
             strokeLinejoin="round"
           />
           <path d="M 268 84 C 284 78, 302 78, 316 84" stroke={c} strokeWidth="1.5" fill="none" opacity="0.55" />
@@ -241,7 +233,8 @@ function PartShape({ id, active }: { id: PartId; active: boolean }) {
             fill={c}
             fillOpacity={active ? 0.5 : 0.22}
             stroke={c}
-            strokeWidth={active ? 2.5 : 1.6}
+            strokeWidth={active ? 3 : 2}
+            strokeOpacity={active ? 1 : 0.85}
             strokeLinejoin="round"
           />
           <path d="M 128 232 C 150 228, 176 228, 200 232" stroke={c} strokeWidth="1.5" fill="none" opacity="0.55" />
@@ -256,7 +249,8 @@ function PartShape({ id, active }: { id: PartId; active: boolean }) {
             fill={c}
             fillOpacity={active ? 0.5 : 0.22}
             stroke={c}
-            strokeWidth={active ? 2.5 : 1.6}
+            strokeWidth={active ? 3 : 2}
+            strokeOpacity={active ? 1 : 0.85}
             strokeLinejoin="round"
           />
           <path d="M 378 118 C 388 126, 394 138, 396 150" stroke={c} strokeWidth="1.5" fill="none" opacity="0.55" />
@@ -271,7 +265,8 @@ function PartShape({ id, active }: { id: PartId; active: boolean }) {
             fill={c}
             fillOpacity={active ? 0.5 : 0.22}
             stroke={c}
-            strokeWidth={active ? 2.5 : 1.6}
+            strokeWidth={active ? 3 : 2}
+            strokeOpacity={active ? 1 : 0.85}
             strokeLinejoin="round"
           />
           <path d="M 318 268 C 336 260, 356 260, 376 268" stroke={c} strokeWidth="1.5" fill="none" opacity="0.55" />
@@ -287,7 +282,8 @@ function PartShape({ id, active }: { id: PartId; active: boolean }) {
             fill={c}
             fillOpacity={active ? 0.5 : 0.22}
             stroke={c}
-            strokeWidth={active ? 2.5 : 1.6}
+            strokeWidth={active ? 3 : 2}
+            strokeOpacity={active ? 1 : 0.85}
             strokeLinejoin="round"
           />
           <path d="M 220 272 C 232 268, 248 268, 258 274" stroke={c} strokeWidth="1.5" fill="none" opacity="0.55" />
@@ -536,11 +532,8 @@ const PARTS_ORDER: PartId[] = [
 ];
 
 function BrainPart({ id, h }: { id: PartId; h: PartHandlers }) {
-  const active =
-    h.hover === id ||
-    h.selected === id ||
-    (h.hover !== null && (LINKS[h.hover]?.includes(id) ?? false)) ||
-    (h.selected !== null && (LINKS[h.selected]?.includes(id) ?? false));
+  // Only the part under the pointer (or explicitly selected) glows.
+  const active = h.hover === id || h.selected === id;
 
   return (
     <g {...partProps(id, h)}>
