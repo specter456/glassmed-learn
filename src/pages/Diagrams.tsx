@@ -62,8 +62,8 @@ const DIAGRAMS: Record<
     kicker: "Diagram 03 · The Brain & Nervous System",
     title: "The Electric Storm Between Your Ears",
     blurb:
-      "Four lobes, one cerebellum and a brainstem that never sleeps — wired together by glowing pathways of thought. Hover a region to make it blaze, tap it to meet the part of you running your life.",
-    parts: 7,
+      "Four lobes, a cerebellum and a brainstem that never sleeps — wired together by glowing pathways of thought, with the spinal cord and its peripheral nerves carrying every signal to your body. Hover anything to make it blaze, tap it for its story.",
+    parts: 10,
     accent: "#a78bfa",
     label: "Brain & Nervous System",
     tag: "🧠",
