@@ -1,14 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { HeartPulse, Layers, MousePointerClick, Sparkles, Zap } from "lucide-react";
+import { Activity, HeartPulse, Layers, MousePointerClick, Sparkles, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
+import { BodyDiagram } from "@/components/BodyDiagram";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { HeartDiagram } from "@/components/HeartDiagram";
 import { PlexusDiagram } from "@/components/PlexusDiagram";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { cn } from "@/lib/utils";
 
-type DiagramId = "heart" | "plexus";
+type DiagramId = "anatomy" | "heart" | "plexus";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -23,6 +24,17 @@ const DIAGRAMS: Record<
     Component: (props: { className?: string }) => React.ReactElement;
   }
 > = {
+  anatomy: {
+    kicker: "Diagram 00 · Human Anatomy",
+    title: "The Whole You, Glowing",
+    blurb:
+      "One body, every system — from the brain's purple storm to the red-blue rivers of blood. Hover any organ to make it blaze, tap it for a quick breakdown of what it does.",
+    parts: 12,
+    accent: "#7dd3fc",
+    label: "Human Anatomy",
+    tag: "🧍",
+    Component: BodyDiagram,
+  },
   heart: {
     kicker: "Diagram 01 · The Human Heart",
     title: "Where Every Beat Glows",
@@ -86,7 +98,9 @@ function DiagramsInner() {
                 className="flex size-11 items-center justify-center rounded-2xl"
                 style={{ backgroundColor: meta.accent + "1f", color: meta.accent }}
               >
-                {active === "heart" ? (
+                {active === "anatomy" ? (
+                  <Activity className="size-6" />
+                ) : active === "heart" ? (
                   <HeartPulse className="size-6" />
                 ) : (
                   <Zap className="size-6" />
