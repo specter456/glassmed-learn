@@ -4,16 +4,17 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 /* ------------------------------------------------------------------ */
-/* Palette — a spectrum flowing from spine (cyan) to arm (pink)        */
+/* Palette — a neon energy flow from the spine (cyan) to the arm       */
+/* (electric yellow), per the Heatwave yellow/cyan style               */
 /* ------------------------------------------------------------------ */
 
 const LEVELS = {
-  roots: { color: "#5fb6f5", bright: "#9fe8ff", label: "ROOTS" },
-  trunks: { color: "#a2a2d0", bright: "#d9d2ff", label: "TRUNKS" },
-  divisions: { color: "#5fd9c8", bright: "#b5f6ea", label: "DIVISIONS" },
-  cords: { color: "#8a8ff0", bright: "#c3c6ff", label: "CORDS" },
-  branches: { color: "#ff7fa5", bright: "#ffc2d5", label: "BRANCHES" },
-  detail: { color: "#9aa3c7", bright: "#cdd3ea", label: "DETAIL NERVES" },
+  roots: { color: "#22d3ee", bright: "#a5f3fc", label: "ROOTS" },
+  trunks: { color: "#2dd4bf", bright: "#99f6e4", label: "TRUNKS" },
+  divisions: { color: "#a3e635", bright: "#d9f99d", label: "DIVISIONS" },
+  cords: { color: "#facc15", bright: "#fef08a", label: "CORDS" },
+  branches: { color: "#fde047", bright: "#fef9c3", label: "BRANCHES" },
+  detail: { color: "#67e8f9", bright: "#cffafe", label: "DETAIL NERVES" },
 } as const;
 
 type Level = keyof typeof LEVELS;
@@ -431,9 +432,9 @@ export function PlexusDiagram({ className }: { className?: string }) {
   return (
     <div className={cn("glass-panel shine relative overflow-hidden rounded-3xl p-4 sm:p-6", className)}>
       {/* ambient glows */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#a78bfa]/15 blur-3xl" />
-      <div className="pointer-events-none absolute right-10 top-12 h-40 w-40 rounded-full bg-[#5fd9c8]/10 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-8 left-8 h-40 w-40 rounded-full bg-[#8a8ff0]/15 blur-3xl" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#22d3ee]/15 blur-3xl" />
+      <div className="pointer-events-none absolute right-10 top-12 h-40 w-40 rounded-full bg-[#fde047]/10 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-8 left-8 h-40 w-40 rounded-full bg-[#2dd4bf]/15 blur-3xl" />
 
       {/* hint + legend */}
       <div className="relative flex flex-wrap items-center justify-between gap-3">
@@ -487,10 +488,10 @@ export function PlexusDiagram({ className }: { className?: string }) {
           cy="220"
           r="188"
           fill="none"
-          stroke="#a2a2d0"
+          stroke="#67e8f9"
           strokeWidth="1.2"
           strokeDasharray="3 16"
-          opacity="0.3"
+          opacity="0.35"
           animate={{ rotate: 360 }}
           transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
           style={{ transformBox: "fill-box", transformOrigin: "50% 50%" }}
@@ -512,14 +513,14 @@ export function PlexusDiagram({ className }: { className?: string }) {
             rx="12"
             fill="white"
             fillOpacity="0.04"
-            stroke="#a2a2d0"
+            stroke="#7dd3fc"
             strokeWidth="1.2"
             opacity="0.5"
           />
           {[70, 120, 170, 220, 270].map((y) => (
             <g key={y}>
-              <line x1="20" y1={y} x2="44" y2={y} stroke="#a2a2d0" strokeWidth="1" opacity="0.35" />
-              <line x1="44" y1={y} x2="71" y2={y} stroke="#a2a2d0" strokeWidth="1.6" opacity="0.45" />
+              <line x1="20" y1={y} x2="44" y2={y} stroke="#7dd3fc" strokeWidth="1" opacity="0.35" />
+              <line x1="44" y1={y} x2="71" y2={y} stroke="#7dd3fc" strokeWidth="1.6" opacity="0.45" />
             </g>
           ))}
 
@@ -536,7 +537,7 @@ export function PlexusDiagram({ className }: { className?: string }) {
 
         {/* crisp labels (outside the heat haze) */}
         {LABELS.map((l) => {
-          const color = l.level ? LEVELS[l.level].bright : "#9f9fd0";
+          const color = l.level ? LEVELS[l.level].bright : "#a5d8e8";
           return (
             <g key={l.text}>
               <text

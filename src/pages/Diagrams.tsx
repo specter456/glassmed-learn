@@ -40,7 +40,7 @@ const DIAGRAMS: Record<
     blurb:
       "Five spinal roots become three trunks, six divisions, three cords and the nerves that move your whole upper limb — a live wire map from spine to fingertips. Hover to trace a nerve, tap it for its story.",
     parts: 18,
-    accent: "#a78bfa",
+    accent: "#22d3ee",
     label: "Brachial Plexus",
     tag: "⚡",
     Component: PlexusDiagram,
