@@ -1,9 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Activity, Brain, HeartPulse, Layers, MousePointerClick, Sparkles, Wind, Zap } from "lucide-react";
+import { Activity, Brain, HeartPulse, Layers, MousePointerClick, Sparkles, Utensils, Wind, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { BodyDiagram } from "@/components/BodyDiagram";
 import { BrainDiagram } from "@/components/BrainDiagram";
+import { DigestiveDiagram } from "@/components/DigestiveDiagram";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { HeartDiagram } from "@/components/HeartDiagram";
 import { LungsDiagram } from "@/components/LungsDiagram";
@@ -11,7 +12,7 @@ import { PlexusDiagram } from "@/components/PlexusDiagram";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { cn } from "@/lib/utils";
 
-type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs";
+type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -81,6 +82,17 @@ const DIAGRAMS: Record<
     tag: "🫁",
     Component: LungsDiagram,
   },
+  digestive: {
+    kicker: "Diagram 05 · The Digestive System",
+    title: "The Fire of Digestion, Glowing",
+    blurb:
+      "From the esophagus's first squeeze to the colon's final pass — every organ blazes warm orange, yellow and gold as food becomes energy. Hover anything to make it glow, tap it for its story.",
+    parts: 7,
+    accent: "#f59e0b",
+    label: "Digestive System",
+    tag: "🍽️",
+    Component: DigestiveDiagram,
+  },
 };
 
 const COMING_SOON = ["Krebs Cycle", "DNA Replication Fork", "Cardiac Cycle ECG"];
@@ -130,6 +142,8 @@ function DiagramsInner() {
                   <Brain className="size-6" />
                 ) : active === "lungs" ? (
                   <Wind className="size-6" />
+                ) : active === "digestive" ? (
+                  <Utensils className="size-6" />
                 ) : (
                   <Zap className="size-6" />
                 )}
