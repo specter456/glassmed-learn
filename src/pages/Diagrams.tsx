@@ -1,16 +1,17 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Activity, Brain, HeartPulse, Layers, MousePointerClick, Sparkles, Zap } from "lucide-react";
+import { Activity, Brain, HeartPulse, Layers, MousePointerClick, Sparkles, Wind, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { BodyDiagram } from "@/components/BodyDiagram";
 import { BrainDiagram } from "@/components/BrainDiagram";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { HeartDiagram } from "@/components/HeartDiagram";
+import { LungsDiagram } from "@/components/LungsDiagram";
 import { PlexusDiagram } from "@/components/PlexusDiagram";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { cn } from "@/lib/utils";
 
-type DiagramId = "anatomy" | "heart" | "plexus" | "brain";
+type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -69,6 +70,17 @@ const DIAGRAMS: Record<
     tag: "🧠",
     Component: BrainDiagram,
   },
+  lungs: {
+    kicker: "Diagram 04 · The Lungs & Respiratory System",
+    title: "The Breath of Life, Glowing",
+    blurb:
+      "From the larynx to the last bronchiole, the airway blazes cyan — and the alveoli pulse soft pink where oxygen meets blood. Hover any part to make it glow, tap it for a quick breakdown of what it does.",
+    parts: 7,
+    accent: "#67e8f9",
+    label: "Lungs & Respiratory",
+    tag: "🫁",
+    Component: LungsDiagram,
+  },
 };
 
 const COMING_SOON = ["Krebs Cycle", "DNA Replication Fork", "Cardiac Cycle ECG"];
@@ -116,6 +128,8 @@ function DiagramsInner() {
                   <HeartPulse className="size-6" />
                 ) : active === "brain" ? (
                   <Brain className="size-6" />
+                ) : active === "lungs" ? (
+                  <Wind className="size-6" />
                 ) : (
                   <Zap className="size-6" />
                 )}
