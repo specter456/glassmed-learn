@@ -1,22 +1,77 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const SPLASH_MS = 3000;
+/**
+ * Minimum time the splash is visible (ms) — even on a fast connection the
+ * brand animation gets its moment. After this minimum, the splash also
+ * dismisses once the Convex auth check completes (via `ready`), so the
+ * user never stares at a loading skeleton on top of the splash.
+ */
+const SPLASH_MIN_MS = 2200;
+/** Absolute ceiling — the splash never blocks the app longer than this. */
+const SPLASH_MAX_MS = 4500;
+
+/**
+ * Module-level signal that the auth check has completed. Consumed once by
+ * SplashScreen so it can dismiss early on fast connections.
+ */
+let authReady = false;
+const readyListeners: Array<() => void> = [];
+
+/** Called by useAuth once the initial session check resolves. */
+export function signalAuthReady() {
+  if (authReady) return;
+  authReady = true;
+  for (const fn of readyListeners) fn();
+  readyListeners.length = 0;
+}
 
 /**
  * App-launch splash — deep navy→purple gradient with the rabbit swinging
  * gently left to right and the "GlassMed" wordmark sliding in from the left.
  * Plays on EVERY page load (a smooth loading veil while the app mounts and
- * the route chunks hydrate underneath), then fades into the app. No storage
- * is consulted, so sandboxed preview iframes and repeated reloads behave
- * identically — the loading animation never randomly skips.
+ * the route chunks hydrate underneath), then fades into the app.
+ *
+ * Dismisses when BOTH conditions are met:
+ *   1. The minimum display time (SPLASH_MIN_MS) has elapsed.
+ *   2. The auth check has completed (so the right page is ready to paint).
+ * Or after SPLASH_MAX_MS as a hard ceiling, whichever comes first.
  */
 export function SplashScreen() {
   const [visible, setVisible] = useState(true);
+  const minRef = useRef(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(false), SPLASH_MS);
-    return () => clearTimeout(t);
+    const dismiss = () => setVisible(false);
+
+    // Hard ceiling — never block longer than this.
+    const ceiling = setTimeout(dismiss, SPLASH_MAX_MS);
+
+    // Minimum display time gate.
+    const min = setTimeout(() => {
+      minRef.current = true;
+      if (authReady) dismiss();
+    }, SPLASH_MIN_MS);
+
+    // If auth is already ready (e.g. cached session), dismiss after min.
+    if (authReady && minRef.current) dismiss();
+    else {
+      const onReady = () => {
+        if (minRef.current) dismiss();
+      };
+      readyListeners.push(onReady);
+      return () => {
+        clearTimeout(ceiling);
+        clearTimeout(min);
+        const idx = readyListeners.indexOf(onReady);
+        if (idx !== -1) readyListeners.splice(idx, 1);
+      };
+    }
+
+    return () => {
+      clearTimeout(ceiling);
+      clearTimeout(min);
+    };
   }, []);
 
   return (

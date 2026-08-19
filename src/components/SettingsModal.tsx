@@ -182,9 +182,9 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
     const keys = [
       "glassmed-bee-tutorial-done", // localStorage — bee tour
       "glassmed-last-login", // localStorage — "Welcome" vs "Welcome back"
-      "medipro-splash-seen", // sessionStorage — splash
+      "medipro-splash-seen", // sessionStorage — splash (legacy)
       "glassmed-welcome-shown", // sessionStorage — welcome once-per-session
-      "glassmed-login-just-arrived", // sessionStorage — arrival flag
+      "glassmed-login-just-arrived", // sessionStorage + localStorage — arrival flag
     ];
     for (const key of keys) {
       try {

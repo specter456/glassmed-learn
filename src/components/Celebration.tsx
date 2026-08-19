@@ -261,18 +261,29 @@ export const WELCOME_SHOWN_KEY = "glassmed-welcome-shown";
  * It survives SPA navigation even when sessionStorage is sandboxed (preview
  * iframes throw SecurityError on access), and it resets on a full page reload,
  * which is exactly the intended semantics: only an explicit sign-in in THIS
- * page session triggers the welcome celebration. sessionStorage is written as
- * a backup so a reload mid-celebration doesn't lose it either.
+ * page session triggers the welcome celebration. sessionStorage AND localStorage
+ * are written as backups so sandboxed iframes and mid-celebration reloads
+ * don't lose the signal.
  */
 let arrivalFlag = false;
 
-/** Called by the sign-in handlers right before they navigate. */
+/** Called by the sign-in handlers BEFORE signIn() — the flag must be set
+ *  before isAuthenticated flips and the redirect effect navigates, because
+ *  LoginCelebration reads it on the destination pathname. */
 export function markLoginArrival() {
   arrivalFlag = true;
+  // Write to BOTH sessionStorage and localStorage so the signal survives
+  // sandboxed iframes (where sessionStorage may be blocked) and page
+  // reloads (where in-memory is lost but localStorage persists).
   try {
     sessionStorage.setItem(LOGIN_ARRIVAL_KEY, "1");
   } catch {
     /* storage blocked — the in-memory flag still fires the celebration */
+  }
+  try {
+    localStorage.setItem(LOGIN_ARRIVAL_KEY, "1");
+  } catch {
+    /* non-fatal */
   }
 }
 
@@ -292,24 +303,36 @@ export function LoginCelebration() {
   const [celebrating, setCelebrating] = useState(false);
   const [message, setMessage] = useState(WELCOME_NEW);
 
-  // Auth calls markLoginArrival() right before navigating to the destination.
-  // This runs on every pathname change (and on mount for a stale flag) and fades
-  // the welcome overlay in over the freshly loaded page, then fades it back out
-  // — the destination is visible underneath the whole time. The flag is
-  // consumed atomically (memory + storage), so it can never fire twice.
+  // Auth calls markLoginArrival() BEFORE signIn(). signIn() triggers
+  // isAuthenticated → true → the redirect effect navigates → this effect runs
+  // on the new pathname and reads the flag. The flag is consumed atomically
+  // (memory + sessionStorage + localStorage), so it can never fire twice.
   useEffect(() => {
     let flagged = false;
     try {
       flagged = sessionStorage.getItem(LOGIN_ARRIVAL_KEY) === "1";
     } catch {
-      // storage blocked — fall through to the in-memory flag below.
+      // sessionStorage blocked — fall through to localStorage below.
+    }
+    if (!flagged) {
+      try {
+        flagged = localStorage.getItem(LOGIN_ARRIVAL_KEY) === "1";
+      } catch {
+        // localStorage blocked — fall through to the in-memory flag.
+      }
     }
     flagged = flagged || arrivalFlag;
     arrivalFlag = false;
+    // Consume the flag from all stores so it can never fire twice.
     try {
       sessionStorage.removeItem(LOGIN_ARRIVAL_KEY);
     } catch {
-      // Non-fatal — consumed in memory anyway.
+      /* non-fatal */
+    }
+    try {
+      localStorage.removeItem(LOGIN_ARRIVAL_KEY);
+    } catch {
+      /* non-fatal */
     }
     if (!flagged) return;
     // At most once per session: even if a stale arrival flag somehow survives,

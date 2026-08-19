@@ -155,11 +155,12 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     setError(null);
     try {
       const formData = new FormData(event.currentTarget);
-      await signIn("email-otp", formData);
-      // Explicit login: flag the welcome celebration before isAuthenticated
-      // flips and the effect above navigates. Only an actual sign-in sets this
-      // (memory + sessionStorage, so it survives even sandboxed storage).
+      // Flag the welcome celebration BEFORE signIn. signIn() triggers
+      // isAuthenticated → true → the useEffect navigates → LoginCelebration
+      // reads the flag on mount. If we set the flag AFTER signIn, the effect
+      // has already run and missed it (race condition).
       markLoginArrival();
+      await signIn("email-otp", formData);
     } catch (error) {
       console.error("OTP verification error:", error);
       const message = error instanceof Error ? error.message : "";
@@ -177,11 +178,9 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     setIsLoading(true);
     setError(null);
     try {
-      await signIn("anonymous");
-      // Explicit login: flag the welcome celebration before isAuthenticated
-      // flips and the effect above navigates. Only an actual sign-in sets this
-      // (memory + sessionStorage, so it survives even sandboxed storage).
+      // Flag the welcome celebration BEFORE signIn — see handleOtpSubmit.
       markLoginArrival();
+      await signIn("anonymous");
     } catch (error) {
       console.error("Guest login error:", error);
       setError(
