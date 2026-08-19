@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Activity, Brain, Droplets, HeartPulse, Layers, MousePointerClick, Sparkles, Utensils, Wind, Zap } from "lucide-react";
+import { Activity, Brain, Droplets, Eye, HeartPulse, Layers, MousePointerClick, Sparkles, Utensils, Wind, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { BodyDiagram } from "@/components/BodyDiagram";
@@ -8,12 +8,13 @@ import { DigestiveDiagram } from "@/components/DigestiveDiagram";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { HeartDiagram } from "@/components/HeartDiagram";
 import { LungsDiagram } from "@/components/LungsDiagram";
+import EyeDiagram from "@/components/EyeDiagram";
 import KidneyDiagram from "@/components/KidneyDiagram";
 import { PlexusDiagram } from "@/components/PlexusDiagram";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { cn } from "@/lib/utils";
 
-type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney";
+type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -105,6 +106,17 @@ const DIAGRAMS: Record<
     tag: "🫘",
     Component: KidneyDiagram,
   },
+  eye: {
+    kicker: "Diagram 07 · The Human Eye",
+    title: "Where Light Becomes Vision",
+    blurb:
+      "A cross-section of the eye's optical system — light enters through the cornea, is regulated by the iris, focused by the lens, and projected onto the retina where photons become neural signals. Hover any part to make it glow, tap it for its story.",
+    parts: 7,
+    accent: "#a78bfa",
+    label: "Human Eye",
+    tag: "👁️",
+    Component: EyeDiagram,
+  },
 };
 
 const COMING_SOON = ["Krebs Cycle", "DNA Replication Fork", "Cardiac Cycle ECG"];
@@ -158,6 +170,8 @@ function DiagramsInner() {
                   <Utensils className="size-6" />
                 ) : active === "kidney" ? (
                   <Droplets className="size-6" />
+                ) : active === "eye" ? (
+                  <Eye className="size-6" />
                 ) : (
                   <Zap className="size-6" />
                 )}
