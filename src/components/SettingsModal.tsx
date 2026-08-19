@@ -2,14 +2,12 @@ import { InstallModal } from "@/components/InstallModal";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Puppy, type PuppyMood } from "@/components/Puppy";
-import { VoiceRecorderModal } from "@/components/VoiceRecorderModal";
 import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/lib/theme";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   Download,
-  Headphones,
   LogOut,
   Mail,
   Moon,
@@ -42,12 +40,12 @@ interface SettingsModalProps {
 }
 
 /** Which settings row is currently hovered — drives the puppy's reaction. */
-type HoverKey = "profile" | "appearance" | "voice" | "install" | "reset" | "logout";
+type HoverKey = "profile" | "appearance" | "install" | "reset" | "logout";
 
 const HOVER_MOOD: Record<HoverKey, PuppyMood> = {
   profile: "happy",
   appearance: "curious",
-  voice: "listening",
+
   install: "excited",
   reset: "happy",
   logout: "crying",
@@ -56,7 +54,7 @@ const HOVER_MOOD: Record<HoverKey, PuppyMood> = {
 const HOVER_CAPTION: Record<HoverKey, string> = {
   profile: "That's you — my favorite student! ✨",
   appearance: "Ooh, curious about a brighter glass? 😮",
-  voice: "Shh… I'm all ears! 🎧",
+
   install: "Yes! Take me everywhere! 📲",
   reset: "A fresh start — the bee will visit again! 🐝",
   logout: "Don't leave me… 🥺",
@@ -154,14 +152,11 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
   const { theme } = useTheme();
   const [hover, setHover] = useState<HoverKey | null>(null);
   const [installOpen, setInstallOpen] = useState(false);
-  const [voiceOpen, setVoiceOpen] = useState(false);
-
   // Every way out of the modal resets the puppy to its welcome state, so
   // reopening always starts fresh (no setState inside an effect).
   const handleClose = useCallback(() => {
     setHover(null);
     setInstallOpen(false);
-    setVoiceOpen(false);
     onClose();
   }, [onClose]);
 
@@ -353,18 +348,6 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
               />
             </div>
 
-            {/* Voice notes — a real audio recorder, fully separate from the AI chat */}
-            <div className="mt-3">
-              <SettingsRow
-                icon={<Headphones className="size-4" />}
-                title="Voice Notes"
-                subtitle="Record & play back your study memos"
-                onHover={() => setHover("voice")}
-                onLeave={() => setHover(null)}
-                onClick={() => setVoiceOpen(true)}
-              />
-            </div>
-
             {/* Reset first-time tutorial — lets you replay the bee welcome tour */}
             <div className="mt-3">
               <SettingsRow
@@ -402,7 +385,6 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
         document.body,
       )}
       <InstallModal open={installOpen} onClose={() => setInstallOpen(false)} />
-      <VoiceRecorderModal open={voiceOpen} onClose={() => setVoiceOpen(false)} />
     </>
   );
 }

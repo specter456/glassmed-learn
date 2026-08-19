@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { HeartPulse, House, User } from "lucide-react";
+import { HeartPulse, House, Mic, Settings2 } from "lucide-react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { LogoutBlobModal } from "@/components/LogoutBlob";
@@ -20,7 +20,8 @@ interface NavItem {
 const ITEMS: NavItem[] = [
   { id: "home", label: "Home", icon: House, path: "/dashboard" },
   { id: "diagrams", label: "Diagrams", icon: HeartPulse, path: "/diagrams", center: true },
-  { id: "profile", label: "Settings", icon: User, action: "settings" },
+  { id: "voice", label: "Voice Notes", icon: Mic, path: "/voice-notes" },
+  { id: "profile", label: "Settings", icon: Settings2, action: "settings" },
 ];
 
 export function BottomNav() {
@@ -45,9 +46,11 @@ export function BottomNav() {
 
   const activeId = pathname.startsWith("/diagrams")
     ? "diagrams"
-    : pathname.startsWith("/dashboard")
-      ? "home"
-      : null;
+    : pathname.startsWith("/voice-notes")
+      ? "voice"
+      : pathname.startsWith("/dashboard")
+        ? "home"
+        : null;
 
   return (
     <>

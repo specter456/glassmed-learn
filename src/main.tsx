@@ -55,6 +55,7 @@ const routeFactories: Array<() => Promise<{ default: React.ComponentType<any> }>
   () => import("./pages/Research.tsx"),
   () => import("./pages/Assistant.tsx"),
   () => import("./pages/Diagrams.tsx"),
+  () => import("./pages/VoiceNotes.tsx"),
   () => import("./pages/NotFound.tsx"),
 ];
 
@@ -155,6 +156,7 @@ const Game = lazyWithRetry(() => import("./pages/Game.tsx"));
 const Research = lazyWithRetry(() => import("./pages/Research.tsx"));
 const Assistant = lazyWithRetry(() => import("./pages/Assistant.tsx"));
 const Diagrams = lazyWithRetry(() => import("./pages/Diagrams.tsx"));
+const VoiceNotes = lazyWithRetry(() => import("./pages/VoiceNotes.tsx"));
 const NotFound = lazyWithRetry(() => import("./pages/NotFound.tsx"));
 
 /** Shared shell for authenticated pages: page content + the fixed bottom
@@ -437,6 +439,16 @@ function App() {
                       <RequireAuth>
                         <ProtectedLayout>
                           <Diagrams />
+                        </ProtectedLayout>
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="/voice-notes"
+                    element={
+                      <RequireAuth>
+                        <ProtectedLayout>
+                          <VoiceNotes />
                         </ProtectedLayout>
                       </RequireAuth>
                     }
