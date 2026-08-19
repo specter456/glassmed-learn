@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Activity, Brain, HeartPulse, Layers, MousePointerClick, Sparkles, Utensils, Wind, Zap } from "lucide-react";
+import { Activity, Brain, Droplets, HeartPulse, Layers, MousePointerClick, Sparkles, Utensils, Wind, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { BodyDiagram } from "@/components/BodyDiagram";
@@ -8,11 +8,12 @@ import { DigestiveDiagram } from "@/components/DigestiveDiagram";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { HeartDiagram } from "@/components/HeartDiagram";
 import { LungsDiagram } from "@/components/LungsDiagram";
+import KidneyDiagram from "@/components/KidneyDiagram";
 import { PlexusDiagram } from "@/components/PlexusDiagram";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { cn } from "@/lib/utils";
 
-type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive";
+type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -93,6 +94,17 @@ const DIAGRAMS: Record<
     tag: "🍽️",
     Component: DigestiveDiagram,
   },
+  kidney: {
+    kicker: "Diagram 06 · The Kidney & Nephron",
+    title: "The Body's Glowing Filter",
+    blurb:
+      "One million nephrons per kidney, each a tiny filtration machine — from the glomerulus's high-pressure sieve to the collecting duct's final concentrate. Hover any structure to make it glow, tap it for a quick breakdown of what it does.",
+    parts: 8,
+    accent: "#22d3ee",
+    label: "Kidney & Nephron",
+    tag: "🫘",
+    Component: KidneyDiagram,
+  },
 };
 
 const COMING_SOON = ["Krebs Cycle", "DNA Replication Fork", "Cardiac Cycle ECG"];
@@ -144,6 +156,8 @@ function DiagramsInner() {
                   <Wind className="size-6" />
                 ) : active === "digestive" ? (
                   <Utensils className="size-6" />
+                ) : active === "kidney" ? (
+                  <Droplets className="size-6" />
                 ) : (
                   <Zap className="size-6" />
                 )}
