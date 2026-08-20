@@ -18,7 +18,6 @@ import { useQuery } from "convex/react";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { Button } from "@/components/ui/button";
-import { MusicPlayer } from "@/components/MusicPlayer";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { topicIcon } from "@/lib/medipro";
 import { useEnsureSeeded } from "@/hooks/use-ensure-seeded";
@@ -301,7 +300,6 @@ function DashboardInner() {
         </section>
       </main>
 
-      <MusicPlayer />
     </div>
   );
 }
