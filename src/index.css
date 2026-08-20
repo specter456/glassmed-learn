@@ -194,6 +194,8 @@
       linear-gradient(180deg, oklch(0.18 0.03 265) 0%, oklch(0.155 0.03 268) 55%, oklch(0.15 0.032 275) 100%);
     background-attachment: fixed;
     min-height: 100vh;
+    user-select: none;
+    -webkit-user-select: none;
   }
   /* ---------- Cursor policy ----------
      Standard system cursors only — no custom/emoji/SVG cursors anywhere.
@@ -212,6 +214,8 @@
   textarea,
   [contenteditable="true"] {
     cursor: text;
+    user-select: text;
+    -webkit-user-select: text;
   }
   button:not([disabled]),
   [role="button"]:not([disabled]),

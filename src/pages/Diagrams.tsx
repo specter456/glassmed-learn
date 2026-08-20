@@ -1,18 +1,29 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Activity, Brain, Droplets, Eye, HeartPulse, Layers, MousePointerClick, Sparkles, Utensils, Wind, Zap } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
-import { BodyDiagram } from "@/components/BodyDiagram";
-import { BrainDiagram } from "@/components/BrainDiagram";
-import { DigestiveDiagram } from "@/components/DigestiveDiagram";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
-import { HeartDiagram } from "@/components/HeartDiagram";
-import { LungsDiagram } from "@/components/LungsDiagram";
-import EyeDiagram from "@/components/EyeDiagram";
-import KidneyDiagram from "@/components/KidneyDiagram";
-import { PlexusDiagram } from "@/components/PlexusDiagram";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { cn } from "@/lib/utils";
+
+/* Lazy-load every diagram so switching tabs never freezes the app.
+   Each import becomes its own chunk — only the active diagram is downloaded. */
+const BodyDiagram = React.lazy(() => import("@/components/BodyDiagram").then(m => ({ default: m.BodyDiagram })));
+const BrainDiagram = React.lazy(() => import("@/components/BrainDiagram").then(m => ({ default: m.BrainDiagram })));
+const DigestiveDiagram = React.lazy(() => import("@/components/DigestiveDiagram").then(m => ({ default: m.DigestiveDiagram })));
+const HeartDiagram = React.lazy(() => import("@/components/HeartDiagram").then(m => ({ default: m.HeartDiagram })));
+const LungsDiagram = React.lazy(() => import("@/components/LungsDiagram").then(m => ({ default: m.LungsDiagram })));
+const EyeDiagram = React.lazy(() => import("@/components/EyeDiagram"));
+const KidneyDiagram = React.lazy(() => import("@/components/KidneyDiagram"));
+const PlexusDiagram = React.lazy(() => import("@/components/PlexusDiagram").then(m => ({ default: m.PlexusDiagram })));
+
+function DiagramFallback() {
+  return (
+    <div className="flex h-[420px] items-center justify-center">
+      <div className="skeleton size-20 rounded-3xl" />
+    </div>
+  );
+}
 
 type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye";
 
@@ -26,7 +37,7 @@ const DIAGRAMS: Record<
     accent: string;
     label: string;
     tag: string;
-    Component: (props: { className?: string }) => React.ReactElement;
+    Component: React.ComponentType<{ className?: string }>;
   }
 > = {
   anatomy: {
@@ -215,7 +226,9 @@ function DiagramsInner() {
               exit={{ opacity: 0, y: -18, scale: 0.985 }}
               transition={{ duration: 0.38, ease: "easeInOut" }}
             >
-              <ActiveComponent />
+              <Suspense fallback={<DiagramFallback />}>
+                <ActiveComponent />
+              </Suspense>
             </motion.div>
           </AnimatePresence>
         </div>
