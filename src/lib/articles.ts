@@ -938,7 +938,7 @@ export const ARTICLES: Article[] = [
             ],
             bullets: [
               "Isovolumetric relaxation — The ventricles begin to relax. All four valves are closed again. Ventricular pressure drops rapidly. This is when S2 ('Dub') is heard as the aortic and pulmonary valves snap shut.",
-              "Rapid filling — Once ventricular pressure falls below atrial pressure, the mitral and tricuspid valves open. Blood that has been pooling in the atria flows rapidly into the ventricles, filling them to about 70% of their final volume.",",
+              "Rapid filling — Once ventricular pressure falls below atrial pressure, the mitral and tricuspid valves open. Blood that has been pooling in the atria flows rapidly into the ventricles, filling them to about 70% of their final volume.",
               "Diastasis (slow filling) — The remaining filling happens slowly as blood returns from the veins through the atria into the ventricles. This phase is shortened when heart rate increases.",
               "End-diastole — The atria contract (atrial systole again), completing ventricular filling and restarting the cycle.",
             ],
