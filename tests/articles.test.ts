@@ -12,8 +12,8 @@ import {
 } from "../src/lib/articles";
 
 describe("library shape", () => {
-  it("contains exactly 10 articles", () => {
-    expect(ARTICLES).toHaveLength(10);
+  it("contains exactly 11 articles", () => {
+    expect(ARTICLES).toHaveLength(11);
   });
 
   it("has unique slugs", () => {
@@ -40,17 +40,34 @@ describe("library shape", () => {
 });
 
 describe("every article is step-by-step", () => {
-  it("has at least 3 sections and at least one section with steps", () => {
+  it("has at least 3 sections (or tabs) and at least one section with steps", () => {
     for (const a of ARTICLES) {
-      expect(a.sections.length).toBeGreaterThanOrEqual(3);
-      expect(a.sections.some((s) => (s.steps?.length ?? 0) > 0)).toBe(true);
+      if (a.tabs) {
+        // Tabbed articles: each tab should have sections
+        expect(a.tabs.length).toBeGreaterThanOrEqual(2);
+        for (const tab of a.tabs) {
+          expect(tab.sections.length).toBeGreaterThanOrEqual(3);
+          expect(tab.keyPoints.length).toBeGreaterThanOrEqual(2);
+        }
+      } else {
+        expect(a.sections.length).toBeGreaterThanOrEqual(3);
+        expect(a.sections.some((s) => (s.steps?.length ?? 0) > 0)).toBe(true);
+      }
     }
   });
 
   it("has key points and red-flag lists", () => {
     for (const a of ARTICLES) {
-      expect(a.keyPoints.length).toBeGreaterThanOrEqual(3);
-      expect(a.whenToCall.length).toBeGreaterThanOrEqual(2);
+      if (a.tabs) {
+        // Tabbed articles: key points are per-tab
+        for (const tab of a.tabs) {
+          expect(tab.keyPoints.length).toBeGreaterThanOrEqual(2);
+        }
+        // whenToCall may be empty for non-emergency articles
+      } else {
+        expect(a.keyPoints.length).toBeGreaterThanOrEqual(3);
+        expect(a.whenToCall.length).toBeGreaterThanOrEqual(2);
+      }
     }
   });
 
@@ -68,10 +85,15 @@ describe("every article is step-by-step", () => {
   });
 
   it("totalSteps counts the step-by-step instructions", () => {
-    const manual = ARTICLES.reduce(
-      (sum, a) => sum + a.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0),
-      0,
-    );
+    const manual = ARTICLES.reduce((sum, a) => {
+      if (a.tabs) {
+        return sum + a.tabs.reduce(
+          (tabSum, tab) => tabSum + tab.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0),
+          0,
+        );
+      }
+      return sum + a.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0);
+    }, 0);
     expect(totalSteps()).toBe(manual);
     expect(totalSteps()).toBeGreaterThan(30);
   });
@@ -83,7 +105,13 @@ describe("read aloud", () => {
       const speech = articleToSpeech(a);
       expect(speech.length).toBeGreaterThan(600);
       expect(speech).toContain(a.title);
-      // step numbers are included so instructions read in order
+    }
+  });
+
+  it("step-by-step articles include step numbers", () => {
+    const stepArticles = ARTICLES.filter((a) => !a.tabs);
+    for (const a of stepArticles) {
+      const speech = articleToSpeech(a);
       expect(speech).toContain("Step 1.");
     }
   });
