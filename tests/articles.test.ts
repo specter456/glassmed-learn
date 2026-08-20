@@ -73,7 +73,10 @@ describe("every article is step-by-step", () => {
 
   it("every section has at least one kind of content", () => {
     for (const a of ARTICLES) {
-      for (const s of a.sections) {
+      const allSections = a.tabs
+        ? a.tabs.flatMap((t) => t.sections)
+        : a.sections;
+      for (const s of allSections) {
         const hasContent =
           (s.body?.length ?? 0) > 0 ||
           (s.steps?.length ?? 0) > 0 ||

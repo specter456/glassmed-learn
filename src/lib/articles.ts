@@ -998,6 +998,175 @@ export const ARTICLES: Article[] = [
       },
     ],
   },
+  {
+    slug: "action-potential",
+    title: "The Action Potential",
+    emoji: "⚡",
+    category: "Neuroscience",
+    summary:
+      "The action potential is the electrical impulse that allows neurons to communicate. It is the fundamental unit of signalling in the nervous system — understanding it is essential for neurology, pharmacology, and cardiology.",
+    readMinutes: 10,
+    sections: [
+      {
+        heading: "What is an action potential?",
+        body: [
+          "An action potential (AP) is a rapid, temporary reversal of the electrical charge across a neuron's membrane. It is how one neuron sends a message to the next — an all-or-nothing electrical wave that travels down the axon at speeds up to 120 m/s.",
+          "At rest, the inside of a neuron is negatively charged compared to the outside (about -70 mV). When the neuron is stimulated enough to reach a threshold, voltage-gated ion channels open in a precise sequence, causing a rapid depolarisation followed by repolarisation and a brief hyperpolarisation before returning to rest.",
+        ],
+      },
+    ],
+    keyPoints: [],
+    whenToCall: [],
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "📖",
+        sections: [
+          {
+            heading: "What is an action potential?",
+            body: [
+              "Every time you think, feel, move, or see, billions of neurons are firing action potentials. An action potential is a quick electrical signal that travels along a nerve fibre. Think of it as a domino effect: one neuron fires, releasing chemicals (neurotransmitters) that trigger the next neuron to fire, and so on.",
+              "The key idea is the 'all-or-nothing' principle: either the neuron fires a full-strength action potential, or it does not fire at all. There is no such thing as a 'half' action potential. The strength of a stimulus is encoded not by the size of the signal, but by how frequently the neurons fire (frequency coding).",
+            ],
+          },
+          {
+            heading: "Key Terms You Must Know",
+            bullets: [
+              "Resting Membrane Potential (RMP) — The charge across the neuron's membrane when it is not firing. About -70 mV in most neurons. Maintained by the Na+/K+ ATPase pump (3 Na+ out, 2 K+ in) and leak channels.",
+              "Threshold — The critical voltage (about -55 mV) at which voltage-gated sodium channels open and the action potential is triggered. Below threshold = no AP.",
+              "Depolarisation — The inside of the cell becomes less negative (more positive) as Na+ rushes in. The membrane potential shoots up from -70 mV to about +30 mV.",
+              "Repolarisation — K+ channels open and K+ rushes out, making the inside negative again. The membrane potential drops back down.",
+              "Hyperpolarisation — K+ channels are slow to close, so the membrane briefly becomes more negative than -70 mV (about -90 mV) before returning to rest.",
+              "Refractory Period — The brief time after an AP when the neuron cannot fire again. The absolute refractory period means no AP is possible; the relative refractory period requires a stronger-than-normal stimulus.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "The all-or-nothing principle",
+              text: "A neuron either fires a full action potential or does not fire at all. The brain encodes stimulus intensity by changing the frequency of firing, not the size of each spike.",
+            },
+          },
+          {
+            heading: "The five phases of an action potential",
+            body: [
+              "Here is the simplest way to walk through each phase:",
+            ],
+            bullets: [
+              "1. Resting state (-70 mV) — The neuron is at rest. Na+ and K+ channels are closed. The Na+/K+ pump maintains the -70 mV gradient.",
+              "2. Depolarisation (rising phase) — A stimulus reaches threshold (-55 mV). Voltage-gated Na+ channels snap open. Na+ floods in. The membrane potential rockets to about +30 mV.",
+              "3. Repolarisation (falling phase) — Na+ channels inactivate. Voltage-gated K+ channels open (more slowly). K+ rushes out, bringing the potential back down.",
+              "4. Hyperpolarisation (undershoot) — K+ channels are slow to close. The potential dips below -70 mV to about -90 mV. This is the relative refractory period.",
+              "5. Return to rest — K+ channels finally close. The Na+/K+ pump restores the ion balance. The neuron is ready to fire again.",
+            ],
+          },
+          {
+            heading: "Why does this matter clinically?",
+            body: [
+              "Understanding action potentials explains how local anaesthetics work (they block Na+ channels, preventing pain signals), why hyperkalaemia is dangerous (high K+ shifts the resting potential closer to threshold, causing spontaneous firing and cardiac arrhythmias), and how drugs like carbamazepine and phenytoin treat epilepsy (they stabilise the inactivated state of Na+ channels).",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Resting membrane potential is -70 mV, maintained by the Na+/K+ ATPase pump.",
+          "Threshold is about -55 mV — reach it and the neuron fires; miss it and nothing happens.",
+          "Depolarisation = Na+ influx. Repolarisation = K+ efflux. Hyperpolarisation = K+ overshoot.",
+          "All-or-nothing: the neuron fires at full strength or not at all.",
+          "Refractory periods prevent back-propagation and limit maximum firing rate.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "Molecular basis of the action potential",
+            body: [
+              "The action potential depends on the sequential opening and closing of voltage-gated ion channels. Each channel type has a unique voltage-sensing domain (S4 segment) that responds to changes in membrane potential. The precise timing and coordination of these channels create the stereotyped waveform of the AP.",
+              "Voltage-gated Na+ channels exist in three states: closed (resting), open (conducting), and inactivated. The inactivated state is critical — it is this state that creates the absolute refractory period. The inactivation gate (the 'h gate' or ball-and-chain mechanism) plugs the channel pore from the intracellular side within about 0.5 ms of opening.",
+            ],
+          },
+          {
+            heading: "The Hodgkin-Huxley model",
+            body: [
+              "In 1952, Alan Hodgkin and Andrew Huxley published their mathematical model of the squid giant axon action potential, for which they later won the Nobel Prize (1963). Their model describes how the membrane current is the sum of:",
+            ],
+            bullets: [
+              "INa = gNa * m^3 * h * (Vm - ENa) — Sodium current, where m is the activation variable, h is the inactivation variable, and ENa is the sodium equilibrium potential (+60 mV).",
+              "IK = gK * n^4 * (Vm - EK) — Potassium current, where n is the activation variable and EK is the potassium equilibrium potential (-90 mV).",
+              "IL = gL * (Vm - EL) — Leak current (predominantly Cl- and background K+).",
+              "The total membrane current: Cm * dV/dt = -(INa + IK + IL) + Iext.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Hodgkin-Huxley in a nutshell",
+              text: "m^3 means three independent activation gates must all open for Na+ to conduct. n^4 means four independent gates for K+. This explains why Na+ channels activate faster than K+ channels (m gates are faster than n gates).",
+            },
+          },
+          {
+            heading: "Ion concentrations and equilibrium potentials",
+            body: [
+              "The resting membrane potential is determined by the Goldman-Hodgkin-Katz equation, which accounts for the relative permeabilities and concentrations of all permeant ions. At rest, the membrane is most permeable to K+ (through leak channels), so the resting potential (-70 mV) is close to EK (-90 mV).",
+            ],
+            bullets: [
+              "Intracellular Na+: ~15 mM. Extracellular Na+: ~145 mM. ENa: +60 mV.",
+              "Intracellular K+: ~140 mM. Extracellular K+: ~4 mM. EK: -90 mV.",
+              "Intracellular Cl-: ~10 mM. Extracellular Cl-: ~110 mM. ECl: -70 to -80 mV.",
+              "The Na+/K+ ATPase uses 1 ATP to pump 3 Na+ out and 2 K+ in, creating an electrogenic net outward current that contributes about -4 mV to the resting potential.",
+            ],
+          },
+          {
+            heading: "Saltatory conduction and myelination",
+            body: [
+              "In myelinated axons, voltage-gated Na+ channels are concentrated at the nodes of Ranvier (gaps in the myelin sheath, ~1 um wide). The action potential 'jumps' from node to node rather than propagating continuously along the entire membrane. This is saltatory conduction (from Latin saltare, 'to leap').",
+            ],
+            bullets: [
+              "Myelinated fibres conduct at up to 120 m/s (A-alpha fibres). Unmyelinated C fibres conduct at only 0.5-2 m/s.",
+              "Demyelinating diseases (e.g., multiple sclerosis, Guillain-Barre syndrome) slow or block conduction, causing weakness, sensory loss, and other neurological deficits.",
+              "The refractory period ensures unidirectional propagation: the region behind the AP is refractory, so the signal can only travel forward.",
+              "Cable properties: conduction velocity in myelinated fibres is proportional to axon diameter. In unmyelinated fibres, it is proportional to the square root of diameter.",
+            ],
+          },
+          {
+            heading: "Synaptic transmission: from AP to signal",
+            body: [
+              "When the action potential reaches the axon terminal, it opens voltage-gated Ca2+ channels. Ca2+ influx triggers synaptic vesicles to fuse with the presynaptic membrane (SNARE complex) and release neurotransmitters into the synaptic cleft. These bind to receptors on the postsynaptic neuron, generating either:",
+            ],
+            bullets: [
+              "Excitatory Postsynaptic Potentials (EPSPs) — Na+ or Ca2+ influx makes the postsynaptic neuron more likely to fire. Mediated by AMPA, NMDA, and kainate glutamate receptors.",
+              "Inhibitory Postsynaptic Potentials (IPSPs) — Cl- influx or K+ efflux makes the postsynaptic neuron less likely to fire. Mediated by GABA-A (Cl- channel) and glycine receptors.",
+              "Spatial and temporal summation: multiple EPSPs/IPSPs from different locations (spatial) or at different times (temporal) are summed at the axon hillock. If the sum reaches threshold, a new AP fires.",
+            ],
+            callout: {
+              kind: "warning",
+              title: "Clinical pearl: Channelopathies",
+              text: "Mutations in voltage-gated Na+ or K+ channels cause diseases such as episodic ataxia type 1 (KCNA1), paramyotonia congenita (SCN4A), and certain forms of epilepsy (SCN1A). Understanding the AP helps explain both the disease mechanism and drug treatment.",
+            },
+          },
+          {
+            heading: "Pharmacology of the action potential",
+            body: [
+              "Many clinically important drugs work by modifying ion channel behaviour during the action potential:",
+            ],
+            bullets: [
+              "Local anaesthetics (lidocaine, bupivacaine) block Na+ channels from the intracellular side, preventing AP generation and propagation in pain fibres. They preferentially block actively firing nerves (use-dependent block).",
+              "Antiepileptics (carbamazepine, phenytoin, lamotrigine) stabilise the inactivated state of Na+ channels, reducing high-frequency repetitive firing while preserving normal single-spike conduction.",
+              "Class I antiarrhythmics (procainamide, flecainide) block cardiac Na+ channels (Nav1.5), slowing conduction velocity in the heart.",
+              "Tetrodotoxin (TTX, from pufferfish) and saxitoxin (from dinoflagellates) block the outer pore of Na+ channels, completely preventing AP generation. They are extremely toxic.",
+              "4-aminopyridine (4-AP) blocks K+ channels, prolonging the AP. Used experimentally in demyelination research to improve conduction in demyelinated axons.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Na+ channels have three states: closed, open, and inactivated. The inactivated state creates the absolute refractory period.",
+          "The Hodgkin-Huxley model describes AP as the sum of Na+, K+, and leak currents with voltage-dependent conductances.",
+          "Saltatory conduction in myelinated fibres is ~50x faster than continuous conduction in unmyelinated fibres.",
+          "At the synapse, Ca2+ influx triggers neurotransmitter release; EPSPs and IPSPs are summed at the axon hillock.",
+          "Many drugs target AP channels: local anaesthetics (Na+ blockers), antiepileptics (Na+ stabilisers), and antiarrhythmics (cardiac Na+ blockers).",
+        ],
+      },
+    ],
+  },
 ];
 
 export const ARTICLE_CATEGORIES: string[] = Array.from(
