@@ -27,6 +27,15 @@ export interface ArticleSection {
   callout?: ArticleCallout;
 }
 
+/** A tab within a tabbed article (e.g. Basics / In-Depth). */
+export interface ArticleTab {
+  id: string;
+  label: string;
+  icon?: string;
+  sections: ArticleSection[];
+  keyPoints: string[];
+}
+
 export interface Article {
   slug: string;
   title: string;
@@ -39,6 +48,8 @@ export interface Article {
   keyPoints: string[];
   /** Red flags that mean "call emergency services now". */
   whenToCall: string[];
+  /** Optional tabbed content — when present, replaces sections/keyPoints/whenToCall with tab UI. */
+  tabs?: ArticleTab[];
 }
 
 export const ARTICLES: Article[] = [
@@ -801,6 +812,192 @@ export const ARTICLES: Article[] = [
       "Any poisoning in a child, or any uncertainty about the substance or amount — call poison control right away.",
     ],
   },
+  {
+    slug: "cardiac-cycle",
+    title: "The Cardiac Cycle",
+    emoji: "💓",
+    category: "Physiology",
+    summary:
+      "The cardiac cycle is the sequence of events that occurs during one complete heartbeat — from the moment the atria contract to the moment the ventricles relax. Understanding it is the foundation of cardiology.",
+    readMinutes: 8,
+    sections: [
+      {
+        heading: "What is the cardiac cycle?",
+        body: [
+          "Every beat of your heart is a perfectly orchestrated event. The cardiac cycle describes the complete sequence of mechanical events — contraction and relaxation — that the heart goes through to pump blood to the lungs and the rest of the body.",
+          "A single cardiac cycle lasts about 0.8 seconds at a normal resting heart rate of 75 beats per minute. During that fraction of a second, the heart must fill with blood, contract to eject it, and relax to refill — repeating this roughly 100,000 times every day.",
+        ],
+      },
+    ],
+    keyPoints: [],
+    whenToCall: [],
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "📖",
+        sections: [
+          {
+            heading: "What is the cardiac cycle?",
+            body: [
+              "The cardiac cycle is the series of events that happen during one heartbeat. Think of it as a single pump-action: the heart fills with blood, squeezes it out, and then relaxes to fill again. This entire cycle repeats about 75 times per minute at rest.",
+              "The cycle is divided into two major phases: when the heart is actively squeezing (systole) and when it is relaxing and filling (diastole). Both the upper chambers (atria) and the lower chambers (ventricles) have their own systole and diastole — they work in a staggered, coordinated rhythm.",
+            ],
+          },
+          {
+            heading: "Key Terms You Must Know",
+            bullets: [
+              "Systole — The phase when a heart chamber contracts (squeezes) to pump blood out. When you hear 'systolic blood pressure,' it's the pressure in the arteries during ventricular contraction (typically 120 mmHg in a healthy adult).",
+              "Diastole — The phase when a heart chamber relaxes and fills with blood. 'Diastolic blood pressure' is the pressure in the arteries during this resting phase (typically 80 mmHg).",
+              "Cardiac Output (CO) — The volume of blood the heart pumps in one minute. CO = Heart Rate × Stroke Volume. At rest, a healthy heart pumps about 5 litres per minute.",
+              "Stroke Volume (SV) — The amount of blood pumped out by the left ventricle in a single beat (about 70 mL).",
+              "Heart Rate (HR) — The number of beats per minute (typically 60–100 bpm at rest).",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Remember this formula",
+              text: "Cardiac Output = Heart Rate × Stroke Volume. If either goes up (exercise, fever, or anxiety), the heart works harder to maintain adequate blood flow.",
+            },
+          },
+          {
+            heading: "What happens during one beat?",
+            body: [
+              "Here's the simplest way to think about it:",
+            ],
+            bullets: [
+              "Step 1 — The atria contract first, pushing the last bit of blood into the ventricles (Atrial Systole).",
+              "Step 2 — The ventricles then contract powerfully, sending blood to the lungs via the pulmonary artery and to the body via the aorta (Ventricular Systole).",
+              "Step 3 — Everything relaxes briefly, and blood flows passively back into the atria and ventricles, preparing for the next beat (Complete Cardiac Diastole).",
+            ],
+          },
+          {
+            heading: "Heart Sounds: What are 'Lub' and 'Dub'?",
+            body: [
+              "Every time you hear a heartbeat, you're actually hearing the sounds made by the heart valves closing:",
+            ],
+            bullets: [
+              "S1 ('Lub') — The first heart sound, caused by the closing of the mitral and tricuspid valves at the start of ventricular systole. It marks the beginning of the ventricular contraction.",
+              "S2 ('Dub') — The second heart sound, caused by the closing of the aortic and pulmonary valves at the end of ventricular systole. It marks the beginning of diastole.",
+              "These sounds are the basis of cardiac auscultation — doctors use a stethoscope to listen for abnormal sounds (murmurs) that might indicate valve problems.",
+            ],
+          },
+          {
+            heading: "Why does the cardiac cycle matter?",
+            bullets: [
+              "It's the foundation of understanding blood pressure, heart murmurs, heart failure, and many cardiac diseases.",
+              "Every medical student must know the pressure changes, valve actions, and volume changes during each phase.",
+              "It connects to other systems: the lungs (pulmonary circulation), the kidneys (fluid balance), and the brain (perfusion).",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Systole = contraction (pumping). Diastole = relaxation (filling).",
+          "Cardiac Output = Heart Rate × Stroke Volume. Normal CO is ~5 L/min.",
+          "S1 ('Lub') = mitral/tricuspid valves close. S2 ('Dub') = aortic/pulmonary valves close.",
+          "One complete cardiac cycle lasts ~0.8 seconds at 75 bpm.",
+        ],
+      },
+      {
+        id: "indepth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "Phase 1: Atrial Systole (0.1 s)",
+            body: [
+              "Atrial systole begins when the SA node (the heart's natural pacemaker) fires, causing both atria to contract simultaneously. This 'atrial kick' pushes the final 20–30% of blood into the already partially-filled ventricles.",
+              "During this phase:",
+            ],
+            bullets: [
+              "Atrial pressure rises briefly above ventricular pressure, forcing the mitral and tricuspid valves open.",
+              "Ventricular volume increases from about 130 mL (end-diastolic volume, or EDV) to its maximum.",
+              "The ECG shows the P wave, which represents atrial depolarization — the electrical signal that triggers the contraction.",
+              "The aortic and pulmonary valves remain closed during this phase because ventricular pressure is still lower than arterial pressure.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Clinical pearl: Atrial fibrillation",
+              text: "In atrial fibrillation, the atria quiver instead of contracting. The 'atrial kick' is lost, reducing ventricular filling by 15–25%. This is why patients with AF can feel fatigued — their cardiac output drops even if the heart rate seems normal.",
+            },
+          },
+          {
+            heading: "Phase 2: Ventricular Systole (0.3 s)",
+            body: [
+              "Ventricular systole is the powerful phase where the ventricles contract and eject blood into the great arteries. It is divided into two sub-phases:",
+            ],
+            bullets: [
+              "Isovolumetric contraction (early) — All four valves are momentarily closed. The ventricles are contracting, but the pressure hasn't yet risen enough to open the aortic or pulmonary valves. Ventricular pressure rises rapidly (from ~5 to ~80 mmHg in the left ventricle) with no change in volume. This is when S1 ('Lub') is heard.",
+              "Ejection phase — Once ventricular pressure exceeds arterial pressure, the aortic and pulmonary valves open. Blood is ejected forcefully: about 70 mL (stroke volume) leaves each ventricle. The ejection is not complete — about 50 mL (end-systolic volume, or ESV) remains.",
+              "During ejection, the ECG shows the QRS complex (ventricular depolarization) followed by the T wave (ventricular repolarization).",
+            ],
+          },
+          {
+            heading: "Phase 3: Complete Cardiac Diastole (0.4 s)",
+            body: [
+              "Diastole is the longest phase of the cardiac cycle and is when the heart rests and refills. It is critical for coronary perfusion — the heart muscle itself receives most of its blood supply during diastole.",
+            ],
+            bullets: [
+              "Isovolumetric relaxation — The ventricles begin to relax. All four valves are closed again. Ventricular pressure drops rapidly. This is when S2 ('Dub') is heard as the aortic and pulmonary valves snap shut.",
+              "Rapid filling — Once ventricular pressure falls below atrial pressure, the mitral and tricuspid valves open. Blood that has been pooling in the atria flows rapidly into the ventricles, filling them to about 70% of their final volume.",",
+              "Diastasis (slow filling) — The remaining filling happens slowly as blood returns from the veins through the atria into the ventricles. This phase is shortened when heart rate increases.",
+              "End-diastole — The atria contract (atrial systole again), completing ventricular filling and restarting the cycle.",
+            ],
+          },
+          {
+            heading: "Pressure Changes: The Wiggers Diagram",
+            body: [
+              "The Wiggers diagram is the classic visual representation of the cardiac cycle. It plots pressure, volume, ECG, and heart sounds against time. Key pressure relationships to remember:",
+            ],
+            bullets: [
+              "Left atrial pressure peaks at about 10 mmHg during atrial systole, then drops as blood flows into the ventricle.",
+              "Left ventricular pressure rises from ~5 mmHg (diastole) to ~120 mmHg (systole) — a 24-fold increase.",
+              "Aortic pressure oscillates between 80 mmHg (diastolic) and 120 mmHg (systolic), with a dicrotic notch marking aortic valve closure.",
+              "The crossover point where ventricular pressure exceeds atrial pressure is when the AV valves close (S1). The crossover where ventricular pressure falls below aortic pressure is when the aortic valve closes (S2).",
+            ],
+          },
+          {
+            heading: "Heart Sounds in Detail",
+            body: [
+              "Beyond the basic S1 and S2, clinicians listen for abnormal sounds that reveal pathology:",
+            ],
+            bullets: [
+              "S1 (Lub) — Loudest at the apex. Caused by mitral and tricuspid valve closure. Splitting occurs when the two valves don't close simultaneously (e.g., right bundle branch block).",
+              "S2 (Dub) — Loudest at the base. Caused by aortic (A2) and pulmonary (P2) valve closure. Physiological splitting happens during inspiration (increased venous return delays pulmonary valve closure).",
+              "S3 (ventricular gallop) — A low-pitched sound in early diastole from rapid ventricular filling. Normal in young adults but suggests heart failure in older patients.",
+              "S4 (atrial gallop) — A low-pitched sound in late diastole from atrial contraction against a stiff ventricle. Suggests diastolic dysfunction or left ventricular hypertrophy.",
+              "Murmurs — Turbulent blood flow heard as a whooshing sound, graded I–VI by intensity. They indicate valvular stenosis (narrowing), regurgitation (leaking), or shunts.",
+            ],
+            callout: {
+              kind: "warning",
+              title: "Murmur grading (Levine scale)",
+              text: "Grade I: barely audible. Grade II: soft but clearly heard. Grade III: moderately loud. Grade IV: loud with a thrill (palpable vibration). Grade V: very loud, heard with stethoscope barely on chest. Grade VI: heard without the stethoscope on the chest. Grades III+ are always pathological.",
+            },
+          },
+          {
+            heading: "Clinical Relevance",
+            body: [
+              "Understanding the cardiac cycle is essential for diagnosing and managing cardiac diseases. Here are the most important clinical connections:",
+            ],
+            bullets: [
+              "Heart failure (systolic) — The ventricles can't contract effectively. Stroke volume drops, so the heart rate increases to compensate. The ejection fraction (EF = SV/EDV × 100) falls below 55%. Filling pressures rise, causing fluid backing up into the lungs (congestion).",
+              "Heart failure (diastolic) — The ventricles are stiff and can't relax properly. They resist filling, so EDV is reduced. The atria must generate higher pressures to push blood in, which can cause atrial fibrillation. EF is preserved (≥55%), but cardiac output is still compromised.",
+              "Aortic stenosis — The aortic valve narrows, increasing the pressure gradient the left ventricle must generate to eject blood. Over time, the LV hypertrophies (thickens) to compensate. Eventually, it can fail, leading to syncope, angina, and heart failure.",
+              "Mitral regurgitation — The mitral valve doesn't close properly, allowing blood to leak back into the left atrium during ventricular systole. This reduces forward stroke volume and increases atrial pressure, potentially causing pulmonary edema.",
+              "Cardiac tamponade — Fluid accumulates in the pericardial sac, compressing the heart. Both diastolic filling and systolic ejection are impaired, causing a dramatic drop in cardiac output. The classic triad: hypotension, muffled heart sounds, and jugular venous distension.",
+              "Conduction disorders — Damage to the conduction system (SA node → AV node → Bundle of His → Purkinje fibres) disrupts the timing of the cycle. A heart block delays or prevents atrial signals from reaching the ventricles, causing bradycardia or dissociation.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Atrial systole (0.1 s): atria contract, AV valves open, ventricles fill to EDV (~130 mL).",
+          "Ventricular systole (0.3 s): isovolumetric contraction → ejection. LV pressure reaches ~120 mmHg. S1 heard.",
+          "Complete diastole (0.4 s): isovolumetric relaxation (S2 heard) → rapid filling → slow filling → atrial kick.",
+          "S3 gallop in older patients = heart failure. S4 gallop = stiff ventricle (diastolic dysfunction).",
+          "Ejection fraction < 55% = systolic heart failure. Preserved EF but stiff ventricles = diastolic heart failure.",
+        ],
+      },
+    ],
+  },
 ];
 
 export const ARTICLE_CATEGORIES: string[] = Array.from(
@@ -813,16 +1010,21 @@ export function articleBySlug(slug: string): Article | undefined {
 
 /** Total number of step-by-step instructions across the library. */
 export function totalSteps(): number {
-  return ARTICLES.reduce(
-    (sum, a) => sum + a.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0),
-    0,
-  );
+  return ARTICLES.reduce((sum, a) => {
+    if (a.tabs) {
+      return sum + a.tabs.reduce(
+        (tabSum, tab) => tabSum + tab.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0),
+        0,
+      );
+    }
+    return sum + a.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0);
+  }, 0);
 }
 
 /** A plain-text reading of an article for the Read Aloud feature. */
-export function articleToSpeech(article: Article): string {
-  const parts: string[] = [article.title];
-  for (const section of article.sections) {
+function sectionsToSpeech(sections: ArticleSection[]): string[] {
+  const parts: string[] = [];
+  for (const section of sections) {
     parts.push(section.heading);
     if (section.body) parts.push(...section.body);
     if (section.steps) {
@@ -831,7 +1033,24 @@ export function articleToSpeech(article: Article): string {
     if (section.bullets) parts.push(...section.bullets);
     if (section.callout) parts.push(section.callout.title + ". " + section.callout.text);
   }
-  parts.push("Key points to remember.");
-  parts.push(...article.keyPoints);
+  return parts;
+}
+
+export function articleToSpeech(article: Article): string {
+  const parts: string[] = [article.title];
+  if (article.tabs) {
+    for (const tab of article.tabs) {
+      parts.push(`--- ${tab.label} ---`);
+      parts.push(...sectionsToSpeech(tab.sections));
+      if (tab.keyPoints.length > 0) {
+        parts.push("Key points to remember.");
+        parts.push(...tab.keyPoints);
+      }
+    }
+  } else {
+    parts.push(...sectionsToSpeech(article.sections));
+    parts.push("Key points to remember.");
+    parts.push(...article.keyPoints);
+  }
   return parts.join(" ");
 }

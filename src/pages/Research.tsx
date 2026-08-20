@@ -222,7 +222,9 @@ function ResearchLibrary({
                 </span>
                 <span className="flex items-center gap-1">
                   <ListChecks className="size-3" />
-                  {a.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0)} steps
+                  {a.tabs
+                  ? a.tabs.reduce((ts, tab) => ts + tab.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0), 0)
+                  : a.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0)} steps
                 </span>
                 <ChevronRight className="ml-auto size-4 text-wistaria transition-transform duration-300 group-hover:translate-x-1" />
               </div>
@@ -273,6 +275,9 @@ function CalloutBox({ callout }: { callout: ArticleCallout }) {
 }
 
 function ArticleReader({ article }: { article: Article }) {
+  const [activeTab, setActiveTab] = useState<string | null>(
+    () => article.tabs?.[0]?.id ?? null,
+  );
   const [speakingSlug, setSpeakingSlug] = useState<string | null>(null);
   const [paused, setPaused] = useState(false);
 
@@ -338,7 +343,18 @@ function ArticleReader({ article }: { article: Article }) {
     setPaused(false);
   };
 
-  const stepCount = article.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0);
+  const hasTabs = Boolean(article.tabs);
+  const activeTabData = hasTabs ? article.tabs?.find((t) => t.id === activeTab) : undefined;
+  const displaySections = activeTabData?.sections ?? article.sections;
+  const displayKeyPoints = activeTabData?.keyPoints ?? article.keyPoints;
+  const displayWhenToCall = article.whenToCall;
+
+  const stepCount = displaySections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0);
+
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <main className="mx-auto max-w-3xl px-4 pb-32 pt-8 sm:px-6">
@@ -461,9 +477,44 @@ function ArticleReader({ article }: { article: Article }) {
         </p>
       )}
 
+      {/* tab bar for tabbed articles */}
+      {hasTabs && article.tabs && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.12 }}
+          className="glass-strong mt-6 flex items-center gap-2 rounded-2xl p-1.5"
+        >
+          {article.tabs.map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => handleTabChange(tab.id)}
+                className={`relative flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-300 ${
+                  isActive
+                    ? "text-wistaria"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeTabBg"
+                    className="absolute inset-0 rounded-xl bg-wistaria/15 border border-wistaria/20"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{tab.icon}</span>
+                <span className="relative z-10">{tab.label}</span>
+              </button>
+            );
+          })}
+        </motion.div>
+      )}
+
       {/* sections */}
       <div className="mt-8 space-y-8">
-        {article.sections.map((section, i) => (
+        {displaySections.map((section, i) => (
           <motion.section
             key={section.heading}
             initial={{ opacity: 0, y: 12 }}
@@ -512,28 +563,31 @@ function ArticleReader({ article }: { article: Article }) {
       </div>
 
       {/* key points */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4 }}
-        className="glass-panel mt-10 rounded-3xl p-6"
-      >
-        <p className="flex items-center gap-2 text-sm font-extrabold tracking-tight text-wistaria">
-          <ListChecks className="size-4" />
-          Key points to remember
-        </p>
-        <ul className="mt-3 space-y-2.5">
-          {article.keyPoints.map((k, i) => (
-            <li key={i} className="flex gap-2.5">
-              <ChevronRight className="mt-1.5 size-3.5 shrink-0 text-wistaria" />
-              <p className="text-sm leading-6 text-foreground">{k}</p>
-            </li>
-          ))}
-        </ul>
-      </motion.div>
+      {displayKeyPoints.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="glass-panel mt-10 rounded-3xl p-6"
+        >
+          <p className="flex items-center gap-2 text-sm font-extrabold tracking-tight text-wistaria">
+            <ListChecks className="size-4" />
+            Key points to remember
+          </p>
+          <ul className="mt-3 space-y-2.5">
+            {displayKeyPoints.map((k, i) => (
+              <li key={i} className="flex gap-2.5">
+                <ChevronRight className="mt-1.5 size-3.5 shrink-0 text-wistaria" />
+                <p className="text-sm leading-6 text-foreground">{k}</p>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+      )}
 
       {/* when to call */}
+      {displayWhenToCall.length > 0 && (
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -546,7 +600,7 @@ function ArticleReader({ article }: { article: Article }) {
           Call for emergency help when…
         </p>
         <ul className="mt-3 space-y-2.5">
-          {article.whenToCall.map((w, i) => (
+          {displayWhenToCall.map((w, i) => (
             <li key={i} className="flex gap-2.5">
               <ChevronRight className="mt-1.5 size-3.5 shrink-0 text-[#ef8b93]" />
               <p className="text-sm leading-6 text-foreground">{w}</p>
@@ -554,6 +608,7 @@ function ArticleReader({ article }: { article: Article }) {
           ))}
         </ul>
       </motion.div>
+      )}
 
       <p className="mt-6 px-1 text-[11px] leading-5 text-muted-foreground">
         This guide is educational content and is not a substitute for professional
