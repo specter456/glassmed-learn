@@ -1,16 +1,26 @@
 import { motion } from "framer-motion";
 import {
+  Activity,
   ArrowRight,
   Bot,
   Box,
   CalendarClock,
   CheckCircle2,
+  Cross,
+  Droplets,
+  HeartPulse,
   Layers,
+  Network,
+  RefreshCw,
   Scissors,
   Search,
+  ShieldPlus,
   Sparkles,
   Target,
   Trophy,
+  Utensils,
+  Wind,
+  Zap,
 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { api } from "@/convex/_generated/api";
@@ -19,7 +29,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { Button } from "@/components/ui/button";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
-import { topicIcon } from "@/lib/medipro";
+import { articleBySlug } from "@/lib/articles";
 import { useEnsureSeeded } from "@/hooks/use-ensure-seeded";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -53,6 +63,19 @@ const MODULES = [
     color: "#6fb5b0",
     path: "/research",
   },
+];
+
+const BASICS_FIRST_PATH = [
+  { num: 1, slug: "cardiac-cycle", title: "The Cardiac Cycle", desc: "Systole, diastole, and the pressure changes that drive every heartbeat.", articleSlug: "cardiac-cycle", icon: HeartPulse, color: "#ff5f7a" },
+  { num: 2, slug: "action-potential", title: "The Action Potential", desc: "The electrical impulse that lets neurons and muscles communicate.", articleSlug: "action-potential", icon: Zap, color: "#a78bfa" },
+  { num: 3, slug: "brachial-plexus", title: "The Brachial Plexus", desc: "The nerve superhighway from spine to fingertips — roots, trunks, cords, branches.", articleSlug: undefined, icon: Network, color: "#22d3ee" },
+  { num: 4, slug: "krebs-cycle", title: "The Krebs (TCA) Cycle", desc: "How cells extract energy from glucose — the central metabolic hub.", articleSlug: undefined, icon: RefreshCw, color: "#f59e0b" },
+  { num: 5, slug: "muscle-contraction", title: "Muscle Contraction", desc: "Actin, myosin, and the sliding filament theory — how muscles generate force.", articleSlug: "muscle-contraction", icon: Activity, color: "#e879f9" },
+  { num: 6, slug: "respiratory-mechanics", title: "Respiratory Mechanics", desc: "Ventilation, gas exchange, and the physics of breathing.", articleSlug: undefined, icon: Wind, color: "#67e8f9" },
+  { num: 7, slug: "renal-physiology", title: "Renal Physiology", desc: "Filtration, reabsorption, and the nephron — how the kidney balances the body.", articleSlug: undefined, icon: Droplets, color: "#22d3ee" },
+  { num: 8, slug: "gi-system", title: "Gastrointestinal System", desc: "From ingestion to absorption — the organs and enzymes of digestion.", articleSlug: undefined, icon: Utensils, color: "#f59e0b" },
+  { num: 9, slug: "endocrine-system", title: "Endocrine System", desc: "Hormones, feedback loops, and how glands regulate the body.", articleSlug: undefined, icon: Cross, color: "#a78bfa" },
+  { num: 10, slug: "blood-immunity", title: "Blood & Immunity", desc: "Blood cells, clotting, and the immune defences that keep you alive.", articleSlug: undefined, icon: ShieldPlus, color: "#e2666f" },
 ];
 
 function DashboardInner() {
@@ -223,15 +246,15 @@ function DashboardInner() {
           </div>
         </section>
 
-        {/* Learning path */}
+        {/* The Basics-First Path — all 10 core topics */}
         <section className="mt-12">
           <div className="flex items-center justify-between">
             <h2 className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-wistaria">
               <Sparkles className="size-5" />
-              The basics-first path
+              The Basics-First Path
             </h2>
             <button
-              onClick={() => navigate("/basics")}
+              onClick={() => navigate("/research")}
               className="flex items-center gap-1 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
             >
               All topics
@@ -240,62 +263,55 @@ function DashboardInner() {
           </div>
 
           <div className="mt-4 space-y-3">
-            {loading ? (
-              Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="glass-panel flex items-center gap-4 rounded-2xl p-4">
-                  <div className="skeleton size-11 rounded-xl" />
-                  <div className="flex-1 space-y-2">
-                    <div className="skeleton h-3.5 w-1/2 rounded-md" />
-                    <div className="skeleton h-2 w-full rounded-full" />
-                  </div>
-                  <div className="skeleton h-6 w-16 rounded-full" />
-                </div>
-              ))
-            ) : (
-              (summary?.byTopic ?? []).map((t, i) => {
-                const Icon = topicIcon(t.icon);
-                const pct = t.total > 0 ? Math.round((t.mastered / t.total) * 100) : 0;
-                return (
-                  <motion.button
-                    key={t.slug}
-                    initial={{ opacity: 0, x: -16 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 + i * 0.06 }}
-                    whileHover={{ x: 6 }}
-                    onClick={() => navigate(`/basics?topic=${t.slug}`)}
-                    className="glass-chip shine flex w-full items-center gap-4 rounded-2xl p-4 text-left"
+            {BASICS_FIRST_PATH.map((topic, i) => {
+              const article = topic.articleSlug ? articleBySlug(topic.articleSlug) : undefined;
+              const isAvailable = Boolean(article);
+              return (
+                <motion.button
+                  key={topic.slug}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 + i * 0.06 }}
+                  whileHover={{ x: 6 }}
+                  onClick={() => {
+                    if (isAvailable) {
+                      navigate(`/research?article=${topic.articleSlug}`);
+                    } else {
+                      navigate("/research");
+                    }
+                  }}
+                  className="glass-chip shine flex w-full items-center gap-4 rounded-2xl p-4 text-left"
+                >
+                  <div
+                    className="flex size-11 shrink-0 items-center justify-center rounded-xl"
+                    style={{ backgroundColor: topic.color + "1f", color: topic.color }}
                   >
-                    <div
-                      className="flex size-11 shrink-0 items-center justify-center rounded-xl"
-                      style={{ backgroundColor: t.accent + "1f", color: t.accent }}
-                    >
-                      <Icon className="size-5" />
+                    <topic.icon className="size-5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <p className="truncate text-sm font-bold">
+                        <span className="mr-1.5 text-[11px] font-extrabold text-muted-foreground">
+                          {topic.num}.
+                        </span>
+                        {topic.title}
+                      </p>
+                      {isAvailable ? (
+                        <span className="shrink-0 rounded-full bg-wistaria/15 px-2.5 py-1 text-[11px] font-bold text-wistaria">
+                          Basics & In-Depth
+                        </span>
+                      ) : (
+                        <span className="shrink-0 rounded-full bg-white/8 px-2.5 py-1 text-[11px] font-bold text-muted-foreground">
+                          Coming Soon
+                        </span>
+                      )}
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-baseline justify-between gap-2">
-                        <p className="truncate text-sm font-bold">{t.title}</p>
-                        <p className="shrink-0 text-[11px] font-semibold text-muted-foreground">
-                          {t.done}/{t.total} reviewed
-                        </p>
-                      </div>
-                      <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                        <div
-                          className="h-full rounded-full transition-all duration-700"
-                          style={{ width: `${pct}%`, backgroundColor: t.accent }}
-                        />
-                      </div>
-                    </div>
-                    {t.due > 0 ? (
-                      <span className="shrink-0 rounded-full bg-[#e2666f]/15 px-2.5 py-1 text-[11px] font-bold text-[#c2434d]">
-                        {t.due} due
-                      </span>
-                    ) : (
-                      <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
-                    )}
-                  </motion.button>
-                );
-              })
-            )}
+                    <p className="mt-1 text-xs text-muted-foreground">{topic.desc}</p>
+                  </div>
+                  <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
+                </motion.button>
+              );
+            })}
           </div>
         </section>
       </main>
