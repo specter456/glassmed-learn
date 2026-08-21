@@ -13,7 +13,7 @@ import {
 
 describe("library shape", () => {
   it("contains exactly 11 articles", () => {
-    expect(ARTICLES).toHaveLength(16);
+    expect(ARTICLES).toHaveLength(17);
   });
 
   it("has unique slugs", () => {

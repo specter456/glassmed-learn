@@ -1735,59 +1735,234 @@ export const ARTICLES: Article[] = [
       },
     ],
   },
+  {
+    slug: "digestive-system",
+    title: "The Digestive System",
+    emoji: "🍽️",
+    category: "Physiology",
+    summary:
+      "A complete guide to the gastrointestinal tract — from ingestion and mechanical breakdown in the mouth to enzymatic digestion, nutrient absorption in the small intestine, and water reabsorption in the colon. Covers the organs, enzymes, and neural/hormonal regulation that turn a meal into usable energy.",
+    readMinutes: 14,
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "📖",
+        sections: [
+          {
+            heading: "The Journey of Food",
+            body: [
+              "Digestion is the process of breaking food into molecules small enough for the body to absorb. It begins the moment food enters the mouth and ends when waste exits the anus — a journey of roughly 9 metres through the gastrointestinal (GI) tract.",
+              "Two types of digestion occur simultaneously: mechanical digestion (physical breakdown by chewing, churning, and segmentation) and chemical digestion (enzymatic hydrolysis of macromolecules into absorbable units).",
+            ],
+            bullets: [
+              "Mouth: Teeth crush food (mastication); salivary amylase begins starch digestion; the tongue forms a bolus.",
+              "Pharynx & Oesophagus: The bolus is swallowed (deglutition) and propelled by peristaltic waves to the stomach.",
+              "Stomach: Churns food with gastric juice (HCl + pepsin) into a semi-liquid chyme.",
+              "Small Intestine: The primary site of chemical digestion and nutrient absorption (duodenum → jejunum → ileum).",
+              "Large Intestine: Absorbs water, electrolytes, and vitamins produced by gut bacteria; forms faeces.",
+              "Rectum & Anus: Stores and eliminates waste.",
+            ],
+          },
+          {
+            heading: "Key Terms",
+            bullets: [
+              "Bolus — the softened mass of chewed food mixed with saliva, ready to be swallowed.",
+              "Chyme — the acidic, semi-liquid paste produced by gastric mixing in the stomach.",
+              "Peristalsis — rhythmic, wave-like contractions of smooth muscle that push contents along the GI tract.",
+              "Segmentation — localised contractions that mix chyme with digestive juices and bring it into contact with the absorptive surface.",
+              "Villi — finger-like projections of the small-intestinal mucosa that increase the absorptive surface area ~600-fold.",
+              "Brush border — the microvilli on the apical surface of enterocytes where final enzymatic digestion and absorption occur.",
+              "Sphincters — ring-shaped muscles that control the passage of food between compartments (e.g., lower oesophageal sphincter, pyloric sphincter, ileocaecal valve).",
+            ],
+          },
+          {
+            heading: "The Role of the Stomach",
+            body: [
+              "The stomach is a J-shaped muscular sac that serves as a temporary storage reservoir and mixing chamber. It secretes gastric juice — a potent mix of hydrochloric acid (HCl, pH 1.5–3.5), pepsinogen (activated to pepsin by HCl), intrinsic factor (for vitamin B₁₂ absorption), and mucus (protective barrier).",
+              "HCl denatures proteins, activates pepsin, and kills most ingested bacteria. Pepsin is an endopeptidase that cleaves proteins into smaller polypeptides. The stomach also absorbs a few substances: water, certain ions, alcohol, and some drugs (e.g., aspirin).",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Gastric emptying",
+              text: "Liquids leave the stomach faster than solids. Fat slows gastric emptying significantly — which is why high-fat meals keep you feeling full longer.",
+            },
+          },
+          {
+            heading: "Absorption in the Intestines",
+            body: [
+              "The small intestine is the workhorse of absorption. Its enormous surface area — created by circular folds, villi, and microvilli — allows efficient uptake of amino acids, monosaccharides, fatty acids, vitamins, and minerals into the blood or lymphatic system.",
+              "The large intestine mainly reabsorbs water (~1.5 L/day) and electrolytes, and houses a vast microbiota that produces vitamin K and short-chain fatty acids from undigested fibre.",
+            ],
+            bullets: [
+              "Iron and calcium are absorbed primarily in the duodenum (regulated by hepcidin and vitamin D respectively).",
+              "Fat-soluble vitamins (A, D, E, K) are absorbed with dietary fat via micelles in the jejunum.",
+              "Vitamin B₁₂ is absorbed in the terminal ileum after binding to intrinsic factor.",
+              "Water absorption is driven by the osmotic gradient created by solute absorption.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Digestion spans ~9 m from mouth to anus and combines mechanical and chemical processes.",
+          "The stomach produces HCl (pH 1.5–3.5) and pepsin for protein digestion; it also absorbs alcohol and some drugs.",
+          "The small intestine is the primary site of nutrient absorption, with villi increasing surface area ~600-fold.",
+          "Peristalsis and segmentation are the two key motility patterns that move and mix GI contents.",
+          "The large intestine absorbs water and electrolytes and houses beneficial gut bacteria.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "Enzymes of Digestion",
+            body: [
+              "Enzymatic digestion is a coordinated cascade involving salivary, gastric, pancreatic, and brush-border enzymes. Each enzyme has an optimal pH and substrate specificity, ensuring that macromolecules are systematically dismantled.",
+            ],
+            bullets: [
+              "Salivary amylase (ptyalin): Cleaves starch → maltose + maltotriose. Inactivated by gastric acid.",
+              "Lingual lipase: Secreted by von Ebner's glands; begins fat digestion in the mouth. Continues working in the stomach (acid-stable).",
+              "Pepsin (from pepsinogen): An endopeptidase optimised at pH 1.5–2.5. Cleaves proteins → large polypeptides.",
+              "Pancreatic lipase: The major fat-digesting enzyme; splits triglycerides → 2-monoglycerides + free fatty acids. Requires colipase to anchor it to the bile-salt-coated fat droplet.",
+              "Pancreatic amylase: Continues starch digestion in the duodenum → maltose + limit dextrins.",
+              "Trypsin & chymotrypsin (from trypsinogen / chymotrypsinogen): Serine proteases that further digest polypeptides into smaller peptides.",
+              "Brush-border enzymes (maltase, sucrase, lactase, peptidases): Complete digestion at the enterocyte surface into monosaccharides and amino acids for absorption.",
+            ],
+            callout: {
+              kind: "warning",
+              title: "Zymogen activation",
+              text: "Pancreatic proteases are secreted as inactive zymogens to prevent autodigestion. Trypsinogen is activated by enterokinase on the duodenal brush border; trypsin then activates all other pancreatic zymogens — a cascade that, if triggered prematurely, causes acute pancreatitis.",
+            },
+          },
+          {
+            heading: "The Liver and Pancreas",
+            body: [
+              "The liver and pancreas are the two major accessory organs of digestion. They secrete their products into the duodenum via the hepatopancreatic ampulla (of Vater), regulated by the sphincter of Oddi.",
+            ],
+            bullets: [
+              "Liver: Produces bile (stored in the gallbladder), which emulsifies dietary fats into smaller droplets, increasing the surface area for lipase action. The liver also detoxifies drugs, metabolises nutrients, stores glycogen, and synthesises plasma proteins.",
+              "Gallbladder: Stores and concentrates bile between meals; contracts in response to cholecystokinin (CCK) released by I-cells in the duodenum in response to fat and protein.",
+              "Exocrine pancreas: Secretes bicarbonate-rich juice (neutralises gastric acid) and digestive enzymes (lipase, amylase, proteases).",
+              "Endocrine pancreas: Islets of Langerhans secrete insulin (β-cells) and glucagon (α-cells) to regulate blood glucose.",
+            ],
+          },
+          {
+            heading: "Neural and Hormonal Regulation",
+            body: [
+              "GI motility and secretion are controlled by the enteric nervous system (the 'second brain'), the autonomic nervous system, and a suite of GI hormones. This ensures digestion is matched to the volume and composition of food entering each segment.",
+            ],
+            bullets: [
+              "Cephalic phase (vagal): Sight, smell, or thought of food → vagus nerve → gastric acid secretion begins before food reaches the stomach.",
+              "Gastric phase: Distension and peptides in the stomach → gastrin release from G-cells → more HCl and pepsinogen secretion.",
+              "Intestinal phase: Chyme entering the duodenum → secretin (stimulates pancreatic bicarbonate), CCK (stimulates pancreatic enzymes and gallbladder contraction), and GIP (stimulates insulin).",
+              "The migrating motor complex (MMC) — a cyclical pattern of motility during fasting — sweeps residual debris from the stomach to the ileum ('housekeeping wave').",
+            ],
+          },
+          {
+            heading: "Clinical Relevance",
+            bullets: [
+              "Peptic ulcer disease: Erosion of the gastric or duodenal mucosa by acid and pepsin. Helicobacter pylori infection and NSAID use are the two main causes. Treated with proton pump inhibitors (PPIs) and H. pylori eradication therapy.",
+              "Gastro-oesophageal reflux disease (GERD): Incompetence of the lower oesophageal sphincter allows gastric acid to reflux into the oesophagus, causing heartburn and potential Barrett's oesophagus (intestinal metaplasia → adenocarcinoma risk). Managed with lifestyle changes and PPIs.",
+              "Cholelithiasis (gallstones): Hardened cholesterol or bilirubin deposits in the gallbladder. May cause biliary colic or obstruct the common bile duct → jaundice and pancreatitis. Treated with cholecystectomy.",
+              "Acute pancreatitis: Premature activation of pancreatic enzymes causes autodigestion. The two most common causes in adults are gallstones and alcohol. Diagnosed by elevated serum lipase and characteristic imaging.",
+              "Lactose deficiency: Reduced lactase activity leads to osmotic diarrhoea, bloating, and gas after consuming dairy. Managed with lactose-free diet or exogenous lactase supplements.",
+            ],
+            callout: {
+              kind: "danger",
+              title: "Red flag: acute abdomen",
+              text: "Sudden severe abdominal pain with rigidity, guarding, and rebound tenderness suggests peritonitis or visceral perforation — a surgical emergency requiring immediate evaluation.",
+            },
+          },
+        ],
+        keyPoints: [
+          "Salivary amylase begins starch digestion in the mouth; pancreatic lipase is the major fat-digesting enzyme requiring colipase.",
+          "The liver produces bile for fat emulsification; the exocrine pancreas secretes bicarbonate and digestive enzymes into the duodenum.",
+          "CCK stimulates gallbladder contraction and pancreatic enzyme release; secretin stimulates bicarbonate secretion.",
+          "GERD results from lower oesophageal sphincter incompetence; peptic ulcers are mainly caused by H. pylori and NSAIDs.",
+          "Acute pancreatitis — gallstones and alcohol are the top two causes — is diagnosed by elevated lipase and treated supportively.",
+        ],
+      },
+    ],
+    sections: [],
+    keyPoints: [
+      "Digestion spans ~9 m from mouth to anus and combines mechanical and chemical processes.",
+      "The stomach produces HCl and pepsin for protein digestion; it also absorbs alcohol and some drugs.",
+      "The small intestine is the primary site of nutrient absorption, with villi increasing surface area ~600-fold.",
+      "Pancreatic lipase, amylase, and proteases are the workhorses of chemical digestion in the duodenum.",
+      "GERD and peptic ulcer disease are the most common upper-GI disorders, both managed with acid suppression.",
+    ],
+    whenToCall: [
+      "Severe abdominal pain with rigidity or rebound tenderness — possible perforation or peritonitis.",
+      "Vomiting blood (haematemesis) or passing black, tarry stools (melaena) — upper-GI bleeding.",
+      "Unexplained weight loss with progressive dysphagia — possible oesophageal or gastric malignancy.",
+      "Sudden jaundice with abdominal pain — possible gallstone obstruction of the common bile duct.",
+    ],
+  },
 ];
 
 export const ARTICLE_CATEGORIES: string[] = Array.from(
   new Set(ARTICLES.map((a) => a.category)),
-).sort();
+);
 
 export function articleBySlug(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }
 
-/** Total number of step-by-step instructions across the library. */
-export function totalSteps(): number {
-  return ARTICLES.reduce((sum, a) => {
-    if (a.tabs) {
-      return sum + a.tabs.reduce(
-        (tabSum, tab) => tabSum + tab.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0),
-        0,
-      );
-    }
-    return sum + a.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0);
-  }, 0);
-}
-
-/** A plain-text reading of an article for the Read Aloud feature. */
-function sectionsToSpeech(sections: ArticleSection[]): string[] {
-  const parts: string[] = [];
-  for (const section of sections) {
-    parts.push(section.heading);
-    if (section.body) parts.push(...section.body);
-    if (section.steps) {
-      section.steps.forEach((step, i) => parts.push(`Step ${i + 1}. ${step}`));
-    }
-    if (section.bullets) parts.push(...section.bullets);
-    if (section.callout) parts.push(section.callout.title + ". " + section.callout.text);
-  }
-  return parts;
-}
-
-export function articleToSpeech(article: Article): string {
-  const parts: string[] = [article.title];
-  if (article.tabs) {
-    for (const tab of article.tabs) {
-      parts.push(`--- ${tab.label} ---`);
-      parts.push(...sectionsToSpeech(tab.sections));
-      if (tab.keyPoints.length > 0) {
-        parts.push("Key points to remember.");
-        parts.push(...tab.keyPoints);
+export function articleToSpeech(a: Article): string {
+  const parts: string[] = [`${a.title}. ${a.summary}`];
+  if (a.tabs) {
+    for (const tab of a.tabs) {
+      parts.push(`${tab.label}.`);
+      for (const sec of tab.sections) {
+        parts.push(sec.heading + ".");
+        if (sec.body) parts.push(...sec.body);
+        if (sec.bullets) parts.push(...sec.bullets.map((b) => "• " + b));
+        if (sec.steps) parts.push(...sec.steps.map((s, i) => `Step ${i + 1}. ${s}`));
+        if (sec.callout) parts.push(`${sec.callout.title}: ${sec.callout.text}`);
       }
+      if (tab.keyPoints) parts.push(...tab.keyPoints.map((k) => "Key point: " + k));
     }
   } else {
-    parts.push(...sectionsToSpeech(article.sections));
-    parts.push("Key points to remember.");
-    parts.push(...article.keyPoints);
+    for (const sec of a.sections) {
+      parts.push(sec.heading + ".");
+      if (sec.body) parts.push(...sec.body);
+      if (sec.bullets) parts.push(...sec.bullets.map((b) => "• " + b));
+      if (sec.steps) parts.push(...sec.steps.map((s, i) => `Step ${i + 1}. ${s}`));
+      if (sec.callout) parts.push(`${sec.callout.title}: ${sec.callout.text}`);
+    }
+    if (a.keyPoints) parts.push(...a.keyPoints.map((k) => "Key point: " + k));
+    if (a.whenToCall) parts.push(...a.whenToCall.map((w) => "When to call: " + w));
   }
-  return parts.join(" ");
+  return parts.join("\n\n");
+}
+
+export function totalSteps(a?: Article): number {
+  const countSections = (sections: ArticleSection[]): number => {
+    let count = 0;
+    for (const sec of sections) {
+      if (sec.steps) count += sec.steps.length;
+    }
+    return count;
+  };
+
+  if (a) {
+    if (a.tabs) {
+      let count = 0;
+      for (const tab of a.tabs) count += countSections(tab.sections);
+      return count;
+    }
+    return countSections(a.sections);
+  }
+
+  // No argument: count across all articles
+  let total = 0;
+  for (const article of ARTICLES) {
+    if (article.tabs) {
+      for (const tab of article.tabs) total += countSections(tab.sections);
+    } else {
+      total += countSections(article.sections);
+    }
+  }
+  return total;
 }

@@ -84,7 +84,7 @@ const BASICS_FIRST_PATH = [
   { num: 5, slug: "muscle-contraction", title: "Muscle Contraction", desc: "Actin, myosin, and the sliding filament theory — how muscles generate force.", articleSlug: "muscle-contraction", icon: Activity, color: "#e879f9", category: "Physiology" },
   { num: 6, slug: "respiratory-mechanics", title: "Respiratory Mechanics", desc: "Ventilation, gas exchange, and the physics of breathing.", articleSlug: "respiratory-mechanics", icon: Wind, color: "#67e8f9", category: "Physiology" },
   { num: 7, slug: "renal-physiology", title: "Renal Physiology", desc: "Filtration, reabsorption, and the nephron — how the kidney balances the body.", articleSlug: undefined, icon: Droplets, color: "#22d3ee", category: "Systems" },
-  { num: 8, slug: "gi-system", title: "Gastrointestinal System", desc: "From ingestion to absorption — the organs and enzymes of digestion.", articleSlug: undefined, icon: Utensils, color: "#f59e0b", category: "Systems" },
+  { num: 8, slug: "digestive-system", title: "The Digestive System", desc: "From ingestion to absorption — the organs and enzymes of digestion.", articleSlug: "digestive-system", icon: Utensils, color: "#f59e0b", category: "Systems" },
   { num: 9, slug: "endocrine-system", title: "Endocrine System", desc: "Hormones, feedback loops, and how glands regulate the body.", articleSlug: undefined, icon: Cross, color: "#a78bfa", category: "Systems" },
   { num: 10, slug: "blood-immunity", title: "Blood & Immunity", desc: "Blood cells, clotting, and the immune defences that keep you alive.", articleSlug: undefined, icon: ShieldPlus, color: "#e2666f", category: "Systems" },
 ];
