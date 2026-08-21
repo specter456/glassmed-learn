@@ -1471,6 +1471,270 @@ export const ARTICLES: Article[] = [
       },
     ],
   },
+  {
+    slug: "brachial-plexus",
+    title: "The Brachial Plexus",
+    emoji: "\u26a1",
+    category: "Anatomy",
+    summary:
+      "The brachial plexus is the network of nerves that sends signals from the spine to the shoulder, arm, and hand. Understanding its roots, trunks, divisions, cords, and branches is essential for neurology, orthopaedics, and emergency medicine.",
+    readMinutes: 9,
+    sections: [
+      {
+        heading: "Brachial plexus overview",
+        body: [
+          "The brachial plexus is a bundle of nerves formed by the anterior rami of spinal nerves C5-T1. It passes through the neck and axilla (armpit) to supply motor and sensory innervation to the entire upper limb. Damage to any part of the plexus can cause paralysis, numbness, or chronic pain in the arm and hand.",
+        ],
+      },
+    ],
+    keyPoints: [],
+    whenToCall: [],
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "\ud83d\udcd6",
+        sections: [
+          {
+            heading: "What is the brachial plexus?",
+            body: [
+              "Think of the brachial plexus as an electrical wiring harness for your arm. Five nerve roots exit the spine (C5-T1), combine and reorganise into trunks, then divide, recombine into cords, and finally branch out to supply every muscle and patch of skin from the shoulder to the fingertips.",
+              "The plexus is divided into three regions: roots (in the neck), trunks (above the clavicle), and cords/branches (in the axilla). Injuries at different levels produce different patterns of weakness and numbness, so knowing the anatomy helps localise the problem.",
+            ],
+          },
+          {
+            heading: "Key Terms You Must Know",
+            bullets: [
+              "Roots (C5, C6, C7, C8, T1) \u2014 The five spinal nerve roots that form the brachial plexus. They exit the intervertebral foramina between the cervical and thoracic vertebrae. C5 and C6 form the upper trunk; C7 continues as the middle trunk; C8 and T1 form the lower trunk.",
+              "Trunks \u2014 The roots merge into three trunks above the clavicle. The upper trunk (C5-C6) supplies the shoulder and lateral arm. The middle trunk (C7) continues C7's territory. The lower trunk (C8-T1) supplies the hand and medial forearm.",
+              "Divisions \u2014 Each trunk splits into anterior and posterior divisions behind the clavicle. The divisions re-sort fibres into the three cords. This is where the 're-wiring' happens: anterior divisions supply flexors; posterior divisions supply extensors.",
+              "Cords \u2014 The lateral cord (from upper and middle trunk anterior divisions), medial cord (from lower trunk anterior division), and posterior cord (from all three posterior divisions). They surround the axillary artery in the axilla.",
+              "Branches \u2014 The terminal branches supply specific muscles. The major branches are: musculocutaneous (lateral cord), axillary (posterior cord), radial (posterior cord), median (lateral + medial cords), and ulnar (medial cord).",
+            ],
+            callout: {
+              kind: "tip",
+              title: "The R-T-D-C-B mnemonic",
+              text: "Roots \u2192 Trunks \u2192 Divisions \u2192 Cords \u2192 Branches. Five roots become three trunks, six divisions (2 per trunk), three cords, and five terminal branches. Remember this order and you can reconstruct the entire plexus.",
+            },
+          },
+          {
+            heading: "What each branch does",
+            bullets: [
+              "Musculocutaneous nerve (C5-C7): Supplies the biceps, brachialis, and coracobrachialis. Loss = cannot flex the elbow or supinate the forearm. Sensory loss on the lateral forearm.",
+              "Axillary nerve (C5-C6): Supplies the deltoid and teres minor. Loss = cannot abduct the arm beyond 15 degrees. Sensory loss over the 'regimental badge' area of the lateral shoulder.",
+              "Radial nerve (C5-T1): Supplies all extensors of the arm and forearm (triceps, wrist extensors, finger extensors). Loss = wrist drop. Sensory loss on the posterior arm, forearm, and dorsum of the hand.",
+              "Median nerve (C5-T1): Supplies most forearm flexors and thenar muscles. Loss = inability to oppose the thumb (ape hand). Sensory loss on the lateral palm and lateral 3.5 fingers.",
+              "Ulnar nerve (C8-T1): Supplies the intrinsic hand muscles (interossei, hypothenar muscles). Loss = claw hand (hyperextension at MCP joints, flexion at IP joints). Sensory loss on the medial palm and medial 1.5 fingers.",
+            ],
+          },
+          {
+            heading: "How the plexus is tested clinically",
+            body: [
+              "Testing the brachial plexus involves checking motor function and sensation in each nerve's territory. Key clinical tests include:",
+            ],
+            bullets: [
+              "C5 (axillary nerve): Test shoulder abduction against resistance (deltoid). Test sensation over the lateral shoulder.",
+              "C6 (musculocutaneous, radial): Test elbow flexion (biceps) and wrist extension. Sensation over the lateral forearm and dorsum of the thumb.",
+              "C7 (radial, median): Test elbow extension (triceps) and wrist flexion. Sensation over the middle finger dorsum.",
+              "C8 (median, ulnar): Test finger flexion (FDP to index finger) and thumb opposition. Sensation over the medial hand.",
+              "T1 (ulnar): Test finger abduction/adduction (interossei). Sensation over the medial forearm.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "The brachial plexus runs from C5-T1 roots through trunks, divisions, cords, to 5 terminal branches.",
+          "R-T-D-C-B: Roots \u2192 Trunks \u2192 Divisions \u2192 Cords \u2192 Branches.",
+          "Each branch has a specific motor and sensory territory in the upper limb.",
+          "Testing involves checking motor function and sensation in each nerve's territory.",
+          "Damage at different levels produces different patterns of weakness and numbness.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "\ud83d\udd2c",
+        sections: [
+          {
+            heading: "Detailed anatomy of the plexus",
+            body: [
+              "The brachial plexus can be reconstructed by tracing each root through its path to the terminal branches. Understanding this detailed anatomy is essential for diagnosing nerve injuries and planning surgical reconstruction.",
+            ],
+            bullets: [
+              "Roots: The anterior rami of C5-T1 exit the intervertebral foramina and pass between the anterior and middle scalene muscles. The phrenic nerve (C3-C5) runs anterior to the anterior scalene, and the dorsal scapular nerve and long thoracic nerve arise directly from the roots.",
+              "Trunks: In the posterior triangle of the neck, the roots merge. The upper trunk (C5-C6) gives off the suprascapular nerve and the nerve to subclavius. The middle trunk (C7) has no named branches. The lower trunk (C8-T1) gives off the medial pectoral, medial brachial cutaneous, and medial antebrachial cutaneous nerves.",
+              "Divisions: Behind the clavicle, each trunk splits into anterior and posterior divisions. This is the 'crossroads' where flexor and extensor fibres separate. The six divisions reorganise into three cords around the axillary artery.",
+              "Cords: The lateral cord (anterior divisions of upper and middle trunks) gives the lateral pectoral nerve and contributes to the median nerve. The medial cord (anterior division of lower trunk) gives the medial pectoral, medial brachial cutaneous, medial antebrachial cutaneous nerves, and contributes to the median nerve. The posterior cord (all three posterior divisions) gives the upper and lower subscapular nerves, thoracodorsal nerve, and becomes the axillary and radial nerves.",
+              "Terminal branches: The five terminal nerves emerge from the cords in the axilla. The lateral cord gives the musculocutaneous nerve. The posterior cord splits into the axillary and radial nerves. The lateral and medial cords join to form the median nerve. The medial cord continues as the ulnar nerve.",
+            ],
+          },
+          {
+            heading: "Clinical Relevance: Brachial Plexus Injuries",
+            body: [
+              "Brachial plexus injuries range from mild stretch injuries (neuropraxia) to complete nerve avulsion. The pattern of weakness depends on which part of the plexus is damaged.",
+            ],
+            bullets: [
+              "Erb-Duchenne palsy (upper trunk injury, C5-C6): Most common brachial plexus injury. Caused by lateral traction on the neck (birth injury, motorcycle accident). Presents with the 'waiter's tip' position: arm adducted, internally rotated, forearm pronated. Loss of deltoid, biceps, brachialis, and supraspinatus/infraspinatus function.",
+              "Klumpke's paralysis (lower trunk injury, C8-T1): Caused by hyperabduction of the arm (falling from a tree, catching oneself). Presents with claw hand (loss of intrinsic hand muscles) and possible Horner's syndrome (ptosis, miosis, anhidrosis) if T1 sympathetic fibres are damaged.",
+              "Parsonage-Turner syndrome (acute brachial neuritis): Spontaneous, severe shoulder/arm pain followed by weakness days later. Usually autoimmune/inflammatory. Recovery is often partial over months to years.",
+              "Burners/stingers: Compression or traction injuries common in contact sports. Usually upper trunk. Causes transient burning pain and numbness down the arm. Most resolve spontaneously, but repeated injuries can cause permanent damage.",
+              "Surgical repair: Nerve grafting (using sural nerve as donor) or nerve transfers (e.g., Oberlin transfer: ulnar nerve fascicle to biceps motor branch) can restore function in severe injuries. Early surgical exploration within 3-6 months gives the best outcomes.",
+            ],
+            callout: {
+              kind: "warning",
+              title: "Red flag: Horner's syndrome with brachial palsy",
+              text: "If a brachial plexus injury presents with ptosis, miosis, and anhidrosis (Horner's syndrome), suspect a lower trunk/T1 avulsion. This indicates preganglionic damage and has a worse prognosis than postganglionic injuries.",
+            },
+          },
+          {
+            heading: "Blood supply and related structures",
+            bullets: [
+              "The subclavian artery becomes the axillary artery as it passes the first rib. The cords of the brachial plexus are named for their position relative to the axillary artery (lateral, medial, posterior).",
+              "The costoclavicular ligament, pectoralis minor, and the subcoracoid space can compress the plexus (thoracic outlet syndrome).",
+              "The brachial plexus passes through the interscalene triangle (between anterior and middle scalene muscles), under the clavicle, and into the axilla. Each of these is a potential site of compression or injury.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Upper trunk (C5-C6) injury = Erb's palsy: 'waiter's tip' position.",
+          "Lower trunk (C8-T1) injury = Klumpke's paralysis: claw hand, possible Horner's syndrome.",
+          "The cords are named for their position relative to the axillary artery.",
+          "Nerve transfers (e.g., Oberlin) can restore function in severe injuries.",
+          "Horner's syndrome with brachial palsy suggests preganglionic T1 avulsion.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "krebs-cycle",
+    title: "The Krebs (TCA) Cycle",
+    emoji: "\ud83d\udd04",
+    category: "Biochemistry",
+    summary:
+      "The Krebs cycle (tricarboxylic acid cycle) is the central metabolic hub of the cell, occurring in the mitochondrial matrix. It extracts energy from acetyl-CoA to produce NADH, FADH2, and GTP, which feed into the electron transport chain for ATP production.",
+    readMinutes: 8,
+    sections: [
+      {
+        heading: "Krebs cycle overview",
+        body: [
+          "The Krebs cycle is the final common pathway for the oxidation of fuel molecules \u2014 carbohydrates, fats, and proteins. It occurs in the mitochondrial matrix and is the engine that powers aerobic respiration. Every turn of the cycle produces enough reduced coenzymes to generate approximately 10 ATP molecules via oxidative phosphorylation.",
+        ],
+      },
+    ],
+    keyPoints: [],
+    whenToCall: [],
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "\ud83d\udcd6",
+        sections: [
+          {
+            heading: "What is the Krebs cycle?",
+            body: [
+              "The Krebs cycle (also called the citric acid cycle or TCA cycle) is a series of 8 enzyme-catalysed reactions that occur inside the mitochondria. It takes a 2-carbon molecule (acetyl-CoA) derived from food and systematically extracts its energy by breaking carbon-carbon bonds and transferring electrons to carrier molecules.",
+              "The cycle was discovered by Sir Hans Krebs in 1937, for which he won the Nobel Prize in 1953. It is sometimes called the 'metabolic wheel' because it turns continuously, regenerating its starting molecule (oxaloacetate) while extracting energy from each acetyl-CoA that enters.",
+            ],
+          },
+          {
+            heading: "Key Terms You Must Know",
+            bullets: [
+              "Acetyl-CoA \u2014 The 2-carbon fuel that enters the cycle. It is derived from pyruvate (from glycolysis), fatty acid oxidation, or amino acid catabolism. Acetyl-CoA combines with oxaloacetate (4 carbons) to form citrate (6 carbons) in the first reaction, catalysed by citrate synthase.",
+              "NADH and FADH2 \u2014 Reduced coenzymes that carry high-energy electrons to the electron transport chain (ETC). Each turn of the Krebs cycle produces 3 NADH and 1 FADH2. These electrons drive proton pumping across the inner mitochondrial membrane, creating the gradient that powers ATP synthase.",
+              "GTP (Guanosine Triphosphate) \u2014 A high-energy molecule similar to ATP, produced directly in the cycle by substrate-level phosphorylation. In many cells, GTP is rapidly converted to ATP by nucleoside diphosphate kinase. One GTP is produced per turn of the cycle.",
+              "Oxaloacetate \u2014 A 4-carbon molecule that combines with acetyl-CoA to start the cycle. It is regenerated at the end of the cycle, ready to accept another acetyl-CoA. This is why the cycle is called 'catalytic' \u2014 the starting material is recycled.",
+              "Mitochondrial matrix \u2014 The innermost compartment of the mitochondria where the Krebs cycle enzymes are located. The enzymes are soluble in the matrix, except succinate dehydrogenase (Complex II), which is embedded in the inner mitochondrial membrane.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Think of it like a revolving door",
+              text: "Acetyl-CoA enters through the revolving door (combining with oxaloacetate), the door spins 8 times (8 reactions), energy is captured at each turn (NADH, FADH2, GTP), and oxaloacetate is back at the start, ready for the next visitor.",
+            },
+          },
+          {
+            heading: "The 8 steps at a glance",
+            bullets: [
+              "1. Citrate synthase: Acetyl-CoA (2C) + Oxaloacetate (4C) \u2192 Citrate (6C). This is the 'entry door' of the cycle.",
+              "2. Aconitase: Citrate \u2192 Isocitrate. A simple isomerisation (water移 in, water移 out) to prepare for the first oxidation step.",
+              "3. Isocitrate dehydrogenase: Isocitrate \u2192 \u03b1-Ketoglutarate (5C) + CO2 + NADH. The first oxidation step \u2014 this is a key regulatory point. High NADH/NAD+ inhibits this enzyme.",
+              "4. \u03b1-Ketoglutarate dehydrogenase: \u03b1-Ketoglutarate \u2192 Succinyl-CoA (4C) + CO2 + NADH. Second oxidation step. Requires the same 5 coenzymes as pyruvate dehydrogenase (TPP, FAD, NAD, CoA, lipoate).",
+              "5. Succinyl-CoA synthetase: Succinyl-CoA \u2192 Succinate + GTP. Substrate-level phosphorylation \u2014 the only step that directly produces a high-energy phosphate.",
+              "6. Succinate dehydrogenase: Succinate \u2192 Fumarate + FADH2. The only Krebs cycle enzyme embedded in the inner membrane (Complex II of the ETC).",
+              "7. Fumarase: Fumarate \u2192 Malate. Simple hydration (addition of water).",
+              "8. Malate dehydrogenase: Malate \u2192 Oxaloacetate + NADH. Regenerates the starting material. This reaction is thermodynamically unfavourable, but it is pulled forward by the highly exergonic citrate synthase reaction.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "The Krebs cycle occurs in the mitochondrial matrix and processes acetyl-CoA.",
+          "Each turn produces 3 NADH, 1 FADH2, 1 GTP, and releases 2 CO2.",
+          "The cycle is catalytic: oxaloacetate is regenerated to start the next turn.",
+          "NADH and FADH2 carry electrons to the ETC for ATP production (~10 ATP per turn).",
+          "The cycle is the final common pathway for carbohydrate, fat, and protein oxidation.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "\ud83d\udd2c",
+        sections: [
+          {
+            heading: "Regulation of the Krebs cycle",
+            body: [
+              "The Krebs cycle is regulated at three key steps to match energy production with cellular demand. When the cell has plenty of ATP, the cycle slows; when ATP is needed, it accelerates.",
+            ],
+            bullets: [
+              "Citrate synthase is inhibited by ATP, NADH, succinyl-CoA, and citrate itself (product inhibition). It is activated by ADP. This is the most important control point.",
+              "Isocitrate dehydrogenase is activated by ADP and Ca2+, and inhibited by ATP and NADH. This enzyme catalyses the first CO2-releasing step and is a major rate-limiting enzyme.",
+              "\u03b1-Ketoglutarate dehydrogenase is activated by Ca2+ and inhibited by succinyl-CoA and NADH. This provides feedback inhibition from the products of the cycle.",
+              "The NADH/NAD+ ratio is the most important overall regulator. When the ETC is running fast (low NADH, high NAD+), the cycle accelerates. When the ETC is slow (high NADH), the cycle slows.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "The Ca2+ connection",
+              text: "Calcium activates both isocitrate dehydrogenase and \u03b1-ketoglutarate dehydrogenase. This links muscle contraction (which releases Ca2+) to increased energy production. When you exercise, calcium signals the Krebs cycle to speed up.",
+            },
+          },
+          {
+            heading: "Amphibolic nature of the cycle",
+            body: [
+              "The Krebs cycle is both catabolic (breaking down molecules for energy) and anabolic (providing building blocks for biosynthesis). This dual role is called amphibolic.",
+            ],
+            bullets: [
+              "Catabolic role: Oxidation of acetyl-CoA generates NADH, FADH2, and GTP for energy production.",
+              "Anabolic role: Intermediates of the cycle are precursors for biosynthetic pathways. Citrate is exported for fatty acid synthesis. \u03b1-Ketoglutarate is a precursor for amino acid synthesis (glutamate family). Succinyl-CoA is used for haem synthesis. Oxaloacetate is a precursor for gluconeogenesis (via PEP carboxykinase) and amino acid synthesis (aspartate family).",
+              "When intermediates are siphoned off for biosynthesis, they must be replenished by anaplerotic reactions. The most important is pyruvate carboxylase: pyruvate + CO2 + ATP \u2192 oxaloacetate. This reaction is activated by acetyl-CoA, ensuring that when fuel is abundant, the cycle is replenished.",
+              "The glyoxylate cycle (in plants and microorganisms, not humans) allows the net conversion of acetyl-CoA to glucose by bypassing the CO2-releasing steps. This is why plants can grow on acetate while humans cannot.",
+            ],
+          },
+          {
+            heading: "Clinical Relevance",
+            body: [
+              "Disorders of the Krebs cycle and its related pathways can cause severe metabolic disease:",
+            ],
+            bullets: [
+              "Thiamine (B1) deficiency: Thiamine pyrophosphate (TPP) is a coenzyme for \u03b1-ketoglutarate dehydrogenase (and pyruvate dehydrogenase). Deficiency causes beriberi (wet: heart failure; dry: neuropathy) and Wernicke-Korsakoff syndrome (confusion, ataxia, ophthalmoplegia \u2192 memory loss). Treated urgently with IV thiamine.",
+              "Succinate dehydrogenase mutations: Succinate dehydrogenase is Complex II of the ETC. Mutations cause hereditary paraganglioma and phaeochromocytoma (tumours of the adrenal medulla). Succinate accumulates and stabilises HIF-1\u03b1, promoting angiogenesis and tumour growth.",
+              "Fumarase deficiency: Extremely rare autosomal recessive disorder causing severe encephalopathy, developmental delay, and distinctive facial features. Fumarate accumulates in cells, inhibiting prolyl hydroxylases and stabilising HIF-1\u03b1 (pseudohypoxia).",
+              "Ischaemia-reperfusion injury: During ischaemia (e.g., heart attack), the Krebs cycle stops due to lack of oxygen. When blood flow is restored (reperfusion), the sudden reactivation of the cycle generates a burst of reactive oxygen species (ROS) that damage mitochondria and cells. This is why reperfusion can paradoxically worsen tissue damage.",
+              "Dicarboxylic aciduria: Defects in fatty acid oxidation can produce dicarboxylic acids that enter the Krebs cycle at unusual points, causing metabolic acidosis and hypoglycaemia. Medium-chain acyl-CoA dehydrogenase (MCAD) deficiency is the most common fatty acid oxidation defect.",
+            ],
+            callout: {
+              kind: "warning",
+              title: "Red flag: Wernicke-Korsakoff syndrome",
+              text: "Any patient with chronic alcohol use who presents with confusion, ataxia, and eye movement abnormalities should receive IV thiamine IMMEDIATELY \u2014 even before glucose. Giving glucose without thiamine can precipitate Wernicke's encephalopathy by depleting the remaining thiamine stores.",
+            },
+          },
+        ],
+        keyPoints: [
+          "The Krebs cycle is regulated by ATP/ADP, NADH/NAD+, and Ca2+ levels.",
+          "It is amphibolic: both catabolic (energy) and anabolic (biosynthesis).",
+          "Pyruvate carboxylase is the key anaplerotic reaction replenishing oxaloacetate.",
+          "Thiamine deficiency impairs \u03b1-ketoglutarate dehydrogenase, causing beriberi and Wernicke-Korsakoff.",
+          "Ischaemia-reperfusion injury involves a burst of ROS from sudden Krebs cycle reactivation.",
+        ],
+      },
+    ],
+  },
 ];
 
 export const ARTICLE_CATEGORIES: string[] = Array.from(

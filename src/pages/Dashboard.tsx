@@ -68,8 +68,8 @@ const MODULES = [
 const BASICS_FIRST_PATH = [
   { num: 1, slug: "cardiac-cycle", title: "The Cardiac Cycle", desc: "Systole, diastole, and the pressure changes that drive every heartbeat.", articleSlug: "cardiac-cycle", icon: HeartPulse, color: "#ff5f7a" },
   { num: 2, slug: "action-potential", title: "The Action Potential", desc: "The electrical impulse that lets neurons and muscles communicate.", articleSlug: "action-potential", icon: Zap, color: "#a78bfa" },
-  { num: 3, slug: "brachial-plexus", title: "The Brachial Plexus", desc: "The nerve superhighway from spine to fingertips — roots, trunks, cords, branches.", articleSlug: undefined, icon: Network, color: "#22d3ee" },
-  { num: 4, slug: "krebs-cycle", title: "The Krebs (TCA) Cycle", desc: "How cells extract energy from glucose — the central metabolic hub.", articleSlug: undefined, icon: RefreshCw, color: "#f59e0b" },
+  { num: 3, slug: "brachial-plexus", title: "The Brachial Plexus", desc: "The nerve superhighway from spine to fingertips — roots, trunks, cords, branches.", articleSlug: "brachial-plexus", icon: Network, color: "#22d3ee" },
+  { num: 4, slug: "krebs-cycle", title: "The Krebs (TCA) Cycle", desc: "How cells extract energy from glucose — the central metabolic hub.", articleSlug: "krebs-cycle", icon: RefreshCw, color: "#f59e0b" },
   { num: 5, slug: "muscle-contraction", title: "Muscle Contraction", desc: "Actin, myosin, and the sliding filament theory — how muscles generate force.", articleSlug: "muscle-contraction", icon: Activity, color: "#e879f9" },
   { num: 6, slug: "respiratory-mechanics", title: "Respiratory Mechanics", desc: "Ventilation, gas exchange, and the physics of breathing.", articleSlug: "respiratory-mechanics", icon: Wind, color: "#67e8f9" },
   { num: 7, slug: "renal-physiology", title: "Renal Physiology", desc: "Filtration, reabsorption, and the nephron — how the kidney balances the body.", articleSlug: undefined, icon: Droplets, color: "#22d3ee" },
