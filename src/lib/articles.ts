@@ -1899,6 +1899,164 @@ export const ARTICLES: Article[] = [
       "Sudden jaundice with abdominal pain — possible gallstone obstruction of the common bile duct.",
     ],
   },
+  {
+    slug: "endocrine-system",
+    title: "The Endocrine System",
+    emoji: "🧬",
+    category: "Physiology",
+    summary:
+      "A complete guide to the body's chemical messenger network — from hormone synthesis and receptor binding to the HPA axis, negative feedback loops, and the regulation of metabolism, growth, stress, and reproduction.",
+    readMinutes: 14,
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "📖",
+        sections: [
+          {
+            heading: "What Are Hormones?",
+            body: [
+              "Hormones are chemical messengers secreted by endocrine glands directly into the bloodstream. They travel to distant target cells, bind to specific receptors, and trigger a biological response — regulating everything from metabolism and growth to mood and reproduction.",
+              "Unlike neurotransmitters (which act across synapses in milliseconds), hormones act more slowly but their effects are longer-lasting and widespread. A single hormone can influence dozens of different tissues simultaneously.",
+            ],
+            bullets: [
+              "Peptide hormones (e.g., insulin, growth hormone): Water-soluble, bind to cell-surface receptors, act via second messengers (cAMP, IP₃). Fast onset, short duration.",
+              "Steroid hormones (e.g., cortisol, oestrogen, testosterone): Lipid-soluble, cross the cell membrane, bind intracellular/nuclear receptors, alter gene transcription. Slow onset, long duration.",
+              "Amine hormones (e.g., thyroxine, adrenaline): Derived from amino acids. Thyroxine acts like a steroid hormone (nuclear receptor); adrenaline acts like a peptide hormone (surface receptor).",
+              "Paracrine signals act locally on neighbouring cells; autocrine signals act on the same cell; endocrine signals travel through the blood to distant targets.",
+            ],
+          },
+          {
+            heading: "The Major Glands",
+            bullets: [
+              "Hypothalamus — the command centre: Links the nervous and endocrine systems. Secretes releasing/inhibiting hormones (TRH, CRH, GnRH, GHRH, somatostatin, dopamine) that control the pituitary.",
+              "Pituitary gland (hypophysis) — the master gland: The anterior lobe produces GH, TSH, ACTH, FSH, LH, and prolactin. The posterior lobe stores and releases ADH (vasopressin) and oxytocin synthesised by the hypothalamus.",
+              "Thyroid gland — metabolism control: A butterfly-shaped gland in the neck producing T₃ and T₄ (regulate basal metabolic rate, heat production, heart rate) and calcitonin (lowers blood calcium).",
+              "Adrenal glands — the stress response: The cortex makes cortisol (stress metabolism), aldosterone (salt balance), and sex steroids. The medulla makes adrenaline and noradrenaline (fight-or-flight).",
+              "Pancreas — blood sugar balance: The Islets of Langerhans contain β-cells (insulin — lowers glucose) and α-cells (glucagon — raises glucose).",
+              "Gonads — reproduction: Ovaries produce oestrogen and progesterone; testes produce testosterone. Both regulated by FSH and LH from the pituitary.",
+            ],
+          },
+          {
+            heading: "How Hormones Act",
+            body: [
+              "A hormone is only effective if its target cell has the right receptor. Hormone-receptor binding initiates a signalling cascade — a chain of intracellular events that amplifies the original signal. Even tiny concentrations of hormone (nanomoles per litre) can produce profound effects because each receptor activates many downstream molecules.",
+            ],
+            bullets: [
+              "Up-regulation: Prolonged hormone deficiency makes target cells produce more receptors (increased sensitivity).",
+              "Down-regulation: Prolonged hormone excess causes receptors to be internalised or destroyed (decreased sensitivity). This is why chronic steroid use can blunt the body's own cortisol response.",
+              "Permissiveness: Some hormones need another hormone to exert their full effect (e.g., thyroid hormone amplifies the effect of adrenaline on heart rate).",
+              "Synergism: Two hormones working together produce a greater effect than the sum of their individual effects.",
+              "Antagonism: One hormone opposes the action of another (e.g., insulin opposes glucagon; calcitonin opposes PTH).",
+            ],
+          },
+          {
+            heading: "The Pituitary and Hypothalamus",
+            body: [
+              "The hypothalamus controls the pituitary through two mechanisms: (1) releasing and inhibiting hormones delivered via the hypophyseal portal system to the anterior lobe, and (2) direct neural axons to the posterior lobe.",
+              "The anterior pituitary (adenohypophysis) is a true endocrine gland that synthesises and secretes its own hormones. The posterior pituitary (neurohypophysis) is an extension of neural tissue that stores hypothalamic hormones.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Pituitary hormones mnemonics",
+              text: "FLAT PiG: FSH, LH, ACTH, TSH (anterior) + Prolactin, Growth hormone. Think of the anterior pituitary as a pig that is flat. The posterior stores ADH and Oxytocin (made by the hypothalamus).",
+            },
+          },
+        ],
+        keyPoints: [
+          "Hormones are chemical messengers that travel through the blood to target cells with specific receptors.",
+          "Peptide hormones bind surface receptors (fast); steroid hormones enter cells and alter gene transcription (slow but lasting).",
+          "The pituitary gland — controlled by the hypothalamus — produces hormones regulating growth, metabolism, reproduction, and stress.",
+          "Thyroid hormones (T₃/T₄) regulate basal metabolic rate; calcitonin lowers blood calcium.",
+          "Insulin lowers blood glucose; glucagon raises it — their balance prevents hyper- and hypoglycaemia.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "The HPA Axis",
+            body: [
+              "The Hypothalamic-Pituitary-Adrenal (HPA) axis is the body's central stress response system. When the brain perceives a threat, the hypothalamus releases CRH (corticotropin-releasing hormone), which stimulates the anterior pituitary to secrete ACTH (adrenocorticotropic hormone). ACTH travels to the adrenal cortex and triggers cortisol synthesis and release.",
+              "Cortisol mobilises energy (gluconeogenesis, lipolysis), suppresses non-essential functions (immune response, digestion, reproduction), and maintains blood pressure. Once cortisol levels rise, they feed back to suppress both CRH and ACTH release — closing the loop.",
+            ],
+            bullets: [
+              "Chronic stress → sustained HPA activation → chronically elevated cortisol → immunosuppression, insulin resistance, central obesity, osteoporosis, and hippocampal atrophy.",
+              "Cushing's syndrome: Excess cortisol from any cause (pituitary adenoma, adrenal tumour, or exogenous steroids) → moon face, buffalo hump, central obesity, striae, hypertension, hyperglycaemia.",
+              "Addison's disease: Primary adrenal insufficiency → low cortisol and aldosterone → fatigue, weight loss, hypotension, hyperpigmentation (elevated ACTH/MSH from POMC processing).",
+              "Adrenal crisis: Acute cortisol deficiency (e.g., sudden withdrawal of steroids) → life-threatening hypotension, shock, and electrolyte imbalance. Requires emergency IV hydrocortisone.",
+            ],
+            callout: {
+              kind: "danger",
+              title: "Red flag",
+              text: "Never abruptly stop long-term steroid therapy. The adrenal glands atrophy from suppression and cannot mount a cortisol response. Always taper under medical supervision to allow HPA axis recovery.",
+            },
+          },
+          {
+            heading: "Negative Feedback Loops",
+            body: [
+              "Negative feedback is the primary mechanism by which hormones are regulated. The product of a hormonal pathway inhibits its own production upstream, maintaining homeostasis. Almost every endocrine axis uses this principle.",
+            ],
+            bullets: [
+              "Thyroid axis: Hypothalamus → TRH → anterior pituitary → TSH → thyroid → T₃/T₄. Elevated T₃/T₄ inhibits both TRH and TSH release. Low T₃/T₄ releases the brake → more TRH and TSH → thyroid stimulation.",
+              "Calcium homeostasis: High blood Ca²⁺ → parafollicular cells secrete calcitonin → lowers Ca²⁺. Low blood Ca²⁺ → parathyroid glands secrete PTH → raises Ca²⁺ (bone resorption, renal reabsorption, vitamin D activation).",
+              "Glucose regulation: High glucose → β-cells release insulin → glucose uptake → glucose falls. Low glucose → α-cells release glucagon → glycogenolysis and gluconeogenesis → glucose rises.",
+              "Positive feedback (rare): Oxytocin during labour — uterine contractions stimulate more oxytocin release, which intensifies contractions, until delivery. Also, the LH surge during ovulation.",
+            ],
+          },
+          {
+            heading: "Specific Hormones in Detail",
+            bullets: [
+              "Insulin (pancreatic β-cells): Promotes glucose uptake into muscle and adipose tissue, stimulates glycogen synthesis and lipogenesis, inhibits gluconeogenesis. Deficiency → diabetes mellitus.",
+              "Glucagon (pancreatic α-cells): Stimulates glycogenolysis and gluconeogenesis in the liver, raises blood glucose. Acts as insulin's antagonist.",
+              "Cortisol (adrenal cortex): Glucocorticoid — raises blood glucose via gluconeogenesis, suppresses inflammation and immune function, mobilises fats and proteins, maintains blood pressure. Diurnal rhythm: peaks in early morning.",
+              "Thyroxine (T₄) and Triiodothyronine (T₃) (thyroid): T₄ is the major circulating form (mostly bound to TBG); T₃ is the active form (3–5× more potent). Regulate basal metabolic rate, heat production, heart rate, nervous system development, and growth.",
+              "Aldosterone (adrenal cortex): Mineralocorticoid — acts on the distal convoluted tubule and collecting duct to reabsorb Na⁺ and secrete K⁺, water follows Na⁺ → increases blood volume and pressure. Regulated by the RAAS (renin-angiotensin-aldosterone system).",
+              "Growth hormone (GH) (anterior pituitary): Stimulates hepatic IGF-1 production → promotes linear growth in children, protein synthesis, lipolysis, and insulin resistance. Excess in childhood → gigantism; in adults → acromegaly.",
+            ],
+          },
+          {
+            heading: "Clinical Relevance",
+            bullets: [
+              "Diabetes mellitus: Type 1 — autoimmune β-cell destruction → absolute insulin deficiency → DKA (ketoacidosis). Type 2 — insulin resistance + relative deficiency → hyperglycaemia, often linked to obesity. Treatment: insulin (Type 1), metformin, GLP-1 agonists, SGLT2 inhibitors (Type 2).",
+              "Hyperthyroidism (Graves' disease most common): Excess T₃/T₄ → weight loss, tachycardia, heat intolerance, anxiety, exophthalmos (Graves'). Treated with antithyroid drugs (carbimazole), radioactive iodine, or thyroidectomy.",
+              "Hypothyroidism: Deficient T₃/T₄ → weight gain, cold intolerance, fatigue, constipation, dry skin. In children: cretinism (intellectual disability if untreated). Most common cause: Hashimoto's thyroiditis. Treatment: levothyroxine.",
+              "Hyperprolactinaemia: Excess prolactin (often from pituitary prolactinoma) → galactorrhoea, amenorrhoea, infertility, decreased libido. Treated with dopamine agonists (cabergoline, bromocriptine).",
+              "SIADH (syndrome of inappropriate ADH): Excess ADH → water retention → dilutional hyponatraemia → confusion, seizures. Causes include small-cell lung cancer, CNS disorders, and certain drugs.",
+            ],
+            callout: {
+              kind: "warning",
+              title: "Diabetic emergencies",
+              text: "DKA (Type 1): High glucose + ketones + acidosis → Kussmaul breathing, fruity breath, dehydration. HHS (Type 2): Extremely high glucose (>30 mmol/L) without significant ketones → profound dehydration and altered consciousness. Both require emergency IV fluids and insulin.",
+            },
+          },
+        ],
+        keyPoints: [
+          "The HPA axis — hypothalamus → CRH → pituitary → ACTH → adrenal cortex → cortisol — is the body's central stress response system.",
+          "Negative feedback loops maintain hormonal homeostasis; cortisol inhibits CRH and ACTH; T₃/T₄ inhibit TRH and TSH.",
+          "Insulin lowers blood glucose; glucagon raises it. Cortisol raises glucose and suppresses immunity. T₃/T₄ set the metabolic rate.",
+          "Cushing's syndrome (excess cortisol) causes central obesity, striae, and hypertension; Addison's disease (deficiency) causes fatigue, weight loss, and hyperpigmentation.",
+          "Type 1 diabetes = autoimmune β-cell destruction → insulin-dependent; Type 2 = insulin resistance → managed with lifestyle and oral agents.",
+        ],
+      },
+    ],
+    sections: [],
+    keyPoints: [
+      "Hormones are chemical messengers that travel through the blood to target cells with specific receptors.",
+      "The HPA axis — hypothalamus → CRH → pituitary → ACTH → adrenal cortex — controls the cortisol stress response.",
+      "Insulin lowers blood glucose; glucagon raises it — their balance prevents hyper- and hypoglycaemia.",
+      "Negative feedback loops are the primary mechanism of hormonal regulation across all endocrine axes.",
+      "Cushing's syndrome (excess cortisol) and Addison's disease (deficiency) are key adrenal pathologies.",
+    ],
+    whenToCall: [
+      "Symptoms of adrenal crisis: severe hypotension, confusion, abdominal pain, and electrolyte disturbance — emergency IV hydrocortisone required.",
+      "Diabetic ketoacidosis: Kussmaul breathing, fruity breath, altered consciousness — requires emergency insulin and fluids.",
+      "Severe hypoglycaemia: Confusion, seizures, loss of consciousness — give glucose immediately (IV dextrose or glucagon injection).",
+      "Acute thyroid storm: High fever, tachycardia, agitation, delirium — life-threatening; requires emergency antithyroid therapy and supportive care.",
+    ],
+  },
 ];
 
 export const ARTICLE_CATEGORIES: string[] = Array.from(
@@ -1955,7 +2113,6 @@ export function totalSteps(a?: Article): number {
     return countSections(a.sections);
   }
 
-  // No argument: count across all articles
   let total = 0;
   for (const article of ARTICLES) {
     if (article.tabs) {

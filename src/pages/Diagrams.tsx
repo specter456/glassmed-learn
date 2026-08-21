@@ -17,6 +17,8 @@ const EyeDiagram = React.lazy(() => import("@/components/EyeDiagram"));
 const KidneyDiagram = React.lazy(() => import("@/components/KidneyDiagram"));
 const PlexusDiagram = React.lazy(() => import("@/components/PlexusDiagram").then(m => ({ default: m.PlexusDiagram })));
 const SkeletalSystem = React.lazy(() => import("@/components/SkeletalSystem"));
+const EndocrineDiagram = React.lazy(() => import("@/components/EndocrineDiagram").then(m => ({ default: m.EndocrineDiagram })));
+
 
 function DiagramFallback() {
   return (
@@ -26,7 +28,7 @@ function DiagramFallback() {
   );
 }
 
-type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal";
+type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal" | "endocrine";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -140,6 +142,17 @@ const DIAGRAMS: Record<
     tag: "🦴",
     Component: SkeletalSystem,
   },
+  endocrine: {
+    kicker: "Diagram 09 · The Endocrine System",
+    title: "Hormones That Move Mountains",
+    blurb:
+      "Eight major glands secrete hormones that regulate metabolism, growth, stress, sleep, and reproduction — all through chemical messengers travelling in the bloodstream. Hover any gland to make it blaze, tap it for a quick breakdown.",
+    parts: 8,
+    accent: "#e879f9",
+    label: "Endocrine System",
+    tag: "🧬",
+    Component: EndocrineDiagram,
+  },
 };
 
 const COMING_SOON = ["Krebs Cycle", "DNA Replication Fork", "Cardiac Cycle ECG"];
@@ -197,6 +210,8 @@ function DiagramsInner() {
                   <Eye className="size-6" />
                 ) : active === "skeletal" ? (
                   <Bone className="size-6" />
+                ) : active === "endocrine" ? (
+                  <Zap className="size-6" />
                 ) : (
                   <Zap className="size-6" />
                 )}
