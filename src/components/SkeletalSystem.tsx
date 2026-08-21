@@ -628,7 +628,7 @@ export default function SkeletalSystem() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ type: "spring", damping: 20, stiffness: 300 }}
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[90%] max-w-md rounded-2xl p-5 z-20"
+            className="fixed bottom-6 right-6 w-80 max-w-[calc(100vw-3rem)] rounded-2xl p-5 z-50"
             style={{
               background: "rgba(15, 10, 30, 0.85)",
               backdropFilter: "blur(16px)",
