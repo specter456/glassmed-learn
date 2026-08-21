@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Activity, Brain, Droplets, Eye, HeartPulse, Layers, MousePointerClick, Sparkles, Utensils, Wind, Zap } from "lucide-react";
+import { Activity, Bone, Brain, Droplets, Eye, HeartPulse, Layers, MousePointerClick, Sparkles, Utensils, Wind, Zap } from "lucide-react";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
@@ -16,6 +16,7 @@ const LungsDiagram = React.lazy(() => import("@/components/LungsDiagram").then(m
 const EyeDiagram = React.lazy(() => import("@/components/EyeDiagram"));
 const KidneyDiagram = React.lazy(() => import("@/components/KidneyDiagram"));
 const PlexusDiagram = React.lazy(() => import("@/components/PlexusDiagram").then(m => ({ default: m.PlexusDiagram })));
+const SkeletalSystem = React.lazy(() => import("@/components/SkeletalSystem"));
 
 function DiagramFallback() {
   return (
@@ -25,7 +26,7 @@ function DiagramFallback() {
   );
 }
 
-type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye";
+type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -128,6 +129,17 @@ const DIAGRAMS: Record<
     tag: "👁️",
     Component: EyeDiagram,
   },
+  skeletal: {
+    kicker: "Diagram 08 · The Skeletal System",
+    title: "The Framework That Glows Within",
+    blurb:
+      "206 bones form the living scaffolding that protects your organs, bears your weight, and lets you move — from the skull's cranial vault to the toes' intricate arches. Hover any bone to make it blaze, tap it for a quick breakdown of what it does.",
+    parts: 12,
+    accent: "#e0f2fe",
+    label: "Skeletal System",
+    tag: "🦴",
+    Component: SkeletalSystem,
+  },
 };
 
 const COMING_SOON = ["Krebs Cycle", "DNA Replication Fork", "Cardiac Cycle ECG"];
@@ -183,6 +195,8 @@ function DiagramsInner() {
                   <Droplets className="size-6" />
                 ) : active === "eye" ? (
                   <Eye className="size-6" />
+                ) : active === "skeletal" ? (
+                  <Bone className="size-6" />
                 ) : (
                   <Zap className="size-6" />
                 )}
