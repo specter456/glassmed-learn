@@ -2057,6 +2057,349 @@ export const ARTICLES: Article[] = [
       "Acute thyroid storm: High fever, tachycardia, agitation, delirium — life-threatening; requires emergency antithyroid therapy and supportive care.",
     ],
   },
+  {
+    slug: "blood-immunity",
+    title: "Blood & Immunity",
+    emoji: "🩸",
+    category: "Physiology",
+    summary:
+      "A complete guide to blood composition and the immune system — from red blood cells, white blood cells, and platelets to the coagulation cascade, innate and adaptive immunity, and how vaccines protect us.",
+    readMinutes: 15,
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "📖",
+        sections: [
+          {
+            heading: "Blood Composition",
+            body: [
+              "Blood is a specialised connective tissue that makes up about 7% of body weight (~5 litres in an adult). It consists of a liquid matrix called plasma (55%) and formed elements suspended within it (45%): red blood cells, white blood cells, and platelets.",
+              "Plasma is 92% water and carries dissolved proteins (albumin, globulins, fibrinogen), electrolytes, hormones, nutrients, waste products, and clotting factors. Serum is plasma without fibrinogen.",
+            ],
+            bullets: [
+              "Red blood cells (erythrocytes): Biconcave discs packed with haemoglobin. No nucleus, no mitochondria — they rely entirely on anaerobic glycolysis. Lifespan ~120 days. Production (erythropoiesis) stimulated by erythropoietin from the kidney.",
+              "White blood cells (leukocytes): Nucleated cells that defend against infection and disease. Five types: neutrophils, lymphocytes, monocytes, eosinophils, and basophils. Measured by the differential white cell count.",
+              "Platelets (thrombocytes): Tiny, anucleate cell fragments from megakaryocytes. Essential for haemostasis — they aggregate at injury sites to form a platelet plug and release factors that trigger the coagulation cascade.",
+              "Haematocrit: The percentage of blood volume occupied by red blood cells. Normal: 40–45% in men, 36–42% in women. Low → anaemia; high → polycythaemia.",
+            ],
+          },
+          {
+            heading: "Red Blood Cells & Oxygen Transport",
+            body: [
+              "Haemoglobin (Hb) is the oxygen-carrying protein inside RBCs. Each Hb molecule has four haem groups, each containing an iron atom that reversibly binds one O₂ molecule — so one Hb carries up to four O₂.",
+              "Oxygen-haemoglobin dissociation: Hb is ~98% saturated in the lungs (high pO₂) and releases O₂ in tissues (low pO₂). The sigmoidal curve is shifted right by low pH, high CO₂, high temperature, and 2,3-DPG (Bohr effect) — all conditions of active tissue.",
+            ],
+            bullets: [
+              "Erythropoiesis: Occurs in red bone marrow. Stem cell → proerythroblast → normoblast (nucleus extruded) → reticulocyte (still contains RNA) → mature erythrocyte. Takes ~7 days.",
+              "Iron metabolism: Iron is absorbed in the duodenum (regulated by hepcidin), carried by transferrin in plasma, stored as ferritin in liver and marrow. Daily loss ~1 mg; absorbed ~1–2 mg.",
+              "Vitamin B₁₂ and folate: Essential for DNA synthesis in rapidly dividing cells. Deficiency → megaloblastic anaemia (large, immature RBCs). B₁₂ requires intrinsic factor from the stomach for absorption in the terminal ileum.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Reticulocyte count",
+              text: "A high reticulocyte count indicates the bone marrow is actively compensating for blood loss or haemolysis. A low count suggests marrow failure (e.g., aplastic anaemia, iron deficiency, or marrow infiltration).",
+            },
+          },
+          {
+            heading: "White Blood Cells & Blood Types",
+            body: [
+              "The five types of white blood cells are classified into granulocytes (neutrophils, eosinophils, basophils) and agranulocytes (lymphocytes, monocytes). Each type has a distinct role in immune defence.",
+            ],
+            bullets: [
+              "Neutrophils (40–70%): First responders to bacterial infection. Phagocytose and destroy pathogens. Die forming pus. Elevated in acute infection (left shift — increased immature band cells).",
+              "Lymphocytes (20–40%): T cells (cell-mediated immunity), B cells (antibody production), and NK cells (kill virus-infected and tumour cells). Elevated in viral infection and chronic inflammation.",
+              "Monocytes (2–8%): Migrate into tissues and become macrophages or dendritic cells. Present antigens to T cells and phagocytose debris. Elevated in chronic infection.",
+              "Eosinophils (1–4%): Combat parasitic infections and modulate allergic responses. Elevated in asthma, hay fever, and helminth infections.",
+              "Basophils (<1%): Release histamine and heparin. Involved in allergic reactions and anaphylaxis. Elevated in leukaemia.",
+              "Blood types: The ABO system is based on antigens on the RBC surface. Type A has A antigen + anti-B antibodies; Type B has B antigen + anti-A antibodies; Type AB has both antigens and no antibodies; Type O has no antigens but both antibodies.",
+              "Rh factor: The D antigen. Rh-negative individuals can develop anti-D antibodies if exposed to Rh-positive blood (e.g., during pregnancy with an Rh-positive fetus). Prevented by anti-D immunoglobulin (RhoGAM).",
+            ],
+          },
+          {
+            heading: "Platelets & Clotting Overview",
+            body: [
+              "When a blood vessel is injured, haemostasis occurs in three overlapping stages: vascular spasm (immediate vasoconstriction), platelet plug formation (primary haemostasis), and the coagulation cascade (secondary haemostasis → fibrin clot).",
+              "Platelets adhere to exposed collagen via von Willebrand factor, become activated, change shape, release granule contents (ADP, thromboxane A₂), and recruit more platelets to form a plug. This is sufficient for small injuries.",
+            ],
+            bullets: [
+              "Thrombocytopenia: Platelet count <150 × 10⁹/L → easy bruising, petechiae, mucosal bleeding. Causes include immune destruction (ITP), bone marrow failure, and drugs.",
+              "Thrombocytosis: Platelet count >400 × 10⁹/L → risk of thrombosis. Can be reactive (infection, iron deficiency) or primary (essential thrombocythaemia).",
+              "Normal platelet count: 150–400 × 10⁹/L. Platelets live 8–10 days.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Blood is 55% plasma (water + proteins + electrolytes) and 45% formed elements (RBCs, WBCs, platelets).",
+          "Red blood cells carry oxygen via haemoglobin; each Hb molecule carries up to 4 O₂ molecules.",
+          "White blood cells are divided into granulocytes (neutrophils, eosinophils, basophils) and agranulocytes (lymphocytes, monocytes).",
+          "ABO blood types are determined by antigens on RBCs; Type O is the universal donor, Type AB the universal recipient.",
+          "Platelets form the initial plug at injury sites; the coagulation cascade then stabilises the clot with fibrin.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "The Coagulation Cascade",
+            body: [
+              "The coagulation cascade is a series of enzymatic reactions where inactive zymogens are sequentially activated, ultimately converting soluble fibrinogen into insoluble fibrin strands that reinforce the platelet plug into a stable clot.",
+              "The cascade has two initiating pathways that converge on a common pathway:",
+            ],
+            bullets: [
+              "Intrinsic pathway (contact activation): Triggered when blood contacts exposed collagen or negatively charged surfaces. Factors XII → XI → IX → VIII (cofactor) → X. Measured by aPTT (activated partial thromboplastin time).",
+              "Extrinsic pathway (tissue factor): Triggered by tissue factor (TF, Factor III) released from damaged cells, which activates Factor VII. Faster than the intrinsic pathway. Measured by PT (prothrombin time) / INR.",
+              "Common pathway: Factor X (activated by either pathway) + Factor V (cofactor) → converts prothrombin (II) to thrombin (IIa) → thrombin converts fibrinogen (I) → fibrin monomers → cross-linked by Factor XIII into a stable clot.",
+              "Thrombin amplification: Thrombin activates Factors V, VIII, XI, and XIII, creating positive feedback loops that rapidly amplify clot formation.",
+              "Natural anticoagulants: Antithrombin III (inhibits thrombin and Factor Xa), Protein C and Protein S (inactivate Factors Va and VIIIa), and tissue factor pathway inhibitor (TFPI). These prevent uncontrolled clotting.",
+            ],
+            callout: {
+              kind: "warning",
+              title: "Warfarin vs heparin",
+              text: "Warfarin inhibits vitamin K-dependent clotting factors (II, VII, IX, X) — monitored by PT/INR. Heparin potentiates antithrombin III — monitored by aPTT. Accidental overdose of either can cause catastrophic bleeding.",
+            },
+          },
+          {
+            heading: "Innate vs Adaptive Immunity",
+            body: [
+              "The immune system has two interconnected branches: innate immunity (rapid, non-specific, present from birth) and adaptive immunity (slower to respond initially but highly specific and capable of immunological memory).",
+            ],
+            bullets: [
+              "Innate immunity — the first line of defence: Physical barriers (skin, mucous membranes), chemical barriers (stomach acid, lysozyme in tears), cellular defences (neutrophils, macrophages, NK cells), and the complement system (a cascade of plasma proteins that opsonise pathogens, recruit immune cells, and lyse bacteria).",
+              "Pattern recognition: Innate cells use pattern recognition receptors (PRRs) such as Toll-like receptors (TLRs) to detect conserved microbial structures called pathogen-associated molecular patterns (PAMPs) — e.g., bacterial lipopolysaccharide, viral double-stranded RNA.",
+              "Adaptive immunity — specific and memory-capable: Mediated by T lymphocytes (cell-mediated) and B lymphocytes (humoral/antibody-mediated). Each lymphocyte clone recognises a specific antigen via its unique receptor (TCR or BCR).",
+              "T cells: CD4⁺ helper T cells (Th1, Th2, Th17, Tfh) coordinate immune responses by releasing cytokines. CD8⁺ cytotoxic T cells directly kill virus-infected and tumour cells. Regulatory T cells (Tregs) suppress excessive immune responses.",
+              "B cells: Activated by antigen + T cell help → proliferate → differentiate into plasma cells (secrete antibodies) and memory B cells. Antibodies (immunoglobulins) neutralise toxins, opsonise pathogens for phagocytosis, and activate complement.",
+              "Immunoglobulin classes: IgG (most abundant, crosses placenta, opsonisation), IgM (first antibody produced, complement activation), IgA (mucosal immunity, tears, saliva, breast milk), IgE (allergic reactions, anti-parasitic), IgD (B cell surface receptor).",
+            ],
+          },
+          {
+            heading: "How Vaccines Work",
+            body: [
+              "Vaccines exploit immunological memory by presenting a harmless form of a pathogen (or its components) to the immune system, triggering a primary response that generates memory B and T cells without causing disease.",
+              "On subsequent exposure to the real pathogen, the secondary immune response is faster (hours to days instead of weeks), stronger (higher antibody titre), and more specific (affinity maturation) — preventing clinical illness.",
+            ],
+            bullets: [
+              "Live attenuated vaccines: Weakened pathogen that replicates but doesn't cause disease. Strong, long-lasting immunity (often single dose). Examples: MMR, oral polio, BCG, yellow fever. Contraindicated in immunocompromised patients.",
+              "Inactivated (killed) vaccines: Pathogen killed by heat or chemicals. Cannot replicate — safer but weaker immunity, often requiring boosters. Examples: inactivated polio, hepatitis A, rabies.",
+              "Subunit / conjugate vaccines: Purified antigens (e.g., surface proteins or polysaccharides). Very safe but may need adjuvants (e.g., aluminium salts) to boost immunogenicity. Examples: hepatitis B, HPV, pneumococcal conjugate.",
+              "mRNA vaccines: Deliver mRNA encoding a pathogen protein (e.g., SARS-CoV-2 spike). Host cells translate the mRNA → protein → presented to immune system. Rapid development and strong T cell + antibody responses.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Herd immunity",
+              text: "When a critical proportion of a population is immune (vaccinated or recovered), transmission chains break down, protecting unvaccinated individuals. The herd immunity threshold varies: ~95% for measles, ~80–85% for polio.",
+            },
+          },
+          {
+            heading: "Clinical Relevance",
+            bullets: [
+              "Anaemia: Reduced RBC count or haemoglobin → fatigue, pallor, dyspnoea on exertion. Types: iron-deficiency (microcytic, low MCV), B₁₂/folate deficiency (macrocytic, high MCV), chronic disease (normocytic), haemolytic (high reticulocytes, high bilirubin). Diagnosed by FBC, film, and iron studies.",
+              "Leukaemia: Malignant proliferation of white blood cell precursors in the bone marrow. Acute lymphoblastic leukaemia (ALL) is the most common childhood cancer. Chronic lymphocytic leukaemia (CLL) is the most common adult leukaemia. Treatment: chemotherapy, targeted therapy, stem cell transplant.",
+              "Sickle cell disease: Genetic mutation (HbS) → RBCs become sickle-shaped under low oxygen → vaso-occlusion, haemolysis, pain crises. Autosomal recessive. Heterozygous carriers (sickle cell trait) have partial malaria resistance.",
+              "Immune thrombocytopenic purpura (ITP): Autoimmune destruction of platelets by anti-platelet antibodies → low platelet count → bruising, petechiae, mucosal bleeding. First-line: corticosteroids or IV immunoglobulin.",
+              "Immunodeficiency: Primary (genetic, e.g., SCID — no T or B cells) or secondary (acquired, e.g., HIV/AIDS — CD4⁺ T cell depletion). Results in recurrent, severe, or unusual infections.",
+            ],
+            callout: {
+              kind: "danger",
+              title: "Red flag: DIC",
+              text: "Disseminated intravascular coagulation (DIC) — widespread activation of the clotting cascade consuming clotting factors and platelets → simultaneous thrombosis and bleeding. Often triggered by sepsis, trauma, or malignancy. A medical emergency requiring treatment of the underlying cause.",
+            },
+          },
+        ],
+        keyPoints: [
+          "The coagulation cascade has intrinsic (aPTT), extrinsic (PT/INR), and common pathways that converge on fibrin formation.",
+          "Innate immunity is rapid and non-specific; adaptive immunity is specific, slower initially, and generates immunological memory.",
+          "Vaccines present harmless antigens to generate memory B and T cells, enabling rapid secondary responses on re-exposure.",
+          "Anaemia is classified by RBC size (microcytic, normocytic, macrocytic) — iron studies and FBC guide diagnosis.",
+          "DIC is a life-threatening emergency where clotting and bleeding occur simultaneously, usually triggered by sepsis or trauma.",
+        ],
+      },
+    ],
+    sections: [],
+    keyPoints: [
+      "Blood is 55% plasma and 45% formed elements: RBCs (oxygen), WBCs (immunity), and platelets (clotting).",
+      "The coagulation cascade converts fibrinogen to fibrin via intrinsic, extrinsic, and common pathways.",
+      "Innate immunity is the first line of defence; adaptive immunity provides specific, long-lasting protection.",
+      "Vaccines generate immunological memory without causing disease, enabling rapid secondary immune responses.",
+      "Iron-deficiency anaemia is the most common anaemia worldwide; B₁₂/folate deficiency causes megaloblastic anaemia.",
+    ],
+    whenToCall: [
+      "Severe bleeding that won't stop — possible coagulopathy or DIC; requires emergency assessment.",
+      "Unexplained bruising or petechiae with low platelets — possible ITP or bone marrow failure.",
+      "Recurrent severe infections — possible primary or secondary immunodeficiency (e.g., HIV).",
+      "Sudden pallor, fast heart rate, and low blood pressure after bleeding — haemorrhagic shock, transfusion may be needed.",
+    ],
+  },
+  {
+    slug: "dna-replication",
+    title: "DNA Replication",
+    emoji: "🧬",
+    category: "Genetics",
+    summary:
+      "A complete guide to how cells faithfully duplicate their DNA before division — from the double helix unwinding to the leading and lagging strand synthesis, Okazaki fragments, and the clinical consequences of replication errors.",
+    readMinutes: 13,
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "📖",
+        sections: [
+          {
+            heading: "What Is DNA?",
+            body: [
+              "Deoxyribonucleic acid (DNA) is the molecule of heredity — a long polymer made of two antiparallel polynucleotide strands wound into a right-handed double helix. Each strand is a chain of nucleotides: a deoxyribose sugar, a phosphate group, and one of four bases — adenine (A), thymine (T), guanine (G), or cytosine (C).",
+              "The two strands are held together by hydrogen bonds between complementary bases: A pairs with T (2 hydrogen bonds) and G pairs with C (3 hydrogen bonds). This base pairing is the key to DNA replication — each strand serves as a template for the synthesis of a new complementary strand.",
+            ],
+            bullets: [
+              "The human genome contains ~3.2 billion base pairs, organised into 23 pairs of chromosomes (plus mitochondrial DNA). If stretched out, one cell's DNA would be ~2 metres long — it is compacted by histone proteins into chromatin.",
+              "Genes are segments of DNA that encode proteins. Only ~1.5% of the human genome codes for proteins; the rest includes regulatory sequences, repetitive elements, and non-coding RNAs.",
+              "DNA replication is semiconservative: each daughter DNA molecule consists of one original (parental) strand and one newly synthesised strand. This was proved by the Meselson-Stahl experiment (1958).",
+            ],
+          },
+          {
+            heading: "Why Does DNA Replicate?",
+            body: [
+              "Before a cell divides (mitosis or meiosis), it must duplicate its entire genome so that each daughter cell receives a complete copy. Without faithful DNA replication, cells would lose genetic information with each division — mutations would accumulate, and organisms could not reproduce or develop.",
+              "DNA replication occurs during the S phase (synthesis phase) of the cell cycle, between G1 and G2. The cell tightly coordinates replication with cell-cycle checkpoints to ensure every chromosome is copied exactly once.",
+            ],
+            bullets: [
+              "Cell cycle: G1 (growth) → S (DNA replication) → G2 (preparation for division) → M (mitosis) → Cytokinesis.",
+              "Origins of replication: Eukaryotic chromosomes have thousands of replication origins, allowing the huge genome to be copied in a reasonable time (~8 hours in human cells).",
+              "The cell cycle checkpoint at the G2/M boundary ensures all DNA is fully replicated before mitosis begins. Damaged or unreplicated DNA triggers checkpoint arrest (via p53 and ATM/ATR kinases).",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Why semiconservative?",
+              text: "Meselson and grew E. coli in heavy nitrogen (¹⁵N), then switched to light nitrogen (¹⁴N). After one generation, all DNA was intermediate density (one heavy + one light strand) — proving semiconservative replication over conservative or dispersive models.",
+            },
+          },
+          {
+            heading: "Key Terms",
+            bullets: [
+              "Replication fork: The Y-shaped region where the double helix is unwound and new DNA is being synthesised. Each chromosome has multiple replication forks moving in both directions.",
+              "Helicase: An enzyme that unwinds the double helix by breaking hydrogen bonds between base pairs, using ATP energy.",
+              "Single-strand binding proteins (SSBs): Stabilise the separated single strands and prevent them from re-annealing before they are replicated.",
+              "Topoisomerase: Relieves the torsional strain (supercoiling) ahead of the replication fork caused by unwinding.",
+              "Primase: An RNA polymerase that synthesises a short RNA primer (~10 nucleotides) to provide the 3'-OH end that DNA polymerase needs to begin synthesis.",
+              "DNA polymerase: The main replication enzyme. Adds nucleotides to the 3' end of a growing strand (5' → 3' direction). Cannot initiate synthesis de novo — requires a primer.",
+              "Ligase: Seals the gaps between Okazaki fragments by forming phosphodiester bonds, creating a continuous daughter strand.",
+            ],
+          },
+          {
+            heading: "Leading and Lagging Strands",
+            body: [
+              "DNA polymerase can only synthesise in the 5' → 3' direction. Because the two parental strands run antiparallel, the replication machinery handles them differently:",
+            ],
+            bullets: [
+              "Leading strand: Synthesised continuously in the same direction as the replication fork movement (5' → 3'). Only one RNA primer is needed. DNA polymerase ε (epsilon) is the primary enzyme.",
+              "Lagging strand: Synthesised discontinuously in short fragments (Okazaki fragments, ~100–200 nucleotides in eukaryotes) because the template runs 5' → 3' toward the fork. Each fragment needs its own RNA primer. DNA polymerase δ (delta) is the primary enzyme.",
+              "Okazaki fragments: Short, newly synthesised DNA fragments on the lagging strand. RNA primers are removed by RNase H and FEN1, gaps are filled by DNA polymerase δ, and fragments are joined by DNA ligase.",
+              "The replisome: A large protein complex at the replication fork that coordinates helicase, primase, and both DNA polymerases, ensuring simultaneous synthesis of both strands.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "DNA is a double helix of two antiparallel polynucleotide strands with complementary base pairing (A-T, G-C).",
+          "DNA replication is semiconservative: each daughter molecule has one parental and one new strand.",
+          "The leading strand is synthesised continuously; the lagging strand is made in Okazaki fragments.",
+          "Helicase unwinds DNA, primase adds RNA primers, DNA polymerase extends the new strand, and ligase seals gaps.",
+          "Replication occurs during S phase of the cell cycle, with checkpoints ensuring fidelity.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "Enzymes of Replication",
+            body: [
+              "DNA replication requires a precisely coordinated ensemble of enzymes and accessory proteins. Each enzyme has a specific role, and defects in any of them can lead to genome instability, mutations, and disease.",
+            ],
+            bullets: [
+              "Helicase (MCM2-7 complex in eukaryotes): A hexameric ring that encircles one strand and uses ATP hydrolysis to unwind the double helix at ~1,000 bp/second. The leading-strand helicase moves 5' → 3'; the lagging-strand helicase moves 3' → 5'.",
+              "Topoisomerase I: Makes a single-strand nick to relieve torsional strain, then reseals it. No ATP required. Target of camptothecin (anti-cancer drug).",
+              "Topoisomerase II (DNA gyrase in bacteria): Makes double-strand breaks to relieve supercoiling, passes another strand through, and reseals. Requires ATP. Target of quinolone antibiotics (ciprofloxacin) and etoposide (anti-cancer).",
+              "Primase (DNA polymerase α-primase complex): Synthesises a short RNA primer (~8–12 nucleotides) plus a short DNA stretch. This provides the free 3'-OH that processive DNA polymerases need.",
+              "DNA polymerase ε (epsilon): The primary leading-strand polymerase. Highly processive (adds thousands of nucleotides without dissociating) when associated with the sliding clamp PCNA. Has 3' → 5' proofreading exonuclease activity.",
+              "DNA polymerase δ (delta): The primary lagging-strand polymerase. Also has 3' → 5' proofreading exonuclease activity. Extends Okazaki fragments after the RNA primer is removed.",
+              "PCNA (Proliferating Cell Nuclear Antigen): A ring-shaped sliding clamp that encircles DNA and tethers polymerases to the template, dramatically increasing processivity. Loaded by RFC (Replication Factor C).",
+              "RNase H and FEN1: Remove RNA primers from Okazaki fragments. RNase H degrades the RNA in RNA:DNA hybrids; FEN1 (Flap Endonuclease 1) removes the displaced RNA flap.",
+              "DNA ligase I: Seals the nick between adjacent Okazaki fragments by forming a phosphodiester bond. In humans, requires NAD⁺ as a cofactor (unlike bacterial ligase which uses ATP).",
+            ],
+            callout: {
+              kind: "warning",
+              title: "Anti-cancer targets",
+              text: "Many anti-cancer drugs target replication enzymes: hydroxyurea (inhibits ribonucleotide reductase → depletes dNTPs), gemcitabine (nucleoside analogue), aphidicolin (inhibits DNA polymerase α), and topoisomerase inhibitors (etoposide, irinotecan).",
+            },
+          },
+          {
+            heading: "Leading vs Lagging Strand — Detailed Mechanism",
+            body: [
+              "The asymmetry of the replication fork arises from a fundamental constraint: DNA polymerase can only synthesise in the 5' → 3' direction, and the two template strands run antiparallel. This means one strand can be copied continuously toward the fork, while the other must be copied away from the fork in short bursts.",
+            ],
+            bullets: [
+              "Leading strand synthesis: A single RNA primer is laid down at the origin. DNA polymerase ε then extends the strand continuously, following the helicase as it unwinds the helix. This is fast and efficient — the polymerase rarely falls off the template.",
+              "Lagging strand synthesis: As the helicase exposes new template, primase synthesises a short RNA primer every 100–200 bp. DNA polymerase δ extends each primer into an Okazaki fragment. When it reaches the 5' end of the previous fragment, it displaces the RNA, creating a flap that FEN1 removes.",
+              "The trombone model: The lagging strand template loops back so that the polymerase complex can move in the same direction as the leading strand polymerase. As each Okazaki fragment is completed, the loop releases and reforms for the next fragment — like a trombone slide.",
+              "Coordination: The replisome ensures that lagging-strand synthesis keeps pace with leading-strand synthesis despite its discontinuous nature. Stalling of one strand can trigger a checkpoint response.",
+            ],
+          },
+          {
+            heading: "Proofreading and Repair",
+            body: [
+              "DNA replication is remarkably accurate — the error rate is ~1 error per 10⁹ base pairs after all correction mechanisms. This fidelity is achieved through three layers of error correction:",
+            ],
+            bullets: [
+              "Base selection: DNA polymerase selects the correct nucleotide based on Watson-Crick base pairing geometry. Error rate: ~1 in 10⁵.",
+              "3' → 5' proofreading exonuclease: If the wrong nucleotide is incorporated, the polymerase detects the mismatch, pauses, excises the incorrect base via its exonuclease domain, and replaces it. Reduces error rate ~100-fold to ~1 in 10⁷.",
+              "Post-replicative mismatch repair (MMR): MutS (MSH2/MSH6) recognises mismatches; MutL (MLH1/PMS2) coordinates repair; MutH (in bacteria) or exonuclease 1 (in eukaryotes) removes the error-containing strand. Reduces error rate ~100-fold to ~1 in 10⁹.",
+              "Defective MMR → Lynch syndrome (hereditary nonpolyposis colorectal cancer, HNPCC): Germline mutations in MLH1, MSH2, MSH6, or PMS2 → microsatellite instability → markedly increased risk of colorectal, endometrial, and other cancers.",
+            ],
+          },
+          {
+            heading: "Clinical Relevance",
+            bullets: [
+              "Mutations: Permanent changes in the DNA sequence. Point mutations (single base changes) can be silent (no amino acid change), missense (wrong amino acid, e.g., sickle cell: GAG → GTG in β-globin), or nonsense (premature stop codon → truncated protein). Frameshift mutations (insertions/deletions) alter the entire reading frame downstream.",
+              "Cancer and replication: Cancer arises from accumulation of mutations in proto-oncogenes (gain of function → cell growth promotion) and tumour suppressors (loss of function → loss of growth control). Mutations in replication/repair genes (e.g., BRCA1/2, MLH1, MSH2) increase cancer risk by allowing more errors to accumulate.",
+              "Xeroderma pigmentosum (XP): Defective nucleotide excision repair (NER) → inability to repair UV-induced thymine dimers → extreme sun sensitivity, freckling, and >1000× increased risk of skin cancer. Autosomal recessive.",
+              "BRCA1/BRCA2 mutations: Impair homologous recombination repair of double-strand breaks. Carriers have significantly increased lifetime risk of breast cancer (50–70%) and ovarian cancer (20–40%). Treated with PARP inhibitors (synthetic lethality).",
+              "Telomere biology: Chromosome ends (telomeres) shorten with each division because the lagging strand cannot fully replicate the very end. Telomerase (an RNA-dependent DNA polymerase) extends telomeres in germ cells and stem cells. Most cancers reactivate telomerase to achieve replicative immortality.",
+            ],
+            callout: {
+              kind: "danger",
+              title: "Red flag: Lynch syndrome screening",
+              text: "Any colorectal or endometrial cancer diagnosed before age 50, or with a family history of Lynch-associated cancers, should be tested for microsatellite instability (MSI) and mismatch repair (MMR) protein loss. Genetic counselling and cascade testing of at-risk relatives is essential.",
+            },
+          },
+        ],
+        keyPoints: [
+          "Helicase unwinds DNA, topoisomerase relieves supercoiling, primase adds RNA primers, and DNA polymerase extends the new strand.",
+          "The leading strand is copied continuously; the lagging strand is copied in Okazaki fragments joined by ligase.",
+          "Three layers of error correction — base selection, proofreading, and mismatch repair — achieve an error rate of ~1 in 10⁹.",
+          "Defective mismatch repair causes Lynch syndrome, a major hereditary cancer predisposition.",
+          "Cancer arises from accumulated mutations in oncogenes and tumour suppressors; BRCA mutations impair double-strand break repair.",
+        ],
+      },
+    ],
+    sections: [],
+    keyPoints: [
+      "DNA is a double helix with complementary base pairing (A-T, G-C); replication is semiconservative.",
+      "Helicase unwinds DNA, primase adds RNA primers, DNA polymerase synthesises new strands, and ligase seals gaps.",
+      "The leading strand is synthesised continuously; the lagging strand is made in Okazaki fragments.",
+      "Three layers of proofreading ensure replication fidelity of ~1 error per 10⁹ base pairs.",
+      "Mutations in repair genes (MLH1, BRCA1/2) dramatically increase cancer risk.",
+    ],
+    whenToCall: [
+      "Unexplained anaemia with a family history of blood cancers — possible inherited bone marrow failure syndrome.",
+      "Unusual or multiple cancers at a young age — consider inherited cancer predisposition (BRCA, Lynch).",
+      "Extreme sun sensitivity with early skin cancers — possible xeroderma pigmentosum, needs UV avoidance and genetic testing.",
+      "Recurrent miscarriages with a family history of chromosomal abnormalities — consider karyotyping and genetic counselling.",
+    ],
+  },
 ];
 
 export const ARTICLE_CATEGORIES: string[] = Array.from(

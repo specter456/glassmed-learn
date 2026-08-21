@@ -86,7 +86,7 @@ const BASICS_FIRST_PATH = [
   { num: 7, slug: "renal-physiology", title: "Renal Physiology", desc: "Filtration, reabsorption, and the nephron — how the kidney balances the body.", articleSlug: undefined, icon: Droplets, color: "#22d3ee", category: "Systems" },
   { num: 8, slug: "digestive-system", title: "The Digestive System", desc: "From ingestion to absorption — the organs and enzymes of digestion.", articleSlug: "digestive-system", icon: Utensils, color: "#f59e0b", category: "Systems" },
   { num: 9, slug: "endocrine-system", title: "The Endocrine System", desc: "Hormones, feedback loops, and how glands regulate the body.", articleSlug: "endocrine-system", icon: Cross, color: "#a78bfa", category: "Physiology" },
-  { num: 10, slug: "blood-immunity", title: "Blood & Immunity", desc: "Blood cells, clotting, and the immune defences that keep you alive.", articleSlug: undefined, icon: ShieldPlus, color: "#e2666f", category: "Systems" },
+  { num: 10, slug: "blood-immunity", title: "Blood & Immunity", desc: "Blood cells, clotting, and the immune defences that keep you alive.", articleSlug: "blood-immunity", icon: ShieldPlus, color: "#e2666f", category: "Physiology" },
 ];
 
 /* ─── Search index ─── */
