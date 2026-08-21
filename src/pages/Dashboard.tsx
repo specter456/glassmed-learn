@@ -71,7 +71,7 @@ const BASICS_FIRST_PATH = [
   { num: 3, slug: "brachial-plexus", title: "The Brachial Plexus", desc: "The nerve superhighway from spine to fingertips — roots, trunks, cords, branches.", articleSlug: undefined, icon: Network, color: "#22d3ee" },
   { num: 4, slug: "krebs-cycle", title: "The Krebs (TCA) Cycle", desc: "How cells extract energy from glucose — the central metabolic hub.", articleSlug: undefined, icon: RefreshCw, color: "#f59e0b" },
   { num: 5, slug: "muscle-contraction", title: "Muscle Contraction", desc: "Actin, myosin, and the sliding filament theory — how muscles generate force.", articleSlug: "muscle-contraction", icon: Activity, color: "#e879f9" },
-  { num: 6, slug: "respiratory-mechanics", title: "Respiratory Mechanics", desc: "Ventilation, gas exchange, and the physics of breathing.", articleSlug: undefined, icon: Wind, color: "#67e8f9" },
+  { num: 6, slug: "respiratory-mechanics", title: "Respiratory Mechanics", desc: "Ventilation, gas exchange, and the physics of breathing.", articleSlug: "respiratory-mechanics", icon: Wind, color: "#67e8f9" },
   { num: 7, slug: "renal-physiology", title: "Renal Physiology", desc: "Filtration, reabsorption, and the nephron — how the kidney balances the body.", articleSlug: undefined, icon: Droplets, color: "#22d3ee" },
   { num: 8, slug: "gi-system", title: "Gastrointestinal System", desc: "From ingestion to absorption — the organs and enzymes of digestion.", articleSlug: undefined, icon: Utensils, color: "#f59e0b" },
   { num: 9, slug: "endocrine-system", title: "Endocrine System", desc: "Hormones, feedback loops, and how glands regulate the body.", articleSlug: undefined, icon: Cross, color: "#a78bfa" },

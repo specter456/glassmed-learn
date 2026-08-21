@@ -1317,6 +1317,160 @@ export const ARTICLES: Article[] = [
       },
     ],
   },
+  {
+    slug: "respiratory-mechanics",
+    title: "Respiratory Mechanics",
+    emoji: "\ud83e\ude78",
+    category: "Physiology",
+    summary:
+      "Respiratory mechanics covers how we breathe, how gas exchange occurs in the lungs, and the physical laws that govern ventilation. Understanding tidal volume, Boyle's law, and lung compliance is essential for physiology, anaesthesia, and pulmonary medicine.",
+    readMinutes: 9,
+    sections: [
+      {
+        heading: "Respiratory mechanics overview",
+        body: [
+          "Every breath you take is a mechanical process driven by pressure changes in the thoracic cavity. The diaphragm contracts, the chest expands, and air flows in along a pressure gradient. Understanding these mechanics is the foundation of pulmonary medicine.",
+        ],
+      },
+    ],
+    keyPoints: [],
+    whenToCall: [],
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "\ud83d\udcd6",
+        sections: [
+          {
+            heading: "How breathing works",
+            body: [
+              "Breathing (ventilation) is the process of moving air into and out of the lungs. It is driven by pressure differences between the atmosphere and the alveoli. When the pressure inside the lungs drops below atmospheric pressure, air flows in (inspiration). When it rises above atmospheric pressure, air flows out (expiration).",
+              "At rest, we breathe about 12-20 times per minute, moving roughly 500 mL of air with each breath. This is called the tidal volume. The total air moved in one minute is the minute ventilation: tidal volume x respiratory rate.",
+            ],
+          },
+          {
+            heading: "Key Terms You Must Know",
+            bullets: [
+              "Tidal Volume (TV) \u2014 The volume of air moved in or out of the lungs during a single normal breath. About 500 mL in a healthy adult at rest. It is the most basic measure of ventilation.",
+              "Diaphragm \u2014 A dome-shaped sheet of skeletal muscle at the base of the thoracic cavity. It is the primary muscle of inspiration. When it contracts, it flattens and moves downward, increasing thoracic volume and drawing air into the lungs.",
+              "Inspiratory muscles \u2014 The diaphragm is the main inspiratory muscle. The external intercostals assist by lifting the ribs upward and outward, further expanding the chest. During forced inspiration, accessory muscles (scalenes, sternocleidomastoid) are recruited.",
+              "Expiratory muscles \u2014 Quiet expiration is passive: the diaphragm and intercostals simply relax, and elastic recoil of the lungs pushes air out. During forced expiration (coughing, exercise), the internal intercostals and abdominal muscles contract to actively push air out.",
+              "Alveoli \u2014 Tiny air sacs at the end of the bronchial tree where gas exchange occurs. There are approximately 300-500 million alveoli in the lungs, providing a massive surface area (~70 m2) for oxygen and carbon dioxide exchange.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Think of it like a pump",
+              text: "The lungs are like a bellows. The diaphragm is the handle: pull it down and air rushes in; let it go back up and air pushes out. The ribcage is the frame that protects and shapes the bellows.",
+            },
+          },
+          {
+            heading: "Volumes and capacities",
+            body: [
+              "Lung volumes are measured using spirometry and are important for diagnosing respiratory diseases. The key volumes and their combinations (capacities) are:",
+            ],
+            bullets: [
+              "Tidal Volume (TV): ~500 mL \u2014 normal breath.",
+              "Inspiratory Reserve Volume (IRV): ~3100 mL \u2014 extra air you can inhale after a normal inspiration.",
+              "Expiratory Reserve Volume (ERV): ~1200 mL \u2014 extra air you can exhale after a normal expiration.",
+              "Residual Volume (RV): ~1200 mL \u2014 air left in the lungs after a maximal exhalation. You cannot breathe this out.",
+              "Inspiratory Capacity (IC) = TV + IRV: maximum air you can inhale from rest.",
+              "Vital Capacity (VC) = TV + IRV + ERV: maximum air you can move in and out. About 4800 mL.",
+              "Total Lung Capacity (TLC) = VC + RV: all the air the lungs can hold. About 6000 mL.",
+            ],
+          },
+          {
+            heading: "The role of the diaphragm",
+            body: [
+              "The diaphragm is responsible for about 75% of the work of breathing at rest. When it contracts, it moves downward by 1-2 cm during quiet breathing and up to 10 cm during forced breathing.",
+              "The phrenic nerve (C3, C4, C5 \u2014 'C3, 4, 5 keeps the diaphragm alive') innervates the diaphragm. Damage to the phrenic nerve (e.g., from spinal cord injury above C3) causes paralysis of the diaphragm and respiratory failure, requiring mechanical ventilation.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Breathing is driven by pressure differences: air flows from high pressure to low pressure.",
+          "Tidal volume is ~500 mL per normal breath; minute ventilation = TV x respiratory rate.",
+          "The diaphragm is the primary muscle of inspiration, responsible for ~75% of breathing work.",
+          "Quiet expiration is passive (elastic recoil); forced expiration uses abdominal muscles.",
+          "Phrenic nerve (C3-C5) innervates the diaphragm \u2014 damage above C3 causes respiratory failure.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "\ud83d\udd2c",
+        sections: [
+          {
+            heading: "Boyle's Law and Ventilation",
+            body: [
+              "Boyle's Law states that at constant temperature, the pressure of a gas is inversely proportional to its volume (P1V1 = P2V2). This is the fundamental physical principle behind ventilation.",
+            ],
+            bullets: [
+              "During inspiration: The diaphragm contracts and descends, increasing thoracic volume. By Boyle's Law, alveolar pressure drops below atmospheric pressure (-1 cmH2O relative to atmosphere). Air flows into the lungs down this pressure gradient.",
+              "During expiration: The diaphragm relaxes and returns to its dome shape, decreasing thoracic volume. Alveolar pressure rises above atmospheric pressure (+1 cmH2O). Air flows out.",
+              "Intrapleural pressure (pressure in the pleural cavity between the visceral and parietal pleura) is always negative relative to atmospheric pressure (-4 to -6 cmH2O at rest). This negative pressure keeps the lungs inflated. If air enters the pleural space (pneumothorax), the negative pressure is lost and the lung collapses.",
+              "Transmural pressure across the lungs = alveolar pressure minus intrapleural pressure. This pressure difference keeps the lungs expanded against the elastic recoil of the chest wall.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Boyle's Law in a nutshell",
+              text: "Volume up \u2192 Pressure down \u2192 Air rushes in. Volume down \u2192 Pressure up \u2192 Air rushes out. The diaphragm controls the volume change, and Boyle's Law does the rest.",
+            },
+          },
+          {
+            heading: "Lung Compliance and Elastic Recoil",
+            body: [
+              "Lung compliance is the ease with which the lungs can be expanded. It is defined as the change in volume per unit change in pressure (dV/dP). High compliance means the lungs expand easily; low compliance means they are stiff and hard to inflate.",
+            ],
+            bullets: [
+              "Normal lung compliance is about 200 mL/cmH2O. This means 200 mL of air enters the lungs for every 1 cmH2O drop in pressure.",
+              "High compliance (emphysema): The lung tissue is destroyed (elastic fibres lost), so the lungs expand too easily but cannot recoil to push air out. Air trapping occurs. Patients have difficulty exhaling.",
+              "Low compliance (pulmonary fibrosis, ARDS): The lung tissue becomes scarred or inflamed, making the lungs stiff. Greater pressure is needed to achieve the same tidal volume. Patients have difficulty inhaling and have rapid, shallow breathing.",
+              "Surfactant: A phospholipid mixture (mainly dipalmitoylphosphatidylcholine, DPPC) produced by Type II alveolar cells. It reduces surface tension at the air-liquid interface in the alveoli, preventing collapse (atelectasis) and increasing compliance. Without surfactant (e.g., in premature infants), the work of breathing is greatly increased.",
+              "Chest wall compliance is also important. Obesity, kyphoscoliosis, and chest wall oedema reduce chest wall compliance, increasing the work of breathing.",
+            ],
+          },
+          {
+            heading: "Gas Exchange and Diffusion",
+            body: [
+              "Gas exchange occurs at two levels: external respiration (alveoli to blood) and internal respiration (blood to tissues). The process is governed by Fick's Law of Diffusion and partial pressure gradients.",
+            ],
+            bullets: [
+              "Fick's Law: Rate of diffusion is proportional to (surface area x diffusion coefficient x partial pressure difference) / membrane thickness. The alveolar-capital membrane is extremely thin (~0.5 um) and has a massive surface area (~70 m2), optimising gas exchange.",
+              "Partial pressure gradients: Oxygen diffuses from alveoli (PO2 ~104 mmHg) to pulmonary capillary blood (PO2 ~40 mmHg). Carbon dioxide diffuses from blood (PCO2 ~45 mmHg) to alveoli (PCO2 ~40 mmHg). Despite the smaller CO2 gradient, CO2 diffuses ~20x faster than O2 because it is much more soluble.",
+              "Ventilation-perfusion (V/Q) matching: Efficient gas exchange requires matching airflow (ventilation, V) to blood flow (perfusion, Q). The ideal V/Q ratio is ~1.0. Shunt (V/Q = 0, perfused but not ventilated) and dead space (V/Q = infinity, ventilated but not perfused) impair gas exchange.",
+              "Oxygen-haemoglobin dissociation curve: The sigmoid shape reflects cooperative binding of O2 to haemoglobin. At the lungs (PO2 ~100 mmHg), haemoglobin is ~98% saturated. At the tissues (PO2 ~40 mmHg), it releases O2, dropping to ~75% saturation.",
+              "The Bohr effect: Increased CO2, decreased pH, increased temperature, and increased 2,3-DPG all shift the dissociation curve to the right, promoting O2 unloading at the tissues where it is needed most.",
+            ],
+          },
+          {
+            heading: "Clinical Relevance",
+            body: [
+              "Understanding respiratory mechanics is essential for diagnosing and treating pulmonary diseases:",
+            ],
+            bullets: [
+              "Asthma: Chronic airway inflammation causes bronchoconstriction, mucus hypersecretion, and airway remodelling. This increases airway resistance, trapping air and causing expiratory difficulty. Treatment: bronchodilators (salbutamol, ipratropium) and inhaled corticosteroids (beclomethasone, budesonide). Peak expiratory flow rate (PEFR) is a key monitoring parameter.",
+              "COPD (Chronic Obstructive Pulmonary Disease): Chronic bronchitis (mucus hypersecretion) and emphysema (alveolar destruction) coexist. Leads to air trapping, hyperinflation, and progressive airflow limitation. Treatment: long-acting bronchodilators (tiotropium), pulmonary rehabilitation, and supplemental oxygen in severe disease.",
+              "Pneumothorax: Air enters the pleural space, eliminating the negative intrapleural pressure. The lung collapses on the affected side. Tension pneumothorax (one-way valve mechanism) is life-threatening: mediastinal shift compresses the opposite lung and great vessels. Immediate needle decompression is required.",
+              "ARDS (Acute Respiratory Distress Syndrome): Severe inflammation increases alveolar-capillary membrane thickness and inactivates surfactant, drastically reducing lung compliance. Treatment: mechanical ventilation with low tidal volumes (6 mL/kg) to prevent ventilator-induced lung injury.",
+              "Pulmonary embolism: A blood clot (usually from deep vein thrombosis) blocks a pulmonary artery, creating dead space (ventilated but not perfused). Sudden onset of dyspnoea, chest pain, and tachycardia. Treatment: anticoagulation (heparin, warfarin) or thrombolysis in massive PE.",
+            ],
+            callout: {
+              kind: "warning",
+              title: "Red flag: Tension pneumothorax",
+              text: "Sudden dyspnoea + absent breath sounds on one side + tracheal deviation away from the affected side = tension pneumothorax. This is a clinical emergency. Do not wait for a chest X-ray. Insert a large-bore needle into the 2nd intercostal space, midclavicular line, immediately.",
+            },
+          },
+        ],
+        keyPoints: [
+          "Boyle's Law: Volume increase \u2192 pressure decrease \u2192 air flows in. The diaphragm drives this volume change.",
+          "Lung compliance is ~200 mL/cmH2O. Emphysema = high compliance; fibrosis = low compliance.",
+          "Surfactant reduces alveolar surface tension, preventing collapse and increasing compliance.",
+          "Gas exchange follows Fick's Law: large surface area, thin membrane, and partial pressure gradients.",
+          "Asthma increases airway resistance via bronchoconstriction; treated with bronchodilators and corticosteroids.",
+        ],
+      },
+    ],
+  },
 ];
 
 export const ARTICLE_CATEGORIES: string[] = Array.from(
