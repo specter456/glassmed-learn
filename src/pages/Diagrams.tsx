@@ -18,6 +18,8 @@ const KidneyDiagram = React.lazy(() => import("@/components/KidneyDiagram"));
 const PlexusDiagram = React.lazy(() => import("@/components/PlexusDiagram").then(m => ({ default: m.PlexusDiagram })));
 const SkeletalSystem = React.lazy(() => import("@/components/SkeletalSystem"));
 const EndocrineDiagram = React.lazy(() => import("@/components/EndocrineDiagram").then(m => ({ default: m.EndocrineDiagram })));
+const EarDiagram = React.lazy(() => import("@/components/EarDiagram").then(m => ({ default: m.EarDiagram })));
+
 
 
 function DiagramFallback() {
@@ -28,7 +30,7 @@ function DiagramFallback() {
   );
 }
 
-type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal" | "endocrine";
+type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal" | "endocrine" | "ear";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -153,6 +155,17 @@ const DIAGRAMS: Record<
     tag: "🧬",
     Component: EndocrineDiagram,
   },
+  ear: {
+    kicker: "Diagram 10 · The Ear",
+    title: "Sound Becomes Signal",
+    blurb:
+      "From the pinna catching sound waves to the cochlea converting them into neural impulses — 9 interactive parts that reveal how you hear the world. Hover any structure to make it blaze, tap it for a quick breakdown.",
+    parts: 9,
+    accent: "#60a5fa",
+    label: "Ear & Hearing",
+    tag: "👂",
+    Component: EarDiagram,
+  },
 };
 
 const COMING_SOON = ["Krebs Cycle", "DNA Replication Fork", "Cardiac Cycle ECG"];
@@ -211,6 +224,8 @@ function DiagramsInner() {
                 ) : active === "skeletal" ? (
                   <Bone className="size-6" />
                 ) : active === "endocrine" ? (
+                  <Zap className="size-6" />
+                ) : active === "ear" ? (
                   <Zap className="size-6" />
                 ) : (
                   <Zap className="size-6" />

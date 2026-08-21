@@ -2400,6 +2400,177 @@ export const ARTICLES: Article[] = [
       "Recurrent miscarriages with a family history of chromosomal abnormalities — consider karyotyping and genetic counselling.",
     ],
   },
+  {
+    slug: "vision-hearing",
+    title: "Vision & Hearing",
+    emoji: "👁️",
+    category: "Physiology",
+    summary:
+      "A complete guide to the two major senses — how light enters the eye and is converted to neural signals, and how sound waves are funnelled through the ear to the cochlea. Covers photoreceptors, the visual pathway, ossicle mechanics, and the organ of Corti.",
+    readMinutes: 14,
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "📖",
+        sections: [
+          {
+            heading: "How Light Enters the Eye",
+            body: [
+              "Vision begins when light — electromagnetic radiation in the 380–700 nm wavelength range — enters the eye through the cornea, which provides ~65% of the eye's total focusing power. The light then passes through the pupil (the aperture controlled by the iris) and is fine-focused by the lens onto the retina at the back of the eye.",
+              "The lens is a transparent, biconvex structure that changes shape (accommodation) via the ciliary muscle. When you look at something nearby, the ciliary muscle contracts, relaxing the zonular fibres and allowing the lens to become more spherical for near focus. When you look far away, the muscle relaxes and the lens flattens.",
+            ],
+            bullets: [
+              "Cornea → Pupil → Lens → Vitreous humor → Retina: the path of light through the eye.",
+              "The iris has two muscles: the sphincter pupillae (parasympathetic — constricts in bright light) and the dilator pupillae (sympathetic — dilates in dim light or during fear).",
+              "The fovea, a tiny pit at the centre of the macula, contains the highest density of cones and provides your sharpest central vision — reading, recognizing faces, driving.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Common refractive errors",
+              text: "Myopia (nearsightedness): Eyeball too long → light focuses in front of the retina → distant objects blurred. Hypermetropia (farsightedness): Eyeball too short → light focuses behind → near objects blurred. Astigmatism: Irregular corneal curvature → distorted focus at all distances.",
+            },
+          },
+          {
+            heading: "The Retina — Converting Light to Signals",
+            body: [
+              "The retina is a 10-layer neural film lining the back of the eye. It contains two types of photoreceptors: rods (~120 million) for dim-light (scotopic) vision and cones (~6 million) for colour and daylight (photopic) vision.",
+              "Phototransduction is the process by which photons trigger a biochemical cascade in the photoreceptor, ultimately changing the membrane potential and sending a signal to the brain. Remarkably, light actually hyperpolarises photoreceptors (closes Na⁺ channels via the cGMP cascade) — the opposite of what most neurons do.",
+            ],
+            bullets: [
+              "Rods: Contain rhodopsin (visual purple). Extremely sensitive — can detect a single photon. Concentrated in the peripheral retina. No colour information. Saturated in bright light.",
+              "Cones: Three types based on photopigment — S-cones (short wavelength, blue), M-cones (medium, green), L-cones (long, red). Colour vision is based on comparing the relative activation of these three types.",
+              "Signal pathway: Photoreceptors → Bipolar cells → Retinal ganglion cells → Optic nerve → Lateral geniculate nucleus → Primary visual cortex (V1).",
+              "Blind spot: Where the optic nerve exits the retina — no photoreceptors here. The brain fills in the gap so you don't notice it in daily life.",
+            ],
+          },
+          {
+            heading: "How Sound Enters the Ear",
+            body: [
+              "Sound waves are pressure variations in the air (20 Hz – 20,000 Hz audible range). They are collected by the pinna (auricle), channelled through the ear canal, and strike the tympanic membrane (eardrum), causing it to vibrate.",
+              "These vibrations are transmitted and amplified by the three ossicles — the malleus (hammer), incus (anvil), and stapes (stirrup) — the smallest bones in the body. The ossicles form a lever system that amplifies sound pressure ~22× before it reaches the inner ear.",
+            ],
+            bullets: [
+              "The ear canal resonates at ~3,000 Hz, amplifying frequencies important for speech comprehension.",
+              "The ossicles convert air pressure waves into mechanical vibrations: Malleus → Incus → Stapes.",
+              "The stapes footplate sits in the oval window of the cochlea — it converts mechanical vibrations into pressure waves in the cochlear fluid.",
+              "The Eustachian tube connects the middle ear to the nasopharynx and equalises pressure on both sides of the eardrum (opens during swallowing).",
+            ],
+          },
+          {
+            heading: "The Cochlea — Sound to Neural Signals",
+            body: [
+              "The cochlea is a snail-shaped, fluid-filled organ (~2.5 turns) that performs the remarkable transformation of mechanical vibrations into electrical nerve impulses. Inside, the basilar membrane runs the length of the cochlea, tuned so that different positions respond to different frequencies.",
+              "High frequencies resonate near the base (near the oval window); low frequencies resonate near the apex. This tonotopic organisation is preserved all the way to the auditory cortex.",
+            ],
+            bullets: [
+              "Organ of Corti: Sits on the basilar membrane. Contains inner hair cells (IHCs) — the true sensory receptors — and outer hair cells (OHCs) that amplify vibration ~100× (cochlear amplifier).",
+              "Inner hair cells: ~3,500 cells. When the basilar membrane vibrates, stereocilia on IHCs are deflected, mechanically-gated ion channels open, the cell depolarises, and glutamate is released onto auditory nerve fibres.",
+              "Outer hair cells: ~12,000 cells. They change length in response to electrical signals (electromotility), amplifying the basilar membrane vibration and sharpening frequency tuning.",
+              "Cochlear nerve: ~30,000 fibres carrying frequency, intensity, and timing information → cochlear nuclei → inferior colliculus → medial geniculate nucleus → primary auditory cortex (A1).",
+            ],
+            callout: {
+              kind: "warning",
+              title: "Noise-induced hearing loss",
+              text: "Prolonged exposure to sounds >85 dB (e.g., concerts, headphones at max volume) damages the outer hair cells permanently — they do not regenerate in mammals. Use ear protection and follow the 60/60 rule: no more than 60% volume for 60 minutes.",
+            },
+          },
+        ],
+        keyPoints: [
+          "Light enters through the cornea (65% focusing power), passes through the pupil and lens, and focuses on the retina.",
+          "Rods provide dim-light vision; cones provide colour vision. Three cone types (S, M, L) enable trichromatic colour perception.",
+          "Sound enters through the pinna, travels through the ear canal, vibrates the eardrum, and is amplified by the three ossicles.",
+          "The cochlea converts mechanical vibrations into neural signals via hair cells on the basilar membrane.",
+          "Outer hair cells amplify sound ~100×; inner hair cells are the true sensory receptors that send signals to the brain.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "The Visual Pathway",
+            body: [
+              "Visual information travels from the retina to the brain through a precisely organised pathway. Each eye's optic nerve carries signals from half the visual field; at the optic chiasm, nasal fibres cross (decussate) while temporal fibres remain ipsilateral, ensuring each brain hemisphere receives information from the contralateral visual field.",
+            ],
+            bullets: [
+              "Retina → Optic nerve (CN II) → Optic chiasm (nasal fibres cross) → Optic tract → Lateral geniculate nucleus (LGN) of the thalamus → Optic radiations → Primary visual cortex (V1, Brodmann area 17) in the occipital lobe.",
+              "The LGN has six layers: magnocellular (motion, depth, low contrast) and parvoccolour (colour, detail, high contrast). It receives ~90% of its input from the retina and ~10% from the cortex (feedback).",
+              "V1 neurons are organised into orientation columns and ocular dominance columns — they respond to specific edge orientations, colours, and eye of origin.",
+              "Higher visual areas: V2 (illusory contours), V4 (colour perception — damage causes achromatopsia), V5/MT (motion perception — damage causes akinetopsia, the inability to perceive motion).",
+            ],
+          },
+          {
+            heading: "Phototransduction — The Molecular Cascade",
+            body: [
+              "Phototransduction is one of the fastest and most sensitive signalling cascades in biology. A single photon can be detected by a rod because the cascade amplifies the signal ~10⁶-fold.",
+            ],
+            bullets: [
+              "In darkness, Na⁺ channels are open (maintained by high cGMP levels) → the photoreceptor is partially depolarised (~−40 mV) and continuously releases glutamate.",
+              "Light hits rhodopsin → retinal isomerises from 11-cis to all-trans → rhodopsin activates transducin (G-protein) → transducin activates phosphodiesterase (PDE) → PDE hydrolyses cGMP → cGMP drops → Na⁺ channels close → hyperpolarisation (~−70 mV) → glutamate release decreases.",
+              "Recovery: Rhodopsin kinase phosphorylates activated rhodopsin → arrestin binds → transducin GTP hydrolysed to GDP → guanylate cyclase restores cGMP levels → Na⁺ channels reopen.",
+              "Adaptation: Prolonged light exposure activates calcium-dependent pathways that desensitise the cascade — allowing the eye to function over a 10-billion-fold range of light intensities.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Night vision biochemistry",
+              text: "Vitamin A (retinol) is the precursor of retinal, the chromophore in rhodopsin. Vitamin A deficiency → impaired dark adaptation ('night blindness') → eventually Bitot's spots and xerophthalmia → blindness. The leading cause of preventable childhood blindness worldwide.",
+            },
+          },
+          {
+            heading: "Hearing — The Cochlear Amplifier",
+            body: [
+              "The cochlea doesn't just passively transmit vibrations — it actively amplifies them through the outer hair cells (OHCs). This active process, called the cochlear amplifier, provides ~40–60 dB of gain (100–1000×) for quiet sounds and sharpens frequency selectivity.",
+            ],
+            bullets: [
+              "Electromotility: OHCs contain prestin, a motor protein in their lateral membrane that changes shape in response to voltage changes. When depolarised, the OHC contracts; when hyperpolarised, it elongates. This cycles at audio frequencies up to ~70 kHz in some mammals.",
+              "The OHCs ride on the basilar membrane and push against the tectorial membrane, amplifying the vibration at the characteristic frequency location. This makes the basilar membrane's frequency tuning much sharper than its passive mechanics alone.",
+              "Loss of OHCs (from noise, ototoxic drugs, or aging) causes sensorineural hearing loss — reduced sensitivity, especially for quiet sounds, and poor speech discrimination in noise.",
+              "Cochlear implants bypass damaged hair cells entirely. An electrode array inserted into the cochlea directly stimulates the cochlear nerve fibres electrically, encoding sound as patterns of electrical pulses.",
+            ],
+          },
+          {
+            heading: "Clinical Relevance",
+            bullets: [
+              "Myopia (nearsightedness): The most common refractive error globally. Rising prevalence linked to increased near work and reduced outdoor time in childhood. Corrected with concave (minus) lenses, contact lenses, or LASIK (corneal reshaping).",
+              "Cataracts: Clouding of the lens → progressive painless vision loss. The most common cause of blindness worldwide (reversible with surgery). Risk factors: aging, UV exposure, diabetes, steroid use.",
+              "Glaucoma: Increased intraocular pressure (or vascular insufficiency) damages the optic nerve → peripheral vision loss → eventually blindness if untreated. Open-angle (chronic, common) vs angle-closure (acute, emergency). Treated with eye drops (prostaglandin analogues, beta-blockers), laser, or surgery.",
+              "Tinnitus: Perception of sound (ringing, buzzing) without an external source. Often caused by noise-induced hair cell damage, age-related hearing loss, or ototoxic drugs. Management: sound therapy, cognitive behavioural therapy, hearing aids if hearing loss present.",
+              "Presbycusis: Age-related sensorineural hearing loss. Gradual loss of high-frequency hearing first (difficulty understanding speech in noisy environments). Caused by cumulative OHC damage and neural degeneration. Managed with hearing aids.",
+              "Meniere's disease: Excess endolymph in the cochlea (endolymphatic hydrops) → episodic vertigo, fluctuating hearing loss, tinnitus, and aural fullness. Treated with low-salt diet, diuretics, and intratympanic steroids in severe cases.",
+            ],
+            callout: {
+              kind: "danger",
+              title: "Red flag: sudden hearing loss",
+              text: "Sudden sensorineural hearing loss (SSNHL) — rapid loss of hearing in one ear over hours to days — is a medical emergency. Often idiopathic but may indicate vestibular schwannoma, autoimmune disease, or vascular event. Treated with high-dose oral or intratympanic steroids within 2 weeks for best outcomes.",
+            },
+          },
+        ],
+        keyPoints: [
+          "The visual pathway: retina → optic nerve → chiasm → LGN → V1, with nasal fibres crossing at the chiasm.",
+          "Phototransduction involves light closing Na⁺ channels via the rhodopsin → transducin → PDE → cGMP cascade, hyperpolarising the cell.",
+          "The cochlear amplifier (outer hair cells) provides ~100× gain for quiet sounds and sharpens frequency tuning.",
+          "Myopia is corrected with concave lenses; cataracts with surgery; glaucoma with IOP-lowering treatments.",
+          "Sudden sensorineural hearing loss is a medical emergency — steroids within 2 weeks improve outcomes.",
+        ],
+      },
+    ],
+    sections: [],
+    keyPoints: [
+      "Light enters through the cornea and lens, focusing on the retina where rods and cones convert photons to neural signals.",
+      "Sound is collected by the pinna, amplified by the ossicles, and transduced by hair cells in the cochlea.",
+      "Three cone types (S, M, L) enable trichromatic colour vision; the fovea provides peak acuity.",
+      "The cochlear amplifier (outer hair cells) provides ~100× gain, critical for hearing quiet sounds.",
+      "Cataracts and myopia are the most common reversible causes of vision loss worldwide.",
+    ],
+    whenToCall: [
+      "Sudden painless vision loss in one eye — possible retinal detachment or central retinal artery occlusion; requires emergency ophthalmology.",
+      "Sudden sensorineural hearing loss in one ear — treatment with steroids within 2 weeks improves recovery chances.",
+      "Flashes of light with new floaters — possible retinal tear or detachment; urgent ophthalmology evaluation needed.",
+      "Severe ear pain with fever and hearing loss — possible acute otitis media or mastoiditis; may need antibiotics or surgical drainage.",
+    ],
+  },
 ];
 
 export const ARTICLE_CATEGORIES: string[] = Array.from(
