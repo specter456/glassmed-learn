@@ -2193,6 +2193,155 @@ export const ARTICLES: Article[] = [
       "Norepinephrine > 0.5 mcg/kg/min without MAP response — add vasopressin, reassess source control, consider hydrocortisone.",
     ],
   },
+  // ---- Foundations (Neuroscience block) ----
+
+  {
+    slug: "synapses-neurotransmitters",
+    title: "Synapses & Neurotransmitters",
+    emoji: "🧠",
+    category: "Foundations",
+    summary:
+      "Synapses are the fundamental communication units of the nervous system. This article covers the basics of synaptic transmission, the major neurotransmitters, and the clinical conditions that arise when these systems malfunction.",
+    readMinutes: 9,
+    sections: [],
+    keyPoints: [],
+    whenToCall: [],
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "📖",
+        sections: [
+          {
+            heading: "What is a synapse?",
+            body: [
+              "A synapse is the junction between two neurons (or between a neuron and a target cell such as a muscle or gland). It is the site where information is transmitted from one cell to the next. The synapse is not a physical connection — there is a tiny gap called the synaptic cleft (approximately 20–40 nm wide) between the presynaptic neuron (the sender) and the postsynaptic neuron (the receiver).",
+              "Electrical signals (action potentials) travel along the axon of the presynaptic neuron. When the signal reaches the synaptic terminal, it triggers the release of chemical messengers called neurotransmitters. These neurotransmitters cross the synaptic cleft and bind to receptors on the postsynaptic cell, generating a new electrical signal.",
+            ],
+            bullets: [
+              "Presynaptic neuron: the neuron sending the signal. Its terminal contains synaptic vesicles filled with neurotransmitter.",
+              "Synaptic cleft: the 20–40 nm gap between the two neurons. Neurotransmitters must diffuse across this gap.",
+              "Postsynaptic neuron: the neuron receiving the signal. Its membrane contains receptor proteins that bind neurotransmitters.",
+              "Synaptic vesicles: small membrane-bound sacs inside the presynaptic terminal that store neurotransmitter molecules.",
+            ],
+          },
+          {
+            heading: "What do neurotransmitters do?",
+            body: [
+              "Neurotransmitters are chemical messengers that transmit signals across synapses. When released from the presynaptic neuron, they bind to specific receptors on the postsynaptic neuron, causing a change in the postsynaptic cell's electrical state. This change can be either excitatory (making the neuron more likely to fire) or inhibitory (making it less likely to fire).",
+            ],
+            bullets: [
+              "Excitatory neurotransmitters: increase the probability that the postsynaptic neuron will fire an action potential. They cause depolarisation — the membrane potential becomes more positive. The main excitatory neurotransmitter in the brain is glutamate.",
+              "Inhibitory neurotransmitters: decrease the probability that the postsynaptic neuron will fire. They cause hyperpolarisation — the membrane potential becomes more negative. The main inhibitory neurotransmitter in the brain is GABA (gamma-aminobutyric acid).",
+              "Neuromodulators: a third category that modulates the overall activity of neural circuits rather than directly exciting or inhibiting. Examples include dopamine, serotonin, and noradrenaline. They often act over longer distances and longer timescales than classical neurotransmitters.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "The excitatory-inhibitory balance",
+              text: "Every thought, movement, and emotion depends on the precise balance between excitatory and inhibitory signals. Too much excitation → seizures. Too much inhibition → coma. The brain maintains this balance through thousands of synaptic connections, each fine-tuned by experience and genetics.",
+            },
+          },
+          {
+            heading: "Types of synapses",
+            bullets: [
+              "Chemical synapses: the most common type. Use neurotransmitters to transmit signals across the synaptic cleft. Allow for signal amplification, modulation, and plasticity (the ability to strengthen or weaken with use).",
+              "Electrical synapses: use gap junctions to directly connect the cytoplasm of two neurons. Allow almost instantaneous signal transmission. Found in cardiac muscle, smooth muscle, and some brain regions where synchronised activity is needed.",
+              "Neuromuscular junction (NMJ): a specialised chemical synapse between a motor neuron and a skeletal muscle fibre. Uses acetylcholine (ACh) as the neurotransmitter. When ACh binds to nicotinic receptors on the muscle, it triggers muscle contraction.",
+            ],
+          },
+          {
+            heading: "How a signal crosses the synapse",
+            steps: [
+              "An action potential arrives at the presynaptic terminal, depolarising the membrane.",
+              "Voltage-gated calcium (Ca²⁺) channels open, and Ca²⁺ floods into the terminal.",
+              "The rise in intracellular Ca²⁺ triggers synaptic vesicles to fuse with the presynaptic membrane (exocytosis).",
+              "Neurotransmitter molecules are released into the synaptic cleft.",
+              "Neurotransmitters diffuse across the cleft and bind to specific receptors on the postsynaptic membrane.",
+              "Receptor binding opens ion channels or activates intracellular signalling cascades, generating a postsynaptic potential.",
+              "The neurotransmitter is removed from the cleft by reuptake (transported back into the presynaptic neuron), enzymatic degradation (broken down by enzymes), or diffusion (drifts away from the synapse).",
+            ],
+          },
+        ],
+        keyPoints: [
+          "A synapse is the junction between two neurons with a 20–40 nm synaptic cleft.",
+          "Excitatory neurotransmitters (glutamate) depolarise; inhibitory neurotransmitters (GABA) hyperpolarise.",
+          "The 7-step process: action potential → Ca²⁺ influx → vesicle fusion → neurotransmitter release → receptor binding → postsynaptic potential → signal termination.",
+          "Neurotransmitter is cleared by reuptake, enzymatic degradation, or diffusion — this is the target of most psychotropic drugs.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "The molecular machinery of synaptic transmission",
+            body: [
+              "Synaptic transmission is a precisely orchestrated molecular event involving calcium sensors, SNARE proteins, and receptor families. Understanding these mechanisms is essential for comprehending how drugs and diseases affect neural communication.",
+            ],
+            steps: [
+              "Calcium sensing: when Ca²⁺ enters the terminal, it binds to synaptotagmin (a calcium sensor on the synaptic vesicle). This triggers the SNARE complex (syntaxin, SNAP-25, and synaptobrevin) to pull the vesicle membrane and presynaptic membrane together.",
+              "Vesicle fusion: the SNARE complex catalyses membrane fusion, creating a fusion pore through which neurotransmitter is released. Each action potential releases approximately 5,000–10,000 neurotransmitter molecules (one quantum).",
+              "Receptor types: ionotropic receptors (ligand-gated ion channels) produce fast, direct responses (milliseconds). Metabotropic receptors (G-protein coupled) produce slower, longer-lasting responses through second messenger cascades (seconds to minutes).",
+              "Postsynaptic potentials: excitatory postsynaptic potentials (EPSPs) are produced by Na⁺ or Ca²⁺ influx. Inhibitory postsynaptic potentials (IPSPs) are produced by Cl⁻ influx or K⁺ efflux. A single EPSP is usually insufficient to trigger an action potential — temporal and spatial summation are required.",
+              "Signal termination: reuptake transporters (e.g., SERT for serotonin, DAT for dopamine) actively pump neurotransmitter back into the presynaptic terminal. Enzymatic degradation (e.g., acetylcholinesterase breaks down ACh in the synaptic cleft) provides another termination mechanism.",
+            ],
+            callout: {
+              kind: "warning",
+              title: "The SNARE complex is a drug target",
+              text: "Botulinum toxin (Botox) cleaves SNARE proteins, preventing vesicle fusion and neurotransmitter release. This is why Botox causes flaccid paralysis — it blocks acetylcholine release at the neuromuscular junction. Tetanus toxin does the opposite — it blocks inhibitory neurotransmitter release in the spinal cord, causing spastic paralysis.",
+            },
+          },
+          {
+            heading: "Key neurotransmitters — a clinical guide",
+            bullets: [
+              "Glutamate: the primary excitatory neurotransmitter in the CNS. Acts on NMDA, AMPA, and kainate receptors (ionotropic) and mGluR receptors (metabotropic). Essential for learning and memory (LTP — long-term potentiation). Excess glutamate → excitotoxicity → neuronal death ( implicated in stroke, ALS, and Alzheimer's disease).",
+              "GABA (gamma-aminobutyric acid): the primary inhibitory neurotransmitter. Acts on GABA-A (ionotropic, Cl⁻ channel) and GABA-B (metabotropic, K⁺ channel) receptors. Benzodiazepines and barbiturates enhance GABA-A function → sedation, anxiolysis, anticonvulsant effects. Loss of GABAergic inhibition → seizures.",
+              "Acetylcholine (ACh): neurotransmitter at the neuromuscular junction (nicotinic receptors) and in the CNS (muscarinic receptors). Critical for muscle contraction, attention, and memory. Degeneration of cholinergic neurons → Alzheimer's disease. Acetylcholinesterase inhibitors (donepezil) increase ACh levels and are used in Alzheimer's treatment.",
+              "Dopamine: a catecholamine neurotransmitter with four major pathways: mesolimbic (reward, motivation), mesocortical (cognition, executive function), nigrostriatal (movement), and tuberoinfundibular (prolactin regulation). Acts on D1-like (excitatory) and D2-like (inhibitory) receptors. Degeneration of nigrostriatal pathway → Parkinson's disease. Excess mesolimbic dopamine → schizophrenia.",
+              "Serotonin (5-HT): produced in the raphe nuclei of the brainstem. At least 14 receptor subtypes (5-HT1 through 5-HT7). Regulates mood, appetite, sleep, pain, and cognition. Low serotonin → depression. SSRIs (selective serotonin reuptake inhibitors) block the serotonin reuptake transporter (SERT), increasing synaptic 5-HT levels. First-line treatment for major depressive disorder.",
+              "Noradrenaline (norepinephrine): produced in the locus coeruleus. Regulates arousal, attention, and the fight-or-flight response. Acts on α1, α2, β1, and β2 adrenergic receptors. SNRIs (serotonin-noradrenaline reuptake inhibitors) increase both 5-HT and NA levels. Used for depression, anxiety, and chronic pain.",
+              "Endorphins: endogenous opioid peptides that bind to μ, δ, and κ opioid receptors. Produce analgesia and euphoria. The runners high, acupuncture analgesia, and placebo analgesia all involve endorphin release. Exogenous opioids (morphine, fentanyl) mimic endorphins but carry addiction risk.",
+            ],
+          },
+          {
+            heading: "Synaptic plasticity — how synapses change with use",
+            body: [
+              "Synaptic plasticity is the ability of synapses to strengthen or weaken over time in response to activity. It is the cellular basis of learning, memory, and recovery from brain injury.",
+            ],
+            bullets: [
+              "Long-term potentiation (LTP): a persistent strengthening of a synapse based on recent patterns of activity. The NMDA receptor acts as a coincidence detector — it requires both presynaptic glutamate release and postsynaptic depolarisation to open. This is Hebb's rule: 'neurons that fire together, wire together.'",
+              "Long-term depression (LTD): a persistent weakening of a synapse. Important for pruning unused connections and preventing saturation of neural circuits. LTD is essential for motor learning and habit formation.",
+              "Homeostatic plasticity: a scaling mechanism that adjusts the strength of all synapses on a neuron to maintain stable activity levels. Prevents runaway excitation or silencing.",
+            ],
+          },
+          {
+            heading: "Clinical relevance — when neurotransmitter systems fail",
+            bullets: [
+              "Major depressive disorder (MDD): characterised by low monoamine neurotransmission (serotonin, noradrenaline, dopamine). The monoamine hypothesis proposes that deficiency in these neurotransmitters causes depressive symptoms. SSRIs (fluoxetine, sertraline) are first-line: they block SERT, increasing synaptic 5-HT. Takes 2–4 weeks for full effect — downregulation of autoreceptors is required.",
+              "Parkinson's disease: progressive loss of dopaminergic neurons in the substantia nigra (nigrostriatal pathway). Results in dopamine deficiency in the striatum → tremor, rigidity, bradykinesia, postural instability. Treatment: L-DOPA (levodopa) — a dopamine precursor that crosses the blood-brain barrier. Combined with carbidopa (a peripheral DOPA decarboxylase inhibitor) to prevent peripheral conversion and reduce side effects.",
+              "Alzheimer's disease: degeneration of cholinergic neurons in the nucleus basalis of Meynert → reduced ACh in the cortex and hippocampus. Treatment: acetylcholinesterase inhibitors (donepezil, rivastigmine, galantamine) increase ACh levels. Memantine (NMDA receptor antagonist) reduces glutamate excitotoxicity. Used in moderate-to-severe disease.",
+              "Schizophrenia: the dopamine hypothesis proposes that excess dopamine in the mesolimbic pathway causes positive symptoms (hallucinations, delusions) and deficit dopamine in the mesocortical pathway causes negative symptoms (flat affect, cognitive impairment). Antipsychotics block D2 receptors. First-generation (haloperidol) primarily treat positive symptoms. Second-generation (clozapine, olanzapine) also address negative symptoms but carry metabolic side effects.",
+              "Epilepsy: an imbalance between excitation (glutamate) and inhibition (GABA). Many antiepileptic drugs work by enhancing GABAergic inhibition (valproate, vigabatrin) or reducing glutamatergic excitation (lamotrigine, topiramate).",
+              "Myasthenia gravis: autoimmune destruction of nicotinic ACh receptors at the neuromuscular junction → fatigable weakness. Treatment: acetylcholinesterase inhibitors (pyridostigmine) increase ACh availability. Immunosuppression (prednisolone, azathioprine) for long-term management.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Drug mechanisms map to neurotransmitter pathways",
+              text: "Nearly every psychotropic drug works by modifying a neurotransmitter system: SSRIs → serotonin reuptake, L-DOPA → dopamine synthesis, benzodiazepines → GABA receptor potentiation, antipsychotics → dopamine receptor blockade. Understanding the neurotransmitter system is the key to understanding pharmacology.",
+            },
+          },
+        ],
+        keyPoints: [
+          "The SNARE complex (syntaxin, SNAP-25, synaptobrevin) catalyses vesicle fusion — botulinum and tetanus toxins target this machinery.",
+          "Glutamate (excitatory) vs GABA (inhibitory) — the brain's primary excitatory-inhibitory balance.",
+          "Dopamine has 4 pathways: mesolimbic (reward), mesocortical (cognition), nigrostriatal (movement), tuberoinfundibular (prolactin).",
+          "Synaptic plasticity (LTP/LTD) is the cellular basis of learning — Hebb's rule: neurons that fire together, wire together.",
+          "SSRIs take 2–4 weeks because autoreceptor downregulation is required — immediate serotonin increase is not the therapeutic mechanism.",
+        ],
+      },
+    ],
+  },
 ];
 export function articleBySlug(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);

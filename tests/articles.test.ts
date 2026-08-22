@@ -12,8 +12,8 @@ import {
 } from "../src/lib/articles";
 
 describe("library shape", () => {
-  it("contains exactly 26 articles", () => {
-    expect(ARTICLES).toHaveLength(26);
+  it("contains exactly 27 articles", () => {
+    expect(ARTICLES).toHaveLength(27);
   });
 
   it("has unique slugs", () => {
