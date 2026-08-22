@@ -17,7 +17,7 @@ import {
   Stethoscope,
   Volume2,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 import { toast } from "sonner";
 import { AppHeader } from "@/components/AppHeader";
@@ -54,6 +54,150 @@ import {
   type VoiceProfileId,
   type VoiceQualityId,
 } from "@/lib/tts";
+
+/* ------------------------------------------------------------------ */
+/* Lazy-loaded diagram components                                      */
+/* ------------------------------------------------------------------ */
+
+const HeartDiagram = React.lazy(() =>
+  import("@/components/HeartDiagram").then((m) => ({ default: m.HeartDiagram })),
+);
+const BrainDiagram = React.lazy(() =>
+  import("@/components/BrainDiagram").then((m) => ({ default: m.BrainDiagram })),
+);
+const PlexusDiagram = React.lazy(() =>
+  import("@/components/PlexusDiagram").then((m) => ({ default: m.PlexusDiagram })),
+);
+const CellDiagram = React.lazy(() =>
+  import("@/components/CellDiagram").then((m) => ({ default: m.CellDiagram })),
+);
+const LungsDiagram = React.lazy(() =>
+  import("@/components/LungsDiagram").then((m) => ({ default: m.LungsDiagram })),
+);
+const DigestiveDiagram = React.lazy(() =>
+  import("@/components/DigestiveDiagram").then((m) => ({ default: m.DigestiveDiagram })),
+);
+const KidneyDiagram = React.lazy(() =>
+  import("@/components/KidneyDiagram"),
+);
+const EndocrineDiagram = React.lazy(() =>
+  import("@/components/EndocrineDiagram").then((m) => ({ default: m.EndocrineDiagram })),
+);
+const EyeDiagram = React.lazy(() =>
+  import("@/components/EyeDiagram"),
+);
+const BodyDiagram = React.lazy(() =>
+  import("@/components/BodyDiagram").then((m) => ({ default: m.BodyDiagram })),
+);
+
+/** Maps each article slug to its matching diagram component (or null). */
+const DIAGRAM_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  // Cardiology
+  "cardiac-cycle": HeartDiagram,
+  "heart-attack": HeartDiagram,
+  "cpr-basics": HeartDiagram,
+  // Neurology
+  "action-potential": BrainDiagram,
+  stroke: BrainDiagram,
+  seizures: BrainDiagram,
+  // Anatomy
+  "brachial-plexus": PlexusDiagram,
+  // Cell biology
+  "krebs-cycle": CellDiagram,
+  "dna-replication": CellDiagram,
+  "blood-immunity": CellDiagram,
+  // Respiratory
+  "respiratory-mechanics": LungsDiagram,
+  // Digestive
+  "digestive-system": DigestiveDiagram,
+  // Renal
+  "renal-physiology": KidneyDiagram,
+  // Endocrine
+  "endocrine-system": EndocrineDiagram,
+  // Sensory
+  "vision-hearing": EyeDiagram,
+  // Musculoskeletal
+  "muscle-contraction": BodyDiagram,
+  fractures: BodyDiagram,
+  burns: BodyDiagram,
+  choking: BodyDiagram,
+  "severe-bleeding": BodyDiagram,
+  "allergic-reactions": BodyDiagram,
+  poisoning: BodyDiagram,
+};
+
+/** Animated placeholder shown when no specific diagram exists. */
+function DiagramPlaceholder({ emoji, title }: { emoji: string; title: string }) {
+  return (
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl" style={{ background: "linear-gradient(135deg, rgba(120,162,210,0.15) 0%, rgba(162,162,208,0.1) 50%, rgba(232,183,207,0.08) 100%)" }}>
+      {/* Animated glow rings */}
+      <motion.div
+        className="absolute size-40 rounded-full"
+        style={{ background: "radial-gradient(circle, rgba(120,162,210,0.2) 0%, transparent 70%)" }}
+        animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.7, 0.4] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute size-28 rounded-full"
+        style={{ background: "radial-gradient(circle, rgba(232,183,207,0.15) 0%, transparent 70%)" }}
+        animate={{ scale: [1.2, 1, 1.2], opacity: [0.3, 0.6, 0.3] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+      />
+      {/* Pulsing orbit dots */}
+      {[0, 1, 2, 3].map((i) => (
+        <motion.div
+          key={i}
+          className="absolute size-1.5 rounded-full bg-wistaria/40"
+          animate={{
+            rotate: [0, 360],
+            x: [0, 60, 0, -60, 0],
+            y: [0, -60, 0, 60, 0],
+          }}
+          transition={{ duration: 6, repeat: Infinity, ease: "linear", delay: i * 1.5 }}
+          style={{ originX: "50%", originY: "50%" }}
+        />
+      ))}
+      <div className="relative z-10 flex flex-col items-center gap-3">
+        <motion.span
+          className="text-5xl"
+          animate={{ scale: [1, 1.08, 1], rotate: [0, 2, -2, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          {emoji}
+        </motion.span>
+        <p className="text-center text-sm font-bold text-muted-foreground/70">{title}</p>
+      </div>
+    </div>
+  );
+}
+
+/** Wraps the diagram in a Suspense fallback. */
+function DiagramView({ slug, emoji, title }: { slug: string; emoji: string; title: string }) {
+  const Diagram = DIAGRAM_MAP[slug];
+  return (
+    <div className="glass-panel relative w-full overflow-hidden rounded-2xl" style={{ minHeight: 280, maxHeight: 400 }}>
+      <Suspense
+        fallback={
+          <div className="flex h-full w-full items-center justify-center" style={{ minHeight: 280 }}>
+            <motion.div
+              className="size-6 rounded-full border-2 border-wistaria/30 border-t-wistaria"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            />
+          </div>
+        }
+      >
+        {Diagram ? (
+          <div className="flex w-full items-center justify-center p-4" style={{ minHeight: 280 }}>
+            <Diagram className="w-full max-w-md" />
+          </div>
+        ) : (
+          <DiagramPlaceholder emoji={emoji} title={title} />
+        )}
+      </Suspense>
+    </div>
+  );
+}
 
 /* ------------------------- safe preferences ------------------------- */
 
@@ -353,167 +497,198 @@ function ArticleReader({ article }: { article: Article }) {
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <main className="mx-auto max-w-3xl px-4 pb-32 pt-8 sm:px-6">
-      <a
-        href="/research"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
-      >
-        <ArrowLeft className="size-4" />
-        Back to the library
-      </a>
+    <div className="flex min-h-screen flex-col">
+      {/* ================================================================ */}
+      {/*  STICKY HEADER: diagram + read aloud + tabs                      */}
+      {/* ================================================================ */}
+      <div className="sticky top-0 z-40 border-b border-white/5" style={{ background: "linear-gradient(180deg, rgba(15,15,30,0.97) 0%, rgba(15,15,30,0.92) 80%, rgba(15,15,30,0) 100%)" }}>
+        <main className="mx-auto max-w-3xl px-4 pt-6 pb-4 sm:px-6">
+          {/* back link */}
+          <a
+            href="/research"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft className="size-4" />
+            Back to the library
+          </a>
 
-      {/* header */}
-      <motion.div
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45 }}
-        className="mt-5"
-      >
-        <div className="flex items-center gap-3">
-          <div className="flex size-14 items-center justify-center rounded-2xl bg-white/5 text-3xl">
-            {article.emoji}
-          </div>
-          <div>
-            <span className="glass-chip px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-              {article.category}
-            </span>
-            <p className="mt-1.5 flex items-center gap-3 text-[11px] font-semibold text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Clock3 className="size-3" />
-                {article.readMinutes} min read
-              </span>
-              <span className="flex items-center gap-1">
-                <ListChecks className="size-3" />
-                {stepCount} steps
-              </span>
-            </p>
-          </div>
-        </div>
-        <h1 className="mt-4 text-balance text-2xl font-extrabold tracking-tight text-wistaria sm:text-3xl">
-          {article.title}
-        </h1>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">{article.summary}</p>
-      </motion.div>
+          {/* header */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="mt-4"
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex size-12 items-center justify-center rounded-2xl bg-white/5 text-2xl">
+                {article.emoji}
+              </div>
+              <div>
+                <span className="glass-chip px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  {article.category}
+                </span>
+                <p className="mt-1 flex items-center gap-3 text-[11px] font-semibold text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Clock3 className="size-3" />
+                    {article.readMinutes} min read
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <ListChecks className="size-3" />
+                    {stepCount} steps
+                  </span>
+                </p>
+              </div>
+            </div>
+            <h1 className="mt-3 text-balance text-xl font-extrabold tracking-tight text-wistaria sm:text-2xl">
+              {article.title}
+            </h1>
+          </motion.div>
 
-      {/* read aloud */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, delay: 0.08 }}
-        className="glass-strong mt-6 flex items-center gap-3 rounded-2xl p-4"
-      >
-        <Button
-          onClick={toggleRead}
-          className="gap-2 rounded-full px-5"
-          aria-label={isReading ? (paused ? "Resume reading" : "Pause reading") : "Read article aloud"}
-        >
-          {isReading && !paused ? (
-            <Pause className="size-4" />
-          ) : (
-            <Play className="size-4" />
-          )}
-          {isReading && !paused ? "Pause" : "Read aloud"}
-        </Button>
-        <button
-          onClick={stopRead}
-          className="flex size-9 items-center justify-center rounded-full bg-white/5 text-muted-foreground transition-colors hover:bg-[#e2666f]/15 hover:text-[#e2666f]"
-          aria-label="Stop reading"
-          title="Stop"
-        >
-          <Square className="size-3.5" />
-        </button>
-        <Popover>
-          <PopoverTrigger asChild>
-            <button className="glass-chip flex items-center gap-1.5 rounded-full px-3 py-2 text-[11px] font-bold text-muted-foreground transition-colors hover:text-foreground">
-              {quality.label}
+          {/* diagram */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.06 }}
+            className="mt-4"
+          >
+            <DiagramView slug={article.slug} emoji={article.emoji} title={article.title} />
+          </motion.div>
+
+          {/* read aloud */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.1 }}
+            className="glass-strong mt-4 flex items-center gap-3 rounded-2xl p-3"
+          >
+            <Button
+              onClick={toggleRead}
+              className="gap-2 rounded-full px-4 text-sm"
+              size="sm"
+              aria-label={isReading ? (paused ? "Resume reading" : "Pause reading") : "Read article aloud"}
+            >
+              {isReading && !paused ? (
+                <Pause className="size-3.5" />
+              ) : (
+                <Play className="size-3.5" />
+              )}
+              {isReading && !paused ? "Pause" : "Read aloud"}
+            </Button>
+            <button
+              onClick={stopRead}
+              className="flex size-8 items-center justify-center rounded-full bg-white/5 text-muted-foreground transition-colors hover:bg-[#e2666f]/15 hover:text-[#e2666f]"
+              aria-label="Stop reading"
+              title="Stop"
+            >
+              <Square className="size-3" />
             </button>
-          </PopoverTrigger>
-          <PopoverContent align="end" className="glass-strong w-64 border-white/10">
-            <p className="text-sm font-extrabold tracking-tight">Voice quality</p>
-            <p className="mt-0.5 text-xs text-muted-foreground">
-              Tunes pitch and speed so narration sounds natural, not robotic.
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="glass-chip flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold text-muted-foreground transition-colors hover:text-foreground">
+                  {quality.label}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="glass-strong w-64 border-white/10">
+                <p className="text-sm font-extrabold tracking-tight">Voice quality</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  Tunes pitch and speed so narration sounds natural, not robotic.
+                </p>
+                <div className="mt-3 space-y-1.5">
+                  {VOICE_QUALITIES.map((q) => {
+                    const active = qualityId === q.id;
+                    return (
+                      <button
+                        key={q.id}
+                        onClick={() => setQualityId(q.id)}
+                        className={`flex w-full items-center justify-between gap-2 rounded-xl border px-3 py-2 text-left transition-colors ${
+                          active
+                            ? "border-wistaria/40 bg-wistaria/10"
+                            : "border-white/10 hover:border-white/20"
+                        }`}
+                      >
+                        <span>
+                          <span className="block text-sm font-bold">{q.label}</span>
+                          <span className="block text-[11px] leading-4 text-muted-foreground">
+                            {q.description}
+                          </span>
+                        </span>
+                        {active && <Check className="size-4 shrink-0 text-wistaria" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </PopoverContent>
+            </Popover>
+            <div className="ml-auto flex items-center gap-2 text-[11px] font-semibold">
+              <Volume2 className="size-3.5 text-wistaria" />
+              {isReading ? (paused ? "Paused" : "Reading…") : "Ready"}
+              <span className="hidden text-muted-foreground sm:inline">
+                · {profile.label} · {quality.label}
+              </span>
+            </div>
+          </motion.div>
+          {!speechAvailable() && (
+            <p className="mt-1 px-1 text-[10px] font-semibold text-[#e2666f]">
+              Speech isn't supported in this browser, so Read Aloud is unavailable.
             </p>
-            <div className="mt-3 space-y-1.5">
-              {VOICE_QUALITIES.map((q) => {
-                const active = qualityId === q.id;
+          )}
+
+          {/* tab bar for tabbed articles */}
+          {hasTabs && article.tabs && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.14 }}
+              className="glass-strong mt-4 flex items-center gap-2 rounded-2xl p-1.5"
+            >
+              {article.tabs.map((tab) => {
+                const isActive = activeTab === tab.id;
                 return (
                   <button
-                    key={q.id}
-                    onClick={() => setQualityId(q.id)}
-                    className={`flex w-full items-center justify-between gap-2 rounded-xl border px-3 py-2 text-left transition-colors ${
-                      active
-                        ? "border-wistaria/40 bg-wistaria/10"
-                        : "border-white/10 hover:border-white/20"
+                    key={tab.id}
+                    onClick={() => handleTabChange(tab.id)}
+                    className={`relative flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-300 ${
+                      isActive
+                        ? "text-wistaria"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    <span>
-                      <span className="block text-sm font-bold">{q.label}</span>
-                      <span className="block text-[11px] leading-4 text-muted-foreground">
-                        {q.description}
-                      </span>
-                    </span>
-                    {active && <Check className="size-4 shrink-0 text-wistaria" />}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeTabBg"
+                        className="absolute inset-0 rounded-xl bg-wistaria/15 border border-wistaria/20"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                    <span className="relative z-10">{tab.icon}</span>
+                    <span className="relative z-10">{tab.label}</span>
                   </button>
                 );
               })}
-            </div>
-          </PopoverContent>
-        </Popover>
-        <div className="ml-auto flex items-center gap-2 text-[11px] font-semibold">
-          <Volume2 className="size-3.5 text-wistaria" />
-          {isReading ? (paused ? "Paused" : "Reading…") : "Ready"}
-          <span className="hidden text-muted-foreground sm:inline">
-            · {profile.label} · {quality.label}
-          </span>
-        </div>
-      </motion.div>
-      {!speechAvailable() && (
-        <p className="mt-2 px-1 text-[11px] font-semibold text-[#e2666f]">
-          Speech isn't supported in this browser, so Read Aloud is unavailable.
-        </p>
-      )}
+            </motion.div>
+          )}
+        </main>
+      </div>
 
-      {/* tab bar for tabbed articles */}
-      {hasTabs && article.tabs && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
+      {/* ================================================================ */}
+      {/*  SCROLLABLE CONTENT                                              */}
+      {/* ================================================================ */}
+      <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-32 pt-6 sm:px-6">
+        {/* summary */}
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.12 }}
-          className="glass-strong mt-6 flex items-center gap-2 rounded-2xl p-1.5"
+          transition={{ duration: 0.4, delay: 0.05 }}
+          className="mb-8 text-sm leading-6 text-muted-foreground"
         >
-          {article.tabs.map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => handleTabChange(tab.id)}
-                className={`relative flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-300 ${
-                  isActive
-                    ? "text-wistaria"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeTabBg"
-                    className="absolute inset-0 rounded-xl bg-wistaria/15 border border-wistaria/20"
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  />
-                )}
-                <span className="relative z-10">{tab.icon}</span>
-                <span className="relative z-10">{tab.label}</span>
-              </button>
-            );
-          })}
-        </motion.div>
-      )}
+          {article.summary}
+        </motion.p>
 
-      {/* sections */}
-      <div className="mt-8 space-y-8">
+        {/* sections */}
+        <div className="space-y-8">
         {displaySections.map((section, i) => (
           <motion.section
             key={section.heading}
@@ -617,6 +792,7 @@ function ArticleReader({ article }: { article: Article }) {
         follow current certified training (e.g., American Heart Association or your
         national equivalent).
       </p>
+      </main>
 
       {/* the reading rabbit, tucked into the corner of every article */}
       <motion.div
@@ -628,7 +804,7 @@ function ArticleReader({ article }: { article: Article }) {
       >
         <RabbitMascot mood="reading" size={62} />
       </motion.div>
-    </main>
+    </div>
   );
 }
 
