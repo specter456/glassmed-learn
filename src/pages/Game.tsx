@@ -239,6 +239,29 @@ const SCENARIOS: Scenario[] = [
     proTip:
       "For hypoglycemia: give fast-acting sugar (juice, glucose tabs), then recheck in ~15 minutes. If still low or unconscious, call emergency services.",
   },
+  {
+    id: "fever",
+    name: "The Fever Mystery",
+    emoji: "🤒",
+    savedEmoji: "🧠",
+    patient: "A 22-year-old university student",
+    state: "FEVERISH & IN PAIN",
+    prompt:
+      "A 22-year-old student arrives with a high fever (39.5°C), a stiff neck, and extreme sensitivity to light. They say the headache feels like 'a vice grip' and they're vomiting. What's your next move?",
+    options: [
+      "Administer broad-spectrum antibiotics immediately",
+      "Perform a lumbar puncture to check for meningitis",
+      "Order a chest X-ray to rule out pneumonia",
+      "Give paracetamol and send them home to rest",
+    ],
+    correctIndex: 1,
+    praise:
+      "Brilliant diagnostic thinking! A lumbar puncture is the gold standard for confirming meningitis — you need cerebrospinal fluid analysis to identify the organism and guide targeted therapy.",
+    sarcasm:
+      "Blind antibiotics without a diagnosis is like shooting in the dark. A chest X-ray won't help when the problem is in the meninges. And paracetamol for possible meningitis? That's a one-way ticket to a malpractice lawsuit. Get that lumbar puncture!",
+    proTip:
+      "Classic triad of meningitis: fever, neck stiffness (nuchal rigidity), and photophobia. Always suspect meningitis first! Lumbar puncture shows elevated WBCs, raised protein, low glucose, and can identify the causative organism.",
+  },
 ];
 
 /* ------------------------- persistence ----------------------------- */
