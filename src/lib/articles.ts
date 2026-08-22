@@ -2342,6 +2342,141 @@ export const ARTICLES: Article[] = [
       },
     ],
   },
+  // ---- Critical Care & Emergencies ----
+
+  {
+    slug: "stemi-management",
+    title: "STEMI Management: Door-to-Balloon Protocol",
+    emoji: "🫀",
+    category: "Critical Care & Emergencies",
+    summary:
+      "ST-Elevation Myocardial Infarction is a time-critical emergency where every minute of delay costs myocardium. This attending-level guide covers ECG criteria, the MONA-BASH protocol, reperfusion strategy selection, door-to-balloon targets, mechanical complications, and the latest 2024 ACC/AHA guideline updates.",
+    readMinutes: 12,
+    sections: [
+      {
+        heading: "STEMI Definition and ECG Criteria",
+        body: [
+          "STEMI is defined as myocardial ischaemia causing myocyte necrosis, evidenced by ST-segment elevation on ECG in the setting of ischaemic symptoms. The diagnosis is clinical and electrocardiographic — do not wait for troponin to make the decision to reperfuse.",
+        ],
+        bullets: [
+          "ST elevation (new or presumed new) at the J-point in ≥ 2 contiguous leads: ≥ 1 mm in all leads except V2–V3 (where ≥ 2 mm in men ≥ 40 years, ≥ 2.5 mm in men < 40, ≥ 1.5 mm in women).",
+          "New left bundle branch block (LBBB) in the setting of ischaemic symptoms: treat as STEMI equivalent (Sgarbossa criteria).",
+          "Posterior MI: ST depression in V1–V3 → obtain posterior leads (V7–V9). ST elevation ≥ 0.5 mm in V7–V9 confirms posterior STEMI.",
+          "Right ventricular MI: inferior STEMI (ST elevation in II, III, aVF) → obtain right-sided leads (V4R). ST elevation ≥ 1 mm in V4R confirms RV involvement. CRITICAL: avoid nitrates and volume depletion in RV infarction.",
+          "De Winter T-waves: upsloping ST depression with tall symmetric T-waves in V1–V6 — an STEMI equivalent indicating LAD occlusion. Treat as STEMI.",
+          "Wellens syndrome: biphasic or deeply inverted T-waves in V2–V3 during pain-free intervals — indicates critical LAD stenosis. Do NOT stress test. Urgent catheterisation required.",
+        ],
+        callout: {
+          kind: "danger",
+          title: "Troponin does NOT gate reperfusion",
+          text: "Troponin can take 3–6 hours to rise. Waiting for a positive troponin before activating the cath lab costs lives. ECG + symptoms = STEMI activation. Troponin is for confirming diagnosis and risk stratification AFTER reperfusion.",
+        },
+      },
+      {
+        heading: "MONA-BASH — The Immediate Actions Protocol",
+        body: [
+          "MONA-BASH is a systematic mnemonic for the first 10 minutes of STEMI management. Not all components are equally evidence-based — prioritise Aspirin, Anticoagulation, and Reperfusion above all else.",
+        ],
+        steps: [
+          "M — Morphine: 2–4 mg IV every 5–15 minutes for refractory chest pain unresponsive to nitroglycerin. Use cautiously — morphine may delay absorption of oral antiplatelets and is associated with worse outcomes in some registries. Only for pain, not routine.",
+          "O — Oxygen: SUPPLEMENTAL OXYGEN IS NOT ROUTINE. Give only if SpO₂ < 90% or the patient is in respiratory distress (DETO2X-AMI trial, NEJM 2017). Routine O₂ in normoxic patients may cause coronary vasoconstriction and increase infarct size.",
+          "N — Nitroglycerin: 0.4 mg sublingual every 5 minutes × 3 doses for ongoing chest pain. Switch to IV infusion (5–200 mcg/min) if pain persists. CONTRAINDICATED: RV infarction, systolic BP < 90 mmHg, use of PDE-5 inhibitors (sildenafil within 24 h, tadalafil within 48 h).",
+          "A — Aspirin: 324 mg chewed immediately (four 81 mg tablets). Non-enteric-coated for fastest absorption. This is the single most important medication in the first 10 minutes. If allergic: clopidogrel 600 mg loading dose.",
+          "B — Beta-blockers: Metoprolol 25–50 mg PO within 24 hours if haemodynamically stable (HR > 60, SBP > 100, no heart failure, no heart block). IV beta-blockers in the acute phase are associated with increased cardiogenic shock — AVOID in the first 24 hours (COMMIT/CCS-2 trial).",
+          "A — ACE inhibitors / ARBs: Start within 24 hours if anterior STEMI, heart failure, or EF ≤ 40%. Start with low dose (ramipril 1.25 mg or lisinopril 2.5 mg) and titrate. Avoid if SBP < 100 mmHg or bilateral renal artery stenosis.",
+          "S — Statins: High-intensity statin immediately — Atorvastatin 80 mg or Rosuvastatin 40 mg. Plaque stabilisation, anti-inflammatory effect, and endothelial improvement begin within hours. Continue indefinitely.",
+          "H — Heparin: Unfractionated heparin (UFH) 60 U/kg bolus (max 4,000 U) + 12 U/kg/hr infusion (max 1,000 U/hr) for PCI. For thrombolytics: UFH 60 U/kg bolus (max 4,000 U) + 12 U/kg/hr (max 1,000 U/hr) for 48 hours, targeting aPTT 50–70 seconds. Alternatively: enoxaparin 0.5 mg/kg IV bolus for PCI, or 1 mg/kg SC q12h for thrombolytics.",
+        ],
+        callout: {
+          kind: "tip",
+          title: "The 2024 oxygen update",
+          text: "The DETO2X-AMI trial and 2024 ACC/AHA guidelines now recommend AGAINST routine supplemental oxygen in normoxic STEMI patients. Oxygen is only for SpO₂ < 90%. This is a major practice change from older protocols.",
+        },
+      },
+      {
+        heading: "Reperfusion Strategy: PCI vs. Thrombolytics",
+        body: [
+          "The choice between primary PCI and fibrinolytic therapy depends on first-medical-contact-to-device time and the time the patient presents. This is the most critical decision in STEMI management.",
+        ],
+        steps: [
+          "Primary PCI (Percutaneous Coronary Intervention): THE GOLD STANDARD. Can be performed within 120 minutes of first medical contact. Achieves TIMI 3 flow in 90%+ of cases. Mortality benefit over thrombolytics in all age groups. Indicated for: all STEMI patients presenting within 12 hours of symptom onset when PCI can be performed within 120 minutes.",
+          "Thrombolytic therapy: ONLY when PCI cannot be performed within 120 minutes. Tenecteplase (TNK) is the preferred agent — single IV bolus weight-adjusted. Accelerated alteplase (tPA) is an alternative. Absolute contraindications: active internal bleeding, history of haemorrhagic stroke, ischaemic stroke within 3 months, intracranial neoplasm, suspected aortic dissection, significant head/facial trauma within 3 months.",
+          "Pharmacoinvasive strategy: thrombolytics followed by transfer for early PCI (within 3–24 hours). Used when the nearest PCI-capable centre is > 120 minutes away. If thrombolytic succeeds (≥ 50% ST resolution at 60–90 minutes), transfer for angiography within 3–24 hours. If thrombolytic fails (persistent ST elevation, ongoing pain), emergent rescue PCI.",
+          "Door-to-needle time: ≤ 30 minutes from first medical contact if thrombolytics chosen. If door-to-needle cannot be achieved within 30 minutes, transfer for primary PCI.",
+          "Door-to-balloon time: ≤ 90 minutes from first medical contact for primary PCI. If the presenting hospital is not PCI-capable, first-medical-contact-to-device ≤ 120 minutes (including transfer time).",
+          "Late presenters (> 12 hours): if symptoms have resolved and ECG shows no ongoing ischaemia, conservative management (medical therapy) may be appropriate. If symptoms persist or haemodynamic instability, PCI is still indicated regardless of time window.",
+        ],
+        callout: {
+          kind: "danger",
+          title: "Never delay PCI for thrombolytics if PCI is available",
+          text: "If the patient arrives at a PCI-capable centre, activate the cath lab immediately. Do NOT give thrombolytics and then transfer for PCI — this increases bleeding risk without benefit. Thrombolytics are ONLY for when PCI is genuinely unavailable within 120 minutes.",
+        },
+      },
+      {
+        heading: "Door-to-Balloon Time Targets",
+        bullets: [
+          "PCI-capable centre: first medical contact to device ≤ 90 minutes. This includes time from ED arrival to wire crossing the lesion.",
+          "Non-PCI centre with transfer: first medical contact to device ≤ 120 minutes. This includes pre-hospital ECG activation of the receiving cath lab.",
+          "Thrombolytics: door-to-needle ≤ 30 minutes. If this target cannot be met, transfer for PCI.",
+          "Pre-hospital ECG: if EMS can obtain and transmit a 12-activate the cath lab before the patient arrives — this shaves 20–30 minutes off door-to-balloon time.",
+          "Critical time milestones: every 30-minute delay in reperfusion increases 1-year mortality by approximately 7.5%. At 6 hours, myocardium is largely irreversibly damaged. 'Time is myocardium' is not a cliché — it is a quantifiable fact.",
+          "Activations should include: cardiologist, cath lab team, anaesthesia standby (if haemodynamically unstable), and intra-aortic balloon pump (IABP) team on standby for cardiogenic shock.",
+        ],
+      },
+      {
+        heading: "Post-PCI: Dual Antiplatelet Therapy (DAPT) and Beyond",
+        bullets: [
+          "DAPT is mandatory after PCI with stent placement. Aspirin 81 mg daily (indefinite) + P2Y12 inhibitor for a minimum of 6 months (drug-eluting stent) or 1 month (bare-metal stent).",
+          "P2Y12 inhibitor choice: Ticagrelor 90 mg BD (preferred — PLATO trial superiority over clopidogrel) OR Prasugrel 10 mg daily (FASTER onset, TRITON-TIMI 38 — but avoid in prior stroke/TIA, age > 75, weight < 60 kg). Clopidogrel 75 mg daily only if ticagrelor/prasugrel contraindicated.",
+          "2024 ACC/AHA guideline update: shortened DAPT (3 months) followed by aspirin monotherapy is now recommended for patients at high bleeding risk (ARC-HBR score ≥ 2). The TWILIGHT trial demonstrated that dropping ticagrelor at 3 months and continuing aspirin alone reduced bleeding by 65% without increasing ischaemic events.",
+          "Lipid management post-STEMI: high-intensity statin (atorvastatin 80 mg or rosuvastatin 40 mg) is non-negotiable. Target LDL < 55 mg/dL (1.4 mmol/L) per 2019 ESC guidelines. If LDL not at goal on maximally tolerated statin, add ezetimibe 10 mg. Still not at goal: add PCSK9 inhibitor (evolocumab or alirocumab) — the FOURIER and ODYSSEY trials demonstrated additional 15–20% relative risk reduction.",
+          "Beta-blockers: continue metoprolol or bisoprolol indefinitely if EF ≤ 40% or heart failure. Discontinue if EF > 40% and no heart failure after 1 year (beta-blocker continuation beyond 1 year in normal EF has no mortality benefit).",
+          "ACE inhibitor / ARB: continue indefinitely if anterior STEMI, EF ≤ 40%, heart failure, hypertension, or diabetes. Switch to ARNI (sacubitril/valsartan) if heart failure with reduced EF persists at 6 weeks.",
+          "Mineralocorticoid receptor antagonist (MRA): eplerenone 25 mg daily or spironolactone 25 mg daily if EF ≤ 40% + heart failure symptoms OR diabetes, within 3–14 days of STEMI (EPHESUS trial). Monitor potassium closely.",
+        ],
+      },
+      {
+        heading: "Complications of STEMI — Recognition and Management",
+        bullets: [
+          "Ventricular fibrillation (VF) / ventricular tachycardia (VT): most common in the first 48 hours. Defibrillate immediately for pulseless VT/VF (ACLS protocol). Amiodarone 300 mg IV for recurrent VF. If haemodynamically tolerated VT: amiodarone 150 mg IV over 10 minutes.",
+          "Cardiogenic shock: hypotension (SBP < 90 mmHg) + signs of end-organ hypoperfusion (altered mentation, cold extremities, oliguria) + pulmonary congestion. Management: emergent PCI (restore flow), vasopressors (norepinephrine first-line), IABP or Impella for mechanical support. Mortality remains 40–50% even with modern therapy.",
+          "Acute mitral regurgitation (papillary muscle rupture): sudden pulmonary oedema, new holosystolic murmur, haemodynamic collapse. Diagnose with bedside echocardiography (severe MR on colour Doppler). Immediate afterload reduction (nitroprusside), IABP, and emergent surgical repair — mortality exceeds 80% without surgery.",
+          "Ventricricular septal defect (VSD): new holosystolic murmur + step-up in O₂ saturation from RA to RV on right heart catheterisation. Diagnose with echocardiography. Manage with afterload reduction and IABP. Surgical or percutaneous closure within 1–2 weeks — but urgent surgery if haemodynamically unstable.",
+          "Right ventricular infarction: hypotension + clear lungs + elevated JVP + inferior ST elevation. Management: IV fluid bolus (250–500 mL NS), avoid nitrates, avoid diuretics, emergent PCI. Mortality doubles if not recognised early.",
+          "Pericarditis (Dressler syndrome): occurs 2–10 weeks post-MI. Fever, pleuritic chest pain, pericardial friction rub, diffuse ST elevation. Treatment: aspirin 650 mg q6h + colchicine 0.5 mg BD for 3 months (COPPS-2 trial). Avoid NSAIDs and anticoagulation in acute pericarditis.",
+          "Free wall rupture: sudden haemodynamic collapse, PEA, blood in pericardial effusion (cardiac tamponade on echo). Almost universally fatal without immediate pericardiocentesis and emergent surgical repair. Peak incidence: 3–5 days post-MI.",
+        ],
+        callout: {
+          kind: "danger",
+          title: "Echocardiography is your best friend",
+          text: "Every complication of STEMI can be diagnosed or strongly suspected with bedside echocardiography. Wall motion abnormalities, MR, VSD, pericardial effusion, RV dilation, and EF assessment — all available within minutes. If the patient deteriorates post-PCI, the first move should always be bedside echo.",
+        },
+      },
+      {
+        heading: "Recent Updates and Guideline Changes (2024)",
+        bullets: [
+          "2024 ACC/AHA STEMI guidelines: reinforced door-to-balloon ≤ 90 min for PCI, ≤ 120 min with transfer, ≤ 30 min for thrombolytics. Added strong recommendation for pre-hospital ECG transmission.",
+          "Shortened DAPT: the TWILIGHT and TICO trials support 3-month DAPT followed by P2Y12 monotherapy (dropping aspirin) in high-bleeding-risk patients. This is now a Class IIa recommendation.",
+          "PCSK9 inhibitors: the 2024 guidelines upgraded PCSK9 inhibitors to Class I (strong) recommendation for patients not at LDL goal on statin + ezetimibe post-ACS. This reflects the FOURIER and ODYSSEY outcome data.",
+          "Oxygen restriction: DETO2X-AMI (NEJM 2017) + 2024 guidelines: do NOT give supplemental oxygen to normoxic STEMI patients (SpO₂ ≥ 94%). Routine O₂ may increase infarct size via coronary vasoconstriction.",
+          "Cangrelor: intravenous direct P2Y12 inhibitor with ultra-short half-life (3–6 minutes).允许 instant platelet recovery after stopping infusion. The CHAMPION trials showed benefit in PCI patients who couldn't take oral antiplatelets. Now recommended for STEMI patients proceeding to urgent PCI who haven't loaded with oral P2Y12 inhibitors.",
+          "Tricuspid regurgitation post-MI: increasingly recognised as a marker of poor prognosis. The 2024 ESC guidelines now include TR assessment in routine post-MI echocardiography.",
+        ],
+      },
+    ],
+    keyPoints: [
+      "ECG + symptoms = STEMI. Do NOT wait for troponin to activate the cath lab.",
+      "MONA-BASH priority: Aspirin 324 mg chewed → Heparin → Reperfusion. Oxygen only if SpO₂ < 90%.",
+      "PCI gold standard: door-to-balloon ≤ 90 min. Thrombolytics only if PCI unavailable within 120 min.",
+      "DAPT: aspirin + ticagrelor/prasugrel for ≥ 3 months (shortened for high-bleeding-risk per 2024 guidelines).",
+      "Every post-MI deterioration → bedside echocardiography first. It diagnoses almost all complications.",
+    ],
+    whenToCall: [
+      "New ST elevation in ≥ 2 contiguous leads → STEMI alert → cath lab activation within minutes.",
+      "Haemodynamic collapse post-PCI → bedside echo → consider cardiogenic shock protocol (PCI + vasopressors + mechanical support).",
+      "New murmur post-MI → echo immediately → papillary muscle rupture or VSD → urgent surgical consultation.",
+    ],
+  },
 ];
 export function articleBySlug(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
