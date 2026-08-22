@@ -262,6 +262,29 @@ const SCENARIOS: Scenario[] = [
     proTip:
       "Classic triad of meningitis: fever, neck stiffness (nuchal rigidity), and photophobia. Always suspect meningitis first! Lumbar puncture shows elevated WBCs, raised protein, low glucose, and can identify the causative organism.",
   },
+  {
+    id: "anaphylactic-shock",
+    name: "The Anaphylaxis Emergency",
+    emoji: "💉",
+    savedEmoji: "💉",
+    patient: "A 45-year-old woman receiving IV antibiotics",
+    state: "ANAPHYLACTIC SHOCK",
+    prompt:
+      "A 45-year-old woman on IV vancomycin suddenly develops widespread hives, audible wheezing, facial swelling, and her blood pressure drops to 70/40 mmHg. She is diaphoretic and confused. Heart rate is 130 bpm. What is your immediate action?",
+    options: [
+      "Give IV diphenhydramine 50 mg and wait for the response",
+      "Administer IM epinephrine 0.5 mg into the anterolateral thigh immediately plus push IV fluids",
+      "Start nebulized albuterol and put her on oxygen",
+      "Give IV methylprednisolone 125 mg and observe",
+    ],
+    correctIndex: 1,
+    praise:
+      "Exactly right! Epinephrine is the ONLY first-line treatment for anaphylactic shock. IM epinephrine into the vastus lateralis absorbs fastest, peak effect in 5 to 10 minutes. Combined with rapid IV fluid resuscitation, this is the lifesaving combination. Antihistamines and steroids are adjuncts that do NOT treat airway oedema or cardiovascular collapse.",
+    sarcasm:
+      "Diphenhydramine takes 30 to 60 minutes to reach peak effect. Your patient will be in cardiac arrest by then. Albuterol treats bronchospasm but does NOTHING for the vasodilation and capillary leak causing her shock. And steroids take 4 to 6 hours to work. She is dying NOW. Epinephrine IMMEDIATELY!",
+    proTip:
+      "Epinephrine IM in the anterolateral thigh (vastus lateralis) absorbs fastest. Peak plasma levels in 5 to 10 minutes versus 20 plus minutes for subcutaneous injection. Dose: 0.3 to 0.5 mg IM (1:1000 = 0.3 to 0.5 mL). Can repeat every 5 to 15 minutes. NEVER delay epi for IV access! After epi: IV fluids (1 to 2L NS bolus), albuterol nebulizer for persistent wheezing, and diphenhydramine plus methylprednisolone as adjuncts.",
+  },
 ];
 
 /* ------------------------- persistence ----------------------------- */
