@@ -179,23 +179,19 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     }
   };
 
-  const handleGuestLogin = async () => {
+  const handleGuestLogin = () => {
     loginTriggered.current = true;
-    setIsLoading(true);
-    setError(null);
-    try {
-      // Flag the welcome celebration BEFORE signIn — see handleOtpSubmit.
-      markLoginArrival();
-      await signIn("anonymous");
-    } catch (error) {
-      console.error("Guest login error:", error);
-      setError(
-        `Failed to sign in as guest: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`,
-      );
-      setIsLoading(false);
-    }
+    // Flag the welcome celebration BEFORE navigation.
+    markLoginArrival();
+    // Navigate IMMEDIATELY — do not await signIn. The Convex auth session
+    // is created in the background by the ConvexAuthProvider. This avoids
+    // the 200-500ms lag that makes the button feel unresponsive.
+    navigate(redirect);
+    // Fire-and-forget: signIn completes asynchronously. If it fails,
+    // the RequireAuth wrapper will bounce the user back to /auth.
+    signIn("anonymous").catch((err) => {
+      console.error("Guest sign-in failed (background):", err);
+    });
   };
 
   return (
@@ -269,9 +265,8 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       <Button
                         type="button"
                         variant="outline"
-                        className="mt-4 w-full"
+                        className="mt-4 w-full active:scale-[0.97] active:bg-wistaria/10 transition-transform duration-100"
                         onClick={handleGuestLogin}
-                        disabled={isLoading}
                       >
                         <UserX className="mr-2 h-4 w-4" />
                         Continue as Guest
