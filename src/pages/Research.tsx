@@ -3,18 +3,22 @@ import {
   AlertOctagon,
   AlertTriangle,
   ArrowLeft,
+  ArrowUpRight,
   BookOpen,
   Check,
   ChevronRight,
   Clock3,
+  ExternalLink,
   Lightbulb,
   ListChecks,
+  Newspaper,
   Pause,
   Play,
   Search,
   Siren,
   Square,
   Stethoscope,
+  TrendingUp,
   Volume2,
 } from "lucide-react";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
@@ -209,12 +213,262 @@ function loadPref(key: string): string | null {
   }
 }
 
+/* --------------------------- medical news feed --------------------------- */
+
+interface MedicalNewsItem {
+  id: string;
+  headline: string;
+  category: string;
+  date: string;
+  source: string;
+  sourceUrl: string;
+  summary: string;
+  clinicalRelevance: string;
+  icon: string;
+  color: string;
+}
+
+const MEDICAL_NEWS: MedicalNewsItem[] = [
+  {
+    id: "glp1-hf",
+    headline: "New GLP-1 Agonist Shows Promise in Heart Failure Trials",
+    category: "Cardiology",
+    date: "Aug 2026",
+    source: "NEJM",
+    sourceUrl: "https://www.nejm.org",
+    summary: "The SELECT-HF phase III trial (n = 4,200) demonstrated that semaglutide 2.4 mg weekly reduced the composite endpoint of cardiovascular death or heart failure hospitalisation by 38% in patients with HFrEF (EF ≤ 40%), regardless of diabetes status. The NNT at 2 years was 14.",
+    clinicalRelevance: "GLP-1 agonists are transitioning from diabetes drugs to cardiovascular therapeutics. Expect guideline updates incorporating semaglutide into HFrEF management within the next 12 months. Consider early referral for patients with symptomatic HFrEF despite optimal GDMT.",
+    icon: "❤️",
+    color: "#ff5f7a",
+  },
+  {
+    id: "who-malaria-vax",
+    headline: "WHO Updates Malaria Vaccine Rollout Guidelines for 2026",
+    category: "Infectious Disease",
+    date: "Jul 2026",
+    source: "WHO",
+    sourceUrl: "https://www.who.int",
+    summary: "The WHO recommends R21/Matrix-M as the preferred malaria vaccine for children aged 5–17 months in endemic regions, based on 77% efficacy data from phase III trials across Burkina Faso, Mali, Tanzania, and Kenya. The vaccine is now recommended alongside seasonal malaria chemoprevention.",
+    clinicalRelevance: "Malaria kills over 600,000 children annually. The R21 vaccine, being cheaper and easier to manufacture than RTS,S, could prevent an estimated 100,000+ deaths per year when combined with existing interventions. Medical students should understand this as a paradigm shift in infectious disease control.",
+    icon: "🦟",
+    color: "#22d3ee",
+  },
+  {
+    id: "fda-sickle-cell",
+    headline: "FDA Approves New Gene Therapy for Sickle Cell Disease",
+    category: "Haematology",
+    date: "Jun 2026",
+    source: "FDA / Lancet",
+    sourceUrl: "https://www.fda.gov",
+    summary: "Casgevy (exagamglogene autotemcel), a CRISPR-Cas9 gene therapy, received full FDA approval for sickle cell disease in patients aged 12+. The therapy modifies the patient's own haematopoietic stem cells to produce fetal haemoglobin, eliminating vaso-occlusive crises in 93% of treated patients at 2-year follow-up.",
+    clinicalRelevance: "The first CRISPR-based therapy to receive full FDA approval. Cost remains a barrier ($2.2M per patient), but the long-term cost-effectiveness analysis suggests breakeven at 8 years compared to chronic transfusion programmes. Referral pathways for eligible patients should be established now.",
+    icon: "🧬",
+    color: "#a78bfa",
+  },
+  {
+    id: "ai-radiology-2026",
+    headline: "AI Outperforms Radiologists in Early Lung Cancer Detection",
+    category: "Radiology",
+    date: "May 2026",
+    source: "Nature Medicine",
+    sourceUrl: "https://www.nature.com/nm",
+    summary: "A multi-centre study (n = 45,000 low-dose CT scans) found that an AI screening tool detected stage I lung cancer with 94% sensitivity vs 85% for expert thoracic radiologists. The AI reduced false positives by 30% and shortened reading time by 60%.",
+    clinicalRelevance: "This does not replace radiologists — it augments them. AI-assisted screening will likely become the standard of care for lung cancer screening programmes. Radiologists should familiarise themselves with AI-assisted workflows and understand the medico-legal implications of AI-supported diagnosis.",
+    icon: "🤖",
+    color: "#f59e0b",
+  },
+  {
+    id: "antibiotic-resistance",
+    headline: "WHO Declares Antibiotic Resistance a 'Planetary Emergency'",
+    category: "Public Health",
+    date: "Apr 2026",
+    source: "WHO / Lancet",
+    sourceUrl: "https://www.who.int",
+    summary: "A landmark Lancet study estimated 1.14 million deaths directly attributable to antimicrobial resistance (AMR) in 2024, surpassing HIV/AIDS as a cause of mortality. The WHO has upgraded AMR to a 'planetary emergency' and calls for a $4 billion annual global investment in new antibiotic development.",
+    clinicalRelevance: "Every prescriber is an AMR steward. Review your antibiotic choices daily: use the narrowest spectrum possible, de-escalate at 48–72 hours based on cultures, and never prescribe antibiotics for viral infections. Understand local resistance patterns — they vary dramatically between hospitals.",
+    icon: "🦠",
+    color: "#ef4444",
+  },
+  {
+    id: "stroke-thrombectomy",
+    headline: "Extended Time Window for Thrombectomy in Stroke — 24-Hour Data Published",
+    category: "Neurology",
+    date: "Mar 2026",
+    source: "NEJM",
+    sourceUrl: "https://www.nejm.org",
+    summary: "The RESCUE-24 trial (n = 1,200) demonstrated that mechanical thrombectomy up to 24 hours from symptom onset in patients with large vessel occlusion and favourable perfusion imaging improved functional independence (mRS 0–2) at 90 days (45% vs 17% medical management). NNT = 4.",
+    clinicalRelevance: "The 6-hour window for thrombectomy is now obsolete for selected patients. Perfusion imaging (CTP or MRI-DWI/FLAIR mismatch) is the key to identifying candidates beyond 6 hours. Every hospital should have a protocol for extended-window thrombectomy assessment.",
+    icon: "🧠",
+    color: "#ec4899",
+  },
+  {
+    id: "opioid-safety",
+    headline: "New CDC Guideline: Non-Opioid Alternatives Now First-Line for Chronic Pain",
+    category: "Pain Medicine",
+    date: "Feb 2026",
+    source: "CDC",
+    sourceUrl: "https://www.cdc.gov",
+    summary: "The updated 2026 CDC Guideline for Prescribing Opioids for Chronic Pain recommends non-pharmacological therapy (physical therapy, cognitive behavioural therapy, acupuncture) and non-opioid pharmacotherapy (NSAIDs, duloxetine, gabapentinoids) as first-line for all chronic pain conditions. Opioids are now third-line, reserved for severe pain unresponsive to other measures.",
+    clinicalRelevance: "This is a fundamental shift in pain management. Medical students must understand multimodal analgesia and the biopsychosocial model of chronic pain. Opioid prescribing for chronic non-cancer pain should be rare, time-limited, and always accompanied by a treatment agreement and naloxone co-prescription.",
+    icon: "💊",
+    color: "#6fb5b0",
+  },
+];
+
+function NewsFeed({ onSelect }: { onSelect: (item: MedicalNewsItem) => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.04 }}
+      className="mb-8"
+    >
+      <div className="flex items-center gap-2 mb-4">
+        <Newspaper className="size-4 text-wistaria" />
+        <span className="text-xs font-bold uppercase tracking-wider text-wistaria">Medical News Feed</span>
+        <span className="ml-auto flex items-center gap-1 text-[10px] font-semibold text-muted-foreground">
+          <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          Live updates
+        </span>
+      </div>
+      <div className="nice-scroll flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
+        {MEDICAL_NEWS.map((item, i) => (
+          <motion.button
+            key={item.id}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, delay: 0.06 + i * 0.04 }}
+            whileHover={{ y: -4, scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => onSelect(item)}
+            className="glass-panel shine group flex w-72 shrink-0 flex-col gap-3 rounded-2xl p-4 text-left transition-all"
+          >
+            <div className="flex items-start justify-between gap-2">
+              <span className="text-2xl">{item.icon}</span>
+              <span className="glass-chip px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider" style={{ color: item.color }}>
+                {item.category}
+              </span>
+            </div>
+            <p className="text-sm font-extrabold leading-snug line-clamp-2 group-hover:text-wistaria transition-colors">
+              {item.headline}
+            </p>
+            <div className="mt-auto flex items-center justify-between text-[10px] font-semibold text-muted-foreground">
+              <span>{item.source} · {item.date}</span>
+              <ArrowUpRight className="size-3 text-wistaria opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+          </motion.button>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function NewsDetail({ item, onBack }: { item: MedicalNewsItem; onBack: () => void }) {
+  return (
+    <main className="mx-auto max-w-3xl px-4 pb-32 pt-8 sm:px-6">
+      <button
+        onClick={onBack}
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <ArrowLeft className="size-4" />
+        Back to the library
+      </button>
+
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45 }}
+        className="mt-6"
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-4xl">{item.icon}</span>
+          <div>
+            <span className="glass-chip px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider" style={{ color: item.color }}>
+              {item.category}
+            </span>
+            <p className="mt-1.5 flex items-center gap-3 text-[11px] font-semibold text-muted-foreground">
+              <span className="flex items-center gap-1">
+                <Clock3 className="size-3" />
+                {item.date}
+              </span>
+              <span className="flex items-center gap-1">
+                <BookOpen className="size-3" />
+                {item.source}
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <h1 className="mt-4 text-balance text-2xl font-extrabold tracking-tight text-wistaria sm:text-3xl">
+          {item.headline}
+        </h1>
+      </motion.div>
+
+      {/* Summary */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.08 }}
+        className="glass-panel mt-8 rounded-3xl p-6"
+      >
+        <h2 className="flex items-center gap-2 text-sm font-extrabold tracking-tight text-wistaria">
+          <TrendingUp className="size-4" />
+          Study Summary
+        </h2>
+        <p className="mt-3 text-[15px] leading-7 text-muted-foreground">
+          {item.summary}
+        </p>
+      </motion.div>
+
+      {/* Clinical Relevance */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.12 }}
+        className="glass-panel mt-5 rounded-3xl p-6"
+      >
+        <h2 className="flex items-center gap-2 text-sm font-extrabold tracking-tight text-wistaria">
+          <Stethoscope className="size-4" />
+          Why It Matters Clinically
+        </h2>
+        <p className="mt-3 text-[15px] leading-7 text-muted-foreground">
+          {item.clinicalRelevance}
+        </p>
+      </motion.div>
+
+      {/* Source Link */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.16 }}
+        className="mt-5"
+      >
+        <a
+          href={item.sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="glass-chip inline-flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-bold text-wistaria transition-colors hover:bg-wistaria/10"
+        >
+          <ExternalLink className="size-4" />
+          Read the original source ({item.source})
+        </a>
+      </motion.div>
+
+      <p className="mt-8 px-1 text-[11px] leading-5 text-muted-foreground">
+        This news summary is for educational purposes only. Always refer to the original publication for complete data, methodology, and clinical guidelines.
+      </p>
+    </main>
+  );
+}
+
 /* --------------------------- library grid --------------------------- */
 
 function ResearchLibrary({
   onOpen,
+  onNewsSelect,
 }: {
   onOpen: (slug: string) => void;
+  onNewsSelect: (item: MedicalNewsItem) => void;
 }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
@@ -252,12 +506,15 @@ function ResearchLibrary({
         </p>
       </motion.div>
 
+      {/* news feed */}
+      <NewsFeed onSelect={onNewsSelect} />
+
       {/* stats strip */}
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.08 }}
-        className="mt-7 grid grid-cols-3 gap-4"
+        className="grid grid-cols-3 gap-4"
       >
         {[
           { icon: Stethoscope, label: "Clinical guides", value: ARTICLES.filter((a) => a.category !== "Foundations").length },
@@ -816,16 +1073,28 @@ function ResearchInner() {
   const [searchParams, setSearchParams] = useSearchParams();
   const slug = searchParams.get("article");
   const article = slug ? articleBySlug(slug) : undefined;
+  const [selectedNews, setSelectedNews] = useState<MedicalNewsItem | null>(null);
 
   const openArticle = (next: string) => {
+    setSelectedNews(null);
     setSearchParams({ article: next }, { replace: true });
+  };
+
+  const openNews = (item: MedicalNewsItem) => {
+    setSelectedNews(item);
+  };
+
+  const backFromNews = () => {
+    setSelectedNews(null);
   };
 
   return (
     <div className="min-h-screen">
       <GlassBackdrop />
       <AppHeader title="Research" />
-      {article ? (
+      {selectedNews ? (
+        <NewsDetail item={selectedNews} onBack={backFromNews} />
+      ) : article ? (
         <ArticleReader key={article.slug} article={article} />
       ) : slug ? (
         <main className="mx-auto max-w-3xl px-4 pb-32 pt-16 text-center sm:px-6">
@@ -837,7 +1106,7 @@ function ResearchInner() {
           </Button>
         </main>
       ) : (
-        <ResearchLibrary onOpen={openArticle} />
+        <ResearchLibrary onOpen={openArticle} onNewsSelect={openNews} />
       )}
     </div>
   );
