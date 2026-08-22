@@ -2062,8 +2062,138 @@ export const ARTICLES: Article[] = [
       "CT-confirmed abscess > 3 cm: interventional radiology for percutaneous drainage. Do not delay for IV antibiotics alone.",
     ],
   },
-];
+  // ---- Critical Care & Emergencies ----
 
+  {
+    slug: "surviving-sepsis-bundle",
+    title: "Surviving Sepsis Campaign: The 1-Hour Bundle",
+    emoji: "🚨",
+    category: "Critical Care & Emergencies",
+    summary:
+      "Every hour of delay in sepsis treatment increases mortality by 4–8%. This quick-reference guide covers the Sepsis-3 definitions, the 1-hour bundle, vasopressor selection, fluid resuscitation controversies, and the pitfalls that kill patients. Designed for ER and ICU physicians.",
+    readMinutes: 10,
+    sections: [
+      {
+        heading: "Sepsis-3 Definitions (2016, still current)",
+        body: [
+          "Sepsis-3 replaced the older SIRS-based definitions with a framework grounded in organ dysfunction. Understanding these definitions is the first step in recognising and treating sepsis.",
+        ],
+        bullets: [
+          "Sepsis: life-threatening organ dysfunction caused by a dysregulated host response to infection. Defined as a suspected or confirmed infection with an acute increase in SOFA score ≥ 2 points.",
+          "Septic shock: a subset of sepsis with circulatory, cellular, and metabolic dysfunction associated with a higher risk of mortality. Defined as sepsis requiring vasopressors to maintain MAP ≥ 65 mmHg AND serum lactate > 2 mmol/L despite adequate fluid resuscitation.",
+          "qSOFA (quick SOFA) — bedside screening tool: altered mentation (GCS < 15), RR ≥ 22, SBP ≤ 100 mmHg. Score ≥ 2 = high clinical suspicion for sepsis. NOT a diagnostic tool — it is a screening trigger for further assessment.",
+          "SOFA score: a 6-point organ-dysfunction score (respiratory, coagulation, liver, cardiovascular, CNS, renal). A ΔSOFA ≥ 2 from baseline = sepsis. Requires laboratory values (PaO₂/FiO₂, platelets, bilirubin, creatinine) and clinical assessment (GCS, MAP/vasopressors).",
+          "SIRS criteria (legacy): temperature > 38°C or < 36°C, HR > 90, RR > 20, WBC > 12,000 or < 4,000. Sensitivity ~80% but specificity is poor — many non-septic conditions trigger SIRS. Sepsis-3 abandoned SIRS in favour of organ-dysfunction-based criteria.",
+        ],
+        callout: {
+          kind: "warning",
+          title: "qSOFA is a screening tool, not a diagnostic criterion",
+          text: "A qSOFA score < 2 does NOT exclude sepsis. Elderly patients, those on beta-blockers, and immunosuppressed patients may not mount a fever, tachycardia, or hypotension. Clinical suspicion trumps scores. If you think sepsis, treat sepsis.",
+        },
+      },
+      {
+        heading: "The 1-Hour Bundle — Step-by-Step",
+        body: [
+          "The Surviving Sepsis Campaign (SSC) 2021 guidelines mandate that the following interventions be initiated within 60 minutes of sepsis recognition. The bundle is a minimum standard — initiate all five elements as rapidly as possible, ideally simultaneously.",
+        ],
+        steps: [
+          "Step 1: Measure serum lactate. Lactate is the single most important biomarker for tissue hypoperfusion. Initial lactate > 2 mmol/L = sepsis. Lactate > 4 mmol/L = severe sepsis. Re-measure within 2–4 hours if initial > 2 mmol/L. A rising lactate indicates worsening perfusion; a falling lactate indicates response to treatment.",
+          "Step 2: Obtain blood cultures BEFORE antibiotics. Draw at least 2 sets (aerobic + anaerobic) from 2 different peripheral sites. Central line blood cultures are acceptable if the line is new (< 48 h) and infection is suspected. Do NOT delay antibiotics by more than 45 minutes to obtain cultures. If obtaining cultures will delay treatment, give antibiotics first.",
+          "Step 3: Administer broad-spectrum IV antibiotics. Every hour of delay increases mortality by approximately 4–8% (Kumar et al., 2006; confirmed in subsequent meta-analyses). Empiric choice must cover likely pathogens and local resistance patterns.",
+          "Step 4: Begin rapid IV fluid resuscitation. Administer 30 mL/kg of isotonic crystalloid within the first 3 hours for hypotension or lactate ≥ 4 mmol/L. Use balanced crystalloids (Ringer's lactate, Plasmalyte) as first-line — they have a lower risk of hyperchloraemic metabolic acidosis compared to normal saline.",
+          "Step 5: Start vasopressors if MAP < 65 mmHg despite fluid resuscitation. Norepinephrine is the first-line vasopressor. Start at 0.1 mcg/kg/min and titrate to MAP ≥ 65 mmHg. If norepinephrine reaches 0.5 mcg/kg/min, add vasopressin (0.03 U/min fixed dose) as second-line. Epinephrine is third-line for refractory shock.",
+        ],
+        callout: {
+          kind: "danger",
+          title: "The lactate paradox",
+          text: "A 'normal' lactate (≤ 2 mmol/L) does not exclude sepsis. Patients on beta-blockers, those with liver disease, and well-resuscitated patients may have a normal lactate despite severe sepsis. A rising lactate is more alarming than an absolute value. If clinical suspicion is high, treat regardless of lactate level.",
+        },
+      },
+      {
+        heading: "Vasopressor Selection — A Practical Guide",
+        body: [
+          "Vasopressor choice in septic shock follows a stepwise approach based on response, not a fixed protocol. The goal is MAP ≥ 65 mmHg with the lowest effective dose.",
+        ],
+        steps: [
+          "First-line: Norepinephrine (noradrenaline). Potent α1-agonist with mild β1-effect. Increases MAP via vasoconstriction without significantly increasing heart rate. Starting dose: 0.1 mcg/kg/min. Titrate by 0.02–0.05 mcg/kg/min every 5–10 minutes. Max effective dose: ~0.5 mcg/kg/min.",
+          "Second-line: Vasopressin. V1-receptor agonist. Non-catecholamine — works via a different mechanism. Fixed dose: 0.03 units/min (do not titrate). Added when norepinephrine reaches 0.25–0.5 mcg/kg/min. Vasopressin-sparing: reduces norepinephrine requirement by 25–50% in about 40% of patients (VASST trial).",
+          "Third-line: Epinephrine. Potent β1 + β2 + α1 agonist. Added when norepinephrine + vasopressin fail to achieve MAP ≥ 65. Starting dose: 0.01 mcg/kg/min. Caution: increases myocardial oxygen demand, may cause tachyarrhythmias, and can cause lactic acidosis (via β2-mediated aerobic lactate production — this is NOT necessarily tissue hypoperfusion).",
+          "Rescue therapy: Angiotensin II (Giapreza). For refractory vasodilatory shock unresponsive to norepinephrine + vasopressin. ATHOS-3 trial: 60% achieved MAP response. Dose: 20 ng/kg/min, titrate to MAP ≥ 65.",
+          "Inotropes: Dobutamine or milrinone for myocardial dysfunction (septic cardiomyopathy). Consider if cardiac output monitoring shows low cardiac index despite adequate volume and vasopressor support. Echocardiography (bedside TTE) is essential to assess cardiac function before starting inotropes.",
+        ],
+        callout: {
+          kind: "tip",
+          title: "Central line first",
+          text: "Peripheral norepinephrine is safe for short-term use (< 12 hours) via a large-bore IV in the antecubital fossa, but central venous access is strongly preferred. Peripheral extravasation of norepinephrine causes tissue necrosis. Obtain a central line as soon as feasible.",
+        },
+      },
+      {
+        heading: "Fluid Resuscitation — Current Evidence and Controversies",
+        bullets: [
+          "30 mL/kg crystalloid: the SSC 2021 recommendation for initial resuscitation. Evidence is based on retrospective data (Seymour et al., NEJM 2017) showing lower mortality with early aggressive fluids. However, the ANDROMEDA-SHOCK trial (2019) and subsequent meta-analyses suggest that perfusion-guided fluid resuscitation (using capillary refill or lactate clearance) may be equally effective with less fluid.",
+          "Balanced crystalloids vs. normal saline: the SMART trial (2018, NEJM) and SALT-ED trial (2018, NEJM) demonstrated that balanced crystalloids (Ringer's lactate, Plasmalyte) reduced major adverse kidney events by 15% compared to normal saline. SSC 2021 recommends balanced crystalloids as first-line. Normal saline is now reserved for specific indications (e.g., traumatic brain injury with suspected raised ICP).",
+          "Fluid overload is harmful: the F_FLUSH trial (2023) and FEAST trials demonstrate that excessive fluid resuscitation increases mortality in sepsis. Signs of fluid overload (rising JVP, pulmonary oedema on POCUS, worsening oxygenation) should prompt cessation of fluids and consideration of diuretics or ultrafiltration.",
+          "Restricted vs. liberal fluids: the CLOVERS trial (2023, NEJM) randomised 1,563 sepsis patients to liberal (> 2.5 L) vs. restricted (< 1 L) fluid strategies after initial resuscitation. No significant difference in 90-day mortality — suggesting that after the initial 30 mL/kg, further fluids should be guided by clinical response, not protocol.",
+          "Point-of-care ultrasound (POCUS): the single best tool for assessing fluid responsiveness. IVC collapsibility > 50% = likely fluid-responsive. IVC distension with poor cardiac output = volume overload, stop fluids. Bedside POCUS should be used to guide every fluid bolus after the initial resuscitation.",
+        ],
+      },
+      {
+        heading: "Pitfalls to Avoid — The Deadly Mistakes",
+        bullets: [
+          "Don't delay antibiotics for imaging: CT, X-ray, and other imaging should NEVER delay antibiotic administration. Give antibiotics, then image. The only exception is suspected intracranial abscess where CT is needed to rule out mass effect before LP.",
+          "Don't over-resuscitate with fluids: the 30 mL/kg is a STARTING POINT, not a target. After initial resuscitation, use POCUS, lactate clearance, and clinical assessment to guide further fluids. Fluid overload kills as many patients as under-resuscitation.",
+          "Don't use vancomycin as empiric first-line unless MRSA risk: default empiric therapy should cover Gram-negatives and anaerobes (piperacillin-tazobactam or meropenem). Add vancomycin only if MRSA risk factors exist (recent hospitalisation, dialysis, IV drug use, known MRSA colonisation).",
+          "Don't forget source control: antibiotics alone are insufficient. Every septic focus needs source control — drain the abscess, debride the necrotic tissue, remove the infected device. Source control within 6–12 hours is the standard. Delayed source control is the most common preventable cause of sepsis mortality.",
+          "Don't ignore the adrenals: patients on chronic corticosteroids (> 5 mg prednisolone/day for > 3 weeks) are at risk of adrenal crisis during sepsis. Administer stress-dose hydrocortisone (200 mg/day IV, 50 mg q6h) if norepinephrine requirement is escalating. The ADRENAL and APROCCHSS trials support hydrocortisone in refractory septic shock.",
+          "Don't trust a normal WBC: immunosuppressed patients (chemotherapy, HIV, transplant, biologics) may not mount a leukocytosis. A normal WBC in a febrile, hypotensive patient with suspected infection is ominous, not reassuring.",
+          "Don't forget blood glucose control: target 7.8–10 mmol/L (140–180 mg/dL). Tight glucose control (4.4–6.1 mmol/L) increases hypoglycaemia risk without mortality benefit (NICE-SUGAR trial). Use insulin infusion for glucose > 10 mmol/L.",
+          "Don't leave the central line in longer than necessary: catheter-related bloodstream infection (CRBSI) risk increases with each day. Remove central lines within 48–72 hours of clinical stability. Daily assessment of line necessity is mandatory.",
+        ],
+        callout: {
+          kind: "danger",
+          title: "The 1-hour clock starts at RECOGNITION, not at arrival",
+          text: "The clock starts when sepsis is RECOGNISED — not when the patient arrives in the ED, not when the labs return, not when the senior clinician reviews. If a nurse recognises sepsis on the ward, the clock starts then. Every member of the team must understand this.",
+        },
+      },
+      {
+        heading: "Quick-Reference: Antibiotic Empiric Choices",
+        bullets: [
+          "Community-acquired sepsis (no risk factors): Piperacillin-tazobactam 4.5 g IV q6h OR Ceftriaxone 2 g IV q24h + Metronidazole 500 mg IV q8h.",
+          "Hospital-acquired / healthcare-associated: Meropenem 1 g IV q8h OR Cefepime 2 g IV q8h. Add vancomycin if MRSA risk.",
+          "Urinary source: Ceftriaxone 2 g IV q24h OR Pip-tazo. ESBL risk: Meropenem.",
+          "Abdominal/GI source: Meropenem 1 g IV q8h OR Pip-tazo 4.5 g IV q6h. Covers Gram-negatives, anaerobes, and Pseudomonas.",
+          "Skin/soft tissue (necrotising): Pip-tazo + Vancomycin + Clindamycin (for toxin suppression in GAS/necrotising fasciitis). Surgical debridement within 6 hours.",
+          "Neutropenic fever: Meropenem 1 g IV q8h + Vancomycin. Add antifungal (caspofungin or voriconazole) if fever persists > 4–7 days despite broad-spectrum antibiotics.",
+          "Reassess and de-escalate at 48–72 hours based on culture results. Broad-spectrum coverage is essential initially but must be narrowed to prevent resistance.",
+        ],
+      },
+      {
+        heading: "Monitoring and Endpoints of Resuscitation",
+        bullets: [
+          "MAP ≥ 65 mmHg (or higher in chronic hypertension — target individualised).",
+          "Lactate clearance: ≥ 20% reduction per 2 hours. If lactate is not clearing, reassess source control, fluid status, and cardiac function.",
+          "Urine output: ≥ 0.5 mL/kg/hr. Place a Foley catheter for continuous monitoring in all septic shock patients.",
+          "Central venous O₂ saturation (ScvO₂): target ≥ 70%. A low ScvO₂ (< 70%) indicates inadequate oxygen delivery — consider more fluids, inotropes, or blood transfusion (target Hb ≥ 7 g/dL).",
+          "Capillary refill: the ANDROMEDA-SHOCK trial showed that capillary-refill-guided resuscitation was non-inferior to lactate-guided resuscitation and used less fluid. Check capillary refill on the sternum or fingertip.",
+          "Bedside echocardiography: assess LV and RV function, estimate cardiac output, and guide fluid/vasopressor/inotrope decisions. Every septic shock patient should have a bedside TTE within 1 hour.",
+          "Serial SOFA scoring: track daily SOFA scores to assess organ-function trajectory. A declining SOFA score indicates improvement; a rising score indicates deterioration.",
+        ],
+      },
+    ],
+    keyPoints: [
+      "Sepsis-3: sepsis = infection + ΔSOFA ≥ 2. Septic shock = sepsis + vasopressors + lactate > 2 mmol/L.",
+      "1-Hour Bundle: lactate, cultures, antibiotics, fluids, vasopressors — all within 60 minutes of recognition.",
+      "Norepinephrine first-line. Add vasopressin at 0.25–0.5 mcg/kg/min. Epinephrine third-line.",
+      "Balanced crystalloids > normal saline. 30 mL/kg is a starting point, not a target. Use POCUS to guide further fluids.",
+      "Source control within 6–12 hours. Antibiotics without source control is half-treatment.",
+    ],
+    whenToCall: [
+      "Any patient with suspected infection and altered mentation, hypotension, or tachypnoea — activate sepsis protocol immediately.",
+      "Lactate > 4 mmol/L or MAP < 65 despite 30 mL/kg fluids — ICU transfer for vasopressor management.",
+      "Norepinephrine > 0.5 mcg/kg/min without MAP response — add vasopressin, reassess source control, consider hydrocortisone.",
+    ],
+  },
+];
 export function articleBySlug(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }
