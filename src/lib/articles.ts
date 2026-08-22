@@ -2571,6 +2571,211 @@ export const ARTICLES: Article[] = [
       "Severe ear pain with fever and hearing loss — possible acute otitis media or mastoiditis; may need antibiotics or surgical drainage.",
     ],
   },
+  {
+    slug: "renal-physiology",
+    title: "Renal Physiology",
+    emoji: "🫘",
+    category: "Physiology",
+    summary:
+      "The kidneys filter 180 litres of blood every day, yet produce only about 1.5 litres of urine. Understanding how they accomplish this remarkable feat — filtration, reabsorption, secretion, and the hormonal control of fluid balance — is the foundation of nephrology.",
+    readMinutes: 8,
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "📖",
+        sections: [
+          {
+            heading: "What do the kidneys actually do?",
+            body: [
+              "Your two kidneys sit on either side of the spine, just below the ribcage. Despite being roughly the size of a clenched fist each, they process about 180 litres of blood daily — roughly 25% of cardiac output. The job breaks down into three core functions:",
+            ],
+            bullets: [
+              "Filtration — Blood enters the kidney under pressure, and small molecules (water, glucose, salts, urea) are forced through a filter into the nephron. Large proteins and blood cells stay behind. This produces about 180 L/day of filtrate.",
+              "Reabsorption — As filtrate flows through the nephron, useful substances (glucose, amino acids, sodium, water) are reclaimed back into the blood. The kidneys reabsorb ~99% of the filtrate — what's left becomes urine.",
+              "Secretion — Additional waste products and excess ions (H+, K+, certain drugs) are actively transported from the blood into the filtrate. This fine-tunes blood composition beyond what filtration alone can achieve.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Think of it as a recycling plant",
+              text: "Filtration dumps everything out. Reabsorption picks the good stuff back. Secretion throws in the remaining rubbish. The net result is blood that stays perfectly balanced and waste that leaves as urine.",
+            },
+          },
+          {
+            heading: "The Nephron — the kidney's functional unit",
+            body: [
+              "Each kidney contains approximately 1 million nephrons. A nephron is a tiny, self-contained filtration unit with two main parts:",
+            ],
+            bullets: [
+              "Renal corpuscle — where filtration happens. It consists of the glomerulus (a tuft of capillaries) enclosed by Bowman's capsule. Blood pressure forces fluid out of the glomerulus into the capsule, creating the filtrate.",
+              "Renal tubule — a long, winding tube where reabsorption and secretion occur. It has four key segments: the Proximal Convoluted Tubule (PCT), the Loop of Henle, the Distal Convoluted Tubule (DCT), and the Collecting Duct.",
+            ],
+          },
+          {
+            heading: "The Proximal Convoluted Tubule (PCT)",
+            body: [
+              "The PCT is the workhorse of reabsorption. About 65% of the filtered water, sodium, and nearly all the glucose and amino acids are reclaimed here. The cells lining the PCT have dense microvilli (brush border) to maximise surface area.",
+              "The PCT also actively secretes H+ ions (helping regulate pH), organic acids, and drugs like penicillin into the filtrate.",
+            ],
+          },
+          {
+            heading: "The Loop of Henle — concentrating urine",
+            body: [
+              "The Loop of Henle dips down into the medulla and comes back up, creating a U-shape. Its job is to establish an osmotic gradient in the kidney's medulla — essential for concentrating urine.",
+            ],
+            bullets: [
+              "Descending limb — permeable to water but not to salt. As filtrate descends into the increasingly salty medulla, water is drawn out by osmosis, concentrating the filtrate.",
+              "Ascending limb — impermeable to water but actively pumps out Na+, K+, and Cl- (via the Na-K-2Cl cotransporter). This dilutes the filtrate while making the medulla salty — maintaining the gradient.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Countercurrent multiplier",
+              text: "The opposing flow directions in the descending and ascending limbs create a multiplier effect that builds a steep osmotic gradient from cortex (~300 mOsm/L) to deep medulla (~1200 mOsm/L). This gradient is what allows the collecting duct to concentrate urine.",
+            },
+          },
+          {
+            heading: "The Distal Convoluted Tubule (DCT) and Collecting Duct",
+            body: [
+              "The DCT and Collecting Duct are where hormones exert fine control over the final urine composition:",
+            ],
+            bullets: [
+              "Aldosterone — acts on the DCT to increase Na+ reabsorption and K+ secretion. More Na+ in the blood means more water follows (via osmosis), raising blood volume and pressure.",
+              "Antidiuretic Hormone (ADH) — acts on the Collecting Duct, inserting aquaporin channels that make it permeable to water. More ADH → more water reabsorbed → concentrated, low-volume urine. Less ADH → dilute, high-volume urine.",
+              "Atrial Natriuretic Peptide (ANP) — opposes aldosterone. Released by the heart when blood volume is too high, it promotes Na+ and water excretion, lowering blood pressure.",
+            ],
+          },
+          {
+            heading: "Glomerular Filtration Rate (GFR)",
+            body: [
+              "GFR is the volume of filtrate produced per minute — typically about 125 mL/min or 180 L/day. It is the single most important measure of kidney function.",
+              "GFR is maintained relatively constant by two intrinsic mechanisms: renal autoregulation (myogenic response and tubuloglomerular feedback) and extrinsic neural/hormonal control.",
+            ],
+            bullets: [
+              "A normal GFR is 90–120 mL/min. Below 60 mL/min for 3+ months indicates chronic kidney disease (CKD).",
+              "Below 15 mL/min signals kidney failure — dialysis or transplantation becomes necessary.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "The kidneys perform three core functions: filtration (glomerulus), reabsorption (tubules), and secretion (tubules).",
+          "Each kidney has ~1 million nephrons — the functional units of filtration.",
+          "The PCT reabsorbs ~65% of filtrate; the Loop of Henle creates the medullary osmotic gradient; the DCT and Collecting Duct fine-tune under hormonal control.",
+          "ADH controls water reabsorption (concentrated vs dilute urine); aldosterone controls Na+/K+ balance; ANP promotes salt/water excretion.",
+          "GFR is the gold-standard measure of kidney function — normal is 90–120 mL/min.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "The Countercurrent Multiplier System — detailed mechanism",
+            body: [
+              "The countercurrent multiplier is an elegant system that uses the Loop of Henle's U-shape and differential permeability to build and maintain the medullary osmotic gradient. Without it, the collecting duct could not concentrate urine beyond plasma osmolality (~300 mOsm/L).",
+            ],
+            steps: [
+              "The ascending limb actively transports NaCl into the interstitium via the Na-K-2Cl (NKCC2) cotransporter on the thick ascending limb. This raises interstitial osmolality.",
+              "The descending limb, being water-permeable, loses water to this hypertonic interstitium by osmosis, concentrating the tubular fluid.",
+              "As concentrated fluid flows back up the ascending limb, it encounters an even more hypertonic interstitium, so even more NaCl is pumped out — further raising interstitial osmolality.",
+              "This positive feedback loop repeats with each pass, driving the gradient from ~300 mOsm/L in the cortex to ~1200 mOsm/L at the papillary tip.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Urea recycling boosts the gradient",
+              text: "About 50% of the medullary osmolality comes from urea, not NaCl. ADH increases urea permeability in the inner medullary collecting duct, allowing urea to diffuse into the interstitium — where it contributes to the gradient before being recycled back into the loop. This is why dehydration produces dark, concentrated urine.",
+            },
+          },
+          {
+            heading: "The Countercurrent Exchanger — the Vasa Recta",
+            body: [
+              "The vasa recta are special capillaries that run parallel to the Loop of Henle in a U-shaped arrangement. They serve as countercurrent exchangers — allowing blood to supply the medulla without washing away the osmotic gradient.",
+              "Blood flowing down into the medulla gains solute and loses water; blood flowing back up loses solute and gains water. The net effect: the vasa recta equilibrate with the surrounding interstitium without significantly altering the gradient. Without this arrangement, blood flow would rapidly dissipate the medullary concentration gradient.",
+            ],
+          },
+          {
+            heading: "The Renin-Angiotenin-Aldosterone System (RAAS)",
+            body: [
+              "The RAAS is the body's primary hormonal axis for regulating blood pressure, blood volume, and Na+ balance. It is activated when the kidneys detect low blood pressure, low blood volume, or low Na+ delivery to the macula densa.",
+            ],
+            steps: [
+              "Renin release — Juxtaglomerular (JG) cells in the afferent arteriole detect reduced perfusion pressure and release renin. The macula densa cells (in the DCT) also signal renin release when NaCl delivery drops.",
+              "Angiotensinogen → Angiotensin I — Renin cleaves angiotensinogen (produced by the liver) into angiotensin I, an inactive decapeptide.",
+              "Angiotensin I → Angiotensin II — Angiotensin-converting enzyme (ACE), mainly in lung capillaries, converts angiotensin I to angiotensin II, a potent octapeptide.",
+              "Angiotensin II effects — (1) Potent vasoconstriction → raises blood pressure. (2) Stimulates aldosterone release from the adrenal cortex → increases Na+ reabsorption in the DCT. (3) Stimulates ADH release from the posterior pituitary → increases water reabsorption. (4) Stimulates thirst via the hypothalamus. (5) Constricts the efferent arteriole → maintains GFR despite low blood pressure.",
+            ],
+            callout: {
+              kind: "danger",
+              title: "ACE inhibitors and ARBs",
+              text: "ACE inhibitors (enalapril, ramipril) block the conversion of Ang I to Ang II, reducing vasoconstriction and aldosterone secretion. ARBs (losartan, valsartan) block the AT1 receptor, achieving a similar effect. Both are first-line treatments for hypertension, heart failure, and diabetic nephropathy — but they can cause hyperkalaemia (reduced K+ secretion) and should not be used in pregnancy.",
+            },
+          },
+          {
+            heading: "Tubuloglomerular Feedback (TGF)",
+            body: [
+              "TGF is the kidney's intrinsic mechanism for stabilising GFR. It operates through the juxtaglomerular apparatus (JGA) — a specialised structure where the DCT contacts the afferent arteriole.",
+              "When GFR rises, more NaCl reaches the macula densa (specialised cells in the DCT wall). The macula densa releases adenosine and ATP, which constrict the afferent arteriole, reducing renal blood flow and bringing GFR back down. The reverse happens when GFR falls — less NaCl → less adenosine → afferent dilation → GFR rises.",
+            ],
+          },
+          {
+            heading: "Clinical Relevance — Kidney Stones",
+            body: [
+              "Kidney stones (nephrolithiasis) form when urine becomes supersaturated with calcium oxalate, uric acid, or struvite. They are excruciatingly painful (renal colic) and can cause obstruction, infection, and even renal failure if untreated.",
+            ],
+            bullets: [
+              "Calcium oxalate stones (~80% of cases) — associated with dehydration, hypercalciuria, and high oxalate intake (spinach, chocolate, nuts).",
+              "Uric acid stones — associated with gout, high purine diet, and chronic diarrhoea (alkaline urine dissolves them; acidification promotes them).",
+              "Struvite stones — caused by urease-producing bacteria (Proteus) in chronic UTIs. They form large staghorn calculi that fill the renal pelvis.",
+              "Prevention: drink 2–3 litres of water daily, reduce dietary sodium (Na+ promotes Ca2+ excretion), maintain normal calcium intake (restriction paradoxically increases oxalate absorption), and consider thiazide diuretics for recurrent calcium stones.",
+            ],
+            callout: {
+              kind: "danger",
+              title: "Red flag: renal colic",
+              text: "Sudden, severe flank pain radiating to the groin, often with haematuria and nausea, is classic renal colic. Non-contrast CT is the gold-standard imaging. Pain management (NSAIDs, opioids) and hydration are first-line. Urgent urology referral is needed for signs of infection (fever + obstructing stone = emergency — risk of urosepsis).",
+            },
+          },
+          {
+            heading: "Clinical Relevance — Diuretics",
+            body: [
+              "Diuretics are among the most commonly prescribed drugs, used for hypertension, heart failure, oedema, and kidney disease. Each class targets a specific part of the nephron:",
+            ],
+            bullets: [
+              "Loop diuretics (furosemide) — block the NKCC2 transporter in the thick ascending limb. Powerful diuresis (up to 25% of filtered Na+). Used for acute pulmonary oedema and severe heart failure. Can cause hypokalaemia, metabolic alkalosis, and ototoxicity at high doses.",
+              "Thiazide diuretics (hydrochlorothiazide, chlorthalidone) — block the Na-Cl cotransporter in the DCT. Mild diuresis but excellent for long-term hypertension control. Can cause hypokalaemia, hyperuricaemia (may trigger gout), and hypercalcaemia.",
+              "Potassium-sparing diuretics (spironolactone, amiloride) — block aldosterone (spironolactone) or ENaC channels (amiloride) in the Collecting Duct. Weak diuretics but prevent dangerous K+ loss. Spironolactone is essential in heart failure (reduces mortality) and in liver cirrhosis with ascites.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "Why the osmotic diuretic mannitol works differently",
+              text: "Mannitol is filtered but not reabsorbed, so it holds water in the tubule by osmosis — acting throughout the entire nephron. It is used acutely to reduce intracranial and intraocular pressure but can cause dangerous dehydration and hyperkalaemia if not monitored carefully.",
+            },
+          },
+        ],
+        keyPoints: [
+          "The countercurrent multiplier (Loop of Henle) builds a 300→1200 mOsm/L gradient in the medulla; urea recycling contributes ~50% of this gradient.",
+          "The vasa recta act as countercurrent exchangers, preserving the medullary gradient while supplying blood to the medulla.",
+          "RAAS: low BP → renin → Ang I → ACE → Ang II → vasoconstriction + aldosterone → Na+ reabsorption → BP rises.",
+          "TGF (macula densa) stabilises GFR by adjusting afferent arteriole tone based on NaCl delivery.",
+          "Kidney stones: drink water, reduce sodium, normal calcium intake. Fever + obstructing stone = urosepsis emergency.",
+          "Loop diuretics (furosemide) = powerful; Thiazides = first-line for hypertension; K+-sparing (spironolactone) = heart failure hero.",
+        ],
+      },
+    ],
+    sections: [],
+    keyPoints: [
+      "The kidneys filter 180 L/day via filtration, reabsorption, and secretion.",
+      "The countercurrent multiplier (Loop of Henle) builds a 300-1200 mOsm/L gradient.",
+      "RAAS: low BP leads to renin, Ang II, vasoconstriction, aldosterone, Na+ reabsorption, and BP rises.",
+      "TGF (macula densa) stabilises GFR by adjusting afferent arteriole tone.",
+      "Kidney stones: hydrate, reduce sodium, normal calcium intake.",
+      "Loop diuretics = powerful; Thiazides = first-line for hypertension; K+-sparing = heart failure hero.",
+    ],
+    whenToCall: [
+      "Severe flank pain radiating to the groin with haematuria.",
+      "Fever with an obstructing kidney stone - risk of urosepsis.",
+      "Significant reduction in urine output or signs of fluid overload.",
+    ],
+  }
 ];
 
 export const ARTICLE_CATEGORIES: string[] = Array.from(
@@ -2583,57 +2788,47 @@ export function articleBySlug(slug: string): Article | undefined {
 
 export function articleToSpeech(a: Article): string {
   const parts: string[] = [`${a.title}. ${a.summary}`];
+  const secToText = (sec: ArticleSection) => {
+    parts.push(sec.heading);
+    if (sec.body) parts.push(...sec.body);
+    if (sec.bullets) parts.push(...sec.bullets);
+    if (sec.steps) parts.push(...sec.steps.map((s, i) => `Step ${i + 1}. ${s}`));
+    if (sec.callout) parts.push(`${sec.callout.title}. ${sec.callout.text}`);
+  };
   if (a.tabs) {
     for (const tab of a.tabs) {
       parts.push(`${tab.label}.`);
-      for (const sec of tab.sections) {
-        parts.push(sec.heading + ".");
-        if (sec.body) parts.push(...sec.body);
-        if (sec.bullets) parts.push(...sec.bullets.map((b) => "• " + b));
-        if (sec.steps) parts.push(...sec.steps.map((s, i) => `Step ${i + 1}. ${s}`));
-        if (sec.callout) parts.push(`${sec.callout.title}: ${sec.callout.text}`);
-      }
-      if (tab.keyPoints) parts.push(...tab.keyPoints.map((k) => "Key point: " + k));
+      for (const sec of tab.sections) secToText(sec);
     }
   } else {
-    for (const sec of a.sections) {
-      parts.push(sec.heading + ".");
-      if (sec.body) parts.push(...sec.body);
-      if (sec.bullets) parts.push(...sec.bullets.map((b) => "• " + b));
-      if (sec.steps) parts.push(...sec.steps.map((s, i) => `Step ${i + 1}. ${s}`));
-      if (sec.callout) parts.push(`${sec.callout.title}: ${sec.callout.text}`);
-    }
-    if (a.keyPoints) parts.push(...a.keyPoints.map((k) => "Key point: " + k));
-    if (a.whenToCall) parts.push(...a.whenToCall.map((w) => "When to call: " + w));
+    for (const sec of a.sections) secToText(sec);
   }
   return parts.join("\n\n");
 }
 
-export function totalSteps(a?: Article): number {
-  const countSections = (sections: ArticleSection[]): number => {
-    let count = 0;
-    for (const sec of sections) {
-      if (sec.steps) count += sec.steps.length;
-    }
-    return count;
-  };
-
-  if (a) {
+export function totalSteps(): number {
+  let count = 0;
+  for (const a of ARTICLES) {
+    const countSecs = (secs: ArticleSection[]) => {
+      for (const s of secs) if (s.steps) count += s.steps.length;
+    };
     if (a.tabs) {
-      let count = 0;
-      for (const tab of a.tabs) count += countSections(tab.sections);
-      return count;
-    }
-    return countSections(a.sections);
-  }
-
-  let total = 0;
-  for (const article of ARTICLES) {
-    if (article.tabs) {
-      for (const tab of article.tabs) total += countSections(tab.sections);
+      for (const tab of a.tabs) countSecs(tab.sections);
     } else {
-      total += countSections(article.sections);
+      countSecs(a.sections);
     }
   }
-  return total;
+  return count;
 }
+
+
+
+
+
+
+
+
+
+
+
+
