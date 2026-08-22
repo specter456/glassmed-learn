@@ -222,6 +222,8 @@ function ResearchLibrary({
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return ARTICLES.filter((a) => {
+      // Foundations are educational content — shown in Basics, not Research
+      if (a.category === "Foundations") return false;
       const matchesQuery =
         !q ||
         a.title.toLowerCase().includes(q) ||
@@ -258,7 +260,7 @@ function ResearchLibrary({
         className="mt-7 grid grid-cols-3 gap-4"
       >
         {[
-          { icon: Stethoscope, label: "Emergency guides", value: ARTICLES.length },
+          { icon: Stethoscope, label: "Clinical guides", value: ARTICLES.filter((a) => a.category !== "Foundations").length },
           { icon: ListChecks, label: "Step-by-step instructions", value: totalSteps() },
           { icon: BookOpen, label: "Categories", value: ARTICLE_CATEGORIES.length },
         ].map((s, i) => {
@@ -307,7 +309,7 @@ function ResearchLibrary({
           >
             All
           </button>
-          {ARTICLE_CATEGORIES.map((c) => (
+          {ARTICLE_CATEGORIES.filter((c) => c !== "Foundations").map((c) => (
             <button
               key={c}
               onClick={() => setCategory(category === c ? null : c)}

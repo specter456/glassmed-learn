@@ -1,7 +1,7 @@
 /**
- * The Research library — ten professor-level first-aid articles written for
- * laypeople and students. Every step follows current first-aid guidelines
- * (American Heart Association / American Red Cross / AAP / AAPCC).
+ * The Research library — advanced clinical topics for doctors, senior students,
+ * and healthcare professionals. Covers surgical procedures, critical care,
+ * clinical case studies, and medical news.
  *
  * Educational content only — not a substitute for professional medical care.
  * In an emergency, call your local emergency number first.
@@ -57,7 +57,7 @@ export const ARTICLES: Article[] = [
     slug: "cpr-basics",
     title: "CPR Basics: How to Perform CPR Correctly",
     emoji: "🫀",
-    category: "Cardiac Emergency",
+    category: "Critical Care & Emergencies",
     summary:
       "When the heart stops, every minute without compressions cuts the chance of survival. Learn to recognize cardiac arrest, deliver high-quality compressions, and use an AED like it's second nature.",
     readMinutes: 6,
@@ -148,7 +148,7 @@ export const ARTICLES: Article[] = [
     slug: "choking",
     title: "Choking: The Heimlich Maneuver for Adults and Infants",
     emoji: "😮‍💨",
-    category: "Airway Emergency",
+    category: "Critical Care & Emergencies",
     summary:
       "A blocked airway can kill in minutes. Learn to tell a mild obstruction from a severe one, and master the exact back-blow and thrust sequences for adults, infants, pregnant people — and yourself.",
     readMinutes: 6,
@@ -223,7 +223,7 @@ export const ARTICLES: Article[] = [
     slug: "severe-bleeding",
     title: "Severe Bleeding: How to Stop It and Apply Pressure",
     emoji: "🩸",
-    category: "Trauma",
+    category: "Critical Care & Emergencies",
     summary:
       "Most bleeding stops with simple physics: pressure. This guide covers direct pressure, when to escalate to a tourniquet, and the shock warning signs that turn a bad scene critical.",
     readMinutes: 6,
@@ -448,7 +448,7 @@ export const ARTICLES: Article[] = [
     slug: "heart-attack",
     title: "Heart Attack: Recognizing Symptoms and Acting Fast",
     emoji: "❤️‍🩹",
-    category: "Cardiac Emergency",
+    category: "Critical Care & Emergencies",
     summary:
       "Chest pain is the headline, but heart attacks often whisper — especially in women, the elderly, and people with diabetes. Recognition plus a five-step response buys the heart muscle the time it needs.",
     readMinutes: 6,
@@ -516,7 +516,7 @@ export const ARTICLES: Article[] = [
     slug: "stroke",
     title: "Stroke: The FAST Test and Emergency Response",
     emoji: "🧠",
-    category: "Neurological Emergency",
+    category: "Critical Care & Emergencies",
     summary:
       "Time is brain: nearly two million neurons die every minute a stroke goes untreated. The FAST test turns a bystander into the most important link in the treatment chain.",
     readMinutes: 6,
@@ -587,7 +587,7 @@ export const ARTICLES: Article[] = [
     slug: "allergic-reactions",
     title: "Allergic Reactions: Anaphylaxis and EpiPen Use",
     emoji: "💉",
-    category: "Medical Emergency",
+    category: "Critical Care & Emergencies",
     summary:
       "Anaphylaxis can escalate from hives to airway collapse in minutes. Learn to spot it, use an epinephrine auto-injector correctly, and understand why the hospital trip is non-negotiable.",
     readMinutes: 6,
@@ -662,7 +662,7 @@ export const ARTICLES: Article[] = [
     slug: "seizures",
     title: "Seizures: What to Do and What NOT to Do",
     emoji: "⚡",
-    category: "Neurological Emergency",
+    category: "Critical Care & Emergencies",
     summary:
       "A seizure looks terrifying and is usually self-limiting — the real danger comes from well-meaning bystanders. This guide separates protective care from harmful interference.",
     readMinutes: 6,
@@ -740,7 +740,7 @@ export const ARTICLES: Article[] = [
     slug: "poisoning",
     title: "Poisoning: What to Do and When to Call Poison Control",
     emoji: "☠️",
-    category: "Medical Emergency",
+    category: "Critical Care & Emergencies",
     summary:
       "In a poisoning, the wrong “help” is often worse than the poison. Call poison control early, never induce vomiting, and know the short list of situations that skip straight to 911.",
     readMinutes: 6,
@@ -812,23 +812,808 @@ export const ARTICLES: Article[] = [
       "Any poisoning in a child, or any uncertainty about the substance or amount — call poison control right away.",
     ],
   },
+  // =====================================================================
+  // CLINICAL ARTICLES — Research section (advanced, professional focus)
+  // =====================================================================
+
+  // ---- Critical Care & Emergencies ----
+
+  {
+    slug: "rapid-sequence-intubation",
+    title: "Rapid Sequence Intubation (RSI)",
+    emoji: "🫁",
+    category: "Critical Care & Emergencies",
+    summary:
+      "RSI is the gold-standard technique for securing a definitive airway in emergency settings. Master the pharmacology, equipment, and stepwise approach that keeps oxygen delivery uninterrupted.",
+    readMinutes: 8,
+    sections: [
+      {
+        heading: "Indications and contraindications",
+        bullets: [
+          "Indications: respiratory failure, airway compromise, inability to protect the airway, GCS ≤ 8, severe facial/neck trauma, anticipated clinical deterioration.",
+          "Absolute contraindications: none — RSI is life-saving. Relative contraindications include difficult airway history, maxillofacial distortion, and cervical spine instability (requires video laryngoscopy).",
+        ],
+      },
+      {
+        heading: "Pre-oxygenation (the most important step)",
+        body: [
+          "RSI is apnoeic oxygenation: the patient stops breathing after induction. Maximising oxygen reserves before intubation buys time and prevents hypoxia.",
+        ],
+        steps: [
+          "Place the patient in head-elevated position (reverse Trendelenburg if possible).",
+          "Deliver 100% oxygen via non-rebreather mask at 15 L/min for at least 3 minutes, or 8 vital capacity breaths via BVM.",
+          "Consider nasal cannula at 15 L/min throughout (apnoeic oxygenation) to extend safe apnoea time.",
+          "Target end-tidal O₂ > 90% if capnography is available.",
+        ],
+      },
+      {
+        heading: "Induction and paralysis",
+        body: [
+          "The classic RSI sequence is induction agent followed immediately by a neuromuscular blocker — no bag-mask ventilation between drugs.",
+        ],
+        steps: [
+          "Administer induction agent: Ketamine 1–2 mg/kg IV (preferred in haemodynamically unstable patients) or Etomidate 0.3 mg/kg IV (haemodynamic stability) or Propofol 1.5–2.5 mg/kg IV (stable patients).",
+          "Administer neuromuscular blocker: Succinylcholine 1–1.5 mg/kg IV (onset 45–60 sec, duration 5–10 min) or Rocuronium 1.2 mg/kg IV (onset 60 sec, duration 45–60 min — reversible with sugammadex).",
+          "Wait for full paralysis: 45–60 seconds for succinylcholine, 60–90 seconds for rocuronium.",
+          "Apply Sellick's manoeuvre (cricoid pressure) if aspiration risk is high — though this is now debated.",
+        ],
+        callout: {
+          kind: "warning",
+          title: "Succinylcholine caution",
+          text: "Contraindicated in burns > 24 h old, crush injury > 48 h, spinal cord injury, hyperkalaemia, and personal/family history of malignant hyperthermia. Rocuronium is the safer default in many emergency settings.",
+        },
+      },
+      {
+        heading: "Laryngoscopy and tube placement",
+        steps: [
+          "Position the patient: sniffing the morning airway (ear-to-sternal notch alignment). Use a ramp if obese.",
+          "Insert the laryngoscope blade (Macintosh or Miller) and visualise the glottis. Apply the BURP manoeuvre if the view is suboptimal.",
+          "If Cormack-Lehane Grade III–IV, immediately switch to video laryngoscopy or a supraglottic airway (LMA) as a rescue device.",
+          "Advance the endotracheal tube (7.0–8.0 mm ID) through the vocal cords with the cuff above the glottis.",
+          "Inflate the cuff with 5–8 mL of air.",
+        ],
+      },
+      {
+        heading: "Confirm placement",
+        steps: [
+          "Attach end-tidal CO₂ capnography — the gold standard. Persistent waveform for 6 breaths confirms oesophageal intubation is excluded.",
+          "Listen for bilateral breath sounds (axillae, not just apices).",
+          "Observe chest rise, fogging of the tube, and rising SpO₂.",
+          "Check the ETT depth at the teeth: 21 cm in females, 23 cm in males.",
+          "If uncertain, use video laryngoscopy to directly visualise the tube through the cords.",
+        ],
+        callout: {
+          kind: "danger",
+          title: "Never rely on pulse oximetry alone",
+          text: "SpO₂ remains normal for minutes after apnoea in a pre-oxygenated patient. Only capnography confirms tube position in real time. Misplaced tube = death.",
+        },
+      },
+      {
+        heading: "Post-intubation care",
+        bullets: [
+          "Secure the tube with tape or a commercial holder. Document the depth at the teeth.",
+          "Obtain a chest X-ray to confirm tip position (2–5 cm above the carina).",
+          "Initiate mechanical ventilation with lung-protective settings (tidal volume 6–8 mL/kg IBW, PEEP 5–10 cmH₂O).",
+          "Administer post-intubation sedation and analgesia: propofol drip or midazolam + fentanyl infusion.",
+          "Monitor for complications: mainstem intubation, pneumothorax, tube dislodgement, aspiration.",
+        ],
+      },
+    ],
+    keyPoints: [
+      "Pre-oxygenation is the most critical step — 3 minutes of 100% O₂ or 8 vital capacity breaths.",
+      "Induction + paralytic (no ventilation between) — ketamine/etomidate + succinylcholine/rocuronium.",
+      "Capnography confirms placement — never rely on SpO₂ or auscultation alone.",
+      "If the view is Grade III–IV, switch to video laryngoscopy immediately — do not persist with direct laryngoscopy.",
+    ],
+    whenToCall: [
+      "Any patient requiring emergent intubation should have the entire airway team activated before the procedure.",
+      "Call anaesthesiology and ENT early if a difficult airway is anticipated.",
+    ],
+  },
+
+  {
+    slug: "chest-decompression",
+    title: "Needle Decompression & Chest Tube Insertion",
+    emoji: "🔧",
+    category: "Critical Care & Emergencies",
+    summary:
+      "Tension pneumothorax kills in minutes. This guide covers the life-saving needle decompression, the definitive chest tube insertion, and the clinical reasoning behind each step.",
+    readMinutes: 8,
+    sections: [
+      {
+        heading: "Tension pneumothorax — recognition",
+        body: [
+          "Tension pneumothorax is a clinical diagnosis, not a radiographic one. The accumulating air under pressure shifts mediastinal structures, compresses the heart and great vessels, and causes rapid cardiovascular collapse.",
+        ],
+        bullets: [
+          "Classic triad: respiratory distress, hypotension, and absent breath sounds on the affected side.",
+          "Tracheal deviation away from the affected side (late sign).",
+          "Distended neck veins (unless hypovolaemic, which masks them).",
+          "Cyanosis, agitation, altered consciousness.",
+        ],
+      },
+      {
+        heading: "Needle decompression (temporary relief)",
+        body: [
+          "Needle decompression converts a tension pneumothorax into a simple pneumothorax, buying time for definitive chest tube insertion. It is not a definitive treatment.",
+        ],
+        steps: [
+          "Identify the insertion site: 2nd intercostal space, mid-clavicular line on the affected side (or 4th/5th ICS, anterior axillary line in obese patients).",
+          "Clean the area with antiseptic.",
+          "Insert a 14–16 gauge IV catheter perpendicular to the chest wall, over the upper border of the rib (to avoid the neurovascular bundle).",
+          "You should hear/feel a rush of air — confirming the diagnosis.",
+          "Leave the cannula in place (remove the needle). The cannula acts as a one-way valve.",
+          "Prepare for chest tube insertion immediately.",
+        ],
+        callout: {
+          kind: "danger",
+          title: "Over the rib, not under",
+          text: "The intercostal neurovascular bundle runs along the lower border of each rib. Always pass the needle or tube over the upper border of the rib below to avoid catastrophic haemorrhage.",
+        },
+      },
+      {
+        heading: "Chest tube insertion (definitive treatment)",
+        steps: [
+          "Position: semi-recumbent (30–45°), arm abducted to 90° on the affected side.",
+          "Identify the site: 4th or 5th intercostal space, anterior axillary line — just above the rib.",
+          "Prepare the field: wide antiseptic drape, sterile gloves, local anaesthetic (1–2% lidocaine) to skin, subcutaneous tissue, and periosteum.",
+          "Make a 2–3 cm horizontal skin incision along the intercostal space.",
+          "Bluntly dissect with a curved haemostat through the intercostal muscles until you feel the pleura give way (a 'pop').",
+          "Slide your finger into the pleural space to confirm entry and sweep for adhesions.",
+          "Advance the chest tube (28–32 Fr for trauma; 20–24 Fr for pneumothorax) over the clamp, directing it posteriorly and superiorly.",
+          "Connect to an underwater seal drainage system and apply suction (20–25 cmH₂O).",
+          "Suture the tube in place and apply an occlusive dressing.",
+        ],
+      },
+      {
+        heading: "Post-insertion monitoring",
+        bullets: [
+          "Monitor for bubbling in the underwater seal (air leak) — should diminish over 24–48 hours.",
+          "Check the fluid character: serous (normal), bloody (haemothorax), or purulent (empyema).",
+          "Maintain the tube patency by milking/stripping only when ordered — routine stripping is now discouraged.",
+          "Chest X-ray within 1 hour to confirm position and re-expansion.",
+          "Watch for complications: re-expansion pulmonary oedema (especially if lung was collapsed > 3 days), infection, tube malposition, subcutaneous emphysema.",
+        ],
+      },
+      {
+        heading: "When to remove the chest tube",
+        bullets: [
+          "No air leak for 24 hours on water seal.",
+          "Lung fully expanded on chest X-ray.",
+          "Drainage output < 100–200 mL/day (for haemothorax).",
+          "Removal is performed on expiration orValsalva to prevent air re-entry.",
+        ],
+      },
+    ],
+    keyPoints: [
+      "Tension pneumothorax = clinical diagnosis — don't wait for X-ray.",
+      "Needle decompression: 2nd ICS, mid-clavicular line, over the rib — temporary only.",
+      "Chest tube: 4th/5th ICS, anterior axillary line, blunt dissection, underwater seal.",
+      "Always monitor for re-expansion oedema, air leak resolution, and infection.",
+    ],
+    whenToCall: [
+      "Clinical suspicion of tension pneumothorax in a trauma or critically ill patient — decompress immediately.",
+      "Persistent air leak or recurrent pneumothorax despite needle decompression.",
+    ],
+  },
+
+  {
+    slug: "central-venous-access",
+    title: "Central Venous Catheter Insertion",
+    emoji: "💉",
+    category: "Critical Care & Emergencies",
+    summary:
+      "Central venous access is a cornerstone of critical care — from vasopressor delivery to haemodialysis. Master the anatomy, technique, and complications that every intensivist must know.",
+    readMinutes: 7,
+    sections: [
+      {
+        heading: "Indications",
+        bullets: [
+          "Vasopressor or inotropic drug administration (noradrenaline, dopamine, dobutamine).",
+          "Rapid fluid resuscitation when peripheral access is inadequate.",
+          "Haemodialysis or apheresis access.",
+          "Central venous pressure (CVP) monitoring.",
+          "Total parenteral nutrition (TPN) or caustic drug administration.",
+          "Transvenous pacing wire insertion.",
+        ],
+      },
+      {
+        heading: "Site selection",
+        body: [
+          "The three main sites are the internal jugular vein (IJ), subclavian vein, and femoral vein. Each has distinct risk profiles.",
+        ],
+        bullets: [
+          "Internal jugular (preferred for most): lowest pneumothorax risk, easy ultrasound visualisation. Risk: carotid artery puncture, haematoma.",
+          "Subclavian: lowest infection rate, most comfortable long-term. Risk: pneumothorax (2–5%), subclavian artery injury, brachial plexus injury.",
+          "Femoral: fastest to access in arrest situations. Highest infection rate. Risk: femoral artery puncture, retroperitoneal haematoma.",
+        ],
+      },
+      {
+        heading: "Ultrasound-guided IJ insertion (Seldinger technique)",
+        steps: [
+          "Place the patient in Trendelenburg position (15–20° head-down) to engorge the IJ and reduce air embolism risk.",
+          "Use a high-frequency linear ultrasound probe. Identify the IJ (compressible, non-pulsatile) lateral to the carotid artery (pulsatile, non-compressible).",
+          "Prepare the field: full sterile drape, chlorhexidine skin prep, sterile gel for ultrasound.",
+          "Infiltrate local anaesthetic (1% lidocaine) to skin and subcutaneous tissue.",
+          "Under real-time ultrasound guidance, insert the introducer needle at a 30–45° angle to the skin, directed towards the ipsilateral nipple.",
+          "Aspirate venous blood (dark, non-pulsatile).",
+          "Thread the J-tip guidewire through the needle under continuous visualisation. The wire should advance easily without resistance.",
+          "Remove the needle, maintaining wire position. Dilate the tract with the dilator over the wire (one firm push).",
+          "Advance the central venous catheter over the wire to the pre-measured depth (right IJ: 13–15 cm, left IJ: 15–17 cm).",
+          "Remove the wire, aspirate all ports, flush with saline, and cap.",
+          "Confirm placement with chest X-ray: catheter tip should be at the cavo-atrial junction (T3–T4).",
+        ],
+      },
+      {
+        heading: "Complications and prevention",
+        bullets: [
+          "Pneumothorax: minimise by using ultrasound guidance, especially for subclavian access.",
+          "Arterial puncture: always check aspirated blood colour and pulsatility before dilating. If pulsatile → remove and reposition.",
+          "Air embolism: keep the patient Trendelenburg during insertion, occlude the needle hub between wire insertion and catheter advancement.",
+          "Catheter-related bloodstream infection (CRBSI): strict sterile technique, chlorhexidine skin prep, daily assessment of line necessity.",
+          "Malposition: always confirm with CXR — tip in the right atrium risks cardiac perforation.",
+        ],
+        callout: {
+          kind: "danger",
+          title: "Never dilate without confirming venous access",
+          text: "Dilating into the carotid artery is a catastrophic, preventable error. Always verify: dark blood, low pressure, non-pulsatile, and ideally ultrasound confirmation of the wire in the vein before dilation.",
+        },
+      },
+    ],
+    keyPoints: [
+      "Ultrasound-guided insertion is the standard of care — never blind stick.",
+      "Trendelenburg position during insertion reduces air embolism and increases vein size.",
+      "Confirm tip position on CXR: cavo-atrial junction (T3–T4).",
+      "Strict sterile technique and daily line necessity review prevent CRBSI.",
+    ],
+    whenToCall: [
+      "Any difficulty accessing the vein, or if the wire encounters resistance — stop and reassess.",
+      "Suspected arterial puncture during insertion — apply pressure and switch sites.",
+    ],
+  },
+
+  // ---- Surgical Procedures ----
+
+  {
+    slug: "laparoscopic-cholecystectomy",
+    title: "Laparoscopic Cholecystectomy: The Gold Standard",
+    emoji: "🔪",
+    category: "Surgical Procedures",
+    summary:
+      "Laparoscopic cholecystectomy is one of the most commonly performed abdominal surgeries worldwide. Understand the critical view of safety, the 'time-out' principles, and how to manage the dreaded bile duct injury.",
+    readMinutes: 9,
+    sections: [
+      {
+        heading: "Indications",
+        bullets: [
+          "Symptomatic gallstones (biliary colic, cholecystitis) — the most common indication.",
+          "Complications: empyema, perforation, gallstone ileus, choledocholithiasis.",
+          "Porcelain gallbladder (calcified wall — increased cancer risk).",
+          "Gallbladder polyps > 1 cm or growing.",
+          "Asymptomatic gallstones in high-risk patients (e.g., sickle cell disease, transplant recipients).",
+        ],
+      },
+      {
+        heading: "Pre-operative workup",
+        bullets: [
+          "LFTs, bilirubin, amylase/lipase, CBC, coagulation screen.",
+          "Right upper quadrant ultrasound: stones, gallbladder wall thickness, CBD diameter, pericholecystic fluid.",
+          "If CBD dilation > 6 mm or LFTs elevated: MRCP or EUS to exclude CBD stones before surgery.",
+          "ASA classification and anaesthetic assessment.",
+        ],
+      },
+      {
+        heading: "The Critical View of Safety (CVS)",
+        body: [
+          "The CVS is the single most important step in preventing bile duct injury. It is a deliberate, methodical dissection that definitively identifies the cystic duct and cystic artery before any structure is clipped or divided.",
+        ],
+        steps: [
+          "Dissect Calot's triangle: clear the hepatocystic triangle of fat and fibrous tissue.",
+          "Identify the cystic duct and cystic artery — only two structures should enter the gallbladder.",
+          "The hepatocystic triangle must be cleared so that the lower third of the gallbladder is separated from the liver bed, exposing the cystic plate.",
+          "The CVS is achieved when: (1) the hepatocystic triangle is cleared, (2) the lower third of the gallbladder is dissected off the cystic plate, and (3) only two structures (cystic duct and cystic artery) are seen entering the gallbladder.",
+          "If the CVS cannot be achieved (inflammation, fibrosis, unclear anatomy): STOP. Convert to open surgery. Do not proceed with clipping or cutting.",
+        ],
+        callout: {
+          kind: "danger",
+          title: "The '30-minute rule'",
+          text: "If you cannot achieve the Critical View of Safety within 30 minutes of dissection, convert to open. Bile duct injury risk increases exponentially with prolonged, frustrated dissection. There is no shame in converting — there is shame in injuring the bile duct.",
+        },
+      },
+      {
+        heading: "Key surgical steps",
+        steps: [
+          "General anaesthesia, supine position, left arm tucked. Surgeon stands on the patient's left.",
+          "Pneumoperitoneum: Veress needle or Hasson (open) technique. Target IAP: 12–14 mmHg.",
+          "4-port technique: 10 mm umbilical (camera), 10 mm epigastric (surgeon's right hand), 5 mm right midclavicular, 5 mm right anterior axillary.",
+          "Retract the gallbladder fundus cephalad with the lateral port grasper. Dissect Calot's triangle with the epigastric port.",
+          "Achieve the CVS. Clip the cystic duct with 2 clips proximally, 1 distally, and divide. Repeat for the cystic artery.",
+          "Remove the gallbladder from the liver bed using electrocautery, staying in the correct plane.",
+          "Extract the gallbladder through the umbilical port (use a retrieval bag if the stone burden is large or the gallbladder is gangrenous).",
+          "Irrigate the hepatocystic triangle, check the cystic duct stump for leaks, and inspect the liver bed for haemostasis.",
+          "Desufflate, close port sites (10 mm ports require fascial closure to prevent hernia).",
+        ],
+      },
+      {
+        heading: "Complications",
+        bullets: [
+          "Bile duct injury (0.3–0.5%): the most feared complication. Classification (Strasberg): Type A (cystic duct leak) to Type E (major duct transection). Managed with ERCP/stenting or Roux-en-Y hepaticojejunostomy.",
+          "Bleeding: cystic artery stump, liver bed, or port-site vessels. Usually self-limiting.",
+          "Bile leak: from the cystic duct stump or accessory ducts. Managed with ERCP and stenting.",
+          "Retained CBD stones: post-op ERCP for extraction.",
+          "Port-site hernia: close all 10 mm fascial defects.",
+          "Conversion to open: not a complication — it is sound judgement.",
+        ],
+      },
+    ],
+    keyPoints: [
+      "The Critical View of Safety is non-negotiable — achieve it before clipping anything.",
+      "Cannot achieve CVS within 30 minutes? Convert to open. No exceptions.",
+      "Clip the cystic duct only after definitive identification — never 'tentatively'.",
+      "Bile duct injury risk drops to near-zero with meticulous CVS technique.",
+    ],
+    whenToCall: [
+      "Haemodynamic instability during surgery — convert immediately.",
+      "Unclear anatomy or suspected bile duct injury — do not attempt laparoscopic repair without specialist help.",
+    ],
+  },
+
+  {
+    slug: "caesarean-section",
+    title: "Caesarean Section: Indications and Technique",
+    emoji: "👶",
+    category: "Surgical Procedures",
+    summary:
+      "Caesarean delivery is the most commonly performed major abdominal surgery in the world. Know the indications, the Pfannenstiel approach, and the critical steps that protect both mother and child.",
+    readMinutes: 8,
+    sections: [
+      {
+        heading: "Indications",
+        bullets: [
+          "Elective: breech presentation, placenta praevia, multiple gestation, previous C-section (depending on scar type), maternal request.",
+          "Emergency: fetal distress (category 1: delivery within 30 min of decision), failure to progress, cord prolapse, uterine rupture, placental abruption.",
+          "Relative: macrosomia, maternal HIV with high viral load, previous difficult vaginal delivery.",
+        ],
+      },
+      {
+        heading: "Pre-operative preparation",
+        bullets: [
+          "Consent, type and cross-match, IV access (14–16 G), bloods (FBC, G&S, coagulation).",
+          "Anaesthetic: spinal (preferred for elective) or general (emergency or contraindications to spinal).",
+          "Prophylactic antibiotics: single dose IV cephalosporin (cefazolin 2 g) within 60 min of skin incision.",
+          "Foley catheter: decompress the bladder to avoid injury during lower-segment incision.",
+          "Fetal heart monitoring until draping.",
+        ],
+      },
+      {
+        heading: "The Pfannenstiel incision and uterine entry",
+        steps: [
+          "Skin incision: Pfannenstiel — a curved transverse incision 2–3 cm above the pubic symphysis, approximately 12–15 cm long.",
+          "Dissect through the subcutaneous tissue. Identify and incise the rectus sheath transversely.",
+          "Separate the rectus muscles in the midline (do not cut them).",
+          "Bluntly open the paravesical peritoneum and identify the lower uterine segment.",
+          "Make a low transverse uterine incision (Kerr incision) in the lower segment, 1–2 cm above the bladder reflection.",
+          "Extend the incision laterally with bandage scissors (if needed) to avoid tearing into the uterine arteries.",
+          "Amniotomy: rupture the membranes. Note liquor character (clear, meconium-stained, blood-stained).",
+        ],
+        callout: {
+          kind: "warning",
+          title: "Bladder injury prevention",
+          text: "The bladder sits directly on the lower uterine segment. Always identify the bladder edge, push it down with a retractor, and ensure a safe distance before making the uterine incision. If adhesions are dense, consider a vertical (classical) uterine incision.",
+        },
+      },
+      {
+        heading: "Delivery of the baby",
+        steps: [
+          "Delivery of the head: introduce the hand under the head, lift it out of the incision. Ask the assistant to apply fundal pressure.",
+          "Deliver the shoulders and body. Note the time of delivery.",
+          "Cord clamping: immediate (for non-asphyxiated term infants) or delayed (30–60 seconds for preterm infants to improve haemoglobin and blood pressure).",
+          "Hand the baby to the paediatric team for assessment.",
+          "Administer oxytocin (5–10 IU IV or IM) after delivery of the placenta to reduce haemorrhage.",
+        ],
+      },
+      {
+        heading: "Delivery of the placenta and closure",
+        steps: [
+          "Allow the placenta to separate spontaneously (avoid cord traction, which can cause inversion).",
+          "Deliver the placenta by controlled cord traction with counter-pressure on the uterus.",
+          "Inspect the placenta for completeness (retained products cause haemorrhage).",
+          "Close the uterine incision in two layers with a continuous locking suture (vicryl or chromic catgut).",
+          "Check for haemostasis at the incision site, the bladder edge, and the round ligaments.",
+          "Close the peritoneum (some surgeons skip this — no proven benefit).",
+          "Close the rectus sheath with a continuous suture (PDS or nylon).",
+          "Subcuticular skin closure or staples.",
+        ],
+      },
+      {
+        heading: "Post-operative care and complications",
+        bullets: [
+          "Thromboprophylaxis: compression stockings + LMWH (especially if Caesarean was emergency or prolonged immobilisation).",
+          "Monitor for post-partum haemorrhage: the leading cause of maternal mortality worldwide.",
+          "Wound care: keep dry for 24 hours, then normal hygiene. Remove staples/sutures at 5–7 days.",
+          "Encourage early mobilisation and breastfeeding.",
+          "Complications: wound infection (3–5%), endometritis, bladder injury, ureter injury, bowel injury (rare), venous thromboembolism.",
+          "Subsequent pregnancies: after 1 Caesarean, VBAC (vaginal birth after Caesarean) is attempted in ~60% of cases. Trial of labour after Caesarean (TOLAC) requires informed consent and continuous fetal monitoring.",
+        ],
+      },
+    ],
+    keyPoints: [
+      "Pfannenstiel incision → transverse rectus sheath → blunt muscle separation → low uterine segment.",
+      "Bladder injury is preventable: always identify and retract the bladder before uterine incision.",
+      "Two-layer uterine closure with continuous locking suture for haemostasis.",
+      "VBAC is an option after one lower-segment Caesarean — discuss risks and benefits with the patient.",
+    ],
+    whenToCall: [
+      "Category 1 Caesarean (fetal distress): decision to delivery within 30 minutes — activate the full team immediately.",
+      "Uncontrolled haemorrhage despite uterotonics — consider balloon tamponade, B-Lynch suture, or hysterectomy.",
+    ],
+  },
+
+  // ---- Clinical Case Studies ----
+
+  {
+    slug: "ami-case-study",
+    title: "Acute STEMI: A Clinical Case Study",
+    emoji: "🏥",
+    category: "Clinical Case Studies",
+    summary:
+      "A 58-year-old male presents with crushing chest pain and diaphoresis. Walk through the complete clinical reasoning — from ECG interpretation to primary PCI — as if you were the attending physician.",
+    readMinutes: 7,
+    sections: [
+      {
+        heading: "The presentation",
+        body: [
+          "Mr. K, a 58-year-old male with hypertension and type 2 diabetes, is brought to the emergency department by ambulance. He describes a sudden onset of crushing, retrosternal chest pain radiating to his left arm, accompanied by profuse sweating and nausea. The pain started 45 minutes ago while climbing stairs.",
+          "Vitals: BP 90/60 mmHg, HR 102 bpm (regular), SpO₂ 94% on room air, RR 22/min, temperature 36.8°C.",
+        ],
+      },
+      {
+        heading: "Initial assessment and ECG",
+        steps: [
+          "Obtain a 12-lead ECG within 10 minutes of arrival — this is the single most important diagnostic step.",
+          "ECG findings: ST-segment elevation in leads II, III, aVF (inferior leads), with reciprocal ST depression in leads I and aVL. Right ventricular involvement confirmed by ST elevation in V4R.",
+          "Interpretation: Inferior STEMI with RV involvement — likely occlusion of the right coronary artery (RCA).",
+          "Activate the catheterisation lab for primary PCI (door-to-balloon time goal: < 90 minutes).",
+        ],
+      },
+      {
+        heading: "Immediate management (before cath lab)",
+        steps: [
+          "Aspirin 300 mg chewed immediately.",
+          "Ticagrelor 180 mg loading dose (or clopidogrel 300 mg if ticagrelor unavailable).",
+          "Heparin 70 IU/kg IV bolus.",
+          "Morphine 2–4 mg IV for pain (use cautiously — can cause hypotension and respiratory depression).",
+          "IV fluids: cautious fluid bolus (250 mL NS) — RV infarction makes the right ventricle preload-dependent. Aggressive fluids can cause pulmonary oedema.",
+          "Avoid nitrates — they reduce preload and can cause catastrophic hypotension in RV infarction.",
+        ],
+        callout: {
+          kind: "danger",
+          title: "The inferior STEMI trap",
+          text: "Nitroglycerin is contraindicated in inferior STEMI with RV involvement. The right ventricle is entirely preload-dependent; nitrates can cause immediate cardiovascular collapse. Always check V4R before giving nitrates in inferior STEMI.",
+        },
+      },
+      {
+        heading: "Primary PCI findings",
+        body: [
+          "The patient is transferred to the cath lab. Coronary angiography reveals a 100% thrombotic occlusion of the mid-RCA. The left coronary system shows minor disease.",
+        ],
+        steps: [
+          "Wire the occlusion with a 0.014-inch guidewire.",
+          "Aspirate thrombus with an export catheter.",
+          "Predilate with a 2.0 × 15 mm semi-compliant balloon.",
+          "Deploy a 3.0 × 28 mm drug-eluting stent (DES) at 12 atm.",
+          "Post-dilate with a 3.5 × 12 mm non-compliant balloon at 16 atm for optimal expansion.",
+          "Final angiogram: TIMI 3 flow, no residual stenosis, no dissection.",
+        ],
+      },
+      {
+        heading: "Post-PCI care and recovery",
+        bullets: [
+          "CCU monitoring: continuous telemetry, hourly vitals, daily troponin trending.",
+          "Dual antiplatelet therapy (DAPT): aspirin 75 mg lifelong + ticagrelor 90 mg BD for 12 months.",
+          "Start beta-blocker (metoprolol) within 24 hours if haemodynamically stable.",
+          "Start ACE inhibitor (ramipril) for LV protection.",
+          "Statin (atorvastatin 80 mg) for plaque stabilisation.",
+          "Echocardiography at 48 hours: inferior wall hypokinesis confirmed, EF 45%.",
+          "Cardiac rehabilitation referral before discharge.",
+        ],
+      },
+      {
+        heading: "Clinical pearls from this case",
+        bullets: [
+          "Door-to-ECG: < 10 minutes. Door-to-balloon: < 90 minutes. These time targets save myocardium.",
+          "Inferior STEMI? Always check V4R for RV involvement before giving nitrates.",
+          "RV infarction = preload-dependent heart. Fluids help; nitrates hurt.",
+          "DAPT compliance is the single biggest modifiable risk factor for stent thrombosis.",
+          "Diabetic patients often have delayed presentation and atypical symptoms — a high index of suspicion is crucial.",
+        ],
+      },
+    ],
+    keyPoints: [
+      "ECG within 10 minutes — ST elevation in inferior leads + V4R = inferior STEMI with RV involvement.",
+      "No nitrates in RV infarction — preload dependence causes catastrophic hypotension.",
+      "Primary PCI: wire, aspirate, predilate, DES, post-dilate. TIMI 3 flow is the goal.",
+      "DAPT, beta-blocker, ACE inhibitor, statin, and cardiac rehab are the evidence-based bundle.",
+    ],
+    whenToCall: [
+      "Any STEMI: activate the cath lab immediately — door-to-balloon < 90 minutes.",
+      "Hypotension in inferior STEMI: stop nitrates, give fluid bolus, check for RV involvement.",
+    ],
+  },
+
+  {
+    slug: "sepsis-case-study",
+    title: "Sepsis Recognition: A Clinical Case Study",
+    emoji: "🔬",
+    category: "Clinical Case Studies",
+    summary:
+      "A 72-year-old woman presents with confusion and a fever. Through this case, learn to recognise the subtle signs of sepsis, apply the qSOFA and SOFA scores, and execute the Surviving Sepsis Campaign hour-1 bundle.",
+    readMinutes: 7,
+    sections: [
+      {
+        heading: "The presentation",
+        body: [
+          "Mrs. T, a 72-year-old woman with COPD and type 2 diabetes, is brought in by her daughter who says 'she's just not herself.' The patient has been increasingly confused over the past 12 hours. She had a fever at home (38.9°C) and has been refusing food.",
+          "Vitals: BP 88/52 mmHg, HR 118 bpm (regular), RR 24/min, SpO₂ 91% on room air, temperature 39.2°C, GCS 13 (E3 V4 M6).",
+        ],
+      },
+      {
+        heading: "Recognising sepsis: qSOFA and SOFA",
+        body: [
+          "Sepsis is life-threatening organ dysfunction caused by a dysregulated host response to infection. Early recognition is the difference between survival and death.",
+        ],
+        bullets: [
+          "qSOFA (quick SOFA — bedside screening): altered mentation (GCS < 15) ✓, RR ≥ 22 ✓, SBP ≤ 100 mmHg ✓. Score 2/3 = high suspicion for sepsis.",
+          "SOFA (Sequential Organ Failure Assessment): a more detailed scoring system assessing PaO₂/FiO₂, platelets, bilirubin, MAP/vasopressors, GCS, and creatinine. A ΔSOFA ≥ 2 = sepsis.",
+          "Mrs. T's qSOFA: 3/3. This is sepsis until proven otherwise.",
+        ],
+      },
+      {
+        heading: "The hour-1 bundle (Surviving Sepsis Campaign 2021)",
+        body: [
+          "The hour-1 bundle mandates that the following interventions be initiated within 60 minutes of sepsis recognition. Every hour of delay increases mortality by approximately 4–8%.",
+        ],
+        steps: [
+          "Measure lactate level. Re-measure within 2–4 hours if initially > 2 mmol/L. Lactate > 4 mmol/L = severe sepsis.",
+          "Obtain blood cultures (at least 2 sets, different sites) BEFORE antibiotics — but do not delay antibiotics for cultures if obtaining them would cause > 45 min delay.",
+          "Administer broad-spectrum IV antibiotics. Empiric choice: piperacillin-tazobactam or meropenem (for suspected intra-abdominal or healthcare-associated infection). Add vancomycin if MRSA risk.",
+          "Begin rapid IV crystalloid (30 mL/kg) for hypotension or lactate ≥ 4 mmol/L. Use balanced solutions (Ringer's lactate) over normal saline when possible.",
+          "Start vasopressors (noradrenaline) if MAP < 65 mmHg despite fluid resuscitation. Target MAP ≥ 65 mmHg.",
+        ],
+        callout: {
+          kind: "danger",
+          title: "The lactate trap",
+          text: "A 'normal' lactate (≤ 2 mmol/L) does not exclude sepsis — elderly patients, those on beta-blockers, and those with liver disease may have blunted lactate responses. A rising lactate is more alarming than an absolute value. If clinical suspicion is high, treat regardless of lactate.",
+        },
+      },
+      {
+        heading: "Mrs. T's management",
+        steps: [
+          "Blood cultures drawn from both antecubital fossae.",
+          "Lactate: 4.8 mmol/L — severe sepsis.",
+          "Meropenem 1 g IV + vancomycin 1 g IV (empiric — awaiting culture results).",
+          "30 mL/kg Ringer's lactate initiated (2.1 L for her 70 kg weight).",
+          "Noradrenaline infusion started at 0.1 mcg/kg/min to maintain MAP ≥ 65 mmHg.",
+          "Source control: urine culture reveals E. coli > 10⁵ CFU/mL — a urinary tract infection. Foley catheter placed for drainage.",
+          "Repeat lactate at 4 hours: 2.1 mmol/L — trending down. Good response.",
+        ],
+      },
+      {
+        heading: "Post-resuscitation and ICU transfer",
+        bullets: [
+          "Transfer to ICU for ongoing monitoring and organ support.",
+          "De-escalation of antibiotics when sensitivities return (Day 2: switch to ciprofloxacin + nitrofurantoin).",
+          "Fluid balance: net negative after initial resuscitation — avoid fluid overload.",
+          "Daily SOFA scoring to track organ function recovery.",
+          "Glucose control: target 7.8–10 mmol/L (insulin infusion if needed).",
+          "DVT prophylaxis (LMWH) and stress ulcer prophylaxis (PPI).",
+          "Mrs. T was extubated on Day 3 and discharged to the ward on Day 5. Final diagnosis: urosepsis with transient AKI.",
+        ],
+      },
+    ],
+    keyPoints: [
+      "qSOFA ≥ 2 at bedside: altered mentation, RR ≥ 22, SBP ≤ 100 — suspect sepsis.",
+      "Hour-1 bundle: lactate, cultures, antibiotics, fluids, vasopressors — within 60 minutes.",
+      "Lactate > 4 mmol/L = severe sepsis. Rising lactate = worsening. Falling lactate = responding.",
+      "Source control is as important as antibiotics — find and treat the source.",
+    ],
+    whenToCall: [
+      "Any patient with suspected sepsis and qSOFA ≥ 2 — activate sepsis protocol immediately.",
+      "Lactate > 4 mmol/L or MAP < 65 despite fluids — ICU transfer for vasopressor support.",
+    ],
+  },
+
+  // ---- Medical News & Updates ----
+
+  {
+    slug: "ai-medical-imaging",
+    title: "AI in Medical Imaging: Current Applications",
+    emoji: "🤖",
+    category: "Medical News & Updates",
+    summary:
+      "Artificial intelligence is transforming radiology, pathology, and dermatology. Explore the FDA-cleared AI tools that are already in clinical use, the evidence behind them, and the limitations every clinician should understand.",
+    readMinutes: 6,
+    sections: [
+      {
+        heading: "The landscape of AI in healthcare",
+        bullets: [
+          "Over 500 AI/ML-enabled medical devices have received FDA clearance as of 2024, with radiology accounting for ~75% of approvals.",
+          "AI in medicine is not a future concept — it is a present clinical tool, already improving diagnostic accuracy, reducing workload, and enabling earlier disease detection.",
+          "The key distinction: AI augments clinician decision-making. It does not replace it. Every AI output requires clinical interpretation.",
+        ],
+      },
+      {
+        heading: "Radiology: the leading edge",
+        body: [
+          "Radiology has the highest concentration of FDA-cleared AI tools. These systems analyse medical images (X-rays, CTs, MRIs) to detect abnormalities, often with sensitivity matching or exceeding human radiologists.",
+        ],
+        bullets: [
+          "Chest X-ray AI: Tools like Lunit INSIGHT CXR detect 14+ thoracic abnormalities (pneumothorax, pleural effusion, cardiomegaly, pulmonary nodules) with AUC > 0.95. Integrated into PACS as a 'second reader.'",
+          "Mammography AI: Systems like Transpara (ScreenPoint Medical) classify mammograms into risk scores (1–10), reducing recall rates by up to 25% while maintaining cancer detection rates.",
+          "Head CT AI: Viz.ai automatically detects large vessel occlusion (LVO) strokes and alerts the neurointerventional team, reducing door-to-groin time by 30+ minutes.",
+          "CT pulmonary angiography AI: Aidoc detects pulmonary embolism and flags studies for immediate radiologist review, reducing time to diagnosis.",
+        ],
+      },
+      {
+        heading: "Pathology and dermatology",
+        bullets: [
+          "Digital pathology AI: Paige AI (FDA-cleared) detects prostate cancer in needle biopsies with AUC 0.98. Pathologists use it as a screening tool to prioritise cases.",
+          "Dermatology AI: SkinVision and DermaSensor help primary care clinicians triage suspicious skin lesions, reducing unnecessary referrals while maintaining sensitivity for melanoma.",
+          "Retinal screening AI: IDx-DR (now Digital Diagnostics) was the first FDA-cleared autonomous AI diagnostic — it detects diabetic retinopathy without a clinician interpreting the image, enabling screening in primary care.",
+        ],
+      },
+      {
+        heading: "Limitations and ethical considerations",
+        bullets: [
+          "Bias: AI trained predominantly on one demographic may perform poorly on others. Skin lesion AI trained on lighter skin has lower sensitivity for melanoma on darker skin.",
+          "Explainability: many deep learning models are 'black boxes' — they give outputs without reasoning, making it hard for clinicians to understand why a decision was made.",
+          "Regulation: FDA clearance evaluates specific intended uses. Off-label use of AI tools is not validated.",
+          "Clinical validation: real-world performance often lags behind published trial results. External validation studies are essential before clinical deployment.",
+          "Medicolegal liability: if an AI tool misses a diagnosis, who is responsible — the clinician, the hospital, or the AI developer? This remains an evolving legal landscape.",
+        ],
+        callout: {
+          kind: "tip",
+          title: "The 'AI-assisted, not AI-dependent' principle",
+          text: "AI tools should be treated like a highly sensitive screening test — they flag abnormalities for human review. They are not a substitute for clinical judgement, and they should never be the sole basis for a treatment decision.",
+        },
+      },
+      {
+        heading: "What this means for medical students",
+        bullets: [
+          "Understanding AI in medicine is no longer optional — it is becoming part of the standard curriculum at many medical schools.",
+          "You will not need to code AI models, but you will need to understand their outputs, limitations, and appropriate use.",
+          "Familiarise yourself with the concept of 'clinical decision support' — AI as an assistant, not a replacement.",
+          "Stay informed about FDA clearances in your specialty. Knowing which AI tools are available can improve your clinical practice.",
+        ],
+      },
+      {
+        heading: "How to evaluate an AI tool clinically",
+        steps: [
+          "Identify the specific clinical task: screening, triage, diagnosis, or prognosis.",
+          "Check the FDA/CE clearance: is the device cleared for this exact intended use?",
+          "Review external validation: has it been tested on a population similar to yours?",
+          "Assess integration: does it plug into your PACS or EHR, or require a separate platform?",
+          "Audit performance post-deployment: track sensitivity, specificity, and false-positive rates for the first 6 months.",
+          "Establish a human-in-the-loop protocol: define how AI outputs will be reviewed, documented, and communicated.",
+        ],
+        callout: {
+          kind: "tip",
+          title: "The validation checklist",
+          text: "Before deploying any AI tool: (1) peer-reviewed external validation, (2) FDA/CE clearance for the intended use, (3) integration testing with your IT infrastructure, and (4) a 6-month post-deployment audit plan.",
+        },
+      },
+    ],
+    keyPoints: [
+      "500+ FDA-cleared AI medical devices already exist — this is a present reality, not a future concept.",
+      "Radiology leads: chest X-ray, mammography, head CT, and PE detection AI are in clinical use.",
+      "AI augments — it does not replace. Every output requires clinical interpretation.",
+      "Bias, explainability, and liability are the three critical limitations every clinician should understand.",
+    ],
+    whenToCall: [
+      "AI tools are clinical decision support — they do not replace the need for clinical assessment.",
+      "When using AI-assisted diagnostics, always correlate with clinical findings, history, and other investigations.",
+    ],
+  },
+
+  {
+    slug: "mrna-therapeutics",
+    title: "mRNA Therapeutics: Beyond COVID-19 Vaccines",
+    emoji: "🧬",
+    category: "Medical News & Updates",
+    summary:
+      "The success of mRNA COVID-19 vaccines accelerated a therapeutic platform with enormous potential. Explore how mRNA technology is being applied to cancer, rare diseases, and personalised medicine.",
+    readMinutes: 6,
+    sections: [
+      {
+        heading: "The mRNA platform: how it works",
+        body: [
+          "mRNA therapeutics deliver synthetic messenger RNA into cells, instructing them to produce specific proteins. Unlike traditional vaccines or gene therapies, mRNA does not enter the nucleus and does not alter DNA.",
+        ],
+        bullets: [
+          "Lipid nanoparticles (LNPs) encapsulate the mRNA and protect it from degradation.",
+          "Once inside the cell, the mRNA is translated by ribosomes into the target protein.",
+          "The protein is displayed on the cell surface (for vaccines) or secreted (for therapeutic proteins).",
+          "The mRNA is degraded within hours — the effect is temporary and self-limiting.",
+          "Key innovations: nucleoside modifications (N1-methylpseudouridine) reduce immune activation; codon optimisation increases protein yield; LNP engineering improves tissue targeting.",
+        ],
+      },
+      {
+        heading: "Oncology: the most advanced non-vaccine application",
+        bullets: [
+          "Personalised cancer vaccines: BioNTech's autogene cevumeran (BNT122) encodes up to 20 tumour-specific neoantigens. Phase II trial in pancreatic cancer showed 50% recurrence reduction at 18 months.",
+          "Moderna's mRNA-4157 (V940) + pembrolizumab: Phase III trial (KEYNOTE-942) in melanoma showed 49% reduction in recurrence or death vs pembrolizumab alone.",
+          "Mechanism: the mRNA vaccine trains the patient's immune system to recognise and attack cancer cells bearing the specific neoantigens.",
+          "Intratumoral mRNA: injection directly into tumours to stimulate local immune responses (e.g., mRNA-2752 for solid tumours).",
+        ],
+      },
+      {
+        heading: "Rare diseases and protein replacement",
+        bullets: [
+          "Cystic fibrosis: mRNA encoding CFTR protein delivered via inhaled LNPs to the lungs. Early trials show CFTR protein expression in airway epithelial cells.",
+          "Propionic acidaemia: mRNA encoding the missing enzyme (PCCB) delivered via IV LNPs. Phase I/II trials show reduced metabolic crises.",
+          "Methylmalonic acidaemia: similar approach — mRNA encoding methylmalonyl-CoA mutase.",
+          "Key advantage over gene therapy: mRNA is transient, so dosing can be adjusted or stopped without permanent genetic modification.",
+        ],
+      },
+      {
+        heading: "Infectious diseases beyond COVID-19",
+        bullets: [
+          "Influenza: Moderna's mRNA flu vaccine (mRNA-1010) showed superior haemagglutination inhibition titres vs standard flu vaccines in Phase III trials.",
+          "RSV: mRNA-1345 (Moderna) showed 83.7% efficacy against RSV lower respiratory tract disease in adults ≥ 60 years.",
+          "CMV: Moderna's mRNA-1647 showed 90%+ efficacy in women of childbearing age — the first CMV vaccine candidate to reach Phase III.",
+          "Combination vaccines: mRNA-1083 combines COVID-19 and influenza vaccines in a single shot — Phase III results are pending.",
+          "HIV, tuberculosis, malaria: early-stage mRNA vaccine candidates are in development, leveraging the platform's speed and adaptability.",
+        ],
+      },
+      {
+        heading: "Challenges and future directions",
+        bullets: [
+          "Cold chain: most mRNA vaccines require ultra-cold storage (–20°C to –80°C), limiting distribution in low-resource settings. Thermostable formulations are in development.",
+          "Repeat dosing: mRNA's transient nature means boosters are required. For chronic diseases, this is a logistical challenge.",
+          "Immune tolerance: repeated mRNA administration may trigger anti-drug antibodies that reduce efficacy over time.",
+          "Tissue targeting: current LNPs primarily target the liver. Targeting other organs (lungs, brain, muscle) is an active area of research.",
+          "Cost: mRNA manufacturing is faster and more scalable than traditional biologics, but current per-dose costs remain high for many applications.",
+        ],
+        callout: {
+          kind: "tip",
+          title: "The platform advantage",
+          text: "The same manufacturing process that produced a COVID-19 vaccine in 11 months can theoretically produce a cancer vaccine in weeks. mRNA's 'plug-and-play' nature — where only the genetic sequence changes — makes it the most adaptable therapeutic platform in modern medicine.",
+        },
+      },
+      {
+        heading: "How to evaluate mRNA therapeutics in trials",
+        steps: [
+          "Identify the target antigen or protein: what is the mRNA encoding, and is it a validated therapeutic target?",
+          "Review the LNP delivery system: which lipid nanoparticle formulation is used, and which tissue does it target?",
+          "Assess immunogenicity: does the therapeutic elicit neutralising antibodies, T-cell responses, or both?",
+          "Evaluate safety: monitor for injection-site reactions, fever, myalgia, and rare events (myocarditis, anaphylaxis).",
+          "Consider manufacturing scalability: can the mRNA and LNP components be produced at scale with consistent quality?",
+          "Compare against standard of care: does the mRNA therapeutic offer a clinically meaningful advantage over existing treatments?",
+        ],
+      },
+    ],
+    keyPoints: [
+      "mRNA instructs cells to produce specific proteins — it does not enter the nucleus or alter DNA.",
+      "Personalised cancer vaccines (BioNTech, Moderna) are in Phase II/III trials with promising results.",
+      "Beyond vaccines: rare disease protein replacement, combination infectious disease vaccines, and intratumoral therapy.",
+      "Key challenges: cold chain, repeat dosing, immune tolerance, and tissue targeting beyond the liver.",
+    ],
+    whenToCall: [
+      "mRNA therapeutics are largely investigational — always check clinical trial status before discussing with patients.",
+      "For oncology: personalised cancer vaccines are not yet standard of care but are available in clinical trials at major cancer centres.",
+    ],
+  },
+  // ---- Foundations (tabbed educational content, linked from Dashboard/Basics) ----
+
   {
     slug: "cardiac-cycle",
     title: "The Cardiac Cycle",
     emoji: "💓",
-    category: "Physiology",
+    category: "Foundations",
     summary:
-      "The cardiac cycle is the sequence of events that occurs during one complete heartbeat — from the moment the atria contract to the moment the ventricles relax. Understanding it is the foundation of cardiology.",
+      "The cardiac cycle is the sequence of events that occurs during one complete heartbeat. Understanding it is the foundation of cardiology.",
     readMinutes: 8,
-    sections: [
-      {
-        heading: "What is the cardiac cycle?",
-        body: [
-          "Every beat of your heart is a perfectly orchestrated event. The cardiac cycle describes the complete sequence of mechanical events — contraction and relaxation — that the heart goes through to pump blood to the lungs and the rest of the body.",
-          "A single cardiac cycle lasts about 0.8 seconds at a normal resting heart rate of 75 beats per minute. During that fraction of a second, the heart must fill with blood, contract to eject it, and relax to refill — repeating this roughly 100,000 times every day.",
-        ],
-      },
-    ],
+    sections: [],
     keyPoints: [],
     whenToCall: [],
     tabs: [
@@ -840,181 +1625,72 @@ export const ARTICLES: Article[] = [
           {
             heading: "What is the cardiac cycle?",
             body: [
-              "The cardiac cycle is the series of events that happen during one heartbeat. Think of it as a single pump-action: the heart fills with blood, squeezes it out, and then relaxes to fill again. This entire cycle repeats about 75 times per minute at rest.",
-              "The cycle is divided into two major phases: when the heart is actively squeezing (systole) and when it is relaxing and filling (diastole). Both the upper chambers (atria) and the lower chambers (ventricles) have their own systole and diastole — they work in a staggered, coordinated rhythm.",
+              "Every beat of your heart is a perfectly orchestrated event. The cardiac cycle describes the complete sequence of mechanical events that the heart goes through to pump blood.",
+            ],
+            steps: [
+              "Atrial systole: the atria contract, pushing the last 20% of blood into the ventricles.",
+              "Ventricular systole: the ventricles contract, the AV valves close (S1 sound), and blood is ejected into the aorta and pulmonary artery.",
+              "Complete cardiac diastole: both chambers relax, the semilunar valves close (S2 sound), and the heart refills.",
             ],
           },
           {
-            heading: "Key Terms You Must Know",
-            bullets: [
-              "Systole — The phase when a heart chamber contracts (squeezes) to pump blood out. When you hear 'systolic blood pressure,' it's the pressure in the arteries during ventricular contraction (typically 120 mmHg in a healthy adult).",
-              "Diastole — The phase when a heart chamber relaxes and fills with blood. 'Diastolic blood pressure' is the pressure in the arteries during this resting phase (typically 80 mmHg).",
-              "Cardiac Output (CO) — The volume of blood the heart pumps in one minute. CO = Heart Rate × Stroke Volume. At rest, a healthy heart pumps about 5 litres per minute.",
-              "Stroke Volume (SV) — The amount of blood pumped out by the left ventricle in a single beat (about 70 mL).",
-              "Heart Rate (HR) — The number of beats per minute (typically 60–100 bpm at rest).",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Remember this formula",
-              text: "Cardiac Output = Heart Rate × Stroke Volume. If either goes up (exercise, fever, or anxiety), the heart works harder to maintain adequate blood flow.",
-            },
-          },
-          {
-            heading: "What happens during one beat?",
+            heading: "Heart sounds explained",
             body: [
-              "Here's the simplest way to think about it:",
+              "S1 ('lub') is caused by the closure of the AV valves at the start of ventricular systole. S2 ('dub') is caused by the closure of the semilunar valves at the start of diastole.",
             ],
             bullets: [
-              "Step 1 — The atria contract first, pushing the last bit of blood into the ventricles (Atrial Systole).",
-              "Step 2 — The ventricles then contract powerfully, sending blood to the lungs via the pulmonary artery and to the body via the aorta (Ventricular Systole).",
-              "Step 3 — Everything relaxes briefly, and blood flows passively back into the atria and ventricles, preparing for the next beat (Complete Cardiac Diastole).",
+              "S1 is best heard at the apex; S2 at the base of the heart.",
+              "Murmurs indicate valve dysfunction: systolic murmurs suggest stenosis or regurgitation.",
             ],
           },
           {
-            heading: "Heart Sounds: What are 'Lub' and 'Dub'?",
-            body: [
-              "Every time you hear a heartbeat, you're actually hearing the sounds made by the heart valves closing:",
-            ],
+            heading: "Key terms for the cardiac cycle",
             bullets: [
-              "S1 ('Lub') — The first heart sound, caused by the closing of the mitral and tricuspid valves at the start of ventricular systole. It marks the beginning of the ventricular contraction.",
-              "S2 ('Dub') — The second heart sound, caused by the closing of the aortic and pulmonary valves at the end of ventricular systole. It marks the beginning of diastole.",
-              "These sounds are the basis of cardiac auscultation — doctors use a stethoscope to listen for abnormal sounds (murmurs) that might indicate valve problems.",
-            ],
-          },
-          {
-            heading: "Why does the cardiac cycle matter?",
-            bullets: [
-              "It's the foundation of understanding blood pressure, heart murmurs, heart failure, and many cardiac diseases.",
-              "Every medical student must know the pressure changes, valve actions, and volume changes during each phase.",
-              "It connects to other systems: the lungs (pulmonary circulation), the kidneys (fluid balance), and the brain (perfusion).",
+              "Stroke volume: the volume of blood ejected per beat (typically 70 mL).",
+              "Cardiac output: stroke volume × heart rate (typically 5 L/min).",
+              "Ejection fraction: the percentage of blood ejected per beat (normal 55-70%).",
             ],
           },
         ],
         keyPoints: [
-          "Systole = contraction (pumping). Diastole = relaxation (filling).",
-          "Cardiac Output = Heart Rate × Stroke Volume. Normal CO is ~5 L/min.",
-          "S1 ('Lub') = mitral/tricuspid valves close. S2 ('Dub') = aortic/pulmonary valves close.",
-          "One complete cardiac cycle lasts ~0.8 seconds at 75 bpm.",
+          "The cardiac cycle has three main phases: atrial systole, ventricular systole, and complete diastole.",
+          "Heart sounds S1 and S2 are caused by valve closures, not valve openings.",
         ],
       },
       {
-        id: "indepth",
+        id: "in-depth",
         label: "In-Depth",
         icon: "🔬",
         sections: [
           {
-            heading: "Phase 1: Atrial Systole (0.1 s)",
+            heading: "Pressure changes in the cardiac cycle",
             body: [
-              "Atrial systole begins when the SA node (the heart's natural pacemaker) fires, causing both atria to contract simultaneously. This 'atrial kick' pushes the final 20–30% of blood into the already partially-filled ventricles.",
-              "During this phase:",
+              "During atrial systole, atrial pressure exceeds ventricular pressure, driving the final filling phase. During ventricular systole, ventricular pressure rises sharply, closing the AV valves and opening the semilunar valves.",
             ],
-            bullets: [
-              "Atrial pressure rises briefly above ventricular pressure, forcing the mitral and tricuspid valves open.",
-              "Ventricular volume increases from about 130 mL (end-diastolic volume, or EDV) to its maximum.",
-              "The ECG shows the P wave, which represents atrial depolarization — the electrical signal that triggers the contraction.",
-              "The aortic and pulmonary valves remain closed during this phase because ventricular pressure is still lower than arterial pressure.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Clinical pearl: Atrial fibrillation",
-              text: "In atrial fibrillation, the atria quiver instead of contracting. The 'atrial kick' is lost, reducing ventricular filling by 15–25%. This is why patients with AF can feel fatigued — their cardiac output drops even if the heart rate seems normal.",
-            },
-          },
-          {
-            heading: "Phase 2: Ventricular Systole (0.3 s)",
-            body: [
-              "Ventricular systole is the powerful phase where the ventricles contract and eject blood into the great arteries. It is divided into two sub-phases:",
-            ],
-            bullets: [
-              "Isovolumetric contraction (early) — All four valves are momentarily closed. The ventricles are contracting, but the pressure hasn't yet risen enough to open the aortic or pulmonary valves. Ventricular pressure rises rapidly (from ~5 to ~80 mmHg in the left ventricle) with no change in volume. This is when S1 ('Lub') is heard.",
-              "Ejection phase — Once ventricular pressure exceeds arterial pressure, the aortic and pulmonary valves open. Blood is ejected forcefully: about 70 mL (stroke volume) leaves each ventricle. The ejection is not complete — about 50 mL (end-systolic volume, or ESV) remains.",
-              "During ejection, the ECG shows the QRS complex (ventricular depolarization) followed by the T wave (ventricular repolarization).",
-            ],
-          },
-          {
-            heading: "Phase 3: Complete Cardiac Diastole (0.4 s)",
-            body: [
-              "Diastole is the longest phase of the cardiac cycle and is when the heart rests and refills. It is critical for coronary perfusion — the heart muscle itself receives most of its blood supply during diastole.",
-            ],
-            bullets: [
-              "Isovolumetric relaxation — The ventricles begin to relax. All four valves are closed again. Ventricular pressure drops rapidly. This is when S2 ('Dub') is heard as the aortic and pulmonary valves snap shut.",
-              "Rapid filling — Once ventricular pressure falls below atrial pressure, the mitral and tricuspid valves open. Blood that has been pooling in the atria flows rapidly into the ventricles, filling them to about 70% of their final volume.",
-              "Diastasis (slow filling) — The remaining filling happens slowly as blood returns from the veins through the atria into the ventricles. This phase is shortened when heart rate increases.",
-              "End-diastole — The atria contract (atrial systole again), completing ventricular filling and restarting the cycle.",
-            ],
-          },
-          {
-            heading: "Pressure Changes: The Wiggers Diagram",
-            body: [
-              "The Wiggers diagram is the classic visual representation of the cardiac cycle. It plots pressure, volume, ECG, and heart sounds against time. Key pressure relationships to remember:",
-            ],
-            bullets: [
-              "Left atrial pressure peaks at about 10 mmHg during atrial systole, then drops as blood flows into the ventricle.",
-              "Left ventricular pressure rises from ~5 mmHg (diastole) to ~120 mmHg (systole) — a 24-fold increase.",
-              "Aortic pressure oscillates between 80 mmHg (diastolic) and 120 mmHg (systolic), with a dicrotic notch marking aortic valve closure.",
-              "The crossover point where ventricular pressure exceeds atrial pressure is when the AV valves close (S1). The crossover where ventricular pressure falls below aortic pressure is when the aortic valve closes (S2).",
-            ],
-          },
-          {
-            heading: "Heart Sounds in Detail",
-            body: [
-              "Beyond the basic S1 and S2, clinicians listen for abnormal sounds that reveal pathology:",
-            ],
-            bullets: [
-              "S1 (Lub) — Loudest at the apex. Caused by mitral and tricuspid valve closure. Splitting occurs when the two valves don't close simultaneously (e.g., right bundle branch block).",
-              "S2 (Dub) — Loudest at the base. Caused by aortic (A2) and pulmonary (P2) valve closure. Physiological splitting happens during inspiration (increased venous return delays pulmonary valve closure).",
-              "S3 (ventricular gallop) — A low-pitched sound in early diastole from rapid ventricular filling. Normal in young adults but suggests heart failure in older patients.",
-              "S4 (atrial gallop) — A low-pitched sound in late diastole from atrial contraction against a stiff ventricle. Suggests diastolic dysfunction or left ventricular hypertrophy.",
-              "Murmurs — Turbulent blood flow heard as a whooshing sound, graded I–VI by intensity. They indicate valvular stenosis (narrowing), regurgitation (leaking), or shunts.",
-            ],
-            callout: {
-              kind: "warning",
-              title: "Murmur grading (Levine scale)",
-              text: "Grade I: barely audible. Grade II: soft but clearly heard. Grade III: moderately loud. Grade IV: loud with a thrill (palpable vibration). Grade V: very loud, heard with stethoscope barely on chest. Grade VI: heard without the stethoscope on the chest. Grades III+ are always pathological.",
-            },
-          },
-          {
-            heading: "Clinical Relevance",
-            body: [
-              "Understanding the cardiac cycle is essential for diagnosing and managing cardiac diseases. Here are the most important clinical connections:",
-            ],
-            bullets: [
-              "Heart failure (systolic) — The ventricles can't contract effectively. Stroke volume drops, so the heart rate increases to compensate. The ejection fraction (EF = SV/EDV × 100) falls below 55%. Filling pressures rise, causing fluid backing up into the lungs (congestion).",
-              "Heart failure (diastolic) — The ventricles are stiff and can't relax properly. They resist filling, so EDV is reduced. The atria must generate higher pressures to push blood in, which can cause atrial fibrillation. EF is preserved (≥55%), but cardiac output is still compromised.",
-              "Aortic stenosis — The aortic valve narrows, increasing the pressure gradient the left ventricle must generate to eject blood. Over time, the LV hypertrophies (thickens) to compensate. Eventually, it can fail, leading to syncope, angina, and heart failure.",
-              "Mitral regurgitation — The mitral valve doesn't close properly, allowing blood to leak back into the left atrium during ventricular systole. This reduces forward stroke volume and increases atrial pressure, potentially causing pulmonary edema.",
-              "Cardiac tamponade — Fluid accumulates in the pericardial sac, compressing the heart. Both diastolic filling and systolic ejection are impaired, causing a dramatic drop in cardiac output. The classic triad: hypotension, muffled heart sounds, and jugular venous distension.",
-              "Conduction disorders — Damage to the conduction system (SA node → AV node → Bundle of His → Purkinje fibres) disrupts the timing of the cycle. A heart block delays or prevents atrial signals from reaching the ventricles, causing bradycardia or dissociation.",
+            steps: [
+              "Isovolumetric contraction: all valves are closed, ventricular pressure rises rapidly.",
+              "Ejection phase: semilunar valves open, blood is ejected at peak velocity.",
+              "Isovolumetric relaxation: all valves are closed again, pressure drops rapidly.",
             ],
           },
         ],
         keyPoints: [
-          "Atrial systole (0.1 s): atria contract, AV valves open, ventricles fill to EDV (~130 mL).",
-          "Ventricular systole (0.3 s): isovolumetric contraction → ejection. LV pressure reaches ~120 mmHg. S1 heard.",
-          "Complete diastole (0.4 s): isovolumetric relaxation (S2 heard) → rapid filling → slow filling → atrial kick.",
-          "S3 gallop in older patients = heart failure. S4 gallop = stiff ventricle (diastolic dysfunction).",
-          "Ejection fraction < 55% = systolic heart failure. Preserved EF but stiff ventricles = diastolic heart failure.",
+          "Wiggers diagram integrates pressure, volume, ECG, and heart sounds across the cardiac cycle.",
+          "Clinical relevance: murmurs indicate valve dysfunction — systolic murmurs suggest stenosis or regurgitation.",
         ],
       },
     ],
   },
+
   {
     slug: "action-potential",
     title: "The Action Potential",
     emoji: "⚡",
-    category: "Neuroscience",
+    category: "Foundations",
     summary:
-      "The action potential is the electrical impulse that allows neurons to communicate. It is the fundamental unit of signalling in the nervous system — understanding it is essential for neurology, pharmacology, and cardiology.",
-    readMinutes: 10,
-    sections: [
-      {
-        heading: "What is an action potential?",
-        body: [
-          "An action potential (AP) is a rapid, temporary reversal of the electrical charge across a neuron's membrane. It is how one neuron sends a message to the next — an all-or-nothing electrical wave that travels down the axon at speeds up to 120 m/s.",
-          "At rest, the inside of a neuron is negatively charged compared to the outside (about -70 mV). When the neuron is stimulated enough to reach a threshold, voltage-gated ion channels open in a precise sequence, causing a rapid depolarisation followed by repolarisation and a brief hyperpolarisation before returning to rest.",
-        ],
-      },
-    ],
+      "The action potential is the electrical signal that enables communication between neurons and muscles. It is the basis of all neural processing.",
+    readMinutes: 7,
+    sections: [],
     keyPoints: [],
     whenToCall: [],
     tabs: [
@@ -1026,52 +1702,19 @@ export const ARTICLES: Article[] = [
           {
             heading: "What is an action potential?",
             body: [
-              "Every time you think, feel, move, or see, billions of neurons are firing action potentials. An action potential is a quick electrical signal that travels along a nerve fibre. Think of it as a domino effect: one neuron fires, releasing chemicals (neurotransmitters) that trigger the next neuron to fire, and so on.",
-              "The key idea is the 'all-or-nothing' principle: either the neuron fires a full-strength action potential, or it does not fire at all. There is no such thing as a 'half' action potential. The strength of a stimulus is encoded not by the size of the signal, but by how frequently the neurons fire (frequency coding).",
+              "An action potential is a rapid, temporary reversal of the electrical charge across a neuron's membrane. It is the fundamental unit of neural communication.",
             ],
-          },
-          {
-            heading: "Key Terms You Must Know",
-            bullets: [
-              "Resting Membrane Potential (RMP) — The charge across the neuron's membrane when it is not firing. About -70 mV in most neurons. Maintained by the Na+/K+ ATPase pump (3 Na+ out, 2 K+ in) and leak channels.",
-              "Threshold — The critical voltage (about -55 mV) at which voltage-gated sodium channels open and the action potential is triggered. Below threshold = no AP.",
-              "Depolarisation — The inside of the cell becomes less negative (more positive) as Na+ rushes in. The membrane potential shoots up from -70 mV to about +30 mV.",
-              "Repolarisation — K+ channels open and K+ rushes out, making the inside negative again. The membrane potential drops back down.",
-              "Hyperpolarisation — K+ channels are slow to close, so the membrane briefly becomes more negative than -70 mV (about -90 mV) before returning to rest.",
-              "Refractory Period — The brief time after an AP when the neuron cannot fire again. The absolute refractory period means no AP is possible; the relative refractory period requires a stronger-than-normal stimulus.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "The all-or-nothing principle",
-              text: "A neuron either fires a full action potential or does not fire at all. The brain encodes stimulus intensity by changing the frequency of firing, not the size of each spike.",
-            },
-          },
-          {
-            heading: "The five phases of an action potential",
-            body: [
-              "Here is the simplest way to walk through each phase:",
-            ],
-            bullets: [
-              "1. Resting state (-70 mV) — The neuron is at rest. Na+ and K+ channels are closed. The Na+/K+ pump maintains the -70 mV gradient.",
-              "2. Depolarisation (rising phase) — A stimulus reaches threshold (-55 mV). Voltage-gated Na+ channels snap open. Na+ floods in. The membrane potential rockets to about +30 mV.",
-              "3. Repolarisation (falling phase) — Na+ channels inactivate. Voltage-gated K+ channels open (more slowly). K+ rushes out, bringing the potential back down.",
-              "4. Hyperpolarisation (undershoot) — K+ channels are slow to close. The potential dips below -70 mV to about -90 mV. This is the relative refractory period.",
-              "5. Return to rest — K+ channels finally close. The Na+/K+ pump restores the ion balance. The neuron is ready to fire again.",
-            ],
-          },
-          {
-            heading: "Why does this matter clinically?",
-            body: [
-              "Understanding action potentials explains how local anaesthetics work (they block Na+ channels, preventing pain signals), why hyperkalaemia is dangerous (high K+ shifts the resting potential closer to threshold, causing spontaneous firing and cardiac arrhythmias), and how drugs like carbamazepine and phenytoin treat epilepsy (they stabilise the inactivated state of Na+ channels).",
+            steps: [
+              "Resting state: the neuron sits at -70mV, maintained by the sodium-potassium pump.",
+              "Depolarisation: a stimulus opens voltage-gated Na+ channels, Na+ rushes in, and the membrane potential rises to about +30mV.",
+              "Repolarisation: Na+ channels close, K+ channels open, and K+ flows out, bringing the potential back down.",
+              "Hyperpolarisation: the membrane briefly dips below -70mV before returning to rest.",
             ],
           },
         ],
         keyPoints: [
-          "Resting membrane potential is -70 mV, maintained by the Na+/K+ ATPase pump.",
-          "Threshold is about -55 mV — reach it and the neuron fires; miss it and nothing happens.",
-          "Depolarisation = Na+ influx. Repolarisation = K+ efflux. Hyperpolarisation = K+ overshoot.",
-          "All-or-nothing: the neuron fires at full strength or not at all.",
-          "Refractory periods prevent back-propagation and limit maximum firing rate.",
+          "The all-or-nothing principle: once threshold (-55mV) is reached, the action potential fires at full amplitude or not at all.",
+          "Myelin sheaths and nodes of Ranvier enable saltatory conduction, speeding signals up to 100x.",
         ],
       },
       {
@@ -1080,1707 +1723,216 @@ export const ARTICLES: Article[] = [
         icon: "🔬",
         sections: [
           {
-            heading: "Molecular basis of the action potential",
+            heading: "Ion channel dynamics",
             body: [
-              "The action potential depends on the sequential opening and closing of voltage-gated ion channels. Each channel type has a unique voltage-sensing domain (S4 segment) that responds to changes in membrane potential. The precise timing and coordination of these channels create the stereotyped waveform of the AP.",
-              "Voltage-gated Na+ channels exist in three states: closed (resting), open (conducting), and inactivated. The inactivated state is critical — it is this state that creates the absolute refractory period. The inactivation gate (the 'h gate' or ball-and-chain mechanism) plugs the channel pore from the intracellular side within about 0.5 ms of opening.",
+              "Voltage-gated sodium channels have activation and inactivation gates. The inactivation gate creates the absolute refractory period, during which no new action potential can fire.",
             ],
-          },
-          {
-            heading: "The Hodgkin-Huxley model",
-            body: [
-              "In 1952, Alan Hodgkin and Andrew Huxley published their mathematical model of the squid giant axon action potential, for which they later won the Nobel Prize (1963). Their model describes how the membrane current is the sum of:",
-            ],
-            bullets: [
-              "INa = gNa * m^3 * h * (Vm - ENa) — Sodium current, where m is the activation variable, h is the inactivation variable, and ENa is the sodium equilibrium potential (+60 mV).",
-              "IK = gK * n^4 * (Vm - EK) — Potassium current, where n is the activation variable and EK is the potassium equilibrium potential (-90 mV).",
-              "IL = gL * (Vm - EL) — Leak current (predominantly Cl- and background K+).",
-              "The total membrane current: Cm * dV/dt = -(INa + IK + IL) + Iext.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Hodgkin-Huxley in a nutshell",
-              text: "m^3 means three independent activation gates must all open for Na+ to conduct. n^4 means four independent gates for K+. This explains why Na+ channels activate faster than K+ channels (m gates are faster than n gates).",
-            },
-          },
-          {
-            heading: "Ion concentrations and equilibrium potentials",
-            body: [
-              "The resting membrane potential is determined by the Goldman-Hodgkin-Katz equation, which accounts for the relative permeabilities and concentrations of all permeant ions. At rest, the membrane is most permeable to K+ (through leak channels), so the resting potential (-70 mV) is close to EK (-90 mV).",
-            ],
-            bullets: [
-              "Intracellular Na+: ~15 mM. Extracellular Na+: ~145 mM. ENa: +60 mV.",
-              "Intracellular K+: ~140 mM. Extracellular K+: ~4 mM. EK: -90 mV.",
-              "Intracellular Cl-: ~10 mM. Extracellular Cl-: ~110 mM. ECl: -70 to -80 mV.",
-              "The Na+/K+ ATPase uses 1 ATP to pump 3 Na+ out and 2 K+ in, creating an electrogenic net outward current that contributes about -4 mV to the resting potential.",
-            ],
-          },
-          {
-            heading: "Saltatory conduction and myelination",
-            body: [
-              "In myelinated axons, voltage-gated Na+ channels are concentrated at the nodes of Ranvier (gaps in the myelin sheath, ~1 um wide). The action potential 'jumps' from node to node rather than propagating continuously along the entire membrane. This is saltatory conduction (from Latin saltare, 'to leap').",
-            ],
-            bullets: [
-              "Myelinated fibres conduct at up to 120 m/s (A-alpha fibres). Unmyelinated C fibres conduct at only 0.5-2 m/s.",
-              "Demyelinating diseases (e.g., multiple sclerosis, Guillain-Barre syndrome) slow or block conduction, causing weakness, sensory loss, and other neurological deficits.",
-              "The refractory period ensures unidirectional propagation: the region behind the AP is refractory, so the signal can only travel forward.",
-              "Cable properties: conduction velocity in myelinated fibres is proportional to axon diameter. In unmyelinated fibres, it is proportional to the square root of diameter.",
-            ],
-          },
-          {
-            heading: "Synaptic transmission: from AP to signal",
-            body: [
-              "When the action potential reaches the axon terminal, it opens voltage-gated Ca2+ channels. Ca2+ influx triggers synaptic vesicles to fuse with the presynaptic membrane (SNARE complex) and release neurotransmitters into the synaptic cleft. These bind to receptors on the postsynaptic neuron, generating either:",
-            ],
-            bullets: [
-              "Excitatory Postsynaptic Potentials (EPSPs) — Na+ or Ca2+ influx makes the postsynaptic neuron more likely to fire. Mediated by AMPA, NMDA, and kainate glutamate receptors.",
-              "Inhibitory Postsynaptic Potentials (IPSPs) — Cl- influx or K+ efflux makes the postsynaptic neuron less likely to fire. Mediated by GABA-A (Cl- channel) and glycine receptors.",
-              "Spatial and temporal summation: multiple EPSPs/IPSPs from different locations (spatial) or at different times (temporal) are summed at the axon hillock. If the sum reaches threshold, a new AP fires.",
-            ],
-            callout: {
-              kind: "warning",
-              title: "Clinical pearl: Channelopathies",
-              text: "Mutations in voltage-gated Na+ or K+ channels cause diseases such as episodic ataxia type 1 (KCNA1), paramyotonia congenita (SCN4A), and certain forms of epilepsy (SCN1A). Understanding the AP helps explain both the disease mechanism and drug treatment.",
-            },
-          },
-          {
-            heading: "Pharmacology of the action potential",
-            body: [
-              "Many clinically important drugs work by modifying ion channel behaviour during the action potential:",
-            ],
-            bullets: [
-              "Local anaesthetics (lidocaine, bupivacaine) block Na+ channels from the intracellular side, preventing AP generation and propagation in pain fibres. They preferentially block actively firing nerves (use-dependent block).",
-              "Antiepileptics (carbamazepine, phenytoin, lamotrigine) stabilise the inactivated state of Na+ channels, reducing high-frequency repetitive firing while preserving normal single-spike conduction.",
-              "Class I antiarrhythmics (procainamide, flecainide) block cardiac Na+ channels (Nav1.5), slowing conduction velocity in the heart.",
-              "Tetrodotoxin (TTX, from pufferfish) and saxitoxin (from dinoflagellates) block the outer pore of Na+ channels, completely preventing AP generation. They are extremely toxic.",
-              "4-aminopyridine (4-AP) blocks K+ channels, prolonging the AP. Used experimentally in demyelination research to improve conduction in demyelinated axons.",
+            steps: [
+              "Phase 0: rapid Na+ influx through voltage-gated channels (depolarisation).",
+              "Phase 1: transient K+ efflux through Ito channels (early repolarisation).",
+              "Phase 2: plateau phase — Ca2+ influx balances K+ efflux (cardiac-specific).",
+              "Phase 3: delayed K+ efflux repolarises the membrane.",
+              "Phase 4: resting potential maintained by Na+/K+ ATPase and leak channels.",
             ],
           },
         ],
         keyPoints: [
-          "Na+ channels have three states: closed, open, and inactivated. The inactivated state creates the absolute refractory period.",
-          "The Hodgkin-Huxley model describes AP as the sum of Na+, K+, and leak currents with voltage-dependent conductances.",
-          "Saltatory conduction in myelinated fibres is ~50x faster than continuous conduction in unmyelinated fibres.",
-          "At the synapse, Ca2+ influx triggers neurotransmitter release; EPSPs and IPSPs are summed at the axon hillock.",
-          "Many drugs target AP channels: local anaesthetics (Na+ blockers), antiepileptics (Na+ stabilisers), and antiarrhythmics (cardiac Na+ blockers).",
+          "Local anaesthetics (lidocaine) block voltage-gated Na+ channels, preventing pain signal transmission.",
+          "Clinical relevance: channelopathies (e.g., Long QT syndrome) cause dangerous arrhythmias.",
         ],
       },
     ],
   },
-  {
-    slug: "muscle-contraction",
-    title: "Muscle Contraction",
-    emoji: "\ud83d\udcaa",
-    category: "Physiology",
-    summary:
-      "Muscle contraction is the process by which muscle fibres generate force and movement. Understanding the sliding filament theory and excitation-contraction coupling is essential for physiology, pharmacology, and clinical medicine.",
-    readMinutes: 10,
-    sections: [
-      {
-        heading: "Muscle contraction overview",
-        body: [
-          "Muscle contraction occurs when actin and myosin filaments slide past each other within a sarcomere, shortening the muscle fibre. This process requires calcium and ATP, and is triggered by a nerve impulse.",
-        ],
-      },
-    ],
-    keyPoints: [],
-    whenToCall: [],
-    tabs: [
-      {
-        id: "basics",
-        label: "Basics",
-        icon: "\ud83d\udcd6",
-        sections: [
-          {
-            heading: "What is the Sliding Filament Theory?",
-            body: [
-              "The sliding filament theory explains how muscles contract. Inside every muscle fibre are repeating units called sarcomeres. Each sarcomere contains two types of protein filaments: thick filaments (made of myosin) and thin filaments (made of actin).",
-              "When a muscle contracts, the myosin heads bind to actin and pull the thin filaments toward the centre of the sarcomere. The sarcomere shortens, but the filaments themselves do not change length \u2014 they slide past each other. This is why it is called the sliding filament theory.",
-            ],
-          },
-          {
-            heading: "Key Terms You Must Know",
-            bullets: [
-              "Actin \u2014 A thin, helical protein that forms the thin filament. It has binding sites for myosin heads, but these are normally covered by tropomyosin at rest.",
-              "Myosin \u2014 A thick protein with a tail and a globular head. The myosin head has an ATP-binding site and an actin-binding site. It acts as a molecular motor, using ATP energy to pull actin.",
-              "Sarcomere \u2014 The basic functional unit of a muscle fibre, extending from one Z-disc to the next. It contains the overlapping arrangement of actin and myosin filaments.",
-              "Troponin \u2014 A regulatory protein complex bound to actin. When calcium binds to troponin C, it causes a conformational change that moves tropomyosin away from the myosin-binding sites on actin.",
-              "Tropomyosin \u2014 A rope-like protein that lies along the actin filament, blocking the myosin-binding sites at rest. It is moved aside by troponin when calcium levels rise.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Think of it like a relay race",
-              text: "Troponin is the gatekeeper, calcium is the key, tropomyosin is the locked gate, actin is the track, and myosin is the runner. When calcium unlocks the gate, myosin can run along actin.",
-            },
-          },
-          {
-            heading: "The role of Calcium and ATP",
-            body: [
-              "Calcium is the on-switch for muscle contraction. At rest, calcium is stored in the sarcoplasmic reticulum (SR). When a nerve impulse arrives, calcium is released from the SR into the cytoplasm.",
-            ],
-            bullets: [
-              "Calcium binds to troponin C, which moves tropomyosin off the myosin-binding sites on actin. This exposes the binding sites so myosin heads can attach.",
-              "ATP is the fuel for contraction. Each myosin head cycle requires one ATP molecule. ATP is needed for the power stroke, detachment, and re-cocking of the myosin head.",
-              "Without ATP, myosin cannot detach from actin. This is why muscles stiffen after death (rigor mortis).",
-              "ATP is regenerated by: (1) creatine phosphate (immediate, ~10 seconds); (2) anaerobic glycolysis (fast, produces lactate, ~1-2 minutes); (3) aerobic respiration (slow but sustainable).",
-            ],
-          },
-          {
-            heading: "How a muscle fibre receives a signal",
-            body: [
-              "A motor neuron releases acetylcholine (ACh) at the neuromuscular junction. ACh binds to nicotinic receptors on the sarcolemma, generating an end-plate potential that triggers an action potential along the sarcolemma and into the T-tubules.",
-              "The action potential in the T-tubules activates voltage-sensitive DHPRs, which are mechanically coupled to ryanodine receptors (RyR1) on the SR. This opens RyR1, releasing calcium into the cytoplasm.",
-              "Once calcium is released, it binds to troponin, tropomyosin moves, and the cross-bridge cycle begins.",
-            ],
-          },
-        ],
-        keyPoints: [
-          "The sliding filament theory: myosin pulls actin filaments toward the centre of the sarcomere, shortening it.",
-          "Calcium is the on-switch: it binds troponin, which moves tropomyosin to expose myosin-binding sites on actin.",
-          "ATP provides energy for the power stroke, myosin detachment, and re-cocking of the myosin head.",
-          "Without ATP, myosin cannot detach \u2014 this causes rigor mortis after death.",
-          "ACh at the neuromuscular junction triggers the action potential that leads to calcium release.",
-        ],
-      },
-      {
-        id: "in-depth",
-        label: "In-Depth",
-        icon: "\ud83d\udd2c",
-        sections: [
-          {
-            heading: "The Cross-Bridge Cycle step-by-step",
-            body: [
-              "The cross-bridge cycle is the molecular mechanism by which myosin generates force on actin:",
-            ],
-            bullets: [
-              "Step 1 \u2014 Cross-bridge formation: The myosin head (with ADP + Pi bound) attaches to the exposed binding site on actin.",
-              "Step 2 \u2014 Power stroke: The myosin head pivots, pulling actin toward the M-line. ADP and Pi are released. The sarcomere shortens by about 10 nm per stroke.",
-              "Step 3 \u2014 Detachment: A new ATP molecule binds to the myosin head, causing it to detach from actin.",
-              "Step 4 \u2014 Re-cocking: Myosin ATPase hydrolyses ATP to ADP + Pi, re-cocking the myosin head for the next cycle.",
-              "The cycle repeats ~5 times per second. Multiple myosin heads cycle asynchronously, ensuring continuous force.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Rate-limiting step",
-              text: "The power stroke is the rate-limiting step. Fast-twitch fibres have myosin ATPase that works faster, allowing quicker cross-bridge cycling.",
-            },
-          },
-          {
-            heading: "Excitation-Contraction Coupling",
-            body: [
-              "E-C coupling links the electrical signal (action potential) to the mechanical response (contraction):",
-            ],
-            bullets: [
-              "Skeletal muscle: DHPRs (Cav1.1) are mechanically coupled to RyR1 on the SR. Direct coupling \u2014 no Ca2+ influx needed.",
-              "Cardiac muscle: L-type Ca2+ channels (Cav1.2) allow Ca2+ influx, which triggers RyR2 on the SR to release more Ca2+. This is calcium-induced calcium release (CICR).",
-              "Smooth muscle: Ca2+ binds calmodulin, activating MLCK, which phosphorylates myosin light chains to enable cross-bridge cycling.",
-              "Relaxation: SERCA pumps Ca2+ back into the SR; Na+/Ca2+ exchanger moves it out of the cell.",
-            ],
-          },
-          {
-            heading: "Skeletal vs Cardiac vs Smooth Muscle",
-            body: [
-              "The three muscle types differ fundamentally:",
-            ],
-            bullets: [
-              "Skeletal: Striated, multinucleated, voluntary. Troponin-tropomyosin regulation. Fatigues relatively quickly.",
-              "Cardiac: Striated, involuntary. CICR and troponin. Autorhythmicity. Cannot fatigue. Intercalated discs allow synchronous contraction.",
-              "Smooth: Non-striated, involuntary. Calmodulin-MLCK regulation. Sustained tonic contraction (latch state). Found in blood vessels, GI tract, bladder, airways.",
-            ],
-          },
-          {
-            heading: "Clinical Relevance",
-            body: [
-              "Understanding muscle contraction is essential for diagnosing and treating many conditions:",
-            ],
-            bullets: [
-              "Myasthenia gravis: Autoimmune destruction of nicotinic ACh receptors. Fluctuating weakness, ptosis, diplopia. Treated with pyridostigmine.",
-              "Muscle fatigue: H+ accumulation, inorganic phosphate buildup, and glycogen depletion reduce cross-bridge force.",
-              "Rigor mortis: No ATP means myosin cannot detach from actin. Used in forensic medicine to estimate time of death.",
-              "Malignant hyperthermia: RyR1 mutations cause uncontrolled Ca2+ release under certain anaesthetics. Treated with dantrolene.",
-              "Periodic paralysis: Channelopathies (Nav1.4, Kir2.1) cause episodes of skeletal muscle weakness.",
-            ],
-            callout: {
-              kind: "warning",
-              title: "Red flag: Rhabdomyolysis",
-              text: "Crushing injuries, extreme exertion, or statins can cause muscle breakdown. Myoglobin releases into blood, risking kidney injury. Watch for dark urine, muscle pain, elevated CK.",
-            },
-          },
-        ],
-        keyPoints: [
-          "Cross-bridge cycle: attach, power stroke, detach, re-cock. One ATP per cycle, ~10 nm displacement.",
-          "Skeletal E-C coupling: DHPR mechanically gates RyR1. Cardiac: calcium-induced calcium release (CICR).",
-          "Smooth muscle uses calmodulin-MLCK instead of troponin for sustained contraction.",
-          "Myasthenia gravis: autoimmune ACh receptor destruction causes fluctuating weakness.",
-          "Rigor mortis: no ATP = no detachment. Forensic time-of-death estimation.",
-        ],
-      },
-    ],
-  },
-  {
-    slug: "respiratory-mechanics",
-    title: "Respiratory Mechanics",
-    emoji: "\ud83e\ude78",
-    category: "Physiology",
-    summary:
-      "Respiratory mechanics covers how we breathe, how gas exchange occurs in the lungs, and the physical laws that govern ventilation. Understanding tidal volume, Boyle's law, and lung compliance is essential for physiology, anaesthesia, and pulmonary medicine.",
-    readMinutes: 9,
-    sections: [
-      {
-        heading: "Respiratory mechanics overview",
-        body: [
-          "Every breath you take is a mechanical process driven by pressure changes in the thoracic cavity. The diaphragm contracts, the chest expands, and air flows in along a pressure gradient. Understanding these mechanics is the foundation of pulmonary medicine.",
-        ],
-      },
-    ],
-    keyPoints: [],
-    whenToCall: [],
-    tabs: [
-      {
-        id: "basics",
-        label: "Basics",
-        icon: "\ud83d\udcd6",
-        sections: [
-          {
-            heading: "How breathing works",
-            body: [
-              "Breathing (ventilation) is the process of moving air into and out of the lungs. It is driven by pressure differences between the atmosphere and the alveoli. When the pressure inside the lungs drops below atmospheric pressure, air flows in (inspiration). When it rises above atmospheric pressure, air flows out (expiration).",
-              "At rest, we breathe about 12-20 times per minute, moving roughly 500 mL of air with each breath. This is called the tidal volume. The total air moved in one minute is the minute ventilation: tidal volume x respiratory rate.",
-            ],
-          },
-          {
-            heading: "Key Terms You Must Know",
-            bullets: [
-              "Tidal Volume (TV) \u2014 The volume of air moved in or out of the lungs during a single normal breath. About 500 mL in a healthy adult at rest. It is the most basic measure of ventilation.",
-              "Diaphragm \u2014 A dome-shaped sheet of skeletal muscle at the base of the thoracic cavity. It is the primary muscle of inspiration. When it contracts, it flattens and moves downward, increasing thoracic volume and drawing air into the lungs.",
-              "Inspiratory muscles \u2014 The diaphragm is the main inspiratory muscle. The external intercostals assist by lifting the ribs upward and outward, further expanding the chest. During forced inspiration, accessory muscles (scalenes, sternocleidomastoid) are recruited.",
-              "Expiratory muscles \u2014 Quiet expiration is passive: the diaphragm and intercostals simply relax, and elastic recoil of the lungs pushes air out. During forced expiration (coughing, exercise), the internal intercostals and abdominal muscles contract to actively push air out.",
-              "Alveoli \u2014 Tiny air sacs at the end of the bronchial tree where gas exchange occurs. There are approximately 300-500 million alveoli in the lungs, providing a massive surface area (~70 m2) for oxygen and carbon dioxide exchange.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Think of it like a pump",
-              text: "The lungs are like a bellows. The diaphragm is the handle: pull it down and air rushes in; let it go back up and air pushes out. The ribcage is the frame that protects and shapes the bellows.",
-            },
-          },
-          {
-            heading: "Volumes and capacities",
-            body: [
-              "Lung volumes are measured using spirometry and are important for diagnosing respiratory diseases. The key volumes and their combinations (capacities) are:",
-            ],
-            bullets: [
-              "Tidal Volume (TV): ~500 mL \u2014 normal breath.",
-              "Inspiratory Reserve Volume (IRV): ~3100 mL \u2014 extra air you can inhale after a normal inspiration.",
-              "Expiratory Reserve Volume (ERV): ~1200 mL \u2014 extra air you can exhale after a normal expiration.",
-              "Residual Volume (RV): ~1200 mL \u2014 air left in the lungs after a maximal exhalation. You cannot breathe this out.",
-              "Inspiratory Capacity (IC) = TV + IRV: maximum air you can inhale from rest.",
-              "Vital Capacity (VC) = TV + IRV + ERV: maximum air you can move in and out. About 4800 mL.",
-              "Total Lung Capacity (TLC) = VC + RV: all the air the lungs can hold. About 6000 mL.",
-            ],
-          },
-          {
-            heading: "The role of the diaphragm",
-            body: [
-              "The diaphragm is responsible for about 75% of the work of breathing at rest. When it contracts, it moves downward by 1-2 cm during quiet breathing and up to 10 cm during forced breathing.",
-              "The phrenic nerve (C3, C4, C5 \u2014 'C3, 4, 5 keeps the diaphragm alive') innervates the diaphragm. Damage to the phrenic nerve (e.g., from spinal cord injury above C3) causes paralysis of the diaphragm and respiratory failure, requiring mechanical ventilation.",
-            ],
-          },
-        ],
-        keyPoints: [
-          "Breathing is driven by pressure differences: air flows from high pressure to low pressure.",
-          "Tidal volume is ~500 mL per normal breath; minute ventilation = TV x respiratory rate.",
-          "The diaphragm is the primary muscle of inspiration, responsible for ~75% of breathing work.",
-          "Quiet expiration is passive (elastic recoil); forced expiration uses abdominal muscles.",
-          "Phrenic nerve (C3-C5) innervates the diaphragm \u2014 damage above C3 causes respiratory failure.",
-        ],
-      },
-      {
-        id: "in-depth",
-        label: "In-Depth",
-        icon: "\ud83d\udd2c",
-        sections: [
-          {
-            heading: "Boyle's Law and Ventilation",
-            body: [
-              "Boyle's Law states that at constant temperature, the pressure of a gas is inversely proportional to its volume (P1V1 = P2V2). This is the fundamental physical principle behind ventilation.",
-            ],
-            bullets: [
-              "During inspiration: The diaphragm contracts and descends, increasing thoracic volume. By Boyle's Law, alveolar pressure drops below atmospheric pressure (-1 cmH2O relative to atmosphere). Air flows into the lungs down this pressure gradient.",
-              "During expiration: The diaphragm relaxes and returns to its dome shape, decreasing thoracic volume. Alveolar pressure rises above atmospheric pressure (+1 cmH2O). Air flows out.",
-              "Intrapleural pressure (pressure in the pleural cavity between the visceral and parietal pleura) is always negative relative to atmospheric pressure (-4 to -6 cmH2O at rest). This negative pressure keeps the lungs inflated. If air enters the pleural space (pneumothorax), the negative pressure is lost and the lung collapses.",
-              "Transmural pressure across the lungs = alveolar pressure minus intrapleural pressure. This pressure difference keeps the lungs expanded against the elastic recoil of the chest wall.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Boyle's Law in a nutshell",
-              text: "Volume up \u2192 Pressure down \u2192 Air rushes in. Volume down \u2192 Pressure up \u2192 Air rushes out. The diaphragm controls the volume change, and Boyle's Law does the rest.",
-            },
-          },
-          {
-            heading: "Lung Compliance and Elastic Recoil",
-            body: [
-              "Lung compliance is the ease with which the lungs can be expanded. It is defined as the change in volume per unit change in pressure (dV/dP). High compliance means the lungs expand easily; low compliance means they are stiff and hard to inflate.",
-            ],
-            bullets: [
-              "Normal lung compliance is about 200 mL/cmH2O. This means 200 mL of air enters the lungs for every 1 cmH2O drop in pressure.",
-              "High compliance (emphysema): The lung tissue is destroyed (elastic fibres lost), so the lungs expand too easily but cannot recoil to push air out. Air trapping occurs. Patients have difficulty exhaling.",
-              "Low compliance (pulmonary fibrosis, ARDS): The lung tissue becomes scarred or inflamed, making the lungs stiff. Greater pressure is needed to achieve the same tidal volume. Patients have difficulty inhaling and have rapid, shallow breathing.",
-              "Surfactant: A phospholipid mixture (mainly dipalmitoylphosphatidylcholine, DPPC) produced by Type II alveolar cells. It reduces surface tension at the air-liquid interface in the alveoli, preventing collapse (atelectasis) and increasing compliance. Without surfactant (e.g., in premature infants), the work of breathing is greatly increased.",
-              "Chest wall compliance is also important. Obesity, kyphoscoliosis, and chest wall oedema reduce chest wall compliance, increasing the work of breathing.",
-            ],
-          },
-          {
-            heading: "Gas Exchange and Diffusion",
-            body: [
-              "Gas exchange occurs at two levels: external respiration (alveoli to blood) and internal respiration (blood to tissues). The process is governed by Fick's Law of Diffusion and partial pressure gradients.",
-            ],
-            bullets: [
-              "Fick's Law: Rate of diffusion is proportional to (surface area x diffusion coefficient x partial pressure difference) / membrane thickness. The alveolar-capital membrane is extremely thin (~0.5 um) and has a massive surface area (~70 m2), optimising gas exchange.",
-              "Partial pressure gradients: Oxygen diffuses from alveoli (PO2 ~104 mmHg) to pulmonary capillary blood (PO2 ~40 mmHg). Carbon dioxide diffuses from blood (PCO2 ~45 mmHg) to alveoli (PCO2 ~40 mmHg). Despite the smaller CO2 gradient, CO2 diffuses ~20x faster than O2 because it is much more soluble.",
-              "Ventilation-perfusion (V/Q) matching: Efficient gas exchange requires matching airflow (ventilation, V) to blood flow (perfusion, Q). The ideal V/Q ratio is ~1.0. Shunt (V/Q = 0, perfused but not ventilated) and dead space (V/Q = infinity, ventilated but not perfused) impair gas exchange.",
-              "Oxygen-haemoglobin dissociation curve: The sigmoid shape reflects cooperative binding of O2 to haemoglobin. At the lungs (PO2 ~100 mmHg), haemoglobin is ~98% saturated. At the tissues (PO2 ~40 mmHg), it releases O2, dropping to ~75% saturation.",
-              "The Bohr effect: Increased CO2, decreased pH, increased temperature, and increased 2,3-DPG all shift the dissociation curve to the right, promoting O2 unloading at the tissues where it is needed most.",
-            ],
-          },
-          {
-            heading: "Clinical Relevance",
-            body: [
-              "Understanding respiratory mechanics is essential for diagnosing and treating pulmonary diseases:",
-            ],
-            bullets: [
-              "Asthma: Chronic airway inflammation causes bronchoconstriction, mucus hypersecretion, and airway remodelling. This increases airway resistance, trapping air and causing expiratory difficulty. Treatment: bronchodilators (salbutamol, ipratropium) and inhaled corticosteroids (beclomethasone, budesonide). Peak expiratory flow rate (PEFR) is a key monitoring parameter.",
-              "COPD (Chronic Obstructive Pulmonary Disease): Chronic bronchitis (mucus hypersecretion) and emphysema (alveolar destruction) coexist. Leads to air trapping, hyperinflation, and progressive airflow limitation. Treatment: long-acting bronchodilators (tiotropium), pulmonary rehabilitation, and supplemental oxygen in severe disease.",
-              "Pneumothorax: Air enters the pleural space, eliminating the negative intrapleural pressure. The lung collapses on the affected side. Tension pneumothorax (one-way valve mechanism) is life-threatening: mediastinal shift compresses the opposite lung and great vessels. Immediate needle decompression is required.",
-              "ARDS (Acute Respiratory Distress Syndrome): Severe inflammation increases alveolar-capillary membrane thickness and inactivates surfactant, drastically reducing lung compliance. Treatment: mechanical ventilation with low tidal volumes (6 mL/kg) to prevent ventilator-induced lung injury.",
-              "Pulmonary embolism: A blood clot (usually from deep vein thrombosis) blocks a pulmonary artery, creating dead space (ventilated but not perfused). Sudden onset of dyspnoea, chest pain, and tachycardia. Treatment: anticoagulation (heparin, warfarin) or thrombolysis in massive PE.",
-            ],
-            callout: {
-              kind: "warning",
-              title: "Red flag: Tension pneumothorax",
-              text: "Sudden dyspnoea + absent breath sounds on one side + tracheal deviation away from the affected side = tension pneumothorax. This is a clinical emergency. Do not wait for a chest X-ray. Insert a large-bore needle into the 2nd intercostal space, midclavicular line, immediately.",
-            },
-          },
-        ],
-        keyPoints: [
-          "Boyle's Law: Volume increase \u2192 pressure decrease \u2192 air flows in. The diaphragm drives this volume change.",
-          "Lung compliance is ~200 mL/cmH2O. Emphysema = high compliance; fibrosis = low compliance.",
-          "Surfactant reduces alveolar surface tension, preventing collapse and increasing compliance.",
-          "Gas exchange follows Fick's Law: large surface area, thin membrane, and partial pressure gradients.",
-          "Asthma increases airway resistance via bronchoconstriction; treated with bronchodilators and corticosteroids.",
-        ],
-      },
-    ],
-  },
+
   {
     slug: "brachial-plexus",
     title: "The Brachial Plexus",
-    emoji: "\u26a1",
-    category: "Anatomy",
+    emoji: "🦾",
+    category: "Foundations",
     summary:
-      "The brachial plexus is the network of nerves that sends signals from the spine to the shoulder, arm, and hand. Understanding its roots, trunks, divisions, cords, and branches is essential for neurology, orthopaedics, and emergency medicine.",
-    readMinutes: 9,
-    sections: [
-      {
-        heading: "Brachial plexus overview",
-        body: [
-          "The brachial plexus is a bundle of nerves formed by the anterior rami of spinal nerves C5-T1. It passes through the neck and axilla (armpit) to supply motor and sensory innervation to the entire upper limb. Damage to any part of the plexus can cause paralysis, numbness, or chronic pain in the arm and hand.",
-        ],
-      },
-    ],
+      "The brachial plexus is the network of nerves sending signals from the spine to the shoulder, arm, and hand. Understanding it is essential for neurology and orthopaedics.",
+    readMinutes: 7,
+    sections: [],
     keyPoints: [],
     whenToCall: [],
     tabs: [
       {
         id: "basics",
         label: "Basics",
-        icon: "\ud83d\udcd6",
+        icon: "📖",
         sections: [
           {
             heading: "What is the brachial plexus?",
             body: [
-              "Think of the brachial plexus as an electrical wiring harness for your arm. Five nerve roots exit the spine (C5-T1), combine and reorganise into trunks, then divide, recombine into cords, and finally branch out to supply every muscle and patch of skin from the shoulder to the fingertips.",
-              "The plexus is divided into three regions: roots (in the neck), trunks (above the clavicle), and cords/branches (in the axilla). Injuries at different levels produce different patterns of weakness and numbness, so knowing the anatomy helps localise the problem.",
+              "The brachial plexus is a network of five nerve roots (C5-T1) that combine and reorganise to form the major nerves of the upper limb.",
             ],
-          },
-          {
-            heading: "Key Terms You Must Know",
-            bullets: [
-              "Roots (C5, C6, C7, C8, T1) \u2014 The five spinal nerve roots that form the brachial plexus. They exit the intervertebral foramina between the cervical and thoracic vertebrae. C5 and C6 form the upper trunk; C7 continues as the middle trunk; C8 and T1 form the lower trunk.",
-              "Trunks \u2014 The roots merge into three trunks above the clavicle. The upper trunk (C5-C6) supplies the shoulder and lateral arm. The middle trunk (C7) continues C7's territory. The lower trunk (C8-T1) supplies the hand and medial forearm.",
-              "Divisions \u2014 Each trunk splits into anterior and posterior divisions behind the clavicle. The divisions re-sort fibres into the three cords. This is where the 're-wiring' happens: anterior divisions supply flexors; posterior divisions supply extensors.",
-              "Cords \u2014 The lateral cord (from upper and middle trunk anterior divisions), medial cord (from lower trunk anterior division), and posterior cord (from all three posterior divisions). They surround the axillary artery in the axilla.",
-              "Branches \u2014 The terminal branches supply specific muscles. The major branches are: musculocutaneous (lateral cord), axillary (posterior cord), radial (posterior cord), median (lateral + medial cords), and ulnar (medial cord).",
-            ],
-            callout: {
-              kind: "tip",
-              title: "The R-T-D-C-B mnemonic",
-              text: "Roots \u2192 Trunks \u2192 Divisions \u2192 Cords \u2192 Branches. Five roots become three trunks, six divisions (2 per trunk), three cords, and five terminal branches. Remember this order and you can reconstruct the entire plexus.",
-            },
-          },
-          {
-            heading: "What each branch does",
-            bullets: [
-              "Musculocutaneous nerve (C5-C7): Supplies the biceps, brachialis, and coracobrachialis. Loss = cannot flex the elbow or supinate the forearm. Sensory loss on the lateral forearm.",
-              "Axillary nerve (C5-C6): Supplies the deltoid and teres minor. Loss = cannot abduct the arm beyond 15 degrees. Sensory loss over the 'regimental badge' area of the lateral shoulder.",
-              "Radial nerve (C5-T1): Supplies all extensors of the arm and forearm (triceps, wrist extensors, finger extensors). Loss = wrist drop. Sensory loss on the posterior arm, forearm, and dorsum of the hand.",
-              "Median nerve (C5-T1): Supplies most forearm flexors and thenar muscles. Loss = inability to oppose the thumb (ape hand). Sensory loss on the lateral palm and lateral 3.5 fingers.",
-              "Ulnar nerve (C8-T1): Supplies the intrinsic hand muscles (interossei, hypothenar muscles). Loss = claw hand (hyperextension at MCP joints, flexion at IP joints). Sensory loss on the medial palm and medial 1.5 fingers.",
-            ],
-          },
-          {
-            heading: "How the plexus is tested clinically",
-            body: [
-              "Testing the brachial plexus involves checking motor function and sensation in each nerve's territory. Key clinical tests include:",
-            ],
-            bullets: [
-              "C5 (axillary nerve): Test shoulder abduction against resistance (deltoid). Test sensation over the lateral shoulder.",
-              "C6 (musculocutaneous, radial): Test elbow flexion (biceps) and wrist extension. Sensation over the lateral forearm and dorsum of the thumb.",
-              "C7 (radial, median): Test elbow extension (triceps) and wrist flexion. Sensation over the middle finger dorsum.",
-              "C8 (median, ulnar): Test finger flexion (FDP to index finger) and thumb opposition. Sensation over the medial hand.",
-              "T1 (ulnar): Test finger abduction/adduction (interossei). Sensation over the medial forearm.",
+            steps: [
+              "Roots (C5-T1) emerge from the spinal cord.",
+              "Trunks: upper (C5-C6), middle (C7), and lower (C8-T1) trunks form.",
+              "Divisions: each trunk splits into anterior and posterior divisions.",
+              "Cords: lateral, posterior, and medial cords form from the divisions.",
+              "Branches: the five terminal branches emerge — musculocutaneous, axillary, radial, median, and ulnar.",
             ],
           },
         ],
         keyPoints: [
-          "The brachial plexus runs from C5-T1 roots through trunks, divisions, cords, to 5 terminal branches.",
-          "R-T-D-C-B: Roots \u2192 Trunks \u2192 Divisions \u2192 Cords \u2192 Branches.",
-          "Each branch has a specific motor and sensory territory in the upper limb.",
-          "Testing involves checking motor function and sensation in each nerve's territory.",
-          "Damage at different levels produces different patterns of weakness and numbness.",
+          "The R-T-D-C-B pathway: Roots → Trunks → Divisions → Cords → Branches.",
+          "Erb's palsy (C5-C6 injury) causes waiter's tip posture; Klumpke's palsy (C8-T1) causes claw hand.",
         ],
       },
       {
         id: "in-depth",
         label: "In-Depth",
-        icon: "\ud83d\udd2c",
+        icon: "🔬",
         sections: [
           {
-            heading: "Detailed anatomy of the plexus",
+            heading: "Terminal branches and their territories",
             body: [
-              "The brachial plexus can be reconstructed by tracing each root through its path to the terminal branches. Understanding this detailed anatomy is essential for diagnosing nerve injuries and planning surgical reconstruction.",
+              "Each terminal branch innervates specific muscles and provides sensation to specific dermatomes. Knowledge of these territories is essential for localising lesions.",
             ],
-            bullets: [
-              "Roots: The anterior rami of C5-T1 exit the intervertebral foramina and pass between the anterior and middle scalene muscles. The phrenic nerve (C3-C5) runs anterior to the anterior scalene, and the dorsal scapular nerve and long thoracic nerve arise directly from the roots.",
-              "Trunks: In the posterior triangle of the neck, the roots merge. The upper trunk (C5-C6) gives off the suprascapular nerve and the nerve to subclavius. The middle trunk (C7) has no named branches. The lower trunk (C8-T1) gives off the medial pectoral, medial brachial cutaneous, and medial antebrachial cutaneous nerves.",
-              "Divisions: Behind the clavicle, each trunk splits into anterior and posterior divisions. This is the 'crossroads' where flexor and extensor fibres separate. The six divisions reorganise into three cords around the axillary artery.",
-              "Cords: The lateral cord (anterior divisions of upper and middle trunks) gives the lateral pectoral nerve and contributes to the median nerve. The medial cord (anterior division of lower trunk) gives the medial pectoral, medial brachial cutaneous, medial antebrachial cutaneous nerves, and contributes to the median nerve. The posterior cord (all three posterior divisions) gives the upper and lower subscapular nerves, thoracodorsal nerve, and becomes the axillary and radial nerves.",
-              "Terminal branches: The five terminal nerves emerge from the cords in the axilla. The lateral cord gives the musculocutaneous nerve. The posterior cord splits into the axillary and radial nerves. The lateral and medial cords join to form the median nerve. The medial cord continues as the ulnar nerve.",
-            ],
-          },
-          {
-            heading: "Clinical Relevance: Brachial Plexus Injuries",
-            body: [
-              "Brachial plexus injuries range from mild stretch injuries (neuropraxia) to complete nerve avulsion. The pattern of weakness depends on which part of the plexus is damaged.",
-            ],
-            bullets: [
-              "Erb-Duchenne palsy (upper trunk injury, C5-C6): Most common brachial plexus injury. Caused by lateral traction on the neck (birth injury, motorcycle accident). Presents with the 'waiter's tip' position: arm adducted, internally rotated, forearm pronated. Loss of deltoid, biceps, brachialis, and supraspinatus/infraspinatus function.",
-              "Klumpke's paralysis (lower trunk injury, C8-T1): Caused by hyperabduction of the arm (falling from a tree, catching oneself). Presents with claw hand (loss of intrinsic hand muscles) and possible Horner's syndrome (ptosis, miosis, anhidrosis) if T1 sympathetic fibres are damaged.",
-              "Parsonage-Turner syndrome (acute brachial neuritis): Spontaneous, severe shoulder/arm pain followed by weakness days later. Usually autoimmune/inflammatory. Recovery is often partial over months to years.",
-              "Burners/stingers: Compression or traction injuries common in contact sports. Usually upper trunk. Causes transient burning pain and numbness down the arm. Most resolve spontaneously, but repeated injuries can cause permanent damage.",
-              "Surgical repair: Nerve grafting (using sural nerve as donor) or nerve transfers (e.g., Oberlin transfer: ulnar nerve fascicle to biceps motor branch) can restore function in severe injuries. Early surgical exploration within 3-6 months gives the best outcomes.",
-            ],
-            callout: {
-              kind: "warning",
-              title: "Red flag: Horner's syndrome with brachial palsy",
-              text: "If a brachial plexus injury presents with ptosis, miosis, and anhidrosis (Horner's syndrome), suspect a lower trunk/T1 avulsion. This indicates preganglionic damage and has a worse prognosis than postganglionic injuries.",
-            },
-          },
-          {
-            heading: "Blood supply and related structures",
-            bullets: [
-              "The subclavian artery becomes the axillary artery as it passes the first rib. The cords of the brachial plexus are named for their position relative to the axillary artery (lateral, medial, posterior).",
-              "The costoclavicular ligament, pectoralis minor, and the subcoracoid space can compress the plexus (thoracic outlet syndrome).",
-              "The brachial plexus passes through the interscalene triangle (between anterior and middle scalene muscles), under the clavicle, and into the axilla. Each of these is a potential site of compression or injury.",
+            steps: [
+              "Musculocutaneous nerve (C5-C7): biceps, brachialis, lateral forearm sensation.",
+              "Axillary nerve (C5-C6): deltoid, teres minor, regiment badge sensation.",
+              "Radial nerve (C5-T1): triceps, wrist/finger extensors, dorsal hand sensation.",
+              "Median nerve (C8-T1): forearm flexors, thenar muscles, lateral 3.5 digits sensation.",
+              "Ulnar nerve (C8-T1): intrinsic hand muscles, medial 1.5 digits sensation.",
             ],
           },
         ],
         keyPoints: [
-          "Upper trunk (C5-C6) injury = Erb's palsy: 'waiter's tip' position.",
-          "Lower trunk (C8-T1) injury = Klumpke's paralysis: claw hand, possible Horner's syndrome.",
-          "The cords are named for their position relative to the axillary artery.",
-          "Nerve transfers (e.g., Oberlin) can restore function in severe injuries.",
-          "Horner's syndrome with brachial palsy suggests preganglionic T1 avulsion.",
+          "Injury pattern recognition: C5-C6 = Erb's palsy, C8-T1 = Klumpke's palsy, whole plexus = total arm paralysis.",
+          "Clinical pearl: a wrist drop with intact median nerve function localises the lesion to the radial nerve.",
         ],
       },
     ],
   },
+
   {
     slug: "krebs-cycle",
     title: "The Krebs (TCA) Cycle",
-    emoji: "\ud83d\udd04",
-    category: "Biochemistry",
+    emoji: "🔄",
+    category: "Foundations",
     summary:
-      "The Krebs cycle (tricarboxylic acid cycle) is the central metabolic hub of the cell, occurring in the mitochondrial matrix. It extracts energy from acetyl-CoA to produce NADH, FADH2, and GTP, which feed into the electron transport chain for ATP production.",
-    readMinutes: 8,
-    sections: [
-      {
-        heading: "Krebs cycle overview",
-        body: [
-          "The Krebs cycle is the final common pathway for the oxidation of fuel molecules \u2014 carbohydrates, fats, and proteins. It occurs in the mitochondrial matrix and is the engine that powers aerobic respiration. Every turn of the cycle produces enough reduced coenzymes to generate approximately 10 ATP molecules via oxidative phosphorylation.",
-        ],
-      },
-    ],
+      "The Krebs cycle is the engine of the cell, happening in the mitochondria to produce energy (ATP). It is the central metabolic hub of aerobic respiration.",
+    readMinutes: 7,
+    sections: [],
     keyPoints: [],
     whenToCall: [],
     tabs: [
       {
         id: "basics",
         label: "Basics",
-        icon: "\ud83d\udcd6",
+        icon: "📖",
         sections: [
           {
             heading: "What is the Krebs cycle?",
             body: [
-              "The Krebs cycle (also called the citric acid cycle or TCA cycle) is a series of 8 enzyme-catalysed reactions that occur inside the mitochondria. It takes a 2-carbon molecule (acetyl-CoA) derived from food and systematically extracts its energy by breaking carbon-carbon bonds and transferring electrons to carrier molecules.",
-              "The cycle was discovered by Sir Hans Krebs in 1937, for which he won the Nobel Prize in 1953. It is sometimes called the 'metabolic wheel' because it turns continuously, regenerating its starting molecule (oxaloacetate) while extracting energy from each acetyl-CoA that enters.",
-            ],
-          },
-          {
-            heading: "Key Terms You Must Know",
-            bullets: [
-              "Acetyl-CoA \u2014 The 2-carbon fuel that enters the cycle. It is derived from pyruvate (from glycolysis), fatty acid oxidation, or amino acid catabolism. Acetyl-CoA combines with oxaloacetate (4 carbons) to form citrate (6 carbons) in the first reaction, catalysed by citrate synthase.",
-              "NADH and FADH2 \u2014 Reduced coenzymes that carry high-energy electrons to the electron transport chain (ETC). Each turn of the Krebs cycle produces 3 NADH and 1 FADH2. These electrons drive proton pumping across the inner mitochondrial membrane, creating the gradient that powers ATP synthase.",
-              "GTP (Guanosine Triphosphate) \u2014 A high-energy molecule similar to ATP, produced directly in the cycle by substrate-level phosphorylation. In many cells, GTP is rapidly converted to ATP by nucleoside diphosphate kinase. One GTP is produced per turn of the cycle.",
-              "Oxaloacetate \u2014 A 4-carbon molecule that combines with acetyl-CoA to start the cycle. It is regenerated at the end of the cycle, ready to accept another acetyl-CoA. This is why the cycle is called 'catalytic' \u2014 the starting material is recycled.",
-              "Mitochondrial matrix \u2014 The innermost compartment of the mitochondria where the Krebs cycle enzymes are located. The enzymes are soluble in the matrix, except succinate dehydrogenase (Complex II), which is embedded in the inner mitochondrial membrane.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Think of it like a revolving door",
-              text: "Acetyl-CoA enters through the revolving door (combining with oxaloacetate), the door spins 8 times (8 reactions), energy is captured at each turn (NADH, FADH2, GTP), and oxaloacetate is back at the start, ready for the next visitor.",
-            },
-          },
-          {
-            heading: "The 8 steps at a glance",
-            bullets: [
-              "1. Citrate synthase: Acetyl-CoA (2C) + Oxaloacetate (4C) \u2192 Citrate (6C). This is the 'entry door' of the cycle.",
-              "2. Aconitase: Citrate \u2192 Isocitrate. A simple isomerisation (water移 in, water移 out) to prepare for the first oxidation step.",
-              "3. Isocitrate dehydrogenase: Isocitrate \u2192 \u03b1-Ketoglutarate (5C) + CO2 + NADH. The first oxidation step \u2014 this is a key regulatory point. High NADH/NAD+ inhibits this enzyme.",
-              "4. \u03b1-Ketoglutarate dehydrogenase: \u03b1-Ketoglutarate \u2192 Succinyl-CoA (4C) + CO2 + NADH. Second oxidation step. Requires the same 5 coenzymes as pyruvate dehydrogenase (TPP, FAD, NAD, CoA, lipoate).",
-              "5. Succinyl-CoA synthetase: Succinyl-CoA \u2192 Succinate + GTP. Substrate-level phosphorylation \u2014 the only step that directly produces a high-energy phosphate.",
-              "6. Succinate dehydrogenase: Succinate \u2192 Fumarate + FADH2. The only Krebs cycle enzyme embedded in the inner membrane (Complex II of the ETC).",
-              "7. Fumarase: Fumarate \u2192 Malate. Simple hydration (addition of water).",
-              "8. Malate dehydrogenase: Malate \u2192 Oxaloacetate + NADH. Regenerates the starting material. This reaction is thermodynamically unfavourable, but it is pulled forward by the highly exergonic citrate synthase reaction.",
-            ],
-          },
-        ],
-        keyPoints: [
-          "The Krebs cycle occurs in the mitochondrial matrix and processes acetyl-CoA.",
-          "Each turn produces 3 NADH, 1 FADH2, 1 GTP, and releases 2 CO2.",
-          "The cycle is catalytic: oxaloacetate is regenerated to start the next turn.",
-          "NADH and FADH2 carry electrons to the ETC for ATP production (~10 ATP per turn).",
-          "The cycle is the final common pathway for carbohydrate, fat, and protein oxidation.",
-        ],
-      },
-      {
-        id: "in-depth",
-        label: "In-Depth",
-        icon: "\ud83d\udd2c",
-        sections: [
-          {
-            heading: "Regulation of the Krebs cycle",
-            body: [
-              "The Krebs cycle is regulated at three key steps to match energy production with cellular demand. When the cell has plenty of ATP, the cycle slows; when ATP is needed, it accelerates.",
-            ],
-            bullets: [
-              "Citrate synthase is inhibited by ATP, NADH, succinyl-CoA, and citrate itself (product inhibition). It is activated by ADP. This is the most important control point.",
-              "Isocitrate dehydrogenase is activated by ADP and Ca2+, and inhibited by ATP and NADH. This enzyme catalyses the first CO2-releasing step and is a major rate-limiting enzyme.",
-              "\u03b1-Ketoglutarate dehydrogenase is activated by Ca2+ and inhibited by succinyl-CoA and NADH. This provides feedback inhibition from the products of the cycle.",
-              "The NADH/NAD+ ratio is the most important overall regulator. When the ETC is running fast (low NADH, high NAD+), the cycle accelerates. When the ETC is slow (high NADH), the cycle slows.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "The Ca2+ connection",
-              text: "Calcium activates both isocitrate dehydrogenase and \u03b1-ketoglutarate dehydrogenase. This links muscle contraction (which releases Ca2+) to increased energy production. When you exercise, calcium signals the Krebs cycle to speed up.",
-            },
-          },
-          {
-            heading: "Amphibolic nature of the cycle",
-            body: [
-              "The Krebs cycle is both catabolic (breaking down molecules for energy) and anabolic (providing building blocks for biosynthesis). This dual role is called amphibolic.",
-            ],
-            bullets: [
-              "Catabolic role: Oxidation of acetyl-CoA generates NADH, FADH2, and GTP for energy production.",
-              "Anabolic role: Intermediates of the cycle are precursors for biosynthetic pathways. Citrate is exported for fatty acid synthesis. \u03b1-Ketoglutarate is a precursor for amino acid synthesis (glutamate family). Succinyl-CoA is used for haem synthesis. Oxaloacetate is a precursor for gluconeogenesis (via PEP carboxykinase) and amino acid synthesis (aspartate family).",
-              "When intermediates are siphoned off for biosynthesis, they must be replenished by anaplerotic reactions. The most important is pyruvate carboxylase: pyruvate + CO2 + ATP \u2192 oxaloacetate. This reaction is activated by acetyl-CoA, ensuring that when fuel is abundant, the cycle is replenished.",
-              "The glyoxylate cycle (in plants and microorganisms, not humans) allows the net conversion of acetyl-CoA to glucose by bypassing the CO2-releasing steps. This is why plants can grow on acetate while humans cannot.",
-            ],
-          },
-          {
-            heading: "Clinical Relevance",
-            body: [
-              "Disorders of the Krebs cycle and its related pathways can cause severe metabolic disease:",
-            ],
-            bullets: [
-              "Thiamine (B1) deficiency: Thiamine pyrophosphate (TPP) is a coenzyme for \u03b1-ketoglutarate dehydrogenase (and pyruvate dehydrogenase). Deficiency causes beriberi (wet: heart failure; dry: neuropathy) and Wernicke-Korsakoff syndrome (confusion, ataxia, ophthalmoplegia \u2192 memory loss). Treated urgently with IV thiamine.",
-              "Succinate dehydrogenase mutations: Succinate dehydrogenase is Complex II of the ETC. Mutations cause hereditary paraganglioma and phaeochromocytoma (tumours of the adrenal medulla). Succinate accumulates and stabilises HIF-1\u03b1, promoting angiogenesis and tumour growth.",
-              "Fumarase deficiency: Extremely rare autosomal recessive disorder causing severe encephalopathy, developmental delay, and distinctive facial features. Fumarate accumulates in cells, inhibiting prolyl hydroxylases and stabilising HIF-1\u03b1 (pseudohypoxia).",
-              "Ischaemia-reperfusion injury: During ischaemia (e.g., heart attack), the Krebs cycle stops due to lack of oxygen. When blood flow is restored (reperfusion), the sudden reactivation of the cycle generates a burst of reactive oxygen species (ROS) that damage mitochondria and cells. This is why reperfusion can paradoxically worsen tissue damage.",
-              "Dicarboxylic aciduria: Defects in fatty acid oxidation can produce dicarboxylic acids that enter the Krebs cycle at unusual points, causing metabolic acidosis and hypoglycaemia. Medium-chain acyl-CoA dehydrogenase (MCAD) deficiency is the most common fatty acid oxidation defect.",
-            ],
-            callout: {
-              kind: "warning",
-              title: "Red flag: Wernicke-Korsakoff syndrome",
-              text: "Any patient with chronic alcohol use who presents with confusion, ataxia, and eye movement abnormalities should receive IV thiamine IMMEDIATELY \u2014 even before glucose. Giving glucose without thiamine can precipitate Wernicke's encephalopathy by depleting the remaining thiamine stores.",
-            },
-          },
-        ],
-        keyPoints: [
-          "The Krebs cycle is regulated by ATP/ADP, NADH/NAD+, and Ca2+ levels.",
-          "It is amphibolic: both catabolic (energy) and anabolic (biosynthesis).",
-          "Pyruvate carboxylase is the key anaplerotic reaction replenishing oxaloacetate.",
-          "Thiamine deficiency impairs \u03b1-ketoglutarate dehydrogenase, causing beriberi and Wernicke-Korsakoff.",
-          "Ischaemia-reperfusion injury involves a burst of ROS from sudden Krebs cycle reactivation.",
-        ],
-      },
-    ],
-  },
-  {
-    slug: "digestive-system",
-    title: "The Digestive System",
-    emoji: "🍽️",
-    category: "Physiology",
-    summary:
-      "A complete guide to the gastrointestinal tract — from ingestion and mechanical breakdown in the mouth to enzymatic digestion, nutrient absorption in the small intestine, and water reabsorption in the colon. Covers the organs, enzymes, and neural/hormonal regulation that turn a meal into usable energy.",
-    readMinutes: 14,
-    tabs: [
-      {
-        id: "basics",
-        label: "Basics",
-        icon: "📖",
-        sections: [
-          {
-            heading: "The Journey of Food",
-            body: [
-              "Digestion is the process of breaking food into molecules small enough for the body to absorb. It begins the moment food enters the mouth and ends when waste exits the anus — a journey of roughly 9 metres through the gastrointestinal (GI) tract.",
-              "Two types of digestion occur simultaneously: mechanical digestion (physical breakdown by chewing, churning, and segmentation) and chemical digestion (enzymatic hydrolysis of macromolecules into absorbable units).",
-            ],
-            bullets: [
-              "Mouth: Teeth crush food (mastication); salivary amylase begins starch digestion; the tongue forms a bolus.",
-              "Pharynx & Oesophagus: The bolus is swallowed (deglutition) and propelled by peristaltic waves to the stomach.",
-              "Stomach: Churns food with gastric juice (HCl + pepsin) into a semi-liquid chyme.",
-              "Small Intestine: The primary site of chemical digestion and nutrient absorption (duodenum → jejunum → ileum).",
-              "Large Intestine: Absorbs water, electrolytes, and vitamins produced by gut bacteria; forms faeces.",
-              "Rectum & Anus: Stores and eliminates waste.",
-            ],
-          },
-          {
-            heading: "Key Terms",
-            bullets: [
-              "Bolus — the softened mass of chewed food mixed with saliva, ready to be swallowed.",
-              "Chyme — the acidic, semi-liquid paste produced by gastric mixing in the stomach.",
-              "Peristalsis — rhythmic, wave-like contractions of smooth muscle that push contents along the GI tract.",
-              "Segmentation — localised contractions that mix chyme with digestive juices and bring it into contact with the absorptive surface.",
-              "Villi — finger-like projections of the small-intestinal mucosa that increase the absorptive surface area ~600-fold.",
-              "Brush border — the microvilli on the apical surface of enterocytes where final enzymatic digestion and absorption occur.",
-              "Sphincters — ring-shaped muscles that control the passage of food between compartments (e.g., lower oesophageal sphincter, pyloric sphincter, ileocaecal valve).",
-            ],
-          },
-          {
-            heading: "The Role of the Stomach",
-            body: [
-              "The stomach is a J-shaped muscular sac that serves as a temporary storage reservoir and mixing chamber. It secretes gastric juice — a potent mix of hydrochloric acid (HCl, pH 1.5–3.5), pepsinogen (activated to pepsin by HCl), intrinsic factor (for vitamin B₁₂ absorption), and mucus (protective barrier).",
-              "HCl denatures proteins, activates pepsin, and kills most ingested bacteria. Pepsin is an endopeptidase that cleaves proteins into smaller polypeptides. The stomach also absorbs a few substances: water, certain ions, alcohol, and some drugs (e.g., aspirin).",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Gastric emptying",
-              text: "Liquids leave the stomach faster than solids. Fat slows gastric emptying significantly — which is why high-fat meals keep you feeling full longer.",
-            },
-          },
-          {
-            heading: "Absorption in the Intestines",
-            body: [
-              "The small intestine is the workhorse of absorption. Its enormous surface area — created by circular folds, villi, and microvilli — allows efficient uptake of amino acids, monosaccharides, fatty acids, vitamins, and minerals into the blood or lymphatic system.",
-              "The large intestine mainly reabsorbs water (~1.5 L/day) and electrolytes, and houses a vast microbiota that produces vitamin K and short-chain fatty acids from undigested fibre.",
-            ],
-            bullets: [
-              "Iron and calcium are absorbed primarily in the duodenum (regulated by hepcidin and vitamin D respectively).",
-              "Fat-soluble vitamins (A, D, E, K) are absorbed with dietary fat via micelles in the jejunum.",
-              "Vitamin B₁₂ is absorbed in the terminal ileum after binding to intrinsic factor.",
-              "Water absorption is driven by the osmotic gradient created by solute absorption.",
-            ],
-          },
-        ],
-        keyPoints: [
-          "Digestion spans ~9 m from mouth to anus and combines mechanical and chemical processes.",
-          "The stomach produces HCl (pH 1.5–3.5) and pepsin for protein digestion; it also absorbs alcohol and some drugs.",
-          "The small intestine is the primary site of nutrient absorption, with villi increasing surface area ~600-fold.",
-          "Peristalsis and segmentation are the two key motility patterns that move and mix GI contents.",
-          "The large intestine absorbs water and electrolytes and houses beneficial gut bacteria.",
-        ],
-      },
-      {
-        id: "in-depth",
-        label: "In-Depth",
-        icon: "🔬",
-        sections: [
-          {
-            heading: "Enzymes of Digestion",
-            body: [
-              "Enzymatic digestion is a coordinated cascade involving salivary, gastric, pancreatic, and brush-border enzymes. Each enzyme has an optimal pH and substrate specificity, ensuring that macromolecules are systematically dismantled.",
-            ],
-            bullets: [
-              "Salivary amylase (ptyalin): Cleaves starch → maltose + maltotriose. Inactivated by gastric acid.",
-              "Lingual lipase: Secreted by von Ebner's glands; begins fat digestion in the mouth. Continues working in the stomach (acid-stable).",
-              "Pepsin (from pepsinogen): An endopeptidase optimised at pH 1.5–2.5. Cleaves proteins → large polypeptides.",
-              "Pancreatic lipase: The major fat-digesting enzyme; splits triglycerides → 2-monoglycerides + free fatty acids. Requires colipase to anchor it to the bile-salt-coated fat droplet.",
-              "Pancreatic amylase: Continues starch digestion in the duodenum → maltose + limit dextrins.",
-              "Trypsin & chymotrypsin (from trypsinogen / chymotrypsinogen): Serine proteases that further digest polypeptides into smaller peptides.",
-              "Brush-border enzymes (maltase, sucrase, lactase, peptidases): Complete digestion at the enterocyte surface into monosaccharides and amino acids for absorption.",
-            ],
-            callout: {
-              kind: "warning",
-              title: "Zymogen activation",
-              text: "Pancreatic proteases are secreted as inactive zymogens to prevent autodigestion. Trypsinogen is activated by enterokinase on the duodenal brush border; trypsin then activates all other pancreatic zymogens — a cascade that, if triggered prematurely, causes acute pancreatitis.",
-            },
-          },
-          {
-            heading: "The Liver and Pancreas",
-            body: [
-              "The liver and pancreas are the two major accessory organs of digestion. They secrete their products into the duodenum via the hepatopancreatic ampulla (of Vater), regulated by the sphincter of Oddi.",
-            ],
-            bullets: [
-              "Liver: Produces bile (stored in the gallbladder), which emulsifies dietary fats into smaller droplets, increasing the surface area for lipase action. The liver also detoxifies drugs, metabolises nutrients, stores glycogen, and synthesises plasma proteins.",
-              "Gallbladder: Stores and concentrates bile between meals; contracts in response to cholecystokinin (CCK) released by I-cells in the duodenum in response to fat and protein.",
-              "Exocrine pancreas: Secretes bicarbonate-rich juice (neutralises gastric acid) and digestive enzymes (lipase, amylase, proteases).",
-              "Endocrine pancreas: Islets of Langerhans secrete insulin (β-cells) and glucagon (α-cells) to regulate blood glucose.",
-            ],
-          },
-          {
-            heading: "Neural and Hormonal Regulation",
-            body: [
-              "GI motility and secretion are controlled by the enteric nervous system (the 'second brain'), the autonomic nervous system, and a suite of GI hormones. This ensures digestion is matched to the volume and composition of food entering each segment.",
-            ],
-            bullets: [
-              "Cephalic phase (vagal): Sight, smell, or thought of food → vagus nerve → gastric acid secretion begins before food reaches the stomach.",
-              "Gastric phase: Distension and peptides in the stomach → gastrin release from G-cells → more HCl and pepsinogen secretion.",
-              "Intestinal phase: Chyme entering the duodenum → secretin (stimulates pancreatic bicarbonate), CCK (stimulates pancreatic enzymes and gallbladder contraction), and GIP (stimulates insulin).",
-              "The migrating motor complex (MMC) — a cyclical pattern of motility during fasting — sweeps residual debris from the stomach to the ileum ('housekeeping wave').",
-            ],
-          },
-          {
-            heading: "Clinical Relevance",
-            bullets: [
-              "Peptic ulcer disease: Erosion of the gastric or duodenal mucosa by acid and pepsin. Helicobacter pylori infection and NSAID use are the two main causes. Treated with proton pump inhibitors (PPIs) and H. pylori eradication therapy.",
-              "Gastro-oesophageal reflux disease (GERD): Incompetence of the lower oesophageal sphincter allows gastric acid to reflux into the oesophagus, causing heartburn and potential Barrett's oesophagus (intestinal metaplasia → adenocarcinoma risk). Managed with lifestyle changes and PPIs.",
-              "Cholelithiasis (gallstones): Hardened cholesterol or bilirubin deposits in the gallbladder. May cause biliary colic or obstruct the common bile duct → jaundice and pancreatitis. Treated with cholecystectomy.",
-              "Acute pancreatitis: Premature activation of pancreatic enzymes causes autodigestion. The two most common causes in adults are gallstones and alcohol. Diagnosed by elevated serum lipase and characteristic imaging.",
-              "Lactose deficiency: Reduced lactase activity leads to osmotic diarrhoea, bloating, and gas after consuming dairy. Managed with lactose-free diet or exogenous lactase supplements.",
-            ],
-            callout: {
-              kind: "danger",
-              title: "Red flag: acute abdomen",
-              text: "Sudden severe abdominal pain with rigidity, guarding, and rebound tenderness suggests peritonitis or visceral perforation — a surgical emergency requiring immediate evaluation.",
-            },
-          },
-        ],
-        keyPoints: [
-          "Salivary amylase begins starch digestion in the mouth; pancreatic lipase is the major fat-digesting enzyme requiring colipase.",
-          "The liver produces bile for fat emulsification; the exocrine pancreas secretes bicarbonate and digestive enzymes into the duodenum.",
-          "CCK stimulates gallbladder contraction and pancreatic enzyme release; secretin stimulates bicarbonate secretion.",
-          "GERD results from lower oesophageal sphincter incompetence; peptic ulcers are mainly caused by H. pylori and NSAIDs.",
-          "Acute pancreatitis — gallstones and alcohol are the top two causes — is diagnosed by elevated lipase and treated supportively.",
-        ],
-      },
-    ],
-    sections: [],
-    keyPoints: [
-      "Digestion spans ~9 m from mouth to anus and combines mechanical and chemical processes.",
-      "The stomach produces HCl and pepsin for protein digestion; it also absorbs alcohol and some drugs.",
-      "The small intestine is the primary site of nutrient absorption, with villi increasing surface area ~600-fold.",
-      "Pancreatic lipase, amylase, and proteases are the workhorses of chemical digestion in the duodenum.",
-      "GERD and peptic ulcer disease are the most common upper-GI disorders, both managed with acid suppression.",
-    ],
-    whenToCall: [
-      "Severe abdominal pain with rigidity or rebound tenderness — possible perforation or peritonitis.",
-      "Vomiting blood (haematemesis) or passing black, tarry stools (melaena) — upper-GI bleeding.",
-      "Unexplained weight loss with progressive dysphagia — possible oesophageal or gastric malignancy.",
-      "Sudden jaundice with abdominal pain — possible gallstone obstruction of the common bile duct.",
-    ],
-  },
-  {
-    slug: "endocrine-system",
-    title: "The Endocrine System",
-    emoji: "🧬",
-    category: "Physiology",
-    summary:
-      "A complete guide to the body's chemical messenger network — from hormone synthesis and receptor binding to the HPA axis, negative feedback loops, and the regulation of metabolism, growth, stress, and reproduction.",
-    readMinutes: 14,
-    tabs: [
-      {
-        id: "basics",
-        label: "Basics",
-        icon: "📖",
-        sections: [
-          {
-            heading: "What Are Hormones?",
-            body: [
-              "Hormones are chemical messengers secreted by endocrine glands directly into the bloodstream. They travel to distant target cells, bind to specific receptors, and trigger a biological response — regulating everything from metabolism and growth to mood and reproduction.",
-              "Unlike neurotransmitters (which act across synapses in milliseconds), hormones act more slowly but their effects are longer-lasting and widespread. A single hormone can influence dozens of different tissues simultaneously.",
-            ],
-            bullets: [
-              "Peptide hormones (e.g., insulin, growth hormone): Water-soluble, bind to cell-surface receptors, act via second messengers (cAMP, IP₃). Fast onset, short duration.",
-              "Steroid hormones (e.g., cortisol, oestrogen, testosterone): Lipid-soluble, cross the cell membrane, bind intracellular/nuclear receptors, alter gene transcription. Slow onset, long duration.",
-              "Amine hormones (e.g., thyroxine, adrenaline): Derived from amino acids. Thyroxine acts like a steroid hormone (nuclear receptor); adrenaline acts like a peptide hormone (surface receptor).",
-              "Paracrine signals act locally on neighbouring cells; autocrine signals act on the same cell; endocrine signals travel through the blood to distant targets.",
-            ],
-          },
-          {
-            heading: "The Major Glands",
-            bullets: [
-              "Hypothalamus — the command centre: Links the nervous and endocrine systems. Secretes releasing/inhibiting hormones (TRH, CRH, GnRH, GHRH, somatostatin, dopamine) that control the pituitary.",
-              "Pituitary gland (hypophysis) — the master gland: The anterior lobe produces GH, TSH, ACTH, FSH, LH, and prolactin. The posterior lobe stores and releases ADH (vasopressin) and oxytocin synthesised by the hypothalamus.",
-              "Thyroid gland — metabolism control: A butterfly-shaped gland in the neck producing T₃ and T₄ (regulate basal metabolic rate, heat production, heart rate) and calcitonin (lowers blood calcium).",
-              "Adrenal glands — the stress response: The cortex makes cortisol (stress metabolism), aldosterone (salt balance), and sex steroids. The medulla makes adrenaline and noradrenaline (fight-or-flight).",
-              "Pancreas — blood sugar balance: The Islets of Langerhans contain β-cells (insulin — lowers glucose) and α-cells (glucagon — raises glucose).",
-              "Gonads — reproduction: Ovaries produce oestrogen and progesterone; testes produce testosterone. Both regulated by FSH and LH from the pituitary.",
-            ],
-          },
-          {
-            heading: "How Hormones Act",
-            body: [
-              "A hormone is only effective if its target cell has the right receptor. Hormone-receptor binding initiates a signalling cascade — a chain of intracellular events that amplifies the original signal. Even tiny concentrations of hormone (nanomoles per litre) can produce profound effects because each receptor activates many downstream molecules.",
-            ],
-            bullets: [
-              "Up-regulation: Prolonged hormone deficiency makes target cells produce more receptors (increased sensitivity).",
-              "Down-regulation: Prolonged hormone excess causes receptors to be internalised or destroyed (decreased sensitivity). This is why chronic steroid use can blunt the body's own cortisol response.",
-              "Permissiveness: Some hormones need another hormone to exert their full effect (e.g., thyroid hormone amplifies the effect of adrenaline on heart rate).",
-              "Synergism: Two hormones working together produce a greater effect than the sum of their individual effects.",
-              "Antagonism: One hormone opposes the action of another (e.g., insulin opposes glucagon; calcitonin opposes PTH).",
-            ],
-          },
-          {
-            heading: "The Pituitary and Hypothalamus",
-            body: [
-              "The hypothalamus controls the pituitary through two mechanisms: (1) releasing and inhibiting hormones delivered via the hypophyseal portal system to the anterior lobe, and (2) direct neural axons to the posterior lobe.",
-              "The anterior pituitary (adenohypophysis) is a true endocrine gland that synthesises and secretes its own hormones. The posterior pituitary (neurohypophysis) is an extension of neural tissue that stores hypothalamic hormones.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Pituitary hormones mnemonics",
-              text: "FLAT PiG: FSH, LH, ACTH, TSH (anterior) + Prolactin, Growth hormone. Think of the anterior pituitary as a pig that is flat. The posterior stores ADH and Oxytocin (made by the hypothalamus).",
-            },
-          },
-        ],
-        keyPoints: [
-          "Hormones are chemical messengers that travel through the blood to target cells with specific receptors.",
-          "Peptide hormones bind surface receptors (fast); steroid hormones enter cells and alter gene transcription (slow but lasting).",
-          "The pituitary gland — controlled by the hypothalamus — produces hormones regulating growth, metabolism, reproduction, and stress.",
-          "Thyroid hormones (T₃/T₄) regulate basal metabolic rate; calcitonin lowers blood calcium.",
-          "Insulin lowers blood glucose; glucagon raises it — their balance prevents hyper- and hypoglycaemia.",
-        ],
-      },
-      {
-        id: "in-depth",
-        label: "In-Depth",
-        icon: "🔬",
-        sections: [
-          {
-            heading: "The HPA Axis",
-            body: [
-              "The Hypothalamic-Pituitary-Adrenal (HPA) axis is the body's central stress response system. When the brain perceives a threat, the hypothalamus releases CRH (corticotropin-releasing hormone), which stimulates the anterior pituitary to secrete ACTH (adrenocorticotropic hormone). ACTH travels to the adrenal cortex and triggers cortisol synthesis and release.",
-              "Cortisol mobilises energy (gluconeogenesis, lipolysis), suppresses non-essential functions (immune response, digestion, reproduction), and maintains blood pressure. Once cortisol levels rise, they feed back to suppress both CRH and ACTH release — closing the loop.",
-            ],
-            bullets: [
-              "Chronic stress → sustained HPA activation → chronically elevated cortisol → immunosuppression, insulin resistance, central obesity, osteoporosis, and hippocampal atrophy.",
-              "Cushing's syndrome: Excess cortisol from any cause (pituitary adenoma, adrenal tumour, or exogenous steroids) → moon face, buffalo hump, central obesity, striae, hypertension, hyperglycaemia.",
-              "Addison's disease: Primary adrenal insufficiency → low cortisol and aldosterone → fatigue, weight loss, hypotension, hyperpigmentation (elevated ACTH/MSH from POMC processing).",
-              "Adrenal crisis: Acute cortisol deficiency (e.g., sudden withdrawal of steroids) → life-threatening hypotension, shock, and electrolyte imbalance. Requires emergency IV hydrocortisone.",
-            ],
-            callout: {
-              kind: "danger",
-              title: "Red flag",
-              text: "Never abruptly stop long-term steroid therapy. The adrenal glands atrophy from suppression and cannot mount a cortisol response. Always taper under medical supervision to allow HPA axis recovery.",
-            },
-          },
-          {
-            heading: "Negative Feedback Loops",
-            body: [
-              "Negative feedback is the primary mechanism by which hormones are regulated. The product of a hormonal pathway inhibits its own production upstream, maintaining homeostasis. Almost every endocrine axis uses this principle.",
-            ],
-            bullets: [
-              "Thyroid axis: Hypothalamus → TRH → anterior pituitary → TSH → thyroid → T₃/T₄. Elevated T₃/T₄ inhibits both TRH and TSH release. Low T₃/T₄ releases the brake → more TRH and TSH → thyroid stimulation.",
-              "Calcium homeostasis: High blood Ca²⁺ → parafollicular cells secrete calcitonin → lowers Ca²⁺. Low blood Ca²⁺ → parathyroid glands secrete PTH → raises Ca²⁺ (bone resorption, renal reabsorption, vitamin D activation).",
-              "Glucose regulation: High glucose → β-cells release insulin → glucose uptake → glucose falls. Low glucose → α-cells release glucagon → glycogenolysis and gluconeogenesis → glucose rises.",
-              "Positive feedback (rare): Oxytocin during labour — uterine contractions stimulate more oxytocin release, which intensifies contractions, until delivery. Also, the LH surge during ovulation.",
-            ],
-          },
-          {
-            heading: "Specific Hormones in Detail",
-            bullets: [
-              "Insulin (pancreatic β-cells): Promotes glucose uptake into muscle and adipose tissue, stimulates glycogen synthesis and lipogenesis, inhibits gluconeogenesis. Deficiency → diabetes mellitus.",
-              "Glucagon (pancreatic α-cells): Stimulates glycogenolysis and gluconeogenesis in the liver, raises blood glucose. Acts as insulin's antagonist.",
-              "Cortisol (adrenal cortex): Glucocorticoid — raises blood glucose via gluconeogenesis, suppresses inflammation and immune function, mobilises fats and proteins, maintains blood pressure. Diurnal rhythm: peaks in early morning.",
-              "Thyroxine (T₄) and Triiodothyronine (T₃) (thyroid): T₄ is the major circulating form (mostly bound to TBG); T₃ is the active form (3–5× more potent). Regulate basal metabolic rate, heat production, heart rate, nervous system development, and growth.",
-              "Aldosterone (adrenal cortex): Mineralocorticoid — acts on the distal convoluted tubule and collecting duct to reabsorb Na⁺ and secrete K⁺, water follows Na⁺ → increases blood volume and pressure. Regulated by the RAAS (renin-angiotensin-aldosterone system).",
-              "Growth hormone (GH) (anterior pituitary): Stimulates hepatic IGF-1 production → promotes linear growth in children, protein synthesis, lipolysis, and insulin resistance. Excess in childhood → gigantism; in adults → acromegaly.",
-            ],
-          },
-          {
-            heading: "Clinical Relevance",
-            bullets: [
-              "Diabetes mellitus: Type 1 — autoimmune β-cell destruction → absolute insulin deficiency → DKA (ketoacidosis). Type 2 — insulin resistance + relative deficiency → hyperglycaemia, often linked to obesity. Treatment: insulin (Type 1), metformin, GLP-1 agonists, SGLT2 inhibitors (Type 2).",
-              "Hyperthyroidism (Graves' disease most common): Excess T₃/T₄ → weight loss, tachycardia, heat intolerance, anxiety, exophthalmos (Graves'). Treated with antithyroid drugs (carbimazole), radioactive iodine, or thyroidectomy.",
-              "Hypothyroidism: Deficient T₃/T₄ → weight gain, cold intolerance, fatigue, constipation, dry skin. In children: cretinism (intellectual disability if untreated). Most common cause: Hashimoto's thyroiditis. Treatment: levothyroxine.",
-              "Hyperprolactinaemia: Excess prolactin (often from pituitary prolactinoma) → galactorrhoea, amenorrhoea, infertility, decreased libido. Treated with dopamine agonists (cabergoline, bromocriptine).",
-              "SIADH (syndrome of inappropriate ADH): Excess ADH → water retention → dilutional hyponatraemia → confusion, seizures. Causes include small-cell lung cancer, CNS disorders, and certain drugs.",
-            ],
-            callout: {
-              kind: "warning",
-              title: "Diabetic emergencies",
-              text: "DKA (Type 1): High glucose + ketones + acidosis → Kussmaul breathing, fruity breath, dehydration. HHS (Type 2): Extremely high glucose (>30 mmol/L) without significant ketones → profound dehydration and altered consciousness. Both require emergency IV fluids and insulin.",
-            },
-          },
-        ],
-        keyPoints: [
-          "The HPA axis — hypothalamus → CRH → pituitary → ACTH → adrenal cortex → cortisol — is the body's central stress response system.",
-          "Negative feedback loops maintain hormonal homeostasis; cortisol inhibits CRH and ACTH; T₃/T₄ inhibit TRH and TSH.",
-          "Insulin lowers blood glucose; glucagon raises it. Cortisol raises glucose and suppresses immunity. T₃/T₄ set the metabolic rate.",
-          "Cushing's syndrome (excess cortisol) causes central obesity, striae, and hypertension; Addison's disease (deficiency) causes fatigue, weight loss, and hyperpigmentation.",
-          "Type 1 diabetes = autoimmune β-cell destruction → insulin-dependent; Type 2 = insulin resistance → managed with lifestyle and oral agents.",
-        ],
-      },
-    ],
-    sections: [],
-    keyPoints: [
-      "Hormones are chemical messengers that travel through the blood to target cells with specific receptors.",
-      "The HPA axis — hypothalamus → CRH → pituitary → ACTH → adrenal cortex — controls the cortisol stress response.",
-      "Insulin lowers blood glucose; glucagon raises it — their balance prevents hyper- and hypoglycaemia.",
-      "Negative feedback loops are the primary mechanism of hormonal regulation across all endocrine axes.",
-      "Cushing's syndrome (excess cortisol) and Addison's disease (deficiency) are key adrenal pathologies.",
-    ],
-    whenToCall: [
-      "Symptoms of adrenal crisis: severe hypotension, confusion, abdominal pain, and electrolyte disturbance — emergency IV hydrocortisone required.",
-      "Diabetic ketoacidosis: Kussmaul breathing, fruity breath, altered consciousness — requires emergency insulin and fluids.",
-      "Severe hypoglycaemia: Confusion, seizures, loss of consciousness — give glucose immediately (IV dextrose or glucagon injection).",
-      "Acute thyroid storm: High fever, tachycardia, agitation, delirium — life-threatening; requires emergency antithyroid therapy and supportive care.",
-    ],
-  },
-  {
-    slug: "blood-immunity",
-    title: "Blood & Immunity",
-    emoji: "🩸",
-    category: "Physiology",
-    summary:
-      "A complete guide to blood composition and the immune system — from red blood cells, white blood cells, and platelets to the coagulation cascade, innate and adaptive immunity, and how vaccines protect us.",
-    readMinutes: 15,
-    tabs: [
-      {
-        id: "basics",
-        label: "Basics",
-        icon: "📖",
-        sections: [
-          {
-            heading: "Blood Composition",
-            body: [
-              "Blood is a specialised connective tissue that makes up about 7% of body weight (~5 litres in an adult). It consists of a liquid matrix called plasma (55%) and formed elements suspended within it (45%): red blood cells, white blood cells, and platelets.",
-              "Plasma is 92% water and carries dissolved proteins (albumin, globulins, fibrinogen), electrolytes, hormones, nutrients, waste products, and clotting factors. Serum is plasma without fibrinogen.",
-            ],
-            bullets: [
-              "Red blood cells (erythrocytes): Biconcave discs packed with haemoglobin. No nucleus, no mitochondria — they rely entirely on anaerobic glycolysis. Lifespan ~120 days. Production (erythropoiesis) stimulated by erythropoietin from the kidney.",
-              "White blood cells (leukocytes): Nucleated cells that defend against infection and disease. Five types: neutrophils, lymphocytes, monocytes, eosinophils, and basophils. Measured by the differential white cell count.",
-              "Platelets (thrombocytes): Tiny, anucleate cell fragments from megakaryocytes. Essential for haemostasis — they aggregate at injury sites to form a platelet plug and release factors that trigger the coagulation cascade.",
-              "Haematocrit: The percentage of blood volume occupied by red blood cells. Normal: 40–45% in men, 36–42% in women. Low → anaemia; high → polycythaemia.",
-            ],
-          },
-          {
-            heading: "Red Blood Cells & Oxygen Transport",
-            body: [
-              "Haemoglobin (Hb) is the oxygen-carrying protein inside RBCs. Each Hb molecule has four haem groups, each containing an iron atom that reversibly binds one O₂ molecule — so one Hb carries up to four O₂.",
-              "Oxygen-haemoglobin dissociation: Hb is ~98% saturated in the lungs (high pO₂) and releases O₂ in tissues (low pO₂). The sigmoidal curve is shifted right by low pH, high CO₂, high temperature, and 2,3-DPG (Bohr effect) — all conditions of active tissue.",
-            ],
-            bullets: [
-              "Erythropoiesis: Occurs in red bone marrow. Stem cell → proerythroblast → normoblast (nucleus extruded) → reticulocyte (still contains RNA) → mature erythrocyte. Takes ~7 days.",
-              "Iron metabolism: Iron is absorbed in the duodenum (regulated by hepcidin), carried by transferrin in plasma, stored as ferritin in liver and marrow. Daily loss ~1 mg; absorbed ~1–2 mg.",
-              "Vitamin B₁₂ and folate: Essential for DNA synthesis in rapidly dividing cells. Deficiency → megaloblastic anaemia (large, immature RBCs). B₁₂ requires intrinsic factor from the stomach for absorption in the terminal ileum.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Reticulocyte count",
-              text: "A high reticulocyte count indicates the bone marrow is actively compensating for blood loss or haemolysis. A low count suggests marrow failure (e.g., aplastic anaemia, iron deficiency, or marrow infiltration).",
-            },
-          },
-          {
-            heading: "White Blood Cells & Blood Types",
-            body: [
-              "The five types of white blood cells are classified into granulocytes (neutrophils, eosinophils, basophils) and agranulocytes (lymphocytes, monocytes). Each type has a distinct role in immune defence.",
-            ],
-            bullets: [
-              "Neutrophils (40–70%): First responders to bacterial infection. Phagocytose and destroy pathogens. Die forming pus. Elevated in acute infection (left shift — increased immature band cells).",
-              "Lymphocytes (20–40%): T cells (cell-mediated immunity), B cells (antibody production), and NK cells (kill virus-infected and tumour cells). Elevated in viral infection and chronic inflammation.",
-              "Monocytes (2–8%): Migrate into tissues and become macrophages or dendritic cells. Present antigens to T cells and phagocytose debris. Elevated in chronic infection.",
-              "Eosinophils (1–4%): Combat parasitic infections and modulate allergic responses. Elevated in asthma, hay fever, and helminth infections.",
-              "Basophils (<1%): Release histamine and heparin. Involved in allergic reactions and anaphylaxis. Elevated in leukaemia.",
-              "Blood types: The ABO system is based on antigens on the RBC surface. Type A has A antigen + anti-B antibodies; Type B has B antigen + anti-A antibodies; Type AB has both antigens and no antibodies; Type O has no antigens but both antibodies.",
-              "Rh factor: The D antigen. Rh-negative individuals can develop anti-D antibodies if exposed to Rh-positive blood (e.g., during pregnancy with an Rh-positive fetus). Prevented by anti-D immunoglobulin (RhoGAM).",
-            ],
-          },
-          {
-            heading: "Platelets & Clotting Overview",
-            body: [
-              "When a blood vessel is injured, haemostasis occurs in three overlapping stages: vascular spasm (immediate vasoconstriction), platelet plug formation (primary haemostasis), and the coagulation cascade (secondary haemostasis → fibrin clot).",
-              "Platelets adhere to exposed collagen via von Willebrand factor, become activated, change shape, release granule contents (ADP, thromboxane A₂), and recruit more platelets to form a plug. This is sufficient for small injuries.",
-            ],
-            bullets: [
-              "Thrombocytopenia: Platelet count <150 × 10⁹/L → easy bruising, petechiae, mucosal bleeding. Causes include immune destruction (ITP), bone marrow failure, and drugs.",
-              "Thrombocytosis: Platelet count >400 × 10⁹/L → risk of thrombosis. Can be reactive (infection, iron deficiency) or primary (essential thrombocythaemia).",
-              "Normal platelet count: 150–400 × 10⁹/L. Platelets live 8–10 days.",
-            ],
-          },
-        ],
-        keyPoints: [
-          "Blood is 55% plasma (water + proteins + electrolytes) and 45% formed elements (RBCs, WBCs, platelets).",
-          "Red blood cells carry oxygen via haemoglobin; each Hb molecule carries up to 4 O₂ molecules.",
-          "White blood cells are divided into granulocytes (neutrophils, eosinophils, basophils) and agranulocytes (lymphocytes, monocytes).",
-          "ABO blood types are determined by antigens on RBCs; Type O is the universal donor, Type AB the universal recipient.",
-          "Platelets form the initial plug at injury sites; the coagulation cascade then stabilises the clot with fibrin.",
-        ],
-      },
-      {
-        id: "in-depth",
-        label: "In-Depth",
-        icon: "🔬",
-        sections: [
-          {
-            heading: "The Coagulation Cascade",
-            body: [
-              "The coagulation cascade is a series of enzymatic reactions where inactive zymogens are sequentially activated, ultimately converting soluble fibrinogen into insoluble fibrin strands that reinforce the platelet plug into a stable clot.",
-              "The cascade has two initiating pathways that converge on a common pathway:",
-            ],
-            bullets: [
-              "Intrinsic pathway (contact activation): Triggered when blood contacts exposed collagen or negatively charged surfaces. Factors XII → XI → IX → VIII (cofactor) → X. Measured by aPTT (activated partial thromboplastin time).",
-              "Extrinsic pathway (tissue factor): Triggered by tissue factor (TF, Factor III) released from damaged cells, which activates Factor VII. Faster than the intrinsic pathway. Measured by PT (prothrombin time) / INR.",
-              "Common pathway: Factor X (activated by either pathway) + Factor V (cofactor) → converts prothrombin (II) to thrombin (IIa) → thrombin converts fibrinogen (I) → fibrin monomers → cross-linked by Factor XIII into a stable clot.",
-              "Thrombin amplification: Thrombin activates Factors V, VIII, XI, and XIII, creating positive feedback loops that rapidly amplify clot formation.",
-              "Natural anticoagulants: Antithrombin III (inhibits thrombin and Factor Xa), Protein C and Protein S (inactivate Factors Va and VIIIa), and tissue factor pathway inhibitor (TFPI). These prevent uncontrolled clotting.",
-            ],
-            callout: {
-              kind: "warning",
-              title: "Warfarin vs heparin",
-              text: "Warfarin inhibits vitamin K-dependent clotting factors (II, VII, IX, X) — monitored by PT/INR. Heparin potentiates antithrombin III — monitored by aPTT. Accidental overdose of either can cause catastrophic bleeding.",
-            },
-          },
-          {
-            heading: "Innate vs Adaptive Immunity",
-            body: [
-              "The immune system has two interconnected branches: innate immunity (rapid, non-specific, present from birth) and adaptive immunity (slower to respond initially but highly specific and capable of immunological memory).",
-            ],
-            bullets: [
-              "Innate immunity — the first line of defence: Physical barriers (skin, mucous membranes), chemical barriers (stomach acid, lysozyme in tears), cellular defences (neutrophils, macrophages, NK cells), and the complement system (a cascade of plasma proteins that opsonise pathogens, recruit immune cells, and lyse bacteria).",
-              "Pattern recognition: Innate cells use pattern recognition receptors (PRRs) such as Toll-like receptors (TLRs) to detect conserved microbial structures called pathogen-associated molecular patterns (PAMPs) — e.g., bacterial lipopolysaccharide, viral double-stranded RNA.",
-              "Adaptive immunity — specific and memory-capable: Mediated by T lymphocytes (cell-mediated) and B lymphocytes (humoral/antibody-mediated). Each lymphocyte clone recognises a specific antigen via its unique receptor (TCR or BCR).",
-              "T cells: CD4⁺ helper T cells (Th1, Th2, Th17, Tfh) coordinate immune responses by releasing cytokines. CD8⁺ cytotoxic T cells directly kill virus-infected and tumour cells. Regulatory T cells (Tregs) suppress excessive immune responses.",
-              "B cells: Activated by antigen + T cell help → proliferate → differentiate into plasma cells (secrete antibodies) and memory B cells. Antibodies (immunoglobulins) neutralise toxins, opsonise pathogens for phagocytosis, and activate complement.",
-              "Immunoglobulin classes: IgG (most abundant, crosses placenta, opsonisation), IgM (first antibody produced, complement activation), IgA (mucosal immunity, tears, saliva, breast milk), IgE (allergic reactions, anti-parasitic), IgD (B cell surface receptor).",
-            ],
-          },
-          {
-            heading: "How Vaccines Work",
-            body: [
-              "Vaccines exploit immunological memory by presenting a harmless form of a pathogen (or its components) to the immune system, triggering a primary response that generates memory B and T cells without causing disease.",
-              "On subsequent exposure to the real pathogen, the secondary immune response is faster (hours to days instead of weeks), stronger (higher antibody titre), and more specific (affinity maturation) — preventing clinical illness.",
-            ],
-            bullets: [
-              "Live attenuated vaccines: Weakened pathogen that replicates but doesn't cause disease. Strong, long-lasting immunity (often single dose). Examples: MMR, oral polio, BCG, yellow fever. Contraindicated in immunocompromised patients.",
-              "Inactivated (killed) vaccines: Pathogen killed by heat or chemicals. Cannot replicate — safer but weaker immunity, often requiring boosters. Examples: inactivated polio, hepatitis A, rabies.",
-              "Subunit / conjugate vaccines: Purified antigens (e.g., surface proteins or polysaccharides). Very safe but may need adjuvants (e.g., aluminium salts) to boost immunogenicity. Examples: hepatitis B, HPV, pneumococcal conjugate.",
-              "mRNA vaccines: Deliver mRNA encoding a pathogen protein (e.g., SARS-CoV-2 spike). Host cells translate the mRNA → protein → presented to immune system. Rapid development and strong T cell + antibody responses.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Herd immunity",
-              text: "When a critical proportion of a population is immune (vaccinated or recovered), transmission chains break down, protecting unvaccinated individuals. The herd immunity threshold varies: ~95% for measles, ~80–85% for polio.",
-            },
-          },
-          {
-            heading: "Clinical Relevance",
-            bullets: [
-              "Anaemia: Reduced RBC count or haemoglobin → fatigue, pallor, dyspnoea on exertion. Types: iron-deficiency (microcytic, low MCV), B₁₂/folate deficiency (macrocytic, high MCV), chronic disease (normocytic), haemolytic (high reticulocytes, high bilirubin). Diagnosed by FBC, film, and iron studies.",
-              "Leukaemia: Malignant proliferation of white blood cell precursors in the bone marrow. Acute lymphoblastic leukaemia (ALL) is the most common childhood cancer. Chronic lymphocytic leukaemia (CLL) is the most common adult leukaemia. Treatment: chemotherapy, targeted therapy, stem cell transplant.",
-              "Sickle cell disease: Genetic mutation (HbS) → RBCs become sickle-shaped under low oxygen → vaso-occlusion, haemolysis, pain crises. Autosomal recessive. Heterozygous carriers (sickle cell trait) have partial malaria resistance.",
-              "Immune thrombocytopenic purpura (ITP): Autoimmune destruction of platelets by anti-platelet antibodies → low platelet count → bruising, petechiae, mucosal bleeding. First-line: corticosteroids or IV immunoglobulin.",
-              "Immunodeficiency: Primary (genetic, e.g., SCID — no T or B cells) or secondary (acquired, e.g., HIV/AIDS — CD4⁺ T cell depletion). Results in recurrent, severe, or unusual infections.",
-            ],
-            callout: {
-              kind: "danger",
-              title: "Red flag: DIC",
-              text: "Disseminated intravascular coagulation (DIC) — widespread activation of the clotting cascade consuming clotting factors and platelets → simultaneous thrombosis and bleeding. Often triggered by sepsis, trauma, or malignancy. A medical emergency requiring treatment of the underlying cause.",
-            },
-          },
-        ],
-        keyPoints: [
-          "The coagulation cascade has intrinsic (aPTT), extrinsic (PT/INR), and common pathways that converge on fibrin formation.",
-          "Innate immunity is rapid and non-specific; adaptive immunity is specific, slower initially, and generates immunological memory.",
-          "Vaccines present harmless antigens to generate memory B and T cells, enabling rapid secondary responses on re-exposure.",
-          "Anaemia is classified by RBC size (microcytic, normocytic, macrocytic) — iron studies and FBC guide diagnosis.",
-          "DIC is a life-threatening emergency where clotting and bleeding occur simultaneously, usually triggered by sepsis or trauma.",
-        ],
-      },
-    ],
-    sections: [],
-    keyPoints: [
-      "Blood is 55% plasma and 45% formed elements: RBCs (oxygen), WBCs (immunity), and platelets (clotting).",
-      "The coagulation cascade converts fibrinogen to fibrin via intrinsic, extrinsic, and common pathways.",
-      "Innate immunity is the first line of defence; adaptive immunity provides specific, long-lasting protection.",
-      "Vaccines generate immunological memory without causing disease, enabling rapid secondary immune responses.",
-      "Iron-deficiency anaemia is the most common anaemia worldwide; B₁₂/folate deficiency causes megaloblastic anaemia.",
-    ],
-    whenToCall: [
-      "Severe bleeding that won't stop — possible coagulopathy or DIC; requires emergency assessment.",
-      "Unexplained bruising or petechiae with low platelets — possible ITP or bone marrow failure.",
-      "Recurrent severe infections — possible primary or secondary immunodeficiency (e.g., HIV).",
-      "Sudden pallor, fast heart rate, and low blood pressure after bleeding — haemorrhagic shock, transfusion may be needed.",
-    ],
-  },
-  {
-    slug: "dna-replication",
-    title: "DNA Replication",
-    emoji: "🧬",
-    category: "Genetics",
-    summary:
-      "A complete guide to how cells faithfully duplicate their DNA before division — from the double helix unwinding to the leading and lagging strand synthesis, Okazaki fragments, and the clinical consequences of replication errors.",
-    readMinutes: 13,
-    tabs: [
-      {
-        id: "basics",
-        label: "Basics",
-        icon: "📖",
-        sections: [
-          {
-            heading: "What Is DNA?",
-            body: [
-              "Deoxyribonucleic acid (DNA) is the molecule of heredity — a long polymer made of two antiparallel polynucleotide strands wound into a right-handed double helix. Each strand is a chain of nucleotides: a deoxyribose sugar, a phosphate group, and one of four bases — adenine (A), thymine (T), guanine (G), or cytosine (C).",
-              "The two strands are held together by hydrogen bonds between complementary bases: A pairs with T (2 hydrogen bonds) and G pairs with C (3 hydrogen bonds). This base pairing is the key to DNA replication — each strand serves as a template for the synthesis of a new complementary strand.",
-            ],
-            bullets: [
-              "The human genome contains ~3.2 billion base pairs, organised into 23 pairs of chromosomes (plus mitochondrial DNA). If stretched out, one cell's DNA would be ~2 metres long — it is compacted by histone proteins into chromatin.",
-              "Genes are segments of DNA that encode proteins. Only ~1.5% of the human genome codes for proteins; the rest includes regulatory sequences, repetitive elements, and non-coding RNAs.",
-              "DNA replication is semiconservative: each daughter DNA molecule consists of one original (parental) strand and one newly synthesised strand. This was proved by the Meselson-Stahl experiment (1958).",
-            ],
-          },
-          {
-            heading: "Why Does DNA Replicate?",
-            body: [
-              "Before a cell divides (mitosis or meiosis), it must duplicate its entire genome so that each daughter cell receives a complete copy. Without faithful DNA replication, cells would lose genetic information with each division — mutations would accumulate, and organisms could not reproduce or develop.",
-              "DNA replication occurs during the S phase (synthesis phase) of the cell cycle, between G1 and G2. The cell tightly coordinates replication with cell-cycle checkpoints to ensure every chromosome is copied exactly once.",
-            ],
-            bullets: [
-              "Cell cycle: G1 (growth) → S (DNA replication) → G2 (preparation for division) → M (mitosis) → Cytokinesis.",
-              "Origins of replication: Eukaryotic chromosomes have thousands of replication origins, allowing the huge genome to be copied in a reasonable time (~8 hours in human cells).",
-              "The cell cycle checkpoint at the G2/M boundary ensures all DNA is fully replicated before mitosis begins. Damaged or unreplicated DNA triggers checkpoint arrest (via p53 and ATM/ATR kinases).",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Why semiconservative?",
-              text: "Meselson and grew E. coli in heavy nitrogen (¹⁵N), then switched to light nitrogen (¹⁴N). After one generation, all DNA was intermediate density (one heavy + one light strand) — proving semiconservative replication over conservative or dispersive models.",
-            },
-          },
-          {
-            heading: "Key Terms",
-            bullets: [
-              "Replication fork: The Y-shaped region where the double helix is unwound and new DNA is being synthesised. Each chromosome has multiple replication forks moving in both directions.",
-              "Helicase: An enzyme that unwinds the double helix by breaking hydrogen bonds between base pairs, using ATP energy.",
-              "Single-strand binding proteins (SSBs): Stabilise the separated single strands and prevent them from re-annealing before they are replicated.",
-              "Topoisomerase: Relieves the torsional strain (supercoiling) ahead of the replication fork caused by unwinding.",
-              "Primase: An RNA polymerase that synthesises a short RNA primer (~10 nucleotides) to provide the 3'-OH end that DNA polymerase needs to begin synthesis.",
-              "DNA polymerase: The main replication enzyme. Adds nucleotides to the 3' end of a growing strand (5' → 3' direction). Cannot initiate synthesis de novo — requires a primer.",
-              "Ligase: Seals the gaps between Okazaki fragments by forming phosphodiester bonds, creating a continuous daughter strand.",
-            ],
-          },
-          {
-            heading: "Leading and Lagging Strands",
-            body: [
-              "DNA polymerase can only synthesise in the 5' → 3' direction. Because the two parental strands run antiparallel, the replication machinery handles them differently:",
-            ],
-            bullets: [
-              "Leading strand: Synthesised continuously in the same direction as the replication fork movement (5' → 3'). Only one RNA primer is needed. DNA polymerase ε (epsilon) is the primary enzyme.",
-              "Lagging strand: Synthesised discontinuously in short fragments (Okazaki fragments, ~100–200 nucleotides in eukaryotes) because the template runs 5' → 3' toward the fork. Each fragment needs its own RNA primer. DNA polymerase δ (delta) is the primary enzyme.",
-              "Okazaki fragments: Short, newly synthesised DNA fragments on the lagging strand. RNA primers are removed by RNase H and FEN1, gaps are filled by DNA polymerase δ, and fragments are joined by DNA ligase.",
-              "The replisome: A large protein complex at the replication fork that coordinates helicase, primase, and both DNA polymerases, ensuring simultaneous synthesis of both strands.",
-            ],
-          },
-        ],
-        keyPoints: [
-          "DNA is a double helix of two antiparallel polynucleotide strands with complementary base pairing (A-T, G-C).",
-          "DNA replication is semiconservative: each daughter molecule has one parental and one new strand.",
-          "The leading strand is synthesised continuously; the lagging strand is made in Okazaki fragments.",
-          "Helicase unwinds DNA, primase adds RNA primers, DNA polymerase extends the new strand, and ligase seals gaps.",
-          "Replication occurs during S phase of the cell cycle, with checkpoints ensuring fidelity.",
-        ],
-      },
-      {
-        id: "in-depth",
-        label: "In-Depth",
-        icon: "🔬",
-        sections: [
-          {
-            heading: "Enzymes of Replication",
-            body: [
-              "DNA replication requires a precisely coordinated ensemble of enzymes and accessory proteins. Each enzyme has a specific role, and defects in any of them can lead to genome instability, mutations, and disease.",
-            ],
-            bullets: [
-              "Helicase (MCM2-7 complex in eukaryotes): A hexameric ring that encircles one strand and uses ATP hydrolysis to unwind the double helix at ~1,000 bp/second. The leading-strand helicase moves 5' → 3'; the lagging-strand helicase moves 3' → 5'.",
-              "Topoisomerase I: Makes a single-strand nick to relieve torsional strain, then reseals it. No ATP required. Target of camptothecin (anti-cancer drug).",
-              "Topoisomerase II (DNA gyrase in bacteria): Makes double-strand breaks to relieve supercoiling, passes another strand through, and reseals. Requires ATP. Target of quinolone antibiotics (ciprofloxacin) and etoposide (anti-cancer).",
-              "Primase (DNA polymerase α-primase complex): Synthesises a short RNA primer (~8–12 nucleotides) plus a short DNA stretch. This provides the free 3'-OH that processive DNA polymerases need.",
-              "DNA polymerase ε (epsilon): The primary leading-strand polymerase. Highly processive (adds thousands of nucleotides without dissociating) when associated with the sliding clamp PCNA. Has 3' → 5' proofreading exonuclease activity.",
-              "DNA polymerase δ (delta): The primary lagging-strand polymerase. Also has 3' → 5' proofreading exonuclease activity. Extends Okazaki fragments after the RNA primer is removed.",
-              "PCNA (Proliferating Cell Nuclear Antigen): A ring-shaped sliding clamp that encircles DNA and tethers polymerases to the template, dramatically increasing processivity. Loaded by RFC (Replication Factor C).",
-              "RNase H and FEN1: Remove RNA primers from Okazaki fragments. RNase H degrades the RNA in RNA:DNA hybrids; FEN1 (Flap Endonuclease 1) removes the displaced RNA flap.",
-              "DNA ligase I: Seals the nick between adjacent Okazaki fragments by forming a phosphodiester bond. In humans, requires NAD⁺ as a cofactor (unlike bacterial ligase which uses ATP).",
-            ],
-            callout: {
-              kind: "warning",
-              title: "Anti-cancer targets",
-              text: "Many anti-cancer drugs target replication enzymes: hydroxyurea (inhibits ribonucleotide reductase → depletes dNTPs), gemcitabine (nucleoside analogue), aphidicolin (inhibits DNA polymerase α), and topoisomerase inhibitors (etoposide, irinotecan).",
-            },
-          },
-          {
-            heading: "Leading vs Lagging Strand — Detailed Mechanism",
-            body: [
-              "The asymmetry of the replication fork arises from a fundamental constraint: DNA polymerase can only synthesise in the 5' → 3' direction, and the two template strands run antiparallel. This means one strand can be copied continuously toward the fork, while the other must be copied away from the fork in short bursts.",
-            ],
-            bullets: [
-              "Leading strand synthesis: A single RNA primer is laid down at the origin. DNA polymerase ε then extends the strand continuously, following the helicase as it unwinds the helix. This is fast and efficient — the polymerase rarely falls off the template.",
-              "Lagging strand synthesis: As the helicase exposes new template, primase synthesises a short RNA primer every 100–200 bp. DNA polymerase δ extends each primer into an Okazaki fragment. When it reaches the 5' end of the previous fragment, it displaces the RNA, creating a flap that FEN1 removes.",
-              "The trombone model: The lagging strand template loops back so that the polymerase complex can move in the same direction as the leading strand polymerase. As each Okazaki fragment is completed, the loop releases and reforms for the next fragment — like a trombone slide.",
-              "Coordination: The replisome ensures that lagging-strand synthesis keeps pace with leading-strand synthesis despite its discontinuous nature. Stalling of one strand can trigger a checkpoint response.",
-            ],
-          },
-          {
-            heading: "Proofreading and Repair",
-            body: [
-              "DNA replication is remarkably accurate — the error rate is ~1 error per 10⁹ base pairs after all correction mechanisms. This fidelity is achieved through three layers of error correction:",
-            ],
-            bullets: [
-              "Base selection: DNA polymerase selects the correct nucleotide based on Watson-Crick base pairing geometry. Error rate: ~1 in 10⁵.",
-              "3' → 5' proofreading exonuclease: If the wrong nucleotide is incorporated, the polymerase detects the mismatch, pauses, excises the incorrect base via its exonuclease domain, and replaces it. Reduces error rate ~100-fold to ~1 in 10⁷.",
-              "Post-replicative mismatch repair (MMR): MutS (MSH2/MSH6) recognises mismatches; MutL (MLH1/PMS2) coordinates repair; MutH (in bacteria) or exonuclease 1 (in eukaryotes) removes the error-containing strand. Reduces error rate ~100-fold to ~1 in 10⁹.",
-              "Defective MMR → Lynch syndrome (hereditary nonpolyposis colorectal cancer, HNPCC): Germline mutations in MLH1, MSH2, MSH6, or PMS2 → microsatellite instability → markedly increased risk of colorectal, endometrial, and other cancers.",
-            ],
-          },
-          {
-            heading: "Clinical Relevance",
-            bullets: [
-              "Mutations: Permanent changes in the DNA sequence. Point mutations (single base changes) can be silent (no amino acid change), missense (wrong amino acid, e.g., sickle cell: GAG → GTG in β-globin), or nonsense (premature stop codon → truncated protein). Frameshift mutations (insertions/deletions) alter the entire reading frame downstream.",
-              "Cancer and replication: Cancer arises from accumulation of mutations in proto-oncogenes (gain of function → cell growth promotion) and tumour suppressors (loss of function → loss of growth control). Mutations in replication/repair genes (e.g., BRCA1/2, MLH1, MSH2) increase cancer risk by allowing more errors to accumulate.",
-              "Xeroderma pigmentosum (XP): Defective nucleotide excision repair (NER) → inability to repair UV-induced thymine dimers → extreme sun sensitivity, freckling, and >1000× increased risk of skin cancer. Autosomal recessive.",
-              "BRCA1/BRCA2 mutations: Impair homologous recombination repair of double-strand breaks. Carriers have significantly increased lifetime risk of breast cancer (50–70%) and ovarian cancer (20–40%). Treated with PARP inhibitors (synthetic lethality).",
-              "Telomere biology: Chromosome ends (telomeres) shorten with each division because the lagging strand cannot fully replicate the very end. Telomerase (an RNA-dependent DNA polymerase) extends telomeres in germ cells and stem cells. Most cancers reactivate telomerase to achieve replicative immortality.",
-            ],
-            callout: {
-              kind: "danger",
-              title: "Red flag: Lynch syndrome screening",
-              text: "Any colorectal or endometrial cancer diagnosed before age 50, or with a family history of Lynch-associated cancers, should be tested for microsatellite instability (MSI) and mismatch repair (MMR) protein loss. Genetic counselling and cascade testing of at-risk relatives is essential.",
-            },
-          },
-        ],
-        keyPoints: [
-          "Helicase unwinds DNA, topoisomerase relieves supercoiling, primase adds RNA primers, and DNA polymerase extends the new strand.",
-          "The leading strand is copied continuously; the lagging strand is copied in Okazaki fragments joined by ligase.",
-          "Three layers of error correction — base selection, proofreading, and mismatch repair — achieve an error rate of ~1 in 10⁹.",
-          "Defective mismatch repair causes Lynch syndrome, a major hereditary cancer predisposition.",
-          "Cancer arises from accumulated mutations in oncogenes and tumour suppressors; BRCA mutations impair double-strand break repair.",
-        ],
-      },
-    ],
-    sections: [],
-    keyPoints: [
-      "DNA is a double helix with complementary base pairing (A-T, G-C); replication is semiconservative.",
-      "Helicase unwinds DNA, primase adds RNA primers, DNA polymerase synthesises new strands, and ligase seals gaps.",
-      "The leading strand is synthesised continuously; the lagging strand is made in Okazaki fragments.",
-      "Three layers of proofreading ensure replication fidelity of ~1 error per 10⁹ base pairs.",
-      "Mutations in repair genes (MLH1, BRCA1/2) dramatically increase cancer risk.",
-    ],
-    whenToCall: [
-      "Unexplained anaemia with a family history of blood cancers — possible inherited bone marrow failure syndrome.",
-      "Unusual or multiple cancers at a young age — consider inherited cancer predisposition (BRCA, Lynch).",
-      "Extreme sun sensitivity with early skin cancers — possible xeroderma pigmentosum, needs UV avoidance and genetic testing.",
-      "Recurrent miscarriages with a family history of chromosomal abnormalities — consider karyotyping and genetic counselling.",
-    ],
-  },
-  {
-    slug: "vision-hearing",
-    title: "Vision & Hearing",
-    emoji: "👁️",
-    category: "Physiology",
-    summary:
-      "A complete guide to the two major senses — how light enters the eye and is converted to neural signals, and how sound waves are funnelled through the ear to the cochlea. Covers photoreceptors, the visual pathway, ossicle mechanics, and the organ of Corti.",
-    readMinutes: 14,
-    tabs: [
-      {
-        id: "basics",
-        label: "Basics",
-        icon: "📖",
-        sections: [
-          {
-            heading: "How Light Enters the Eye",
-            body: [
-              "Vision begins when light — electromagnetic radiation in the 380–700 nm wavelength range — enters the eye through the cornea, which provides ~65% of the eye's total focusing power. The light then passes through the pupil (the aperture controlled by the iris) and is fine-focused by the lens onto the retina at the back of the eye.",
-              "The lens is a transparent, biconvex structure that changes shape (accommodation) via the ciliary muscle. When you look at something nearby, the ciliary muscle contracts, relaxing the zonular fibres and allowing the lens to become more spherical for near focus. When you look far away, the muscle relaxes and the lens flattens.",
-            ],
-            bullets: [
-              "Cornea → Pupil → Lens → Vitreous humor → Retina: the path of light through the eye.",
-              "The iris has two muscles: the sphincter pupillae (parasympathetic — constricts in bright light) and the dilator pupillae (sympathetic — dilates in dim light or during fear).",
-              "The fovea, a tiny pit at the centre of the macula, contains the highest density of cones and provides your sharpest central vision — reading, recognizing faces, driving.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Common refractive errors",
-              text: "Myopia (nearsightedness): Eyeball too long → light focuses in front of the retina → distant objects blurred. Hypermetropia (farsightedness): Eyeball too short → light focuses behind → near objects blurred. Astigmatism: Irregular corneal curvature → distorted focus at all distances.",
-            },
-          },
-          {
-            heading: "The Retina — Converting Light to Signals",
-            body: [
-              "The retina is a 10-layer neural film lining the back of the eye. It contains two types of photoreceptors: rods (~120 million) for dim-light (scotopic) vision and cones (~6 million) for colour and daylight (photopic) vision.",
-              "Phototransduction is the process by which photons trigger a biochemical cascade in the photoreceptor, ultimately changing the membrane potential and sending a signal to the brain. Remarkably, light actually hyperpolarises photoreceptors (closes Na⁺ channels via the cGMP cascade) — the opposite of what most neurons do.",
-            ],
-            bullets: [
-              "Rods: Contain rhodopsin (visual purple). Extremely sensitive — can detect a single photon. Concentrated in the peripheral retina. No colour information. Saturated in bright light.",
-              "Cones: Three types based on photopigment — S-cones (short wavelength, blue), M-cones (medium, green), L-cones (long, red). Colour vision is based on comparing the relative activation of these three types.",
-              "Signal pathway: Photoreceptors → Bipolar cells → Retinal ganglion cells → Optic nerve → Lateral geniculate nucleus → Primary visual cortex (V1).",
-              "Blind spot: Where the optic nerve exits the retina — no photoreceptors here. The brain fills in the gap so you don't notice it in daily life.",
-            ],
-          },
-          {
-            heading: "How Sound Enters the Ear",
-            body: [
-              "Sound waves are pressure variations in the air (20 Hz – 20,000 Hz audible range). They are collected by the pinna (auricle), channelled through the ear canal, and strike the tympanic membrane (eardrum), causing it to vibrate.",
-              "These vibrations are transmitted and amplified by the three ossicles — the malleus (hammer), incus (anvil), and stapes (stirrup) — the smallest bones in the body. The ossicles form a lever system that amplifies sound pressure ~22× before it reaches the inner ear.",
-            ],
-            bullets: [
-              "The ear canal resonates at ~3,000 Hz, amplifying frequencies important for speech comprehension.",
-              "The ossicles convert air pressure waves into mechanical vibrations: Malleus → Incus → Stapes.",
-              "The stapes footplate sits in the oval window of the cochlea — it converts mechanical vibrations into pressure waves in the cochlear fluid.",
-              "The Eustachian tube connects the middle ear to the nasopharynx and equalises pressure on both sides of the eardrum (opens during swallowing).",
-            ],
-          },
-          {
-            heading: "The Cochlea — Sound to Neural Signals",
-            body: [
-              "The cochlea is a snail-shaped, fluid-filled organ (~2.5 turns) that performs the remarkable transformation of mechanical vibrations into electrical nerve impulses. Inside, the basilar membrane runs the length of the cochlea, tuned so that different positions respond to different frequencies.",
-              "High frequencies resonate near the base (near the oval window); low frequencies resonate near the apex. This tonotopic organisation is preserved all the way to the auditory cortex.",
-            ],
-            bullets: [
-              "Organ of Corti: Sits on the basilar membrane. Contains inner hair cells (IHCs) — the true sensory receptors — and outer hair cells (OHCs) that amplify vibration ~100× (cochlear amplifier).",
-              "Inner hair cells: ~3,500 cells. When the basilar membrane vibrates, stereocilia on IHCs are deflected, mechanically-gated ion channels open, the cell depolarises, and glutamate is released onto auditory nerve fibres.",
-              "Outer hair cells: ~12,000 cells. They change length in response to electrical signals (electromotility), amplifying the basilar membrane vibration and sharpening frequency tuning.",
-              "Cochlear nerve: ~30,000 fibres carrying frequency, intensity, and timing information → cochlear nuclei → inferior colliculus → medial geniculate nucleus → primary auditory cortex (A1).",
-            ],
-            callout: {
-              kind: "warning",
-              title: "Noise-induced hearing loss",
-              text: "Prolonged exposure to sounds >85 dB (e.g., concerts, headphones at max volume) damages the outer hair cells permanently — they do not regenerate in mammals. Use ear protection and follow the 60/60 rule: no more than 60% volume for 60 minutes.",
-            },
-          },
-        ],
-        keyPoints: [
-          "Light enters through the cornea (65% focusing power), passes through the pupil and lens, and focuses on the retina.",
-          "Rods provide dim-light vision; cones provide colour vision. Three cone types (S, M, L) enable trichromatic colour perception.",
-          "Sound enters through the pinna, travels through the ear canal, vibrates the eardrum, and is amplified by the three ossicles.",
-          "The cochlea converts mechanical vibrations into neural signals via hair cells on the basilar membrane.",
-          "Outer hair cells amplify sound ~100×; inner hair cells are the true sensory receptors that send signals to the brain.",
-        ],
-      },
-      {
-        id: "in-depth",
-        label: "In-Depth",
-        icon: "🔬",
-        sections: [
-          {
-            heading: "The Visual Pathway",
-            body: [
-              "Visual information travels from the retina to the brain through a precisely organised pathway. Each eye's optic nerve carries signals from half the visual field; at the optic chiasm, nasal fibres cross (decussate) while temporal fibres remain ipsilateral, ensuring each brain hemisphere receives information from the contralateral visual field.",
-            ],
-            bullets: [
-              "Retina → Optic nerve (CN II) → Optic chiasm (nasal fibres cross) → Optic tract → Lateral geniculate nucleus (LGN) of the thalamus → Optic radiations → Primary visual cortex (V1, Brodmann area 17) in the occipital lobe.",
-              "The LGN has six layers: magnocellular (motion, depth, low contrast) and parvoccolour (colour, detail, high contrast). It receives ~90% of its input from the retina and ~10% from the cortex (feedback).",
-              "V1 neurons are organised into orientation columns and ocular dominance columns — they respond to specific edge orientations, colours, and eye of origin.",
-              "Higher visual areas: V2 (illusory contours), V4 (colour perception — damage causes achromatopsia), V5/MT (motion perception — damage causes akinetopsia, the inability to perceive motion).",
-            ],
-          },
-          {
-            heading: "Phototransduction — The Molecular Cascade",
-            body: [
-              "Phototransduction is one of the fastest and most sensitive signalling cascades in biology. A single photon can be detected by a rod because the cascade amplifies the signal ~10⁶-fold.",
-            ],
-            bullets: [
-              "In darkness, Na⁺ channels are open (maintained by high cGMP levels) → the photoreceptor is partially depolarised (~−40 mV) and continuously releases glutamate.",
-              "Light hits rhodopsin → retinal isomerises from 11-cis to all-trans → rhodopsin activates transducin (G-protein) → transducin activates phosphodiesterase (PDE) → PDE hydrolyses cGMP → cGMP drops → Na⁺ channels close → hyperpolarisation (~−70 mV) → glutamate release decreases.",
-              "Recovery: Rhodopsin kinase phosphorylates activated rhodopsin → arrestin binds → transducin GTP hydrolysed to GDP → guanylate cyclase restores cGMP levels → Na⁺ channels reopen.",
-              "Adaptation: Prolonged light exposure activates calcium-dependent pathways that desensitise the cascade — allowing the eye to function over a 10-billion-fold range of light intensities.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Night vision biochemistry",
-              text: "Vitamin A (retinol) is the precursor of retinal, the chromophore in rhodopsin. Vitamin A deficiency → impaired dark adaptation ('night blindness') → eventually Bitot's spots and xerophthalmia → blindness. The leading cause of preventable childhood blindness worldwide.",
-            },
-          },
-          {
-            heading: "Hearing — The Cochlear Amplifier",
-            body: [
-              "The cochlea doesn't just passively transmit vibrations — it actively amplifies them through the outer hair cells (OHCs). This active process, called the cochlear amplifier, provides ~40–60 dB of gain (100–1000×) for quiet sounds and sharpens frequency selectivity.",
-            ],
-            bullets: [
-              "Electromotility: OHCs contain prestin, a motor protein in their lateral membrane that changes shape in response to voltage changes. When depolarised, the OHC contracts; when hyperpolarised, it elongates. This cycles at audio frequencies up to ~70 kHz in some mammals.",
-              "The OHCs ride on the basilar membrane and push against the tectorial membrane, amplifying the vibration at the characteristic frequency location. This makes the basilar membrane's frequency tuning much sharper than its passive mechanics alone.",
-              "Loss of OHCs (from noise, ototoxic drugs, or aging) causes sensorineural hearing loss — reduced sensitivity, especially for quiet sounds, and poor speech discrimination in noise.",
-              "Cochlear implants bypass damaged hair cells entirely. An electrode array inserted into the cochlea directly stimulates the cochlear nerve fibres electrically, encoding sound as patterns of electrical pulses.",
-            ],
-          },
-          {
-            heading: "Clinical Relevance",
-            bullets: [
-              "Myopia (nearsightedness): The most common refractive error globally. Rising prevalence linked to increased near work and reduced outdoor time in childhood. Corrected with concave (minus) lenses, contact lenses, or LASIK (corneal reshaping).",
-              "Cataracts: Clouding of the lens → progressive painless vision loss. The most common cause of blindness worldwide (reversible with surgery). Risk factors: aging, UV exposure, diabetes, steroid use.",
-              "Glaucoma: Increased intraocular pressure (or vascular insufficiency) damages the optic nerve → peripheral vision loss → eventually blindness if untreated. Open-angle (chronic, common) vs angle-closure (acute, emergency). Treated with eye drops (prostaglandin analogues, beta-blockers), laser, or surgery.",
-              "Tinnitus: Perception of sound (ringing, buzzing) without an external source. Often caused by noise-induced hair cell damage, age-related hearing loss, or ototoxic drugs. Management: sound therapy, cognitive behavioural therapy, hearing aids if hearing loss present.",
-              "Presbycusis: Age-related sensorineural hearing loss. Gradual loss of high-frequency hearing first (difficulty understanding speech in noisy environments). Caused by cumulative OHC damage and neural degeneration. Managed with hearing aids.",
-              "Meniere's disease: Excess endolymph in the cochlea (endolymphatic hydrops) → episodic vertigo, fluctuating hearing loss, tinnitus, and aural fullness. Treated with low-salt diet, diuretics, and intratympanic steroids in severe cases.",
-            ],
-            callout: {
-              kind: "danger",
-              title: "Red flag: sudden hearing loss",
-              text: "Sudden sensorineural hearing loss (SSNHL) — rapid loss of hearing in one ear over hours to days — is a medical emergency. Often idiopathic but may indicate vestibular schwannoma, autoimmune disease, or vascular event. Treated with high-dose oral or intratympanic steroids within 2 weeks for best outcomes.",
-            },
-          },
-        ],
-        keyPoints: [
-          "The visual pathway: retina → optic nerve → chiasm → LGN → V1, with nasal fibres crossing at the chiasm.",
-          "Phototransduction involves light closing Na⁺ channels via the rhodopsin → transducin → PDE → cGMP cascade, hyperpolarising the cell.",
-          "The cochlear amplifier (outer hair cells) provides ~100× gain for quiet sounds and sharpens frequency tuning.",
-          "Myopia is corrected with concave lenses; cataracts with surgery; glaucoma with IOP-lowering treatments.",
-          "Sudden sensorineural hearing loss is a medical emergency — steroids within 2 weeks improve outcomes.",
-        ],
-      },
-    ],
-    sections: [],
-    keyPoints: [
-      "Light enters through the cornea and lens, focusing on the retina where rods and cones convert photons to neural signals.",
-      "Sound is collected by the pinna, amplified by the ossicles, and transduced by hair cells in the cochlea.",
-      "Three cone types (S, M, L) enable trichromatic colour vision; the fovea provides peak acuity.",
-      "The cochlear amplifier (outer hair cells) provides ~100× gain, critical for hearing quiet sounds.",
-      "Cataracts and myopia are the most common reversible causes of vision loss worldwide.",
-    ],
-    whenToCall: [
-      "Sudden painless vision loss in one eye — possible retinal detachment or central retinal artery occlusion; requires emergency ophthalmology.",
-      "Sudden sensorineural hearing loss in one ear — treatment with steroids within 2 weeks improves recovery chances.",
-      "Flashes of light with new floaters — possible retinal tear or detachment; urgent ophthalmology evaluation needed.",
-      "Severe ear pain with fever and hearing loss — possible acute otitis media or mastoiditis; may need antibiotics or surgical drainage.",
-    ],
-  },
-  {
-    slug: "renal-physiology",
-    title: "Renal Physiology",
-    emoji: "🫘",
-    category: "Physiology",
-    summary:
-      "The kidneys filter 180 litres of blood every day, yet produce only about 1.5 litres of urine. Understanding how they accomplish this remarkable feat — filtration, reabsorption, secretion, and the hormonal control of fluid balance — is the foundation of nephrology.",
-    readMinutes: 8,
-    tabs: [
-      {
-        id: "basics",
-        label: "Basics",
-        icon: "📖",
-        sections: [
-          {
-            heading: "What do the kidneys actually do?",
-            body: [
-              "Your two kidneys sit on either side of the spine, just below the ribcage. Despite being roughly the size of a clenched fist each, they process about 180 litres of blood daily — roughly 25% of cardiac output. The job breaks down into three core functions:",
-            ],
-            bullets: [
-              "Filtration — Blood enters the kidney under pressure, and small molecules (water, glucose, salts, urea) are forced through a filter into the nephron. Large proteins and blood cells stay behind. This produces about 180 L/day of filtrate.",
-              "Reabsorption — As filtrate flows through the nephron, useful substances (glucose, amino acids, sodium, water) are reclaimed back into the blood. The kidneys reabsorb ~99% of the filtrate — what's left becomes urine.",
-              "Secretion — Additional waste products and excess ions (H+, K+, certain drugs) are actively transported from the blood into the filtrate. This fine-tunes blood composition beyond what filtration alone can achieve.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Think of it as a recycling plant",
-              text: "Filtration dumps everything out. Reabsorption picks the good stuff back. Secretion throws in the remaining rubbish. The net result is blood that stays perfectly balanced and waste that leaves as urine.",
-            },
-          },
-          {
-            heading: "The Nephron — the kidney's functional unit",
-            body: [
-              "Each kidney contains approximately 1 million nephrons. A nephron is a tiny, self-contained filtration unit with two main parts:",
-            ],
-            bullets: [
-              "Renal corpuscle — where filtration happens. It consists of the glomerulus (a tuft of capillaries) enclosed by Bowman's capsule. Blood pressure forces fluid out of the glomerulus into the capsule, creating the filtrate.",
-              "Renal tubule — a long, winding tube where reabsorption and secretion occur. It has four key segments: the Proximal Convoluted Tubule (PCT), the Loop of Henle, the Distal Convoluted Tubule (DCT), and the Collecting Duct.",
-            ],
-          },
-          {
-            heading: "The Proximal Convoluted Tubule (PCT)",
-            body: [
-              "The PCT is the workhorse of reabsorption. About 65% of the filtered water, sodium, and nearly all the glucose and amino acids are reclaimed here. The cells lining the PCT have dense microvilli (brush border) to maximise surface area.",
-              "The PCT also actively secretes H+ ions (helping regulate pH), organic acids, and drugs like penicillin into the filtrate.",
-            ],
-          },
-          {
-            heading: "The Loop of Henle — concentrating urine",
-            body: [
-              "The Loop of Henle dips down into the medulla and comes back up, creating a U-shape. Its job is to establish an osmotic gradient in the kidney's medulla — essential for concentrating urine.",
-            ],
-            bullets: [
-              "Descending limb — permeable to water but not to salt. As filtrate descends into the increasingly salty medulla, water is drawn out by osmosis, concentrating the filtrate.",
-              "Ascending limb — impermeable to water but actively pumps out Na+, K+, and Cl- (via the Na-K-2Cl cotransporter). This dilutes the filtrate while making the medulla salty — maintaining the gradient.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Countercurrent multiplier",
-              text: "The opposing flow directions in the descending and ascending limbs create a multiplier effect that builds a steep osmotic gradient from cortex (~300 mOsm/L) to deep medulla (~1200 mOsm/L). This gradient is what allows the collecting duct to concentrate urine.",
-            },
-          },
-          {
-            heading: "The Distal Convoluted Tubule (DCT) and Collecting Duct",
-            body: [
-              "The DCT and Collecting Duct are where hormones exert fine control over the final urine composition:",
-            ],
-            bullets: [
-              "Aldosterone — acts on the DCT to increase Na+ reabsorption and K+ secretion. More Na+ in the blood means more water follows (via osmosis), raising blood volume and pressure.",
-              "Antidiuretic Hormone (ADH) — acts on the Collecting Duct, inserting aquaporin channels that make it permeable to water. More ADH → more water reabsorbed → concentrated, low-volume urine. Less ADH → dilute, high-volume urine.",
-              "Atrial Natriuretic Peptide (ANP) — opposes aldosterone. Released by the heart when blood volume is too high, it promotes Na+ and water excretion, lowering blood pressure.",
-            ],
-          },
-          {
-            heading: "Glomerular Filtration Rate (GFR)",
-            body: [
-              "GFR is the volume of filtrate produced per minute — typically about 125 mL/min or 180 L/day. It is the single most important measure of kidney function.",
-              "GFR is maintained relatively constant by two intrinsic mechanisms: renal autoregulation (myogenic response and tubuloglomerular feedback) and extrinsic neural/hormonal control.",
-            ],
-            bullets: [
-              "A normal GFR is 90–120 mL/min. Below 60 mL/min for 3+ months indicates chronic kidney disease (CKD).",
-              "Below 15 mL/min signals kidney failure — dialysis or transplantation becomes necessary.",
-            ],
-          },
-        ],
-        keyPoints: [
-          "The kidneys perform three core functions: filtration (glomerulus), reabsorption (tubules), and secretion (tubules).",
-          "Each kidney has ~1 million nephrons — the functional units of filtration.",
-          "The PCT reabsorbs ~65% of filtrate; the Loop of Henle creates the medullary osmotic gradient; the DCT and Collecting Duct fine-tune under hormonal control.",
-          "ADH controls water reabsorption (concentrated vs dilute urine); aldosterone controls Na+/K+ balance; ANP promotes salt/water excretion.",
-          "GFR is the gold-standard measure of kidney function — normal is 90–120 mL/min.",
-        ],
-      },
-      {
-        id: "in-depth",
-        label: "In-Depth",
-        icon: "🔬",
-        sections: [
-          {
-            heading: "The Countercurrent Multiplier System — detailed mechanism",
-            body: [
-              "The countercurrent multiplier is an elegant system that uses the Loop of Henle's U-shape and differential permeability to build and maintain the medullary osmotic gradient. Without it, the collecting duct could not concentrate urine beyond plasma osmolality (~300 mOsm/L).",
+              "The Krebs cycle (also called the citric acid cycle or TCA cycle) is a series of eight enzymatic reactions that oxidise acetyl-CoA to produce NADH, FADH2, and GTP. It occurs in the mitochondrial matrix.",
             ],
             steps: [
-              "The ascending limb actively transports NaCl into the interstitium via the Na-K-2Cl (NKCC2) cotransporter on the thick ascending limb. This raises interstitial osmolality.",
-              "The descending limb, being water-permeable, loses water to this hypertonic interstitium by osmosis, concentrating the tubular fluid.",
-              "As concentrated fluid flows back up the ascending limb, it encounters an even more hypertonic interstitium, so even more NaCl is pumped out — further raising interstitial osmolality.",
-              "This positive feedback loop repeats with each pass, driving the gradient from ~300 mOsm/L in the cortex to ~1200 mOsm/L at the papillary tip.",
+              "Acetyl-CoA enters the cycle and combines with oxaloacetate to form citrate (catalysed by citrate synthase).",
+              "Citrate is converted to isocitrate via aconitase.",
+              "Isocitrate is oxidised to alpha-ketoglutarate, producing NADH and CO2.",
+              "Alpha-ketoglutarate is converted to succinyl-CoA, producing another NADH and CO2.",
+              "Succinyl-CoA → succinate → fumarate → malate → oxaloacetate, completing the cycle.",
             ],
-            callout: {
-              kind: "tip",
-              title: "Urea recycling boosts the gradient",
-              text: "About 50% of the medullary osmolality comes from urea, not NaCl. ADH increases urea permeability in the inner medullary collecting duct, allowing urea to diffuse into the interstitium — where it contributes to the gradient before being recycled back into the loop. This is why dehydration produces dark, concentrated urine.",
-            },
-          },
-          {
-            heading: "The Countercurrent Exchanger — the Vasa Recta",
-            body: [
-              "The vasa recta are special capillaries that run parallel to the Loop of Henle in a U-shaped arrangement. They serve as countercurrent exchangers — allowing blood to supply the medulla without washing away the osmotic gradient.",
-              "Blood flowing down into the medulla gains solute and loses water; blood flowing back up loses solute and gains water. The net effect: the vasa recta equilibrate with the surrounding interstitium without significantly altering the gradient. Without this arrangement, blood flow would rapidly dissipate the medullary concentration gradient.",
-            ],
-          },
-          {
-            heading: "The Renin-Angiotenin-Aldosterone System (RAAS)",
-            body: [
-              "The RAAS is the body's primary hormonal axis for regulating blood pressure, blood volume, and Na+ balance. It is activated when the kidneys detect low blood pressure, low blood volume, or low Na+ delivery to the macula densa.",
-            ],
-            steps: [
-              "Renin release — Juxtaglomerular (JG) cells in the afferent arteriole detect reduced perfusion pressure and release renin. The macula densa cells (in the DCT) also signal renin release when NaCl delivery drops.",
-              "Angiotensinogen → Angiotensin I — Renin cleaves angiotensinogen (produced by the liver) into angiotensin I, an inactive decapeptide.",
-              "Angiotensin I → Angiotensin II — Angiotensin-converting enzyme (ACE), mainly in lung capillaries, converts angiotensin I to angiotensin II, a potent octapeptide.",
-              "Angiotensin II effects — (1) Potent vasoconstriction → raises blood pressure. (2) Stimulates aldosterone release from the adrenal cortex → increases Na+ reabsorption in the DCT. (3) Stimulates ADH release from the posterior pituitary → increases water reabsorption. (4) Stimulates thirst via the hypothalamus. (5) Constricts the efferent arteriole → maintains GFR despite low blood pressure.",
-            ],
-            callout: {
-              kind: "danger",
-              title: "ACE inhibitors and ARBs",
-              text: "ACE inhibitors (enalapril, ramipril) block the conversion of Ang I to Ang II, reducing vasoconstriction and aldosterone secretion. ARBs (losartan, valsartan) block the AT1 receptor, achieving a similar effect. Both are first-line treatments for hypertension, heart failure, and diabetic nephropathy — but they can cause hyperkalaemia (reduced K+ secretion) and should not be used in pregnancy.",
-            },
-          },
-          {
-            heading: "Tubuloglomerular Feedback (TGF)",
-            body: [
-              "TGF is the kidney's intrinsic mechanism for stabilising GFR. It operates through the juxtaglomerular apparatus (JGA) — a specialised structure where the DCT contacts the afferent arteriole.",
-              "When GFR rises, more NaCl reaches the macula densa (specialised cells in the DCT wall). The macula densa releases adenosine and ATP, which constrict the afferent arteriole, reducing renal blood flow and bringing GFR back down. The reverse happens when GFR falls — less NaCl → less adenosine → afferent dilation → GFR rises.",
-            ],
-          },
-          {
-            heading: "Clinical Relevance — Kidney Stones",
-            body: [
-              "Kidney stones (nephrolithiasis) form when urine becomes supersaturated with calcium oxalate, uric acid, or struvite. They are excruciatingly painful (renal colic) and can cause obstruction, infection, and even renal failure if untreated.",
-            ],
-            bullets: [
-              "Calcium oxalate stones (~80% of cases) — associated with dehydration, hypercalciuria, and high oxalate intake (spinach, chocolate, nuts).",
-              "Uric acid stones — associated with gout, high purine diet, and chronic diarrhoea (alkaline urine dissolves them; acidification promotes them).",
-              "Struvite stones — caused by urease-producing bacteria (Proteus) in chronic UTIs. They form large staghorn calculi that fill the renal pelvis.",
-              "Prevention: drink 2–3 litres of water daily, reduce dietary sodium (Na+ promotes Ca2+ excretion), maintain normal calcium intake (restriction paradoxically increases oxalate absorption), and consider thiazide diuretics for recurrent calcium stones.",
-            ],
-            callout: {
-              kind: "danger",
-              title: "Red flag: renal colic",
-              text: "Sudden, severe flank pain radiating to the groin, often with haematuria and nausea, is classic renal colic. Non-contrast CT is the gold-standard imaging. Pain management (NSAIDs, opioids) and hydration are first-line. Urgent urology referral is needed for signs of infection (fever + obstructing stone = emergency — risk of urosepsis).",
-            },
-          },
-          {
-            heading: "Clinical Relevance — Diuretics",
-            body: [
-              "Diuretics are among the most commonly prescribed drugs, used for hypertension, heart failure, oedema, and kidney disease. Each class targets a specific part of the nephron:",
-            ],
-            bullets: [
-              "Loop diuretics (furosemide) — block the NKCC2 transporter in the thick ascending limb. Powerful diuresis (up to 25% of filtered Na+). Used for acute pulmonary oedema and severe heart failure. Can cause hypokalaemia, metabolic alkalosis, and ototoxicity at high doses.",
-              "Thiazide diuretics (hydrochlorothiazide, chlorthalidone) — block the Na-Cl cotransporter in the DCT. Mild diuresis but excellent for long-term hypertension control. Can cause hypokalaemia, hyperuricaemia (may trigger gout), and hypercalcaemia.",
-              "Potassium-sparing diuretics (spironolactone, amiloride) — block aldosterone (spironolactone) or ENaC channels (amiloride) in the Collecting Duct. Weak diuretics but prevent dangerous K+ loss. Spironolactone is essential in heart failure (reduces mortality) and in liver cirrhosis with ascites.",
-            ],
-            callout: {
-              kind: "tip",
-              title: "Why the osmotic diuretic mannitol works differently",
-              text: "Mannitol is filtered but not reabsorbed, so it holds water in the tubule by osmosis — acting throughout the entire nephron. It is used acutely to reduce intracranial and intraocular pressure but can cause dangerous dehydration and hyperkalaemia if not monitored carefully.",
-            },
           },
         ],
         keyPoints: [
-          "The countercurrent multiplier (Loop of Henle) builds a 300→1200 mOsm/L gradient in the medulla; urea recycling contributes ~50% of this gradient.",
-          "The vasa recta act as countercurrent exchangers, preserving the medullary gradient while supplying blood to the medulla.",
-          "RAAS: low BP → renin → Ang I → ACE → Ang II → vasoconstriction + aldosterone → Na+ reabsorption → BP rises.",
-          "TGF (macula densa) stabilises GFR by adjusting afferent arteriole tone based on NaCl delivery.",
-          "Kidney stones: drink water, reduce sodium, normal calcium intake. Fever + obstructing stone = urosepsis emergency.",
-          "Loop diuretics (furosemide) = powerful; Thiazides = first-line for hypertension; K+-sparing (spironolactone) = heart failure hero.",
+          "Per turn: 3 NADH, 1 FADH2, 1 GTP (≈ ATP), 2 CO2. Per glucose: two turns (one per acetyl-CoA).",
+          "The cycle is amphibolic — it catabolises fuels and provides precursors for biosynthesis.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "Regulation and clinical relevance",
+            body: [
+              "The Krebs cycle is regulated by substrate availability, product inhibition, and allosteric control. Key regulatory enzymes include citrate synthase, isocitrate dehydrogenase, and alpha-ketoglutarate dehydrogenase.",
+            ],
+            steps: [
+              "High NADH/NAD+ ratio slows the cycle (product inhibition of isocitrate dehydrogenase).",
+              "High ATP/ADP ratio inhibits isocitrate dehydrogenase and alpha-ketoglutarate dehydrogenase.",
+              "Calcium ions activate isocitrate dehydrogenase and alpha-ketoglutarate dehydrogenase.",
+              "Thiamine (B1) deficiency impairs alpha-ketoglutarate dehydrogenase → beriberi and Wernicke encephalopathy.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Arsenic poisoning inhibits alpha-ketoglutarate dehydrogenase and pyruvate dehydrogenase.",
+          "IDH mutations in gliomas produce 2-hydroxyglutarate — an oncometabolite.",
         ],
       },
     ],
-    sections: [],
-    keyPoints: [
-      "The kidneys filter 180 L/day via filtration, reabsorption, and secretion.",
-      "The countercurrent multiplier (Loop of Henle) builds a 300-1200 mOsm/L gradient.",
-      "RAAS: low BP leads to renin, Ang II, vasoconstriction, aldosterone, Na+ reabsorption, and BP rises.",
-      "TGF (macula densa) stabilises GFR by adjusting afferent arteriole tone.",
-      "Kidney stones: hydrate, reduce sodium, normal calcium intake.",
-      "Loop diuretics = powerful; Thiazides = first-line for hypertension; K+-sparing = heart failure hero.",
-    ],
-    whenToCall: [
-      "Severe flank pain radiating to the groin with haematuria.",
-      "Fever with an obstructing kidney stone - risk of urosepsis.",
-      "Significant reduction in urine output or signs of fluid overload.",
-    ],
-  }
-];
+  },
 
-export const ARTICLE_CATEGORIES: string[] = Array.from(
-  new Set(ARTICLES.map((a) => a.category)),
-);
+  {
+    slug: "muscle-contraction",
+    title: "Muscle Contraction",
+    emoji: "💪",
+    category: "Foundations",
+    summary:
+      "Muscle contraction follows the sliding filament theory — actin and myosin filaments slide past each other to generate force. Calcium and ATP are the key regulators.",
+    readMinutes: 7,
+    sections: [],
+    keyPoints: [],
+    whenToCall: [],
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "📖",
+        sections: [
+          {
+            heading: "How muscles contract",
+            body: [
+              "Muscle contraction occurs when myosin heads bind to actin filaments and pull them toward the centre of the sarcomere, shortening the muscle fiber. This is the sliding filament theory.",
+            ],
+            steps: [
+              "A nerve impulse arrives at the neuromuscular junction, releasing acetylcholine.",
+              "Acetylcholine triggers an action potential along the muscle fiber membrane.",
+              "Calcium is released from the sarcoplasmic reticulum.",
+              "Calcium binds to troponin, moving tropomyosin and exposing myosin-binding sites on actin.",
+              "Myosin heads attach to actin, pivot (power stroke), and pull the actin filament inward.",
+              "ATP binds to myosin, causing detachment. The cycle repeats as long as calcium and ATP are present.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Actin = thin filament. Myosin = thick filament. Sarcomere = the functional unit of contraction.",
+          "Troponin and tropomyosin regulate contraction by controlling access to myosin-binding sites.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "Excitation-contraction coupling",
+            body: [
+              "Excitation-contraction coupling is the process by which an electrical signal (action potential) is converted into mechanical contraction. It involves the neuromuscular junction, T-tubules, and the sarcoplasmic reticulum.",
+            ],
+            steps: [
+              "Action potential travels along the sarcolemma and into T-tubules.",
+              "Voltage-gated dihydropyridine (DHPR) receptors in the T-tubule membrane activate ryanodine receptors (RyR) in the sarcoplasmic reticulum.",
+              "RyR channels open, releasing Ca2+ into the cytoplasm.",
+              "Ca2+ binds troponin C, initiating the cross-bridge cycle.",
+              "Relaxation: Ca2+ is pumped back into the sarcoplasmic reticulum by SERCA (Ca2+-ATPase).",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Rigor mortis: after death, ATP depletion prevents myosin detachment → sustained contraction.",
+          "Myasthenia gravis: autoantibodies against acetylcholine receptors → muscle weakness and fatigue.",
+        ],
+      },
+    ],
+  },
+];
 
 export function articleBySlug(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
@@ -2788,47 +1940,38 @@ export function articleBySlug(slug: string): Article | undefined {
 
 export function articleToSpeech(a: Article): string {
   const parts: string[] = [`${a.title}. ${a.summary}`];
-  const secToText = (sec: ArticleSection) => {
-    parts.push(sec.heading);
-    if (sec.body) parts.push(...sec.body);
-    if (sec.bullets) parts.push(...sec.bullets);
-    if (sec.steps) parts.push(...sec.steps.map((s, i) => `Step ${i + 1}. ${s}`));
-    if (sec.callout) parts.push(`${sec.callout.title}. ${sec.callout.text}`);
-  };
   if (a.tabs) {
     for (const tab of a.tabs) {
       parts.push(`${tab.label}.`);
-      for (const sec of tab.sections) secToText(sec);
+      for (const sec of tab.sections) {
+        parts.push(sec.heading);
+        if (sec.body) parts.push(...sec.body);
+        if (sec.bullets) parts.push(...sec.bullets);
+        if (sec.steps) parts.push(...sec.steps.map((s, i) => `Step ${i + 1}. ${s}`));
+        if (sec.callout) parts.push(sec.callout.title, sec.callout.text);
+      }
     }
   } else {
-    for (const sec of a.sections) secToText(sec);
+    for (const sec of a.sections) {
+      parts.push(sec.heading);
+      if (sec.body) parts.push(...sec.body);
+      if (sec.bullets) parts.push(...sec.bullets);
+      if (sec.steps) parts.push(...sec.steps.map((s, i) => `Step ${i + 1}. ${s}`));
+      if (sec.callout) parts.push(sec.callout.title, sec.callout.text);
+    }
   }
   return parts.join("\n\n");
 }
 
 export function totalSteps(): number {
-  let count = 0;
-  for (const a of ARTICLES) {
-    const countSecs = (secs: ArticleSection[]) => {
-      for (const s of secs) if (s.steps) count += s.steps.length;
-    };
-    if (a.tabs) {
-      for (const tab of a.tabs) countSecs(tab.sections);
-    } else {
-      countSecs(a.sections);
-    }
-  }
-  return count;
+  return ARTICLES.reduce((sum, a) => {
+    const sections = a.tabs
+      ? a.tabs.flatMap((t) => t.sections)
+      : a.sections;
+    return sum + sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0);
+  }, 0);
 }
 
-
-
-
-
-
-
-
-
-
-
-
+export const ARTICLE_CATEGORIES: string[] = Array.from(
+  new Set(ARTICLES.map((a) => a.category)),
+);
