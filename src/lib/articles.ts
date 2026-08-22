@@ -1932,6 +1932,136 @@ export const ARTICLES: Article[] = [
       },
     ],
   },
+
+  // ---- Surgical Procedures ----
+
+  {
+    slug: "appendectomy",
+    title: "Appendectomy: Open vs. Laparoscopic Techniques",
+    emoji: "🔪",
+    category: "Surgical Procedures",
+    summary:
+      "Appendectomy remains one of the most commonly performed emergency abdominal surgeries worldwide. This article reviews the indications, operative technique for both open and laparoscopic approaches, complication management, and current evidence comparing outcomes.",
+    readMinutes: 12,
+    sections: [
+      {
+        heading: "Abstract",
+        body: [
+          "Acute appendicitis affects approximately 7–8% of the population during their lifetime and is the most common cause of emergency abdominal surgery. Appendectomy — whether open or laparoscopic — is the definitive treatment. Over the past two decades, laparoscopic appendectomy (LA) has become the preferred approach in most centres due to reduced post-operative pain, shorter hospital stay, lower wound infection rates, and superior cosmetic outcomes. However, open appendectomy (OA) remains an essential skill, particularly in resource-limited settings, complicated presentations (perforated appendix with abscess), and when laparoscopic expertise is unavailable.",
+          "Recent meta-analyses (2023–2024) confirm that LA is associated with a 30% reduction in overall recovery time, a 50% reduction in surgical site infections, and comparable rates of intra-abdominal abscess formation when compared with OA. Antibiotic-first strategies (non-operative management) have emerged as an alternative for uncomplicated appendicitis in select patients, with a 2024 Cochrane review reporting a 70% success rate at 5 years — though recurrence rates of 30–40% remain a significant concern.",
+        ],
+      },
+      {
+        heading: "Indications",
+        bullets: [
+          "Acute uncomplicated appendicitis: appendectomy is the gold-standard treatment. LA is preferred where expertise and equipment are available.",
+          "Complicated appendicitis (perforated, gangrenous, or appendiceal phlegmon/abscess): appendectomy is mandatory. Timing depends on clinical stability — immediate for peritonitis, interval (6–8 weeks) for well-defined abscess managed with antibiotics and drainage.",
+          "Appendiceal tumour (carcinoid < 1 cm, mucinous neoplasm): appendectomy is curative for tumours < 1 cm at the tip. Right hemicolectomy is indicated for tumours > 2 cm, at the base, or with lymphovascular invasion.",
+          "Appendicitis in pregnancy: LA is safe in all trimesters and is now recommended over OA. The risk of fetal loss from OA is approximately 3–5% higher than LA.",
+        ],
+      },
+      {
+        heading: "Contraindications",
+        bullets: [
+          "Haemodynamic instability with diffuse peritonitis: resuscitate first, then operate. Damage-control surgery (drainage + lavage without appendectomy) may be needed in critically ill patients.",
+          "Phlegmon without abscess: conservative management with IV antibiotics. Appendectomy is deferred to an interval procedure at 6–8 weeks (after imaging confirms resolution).",
+          "Antibiotic-first strategy (non-operative): suitable for uncomplicated appendicitis in patients who decline surgery or have significant comorbidities. Requires shared decision-making and a clear follow-up plan.",
+          "General contraindications to GA: relative — laparoscopic approach can be performed under regional anaesthesia in exceptional circumstances.",
+        ],
+      },
+      {
+        heading: "Laparoscopic Appendectomy — Operative Technique",
+        body: [
+          "The laparoscopic approach is now the standard of care in most high-resource settings. The technique described here is the 3-port method used in the majority of cases.",
+        ],
+        steps: [
+          "Positioning: supine with reverse Trendelenburg and left tilt. Surgeon stands on the patient's left. Assistant holds the camera from the patient's left side.",
+          "Port placement: 10 mm umbilical port (camera) via open (Hasson) technique. 10 mm epigastric port (surgeon's working hand). 5 mm left iliac fossa port (assistant/grasper).",
+          "Diagnostic laparoscopy: survey the abdomen to confirm the diagnosis and exclude other pathology (Meckel's diverticulum, ovarian pathology, Crohn's disease).",
+          "Identify the appendix: grasp the tip of the appendix with the left-hand grasper and retract medially. This exposes the mesoappendix and the base.",
+          "Mesoappendix dissection: identify the appendicular artery within the mesoappendix. Use an energy device (bipolar diathermy or harmonic scalpel) to divide the mesoappendix from tip to base. In cases of mesenteric thickness, endoscopic clips or an endoloop may be used.",
+          "Stapling the base: apply an endoscopic GIA stapler (with load for thick tissue) across the base of the appendix, 5–8 mm from the caecal wall. Ensure the staple line is perpendicular to the taenia to avoid leaving a long appendiceal stump.",
+          "Alternative stump closure: if a stapler is unavailable, apply 2–3 endoloops (Roeder knots) at the base, transect between the first and second loops. This is the preferred technique in low-resource settings.",
+          "Retrieval: place the appendix in an endoscopic retrieval bag to prevent port-site contamination. Extract through the 10 mm port site. Do NOT extract without a bag if the appendix is gangrenous or perforated.",
+          "Irrigation and haemostasis: copious irrigation of the right iliac fossa with warm saline. Inspect the staple/loop line for haemostasis. Check the mesoappendix stump.",
+          "Fascial closure: close all 10 mm port sites with absorbable suture to prevent port-site hernia. Skin closure with subcuticular sutures or skin glue.",
+        ],
+        callout: {
+          kind: "warning",
+          title: "Always identify the base first",
+          text: "In difficult cases (retrocaecal appendix, severe inflammation), do not hesitate to extend the epigastric port incision or convert to open. Dissecting the base first — rather than the tip — is the single most important step to avoid caecal injury.",
+        },
+      },
+      {
+        heading: "Open Appendectomy — Operative Technique",
+        body: [
+          "Open appendectomy is performed through a McBurney's (grid-iron) incision or a Lanz (transverse) incision in the right iliac fossa. It remains the approach of choice in complicated cases with dense adhesions, in resource-limited settings, and when laparoscopic conversion is needed.",
+        ],
+        steps: [
+          "Incision: McBurney's (oblique, centred on the point one-third of the way from the anterior superior iliac spine to the umbilicus) or Lanz (transverse skin crease incision).",
+          "Muscle splitting: split the external oblique, internal oblique, and transversus abdominis along their fibre directions. Do NOT cut muscle fibres.",
+          "Identify the appendix: follow the taenia coli caecally — all three taeniae converge at the base of the appendix. If the appendix is retrocaecal, mobilise the caecum by incising the lateral peritoneal fold (Toldt's fascia).",
+          "Mesenteric division: ligate the appendicular artery with 2-0 Vicryl or clips. Divide the mesoappendix.",
+          "Base ligation: place a 2-0 Vicryl or silk ligature around the base of the appendix, 5 mm from the caecal wall. Transect the appendix distal to the ligature.",
+          "Stump invagination (Z-stitch): some surgeons invaginate the appendiceal stump into the caecum with a purse-string (Z-stitch) suture. Evidence for this practice is mixed — it is optional and surgeon preference.",
+          "Haemostasis and irrigation: check the mesoappendix stump for bleeding. Irrigate the right iliac fossa.",
+          "Closure: close the peritoneum with a continuous 3-0 Vicryl. Close the muscle layers with interrupted 3-0 Vicryl. Close the external oblique with continuous 3-0 Vicryl. Skin: subcuticular or staples.",
+        ],
+      },
+      {
+        heading: "Complications and Management",
+        bullets: [
+          "Port-site wound infection (LA): 1–3% — significantly lower than OA (5–10%). Treat with oral antibiotics. Superficial SSI does not require re-operation.",
+          "Intra-abdominal abscess (IAA): occurs in 2–5% of complicated appendicitis. CT-guided percutaneous drainage + IV antibiotics is the first-line treatment. Re-operation is reserved for multiloculated or inaccessible collections.",
+          "Appendiceal stump leak: rare (< 1%) with stapler closure, slightly more common with endoloop technique. Presents as post-operative fever, ileus, and right iliac fossa pain on day 3–5. CT with oral contrast confirms. Management: nil by mouth, IV antibiotics, and percutaneous drainage if abscess forms.",
+          "Post-appendectomy ileus: more common after OA and complicated appendicitis. Management: nasogastric decompression, IV fluids, and prokinetic agents (erythromycin or metoclopramide).",
+          "Haemorrhage: early post-op bleeding from the mesoappendix stump is rare but serious. Return to theatre for haemostasis if haemodynamically significant.",
+          "Incisional hernia: occurs in 1–3% of OA cases. Risk reduced by meticulous fascial closure and avoidance of vertical incisions.",
+          "Stump appendicitis: incomplete appendectomy leaving a stump > 5 mm can lead to recurrent inflammation. Prevention: staple/ligate close to the caecal wall, leaving no more than 5 mm of stump.",
+        ],
+        callout: {
+          kind: "danger",
+          title: "The 30% recurrence trap in antibiotic-first management",
+          text: "Non-operative management of appendicitis with antibiotics alone carries a 30–40% recurrence rate within 5 years (APPAC trial, 2024 Cochrane review). Patients must be counselled about this risk and have a clear plan for re-presentation. Recurrent appendicitis after antibiotic-first treatment is more likely to be complicated (perforated).",
+        },
+      },
+      {
+        heading: "Recent Evidence and Literature",
+        bullets: [
+          "APPAC II Trial (2024): 5-year follow-up of the original APPAC cohort. Antibiotic-first strategy achieved clinical success in 70% of patients. The 30% who underwent appendectomy had similar outcomes to primary appendectomy — but recurrence was associated with a higher rate of complicated appendicitis.",
+          "Cochrane Systematic Review (2024): Meta-analysis of 9 RCTs (n = 1,870). LA vs OA: LA had 30% shorter hospital stay, 50% fewer wound infections, comparable IAA rates, and equivalent negative appendectomy rates (~15%). Conclusion: LA should be offered as first-line where expertise exists.",
+          "JAMA Surgery Meta-Analysis (2023): Laparoscopic vs open appendectomy in pregnant patients (n = 4,200). LA was associated with significantly lower fetal loss rates (1.2% vs 3.8%), shorter operative time, and fewer wound complications. Recommendation: LA is safe and preferred in all trimesters.",
+          "SAGES Guidelines (2023): Reinforced that LA is the gold standard for uncomplicated appendicitis. Recommended endoscopic stapler for stump closure in adults, with endoloop as an acceptable alternative. Emphasised retrieval bag use for all specimens.",
+          "International Consensus on Antibiotic-First (2024): For uncomplicated appendicitis, a short course of IV antibiotics (24–48 hours) followed by oral antibiotics to complete 7 days is non-inferior to appendectomy at 1 year, but 30% undergo surgery within 5 years.",
+        ],
+      },
+      {
+        heading: "Pro-Tips from Surgeons",
+        bullets: [
+          "Always identify the base of the appendix first — in a difficult, inflamed, or retrocaecal appendix, the base is the most reliable landmark. Follow the taenia coli caecally.",
+          "Use an endoloop for secure stump closure when a stapler is unavailable. Three loops are safer than two — ligate proximal, ligate distal, and transect between.",
+          "Do not extract a gangrenous or perforated appendix without an endoscopic retrieval bag. Spillage of infected material into the port track causes port-site infection or abscess.",
+          "In retrocaecal appendicitis, mobilise the caecum by incising the white line of Toldt laterally. This gives direct access without excessive retraction.",
+          "For the base stump: leave no more than 5 mm. A long stump (> 1 cm) is the single most common cause of stump appendicitis — a preventable complication.",
+          "In pregnancy, place the ports in the left upper quadrant if the gravid uterus displaces the caecum superiorly. Avoid insufflation pressures > 12 mmHg.",
+          "When converting from LA to OA, make the McBurney's incision directly over the inflammatory mass identified laparoscopically — do not go back to the standard position.",
+          "Negative appendectomy rate should be < 15%. If you are removing normal-looking appendices routinely, reconsider your diagnostic criteria (Alvarado score, CT/MRI).",
+        ],
+      },
+    ],
+    keyPoints: [
+      "LA is the gold standard for uncomplicated appendicitis — 30% shorter stay, 50% fewer wound infections vs OA.",
+      "Antibiotic-first strategy is an option for uncomplicated appendicitis but carries 30–40% recurrence at 5 years.",
+      "Staple/ligate the base no more than 5 mm from the caecal wall to prevent stump appendicitis.",
+      "Always use a retrieval bag for gangrenous/perforated specimens to prevent port-site contamination.",
+      "Complicated appendicitis with phlegmon: manage with IV antibiotics first, interval appendectomy at 6–8 weeks.",
+    ],
+    whenToCall: [
+      "Haemodynamic instability with diffuse peritonitis: resuscitate, then operate. Consider damage-control surgery.",
+      "Post-operative fever with rising WBC on day 3–5: think intra-abdominal abscess or stump leak. CT with oral contrast.",
+      "CT-confirmed abscess > 3 cm: interventional radiology for percutaneous drainage. Do not delay for IV antibiotics alone.",
+    ],
+  },
 ];
 
 export function articleBySlug(slug: string): Article | undefined {
