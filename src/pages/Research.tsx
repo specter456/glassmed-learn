@@ -90,6 +90,9 @@ const EndocrineDiagram = React.lazy(() =>
 const EyeDiagram = React.lazy(() =>
   import("@/components/EyeDiagram"),
 );
+const AirwayDiagram = React.lazy(() =>
+  import("@/components/AirwayDiagram").then((m) => ({ default: m.AirwayDiagram })),
+);
 const BodyDiagram = React.lazy(() =>
   import("@/components/BodyDiagram").then((m) => ({ default: m.BodyDiagram })),
 );
@@ -112,6 +115,7 @@ const DIAGRAM_MAP: Record<string, React.ComponentType<{ className?: string }>> =
   "blood-immunity": CellDiagram,
   // Respiratory
   "respiratory-mechanics": LungsDiagram,
+  "rapid-sequence-intubation": AirwayDiagram,
   // Digestive
   "digestive-system": DigestiveDiagram,
   // Renal
@@ -365,7 +369,7 @@ function NewsFeed({ onSelect }: { onSelect: (item: MedicalNewsItem) => void }) {
 
 function NewsDetail({ item, onBack }: { item: MedicalNewsItem; onBack: () => void }) {
   return (
-    <main className="mx-auto max-w-3xl px-4 pb-32 pt-8 sm:px-6">
+    <main className="mx-auto max-w-[52rem] px-4 pb-32 pt-8 sm:px-6" style={{ wordWrap: "break-word", overflowWrap: "break-word" }}>
       <button
         onClick={onBack}
         className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
@@ -764,7 +768,7 @@ function ArticleReader({ article }: { article: Article }) {
       {/*  STICKY HEADER: diagram + read aloud + tabs                      */}
       {/* ================================================================ */}
       <div className="sticky top-0 z-40 border-b border-white/5" style={{ background: "linear-gradient(180deg, rgba(15,15,30,0.97) 0%, rgba(15,15,30,0.92) 80%, rgba(15,15,30,0) 100%)" }}>
-        <main className="mx-auto max-w-3xl px-4 pt-6 pb-4 sm:px-6">
+        <main className="mx-auto max-w-[52rem] px-4 pt-6 pb-4 sm:px-6">
           {/* back link */}
           <a
             href="/research"
@@ -957,12 +961,13 @@ function ArticleReader({ article }: { article: Article }) {
             transition={{ duration: 0.4, delay: Math.min(i * 0.04, 0.2) }}
           >
             <h2 className="flex items-center gap-2.5 text-lg font-extrabold tracking-tight text-wistaria">
-              <span className="h-5 w-1 rounded-full bg-wistaria/50" />
-              {section.heading}
+              <span className="h-6 w-1 rounded-full bg-gradient-to-b from-wistaria to-wistaria/40" />
+              <span className="bg-gradient-to-r from-wistaria to-wistaria/70 bg-clip-text text-transparent">{section.heading}</span>
             </h2>
+            <div className="mt-1 mb-3 h-px w-16 bg-gradient-to-r from-wistaria/50 to-transparent" />
 
             {section.body?.map((p, j) => (
-              <p key={j} className="mt-3 text-[15px] leading-7 text-muted-foreground">
+              <p key={j} className="mt-3 text-[15px] leading-[1.8] text-muted-foreground">
                 {p}
               </p>
             ))}
@@ -974,7 +979,7 @@ function ArticleReader({ article }: { article: Article }) {
                     <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-wistaria/20 text-xs font-extrabold text-wistaria">
                       {j + 1}
                     </span>
-                    <p className="text-[15px] leading-7 text-foreground">{step}</p>
+                    <p className="text-[15px] leading-[1.8] text-foreground">{step}</p>
                   </li>
                 ))}
               </ol>
@@ -985,7 +990,7 @@ function ArticleReader({ article }: { article: Article }) {
                 {section.bullets.map((b, j) => (
                   <li key={j} className="flex gap-2.5">
                     <ChevronRight className="mt-1.5 size-3.5 shrink-0 text-wistaria" />
-                    <p className="text-[15px] leading-7 text-foreground">{b}</p>
+                    <p className="text-[15px] leading-[1.8] text-foreground">{b}</p>
                   </li>
                 ))}
               </ul>
