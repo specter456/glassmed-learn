@@ -419,7 +419,7 @@ function NewsDetail({ item, onBack }: { item: MedicalNewsItem; onBack: () => voi
           <TrendingUp className="size-4" />
           Study Summary
         </h2>
-        <p className="mt-3 text-[15px] leading-7 text-muted-foreground">
+        <p className="mt-3 text-[18px] leading-7 text-muted-foreground">
           {item.summary}
         </p>
       </motion.div>
@@ -435,7 +435,7 @@ function NewsDetail({ item, onBack }: { item: MedicalNewsItem; onBack: () => voi
           <Stethoscope className="size-4" />
           Why It Matters Clinically
         </h2>
-        <p className="mt-3 text-[15px] leading-7 text-muted-foreground">
+        <p className="mt-3 text-[18px] leading-7 text-muted-foreground">
           {item.clinicalRelevance}
         </p>
       </motion.div>
@@ -763,12 +763,11 @@ function ArticleReader({ article }: { article: Article }) {
   };
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <main className="mx-auto w-full max-w-[52rem] px-4 pb-32 pt-6 sm:px-6" style={{ overflowX: "hidden", wordWrap: "break-word", overflowWrap: "break-word" }}>
       {/* ================================================================ */}
-      {/*  STICKY HEADER: diagram + read aloud + tabs                      */}
+      {/*  HEADER, DIAGRAM, READ ALOUD, TABS — all scroll together          */}
       {/* ================================================================ */}
-      <div className="sticky top-0 z-40 border-b border-white/5" style={{ background: "linear-gradient(180deg, rgba(15,15,30,0.97) 0%, rgba(15,15,30,0.92) 80%, rgba(15,15,30,0) 100%)" }}>
-        <main className="mx-auto max-w-[52rem] px-4 pt-6 pb-4 sm:px-6">
+      <div>
           {/* back link */}
           <a
             href="/research"
@@ -805,7 +804,7 @@ function ArticleReader({ article }: { article: Article }) {
                 </p>
               </div>
             </div>
-            <h1 className="mt-3 text-balance text-xl font-extrabold tracking-tight text-wistaria sm:text-2xl">
+            <h1 className="mt-3 text-balance text-3xl font-extrabold tracking-tight text-wistaria sm:text-4xl">
               {article.title}
             </h1>
           </motion.div>
@@ -933,13 +932,11 @@ function ArticleReader({ article }: { article: Article }) {
               })}
             </motion.div>
           )}
-        </main>
-      </div>
+        </div>
 
-      {/* ================================================================ */}
-      {/*  SCROLLABLE CONTENT                                              */}
-      {/* ================================================================ */}
-      <main className="mx-auto w-full max-w-[52rem] flex-1 px-4 pb-32 pt-6 sm:px-6" style={{ overflowX: "hidden", wordWrap: "break-word", overflowWrap: "break-word" }}>
+        {/* ================================================================ */}
+        {/*  TEXT CONTENT — scrolls with the rest                          */}
+        {/* ================================================================ */}
         {/* summary */}
         <motion.p
           initial={{ opacity: 0, y: 8 }}
@@ -960,37 +957,37 @@ function ArticleReader({ article }: { article: Article }) {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.4, delay: Math.min(i * 0.04, 0.2) }}
           >
-            <h2 className="flex items-center gap-2.5 text-lg font-extrabold tracking-tight text-wistaria">
+            <h2 className="flex items-center gap-2.5 text-2xl font-extrabold tracking-tight text-wistaria">
               <span className="h-6 w-1 rounded-full bg-gradient-to-b from-wistaria to-wistaria/40" />
               <span className="bg-gradient-to-r from-wistaria to-wistaria/70 bg-clip-text text-transparent">{section.heading}</span>
             </h2>
             <div className="mt-1 mb-3 h-px w-16 bg-gradient-to-r from-wistaria/50 to-transparent" />
 
             {section.body?.map((p, j) => (
-              <p key={j} className="mt-3 text-[15px] leading-[1.8] text-muted-foreground">
+              <p key={j} className="mt-3 text-[18px] leading-[1.8] text-muted-foreground">
                 {p}
               </p>
             ))}
 
             {section.steps && (
-              <ol className="mt-4 space-y-3">
+              <ol className="mt-4 space-y-4">
                 {section.steps.map((step, j) => (
                   <li key={j} className="flex gap-3">
-                    <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-wistaria/20 text-xs font-extrabold text-wistaria">
+                    <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full bg-wistaria/20 text-sm font-extrabold text-wistaria">
                       {j + 1}
                     </span>
-                    <p className="text-[15px] leading-[1.8] text-foreground">{step}</p>
+                    <p className="text-[18px] leading-[1.8] text-foreground">{step}</p>
                   </li>
                 ))}
               </ol>
             )}
 
             {section.bullets && (
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-4 space-y-3">
                 {section.bullets.map((b, j) => (
                   <li key={j} className="flex gap-2.5">
                     <ChevronRight className="mt-1.5 size-3.5 shrink-0 text-wistaria" />
-                    <p className="text-[15px] leading-[1.8] text-foreground">{b}</p>
+                    <p className="text-[18px] leading-[1.8] text-foreground">{b}</p>
                   </li>
                 ))}
               </ul>
@@ -1014,7 +1011,7 @@ function ArticleReader({ article }: { article: Article }) {
             <ListChecks className="size-4" />
             Key points to remember
           </p>
-          <ul className="mt-3 space-y-2.5">
+          <ul className="mt-3 space-y-3">
             {displayKeyPoints.map((k, i) => (
               <li key={i} className="flex gap-2.5">
                 <ChevronRight className="mt-1.5 size-3.5 shrink-0 text-wistaria" />
@@ -1038,7 +1035,7 @@ function ArticleReader({ article }: { article: Article }) {
           <Siren className="size-4" />
           Call for emergency help when…
         </p>
-        <ul className="mt-3 space-y-2.5">
+        <ul className="mt-3 space-y-3">
           {displayWhenToCall.map((w, i) => (
             <li key={i} className="flex gap-2.5">
               <ChevronRight className="mt-1.5 size-3.5 shrink-0 text-[#ef8b93]" />
@@ -1056,7 +1053,6 @@ function ArticleReader({ article }: { article: Article }) {
         follow current certified training (e.g., American Heart Association or your
         national equivalent).
       </p>
-      </main>
 
       {/* the reading rabbit, tucked into the corner of every article */}
       <motion.div
@@ -1068,7 +1064,7 @@ function ArticleReader({ article }: { article: Article }) {
       >
         <RabbitMascot mood="reading" size={62} />
       </motion.div>
-    </div>
+    </main>
   );
 }
 
