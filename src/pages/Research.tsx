@@ -1,23 +1,315 @@
+/* --------------------------- quick reference cards --------------------------- */
+
+interface QuickRef {
+  id: string;
+  title: string;
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+  color: string;
+  sections: { heading: string; rows: string[][] }[];
+}
+
+const QUICK_REFS: QuickRef[] = [
+  {
+    id: "acls-cardiac-arrest",
+    title: "ACLS: Cardiac Arrest",
+    icon: Heart,
+    color: "#ef4444",
+    sections: [
+      {
+        heading: "Adult Cardiac Arrest Algorithm",
+        rows: [
+          ["Recognition", "Unresponsive + no normal breathing + no pulse (within 10 sec)"],
+          ["Step 1", "Activate code team. Start high-quality CPR: 100-120/min, 5-6 cm depth, full recoil"],
+          ["Step 2", "Attach defibrillator/AED as soon as available"],
+          ["Step 3", "Rhythm check every 2 min. Shockable (VF/pVT): defibrillate 200J biphasic"],
+          ["Step 4", "After shock: resume CPR immediately x 2 min. Epinephrine 1 mg IV after 2nd shock"],
+          ["Step 5", "Non-shockable (asystole/PEA): continue CPR, epinephrine 1 mg IV q3-5 min"],
+          ["Reversible causes", "Hs and Ts: Hypovolaemia, Hypoxia, H+ (acidosis), Hypo/Hyperkalaemia, Hypothermia, Tension pneumothorax, Tamponade, Toxins, Thrombosis (pulmonary), Thrombosis (coronary)"],
+        ],
+      },
+    ],
+  },
+  {
+    id: "acls-bradycardia",
+    title: "ACLS: Bradycardia",
+    icon: Heart,
+    color: "#3b82f6",
+    sections: [
+      {
+        heading: "Symptomatic Bradycardia Algorithm",
+        rows: [
+          ["Definition", "Heart rate < 50 bpm with symptoms (hypotension, altered mentation, chest pain, HF)"],
+          ["Step 1", "Atropine 1 mg IV q3-5 min (max 3 mg). May repeat"],
+          ["Step 2", "If atropine fails: Transcutaneous pacing (TCP) or Dopamine 5-20 mcg/kg/min or Epinephrine 2-10 mcg/min"],
+          ["Step 3", "If refractory: Transvenous pacing. Consult cardiology"],
+          ["Mobitz Type II / 3rd degree", "Prepare for transvenous pacing. Atropine often ineffective in infranodal blocks"],
+        ],
+      },
+    ],
+  },
+  {
+    id: "acls-tachycardia",
+    title: "ACLS: Tachycardia",
+    icon: Heart,
+    color: "#f59e0b",
+    sections: [
+      {
+        heading: "Stable vs Unstable Tachycardia",
+        rows: [
+          ["Unstable signs", "Hypotension (SBP < 90), altered mentation, chest pain, acute HF"],
+          ["Unstable treatment", "Synchronised cardioversion. Start 100J biphasic. Increase if needed"],
+          ["Stable narrow complex (SVT)", "Vagal manoeuvres first. Then Adenosine 6 mg rapid IV push -> 12 mg if no response"],
+          ["Stable narrow complex (AF/AFL)", "Rate control: Diltiazem 0.25 mg/kg IV over 2 min or Metoprolol 5 mg IV q5min x3"],
+          ["Stable wide complex (monomorphic VT)", "Amiodarone 150 mg IV over 10 min. May repeat x1. Then 1 mg/min x 6hr"],
+          ["Stable wide complex (irregular)", "Afib with aberrancy likely. Rate control. Avoid adenosine"],
+        ],
+      },
+    ],
+  },
+  {
+    id: "ped-dosing",
+    title: "Pediatric Dosing",
+    icon: Baby,
+    color: "#8b5cf6",
+    sections: [
+      {
+        heading: "Emergency Medications (weight-based)",
+        rows: [
+          ["Epinephrine (cardiac arrest)", "0.01 mg/kg IV (1:10,000 = 0.1 mL/kg). Repeat q3-5 min"],
+          ["Epinephrine (anaphylaxis)", "0.01 mg/kg IM (1:1,000). Max 0.3 mg (< 30 kg) or 0.5 mg (> 30 kg)"],
+          ["Adenosine", "0.1 mg/kg rapid IV push (max 6 mg first dose, 12 mg second dose)"],
+          ["Amiodarone", "5 mg/kg IV over 20-60 min. May repeat to max 15 mg/kg"],
+          ["Atropine", "0.02 mg/kg IV (min 0.1 mg, max 0.5 mg per dose for bradycardia)"],
+          ["Dextrose (D10)", "2-5 mL/kg IV (200-500 mg/kg) for hypoglycaemia"],
+          ["Naloxone", "0.1 mg/kg IV/IM/IN (max 2 mg). May repeat q2-3 min"],
+        ],
+      },
+      {
+        heading: "Endotracheal Tube Size",
+        rows: [
+          ["Uncuffed ETT", "(Age / 4) + 4"],
+          ["Cuffed ETT", "(Age / 4) + 3.5"],
+          ["Depth (oral)", "(ETT size x 3) cm at lip"],
+          ["Laryngoscope blade", "Straight (Miller) for infants, Curved (Macintosh) for > 1 year"],
+        ],
+      },
+    ],
+  },
+  {
+    id: "gcs",
+    title: "GCS Quick Guide",
+    icon: Brain,
+    color: "#06b6d4",
+    sections: [
+      {
+        heading: "Glasgow Coma Scale (3-15)",
+        rows: [
+          ["Eye Opening (1-4)", "4=Spontaneous, 3=To voice, 2=To pain, 1=None"],
+          ["Verbal Response (1-5)", "5=Oriented, 4=Confused, 3=Inappropriate words, 2=Incomprehensible sounds, 1=None"],
+          ["Motor Response (1-6)", "6=Obeys commands, 5=Localises pain, 4=Withdrawal (flexion), 3=Abnormal flexion, 2=Extension, 1=None"],
+          ["Severity", "Mild: 13-15, Moderate: 9-12, Severe: 3-8"],
+          ["Clinical threshold", "GCS <= 8 = consider intubation for airway protection"],
+        ],
+      },
+    ],
+  },
+  {
+    id: "abg",
+    title: "ABG Interpretation",
+    icon: TestTube,
+    color: "#10b981",
+    sections: [
+      {
+        heading: "Systematic ABG Analysis",
+        rows: [
+          ["Step 1: pH", "Normal 7.35-7.45. < 7.35 = Acidaemia. > 7.45 = Alkalaemia"],
+          ["Step 2: PaCO2", "Normal 35-45 mmHg. > 45 = Respiratory acidosis. < 35 = Respiratory alkalosis"],
+          ["Step 3: HCO3", "Normal 22-26 mEq/L. < 22 = Metabolic acidosis. > 26 = Metabolic alkalosis"],
+          ["Step 4: PaO2", "Normal 80-100 mmHg. < 80 = Hypoxaemia"],
+          ["Step 5: Anion Gap", "Na - (Cl + HCO3). Normal 8-12. Elevated = AG metabolic acidosis"],
+          ["MUDPILES", "Methanol, Uraemia, DKA, Propylene glycol, Isoniazid, Lactic acidosis, Ethylene glycol, Salicylates"],
+          ["Winter's formula", "Expected HCO3 = 1.5 x HCO3 + 8 (+/- 2). If actual HCO3 lower, concurrent metabolic acidosis"],
+        ],
+      },
+    ],
+  },
+  {
+    id: "antibiotics",
+    title: "Antibiotic Coverage",
+    icon: Pill,
+    color: "#ec4899",
+    sections: [
+      {
+        heading: "Empiric Antibiotic Selection",
+        rows: [
+          ["Community-acquired pneumonia", "Amoxicillin + Macrolide OR Respiratory fluoroquinolone"],
+          ["Hospital-acquired pneumonia", "Piperacillin-tazobactam OR Meropenem + Vancomycin (if MRSA risk)"],
+          ["Urinary tract infection", "Nitrofurantoin (uncomplicated) OR Ceftriaxone (complicated) OR Meropenem (ESBL risk)"],
+          ["Intra-abdominal infection", "Piperacillin-tazobactam OR Meropenem + Metronidazole"],
+          ["Skin/soft tissue (simple)", "Cephalexin OR Amoxicillin-clavulanate"],
+          ["Necrotising fasciitis", "Meropenem + Vancomycin + Clindamycin. SURGICAL DEBRIDEMENT within 6 hrs"],
+          ["Neutropenic fever", "Meropenem (+ Vancomycin if line infection suspected). Add antifungal day 4-7"],
+          ["Meningitis (community)", "Ceftriaxone + Vancomycin + Dexamethasone (before or with first dose)"],
+          ["Sepsis (unknown source)", "Piperacillin-tazobactam OR Meropenem. Add Vancomycin if MRSA risk"],
+        ],
+      },
+    ],
+  },
+];
+
+function QuickRefCard({ ref_, onClick }: { ref_: QuickRef; onClick: () => void }) {
+  const Icon = ref_.icon;
+  return (
+    <motion.button
+      whileHover={{ y: -4, scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
+      onClick={onClick}
+      className="glass-panel shine group flex w-44 shrink-0 flex-col items-center gap-2 rounded-2xl p-4 text-center transition-all"
+    >
+      <div
+        className="flex size-10 items-center justify-center rounded-xl"
+        style={{ background: `${ref_.color}20` }}
+      >
+        <Icon className="size-5" style={{ color: ref_.color }} />
+      </div>
+      <p className="text-xs font-extrabold leading-snug group-hover:text-wistaria transition-colors">
+        {ref_.title}
+      </p>
+      <ArrowUpRight className="size-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+    </motion.button>
+  );
+}
+
+function QuickRefDetail({ ref_, onBack }: { ref_: QuickRef; onBack: () => void }) {
+  const Icon = ref_.icon;
+
+  const handlePrint = () => window.print();
+
+  return (
+    <main className="mx-auto max-w-3xl px-4 pb-32 pt-8 sm:px-6" style={{ wordWrap: "break-word", overflowWrap: "break-word" }}>
+      <button
+        onClick={onBack}
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <ArrowLeft className="size-4" />
+        Back to the library
+      </button>
+
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45 }}
+        className="mt-6 flex items-center justify-between"
+      >
+        <div className="flex items-center gap-3">
+          <div
+            className="flex size-12 items-center justify-center rounded-2xl"
+            style={{ background: `${ref_.color}20` }}
+          >
+            <Icon className="size-6" style={{ color: ref_.color }} />
+          </div>
+          <h1 className="text-2xl font-extrabold tracking-tight text-wistaria sm:text-3xl">
+            {ref_.title}
+          </h1>
+        </div>
+        <button
+          onClick={handlePrint}
+          className="glass-chip flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold text-muted-foreground transition-colors hover:text-foreground no-print"
+        >
+          <Printer className="size-3.5" />
+          Print / PDF
+        </button>
+      </motion.div>
+
+      <div className="mt-8 space-y-6">
+        {ref_.sections.map((section, i) => (
+          <motion.div
+            key={section.heading}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.08 + i * 0.06 }}
+            className="glass-panel rounded-2xl overflow-hidden"
+          >
+            <div
+              className="px-5 py-3"
+              style={{ background: `${ref_.color}15`, borderBottom: `1px solid ${ref_.color}30` }}
+            >
+              <h2 className="text-base font-extrabold tracking-tight" style={{ color: ref_.color }}>
+                {section.heading}
+              </h2>
+            </div>
+            <div className="divide-y divide-white/5">
+              {section.rows.map((row, j) => (
+                <div key={j} className="flex gap-3 px-5 py-3 hover:bg-white/[0.02] transition-colors">
+                  <span
+                    className="shrink-0 text-[11px] font-extrabold uppercase tracking-wider pt-0.5"
+                    style={{ color: ref_.color, minWidth: "10rem" }}
+                  >
+                    {row[0]}
+                  </span>
+                  <span className="text-sm leading-6 text-foreground">
+                    {row[1]}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      <p className="mt-8 px-1 text-[11px] leading-5 text-muted-foreground no-print">
+        This reference guide is for educational and clinical decision support purposes. Always verify with current institutional protocols and guidelines.
+      </p>
+    </main>
+  );
+}
+
+function QuickRefRow({ onSelect }: { onSelect: (ref_: QuickRef) => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.02 }}
+      className="mb-6"
+    >
+      <div className="flex items-center gap-2 mb-3">
+        <Stethoscope className="size-3.5 text-wistaria" />
+        <span className="text-[11px] font-bold uppercase tracking-wider text-wistaria">Quick Reference</span>
+      </div>
+      <div className="nice-scroll flex gap-2.5 overflow-x-auto pb-1 -mx-1 px-1">
+        {QUICK_REFS.map((ref_) => (
+          <QuickRefCard key={ref_.id} ref_={ref_} onClick={() => onSelect(ref_)} />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
 import { motion } from "framer-motion";
 import {
   AlertOctagon,
   AlertTriangle,
   ArrowLeft,
   ArrowUpRight,
+  Baby,
   BookOpen,
+  Brain,
   Check,
   ChevronRight,
   Clock3,
   ExternalLink,
+  Heart,
   Lightbulb,
   ListChecks,
   Newspaper,
   Pause,
+  Pill,
   Play,
+  Printer,
   Search,
   Siren,
   Square,
   Stethoscope,
+  TestTube,
   TrendingUp,
   Volume2,
 } from "lucide-react";
@@ -470,9 +762,11 @@ function NewsDetail({ item, onBack }: { item: MedicalNewsItem; onBack: () => voi
 function ResearchLibrary({
   onOpen,
   onNewsSelect,
+  onQuickRefSelect,
 }: {
   onOpen: (slug: string) => void;
   onNewsSelect: (item: MedicalNewsItem) => void;
+  onQuickRefSelect: (ref_: QuickRef) => void;
 }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string | null>(null);
@@ -512,6 +806,9 @@ function ResearchLibrary({
 
       {/* news feed */}
       <NewsFeed onSelect={onNewsSelect} />
+
+      {/* quick reference */}
+      <QuickRefRow onSelect={onQuickRefSelect} />
 
       {/* stats strip */}
       <motion.div
@@ -1095,6 +1392,7 @@ function ResearchInner() {
   const article = slug ? articleBySlug(slug) : undefined;
   const [selectedNews, setSelectedNews] = useState<MedicalNewsItem | null>(null);
 
+  const [selectedQuickRef, setSelectedQuickRef] = useState<QuickRef | null>(null);
   const openArticle = (next: string) => {
     setSelectedNews(null);
     setSearchParams({ article: next }, { replace: true });
@@ -1107,12 +1405,21 @@ function ResearchInner() {
   const backFromNews = () => {
     setSelectedNews(null);
   };
+  const openQuickRef = (item: QuickRef) => {
+    setSelectedQuickRef(item);
+  };
+
+  const backFromQuickRef = () => {
+    setSelectedQuickRef(null);
+  };
 
   return (
     <div className="min-h-screen">
       <GlassBackdrop />
       <AppHeader title="Research" />
-      {selectedNews ? (
+      {selectedQuickRef ? (
+        <QuickRefDetail ref_={selectedQuickRef} onBack={backFromQuickRef} />
+      ) : selectedNews ? (
         <NewsDetail item={selectedNews} onBack={backFromNews} />
       ) : article ? (
         <ArticleReader key={article.slug} article={article} />
@@ -1126,7 +1433,7 @@ function ResearchInner() {
           </Button>
         </main>
       ) : (
-        <ResearchLibrary onOpen={openArticle} onNewsSelect={openNews} />
+        <ResearchLibrary onOpen={openArticle} onNewsSelect={openNews} onQuickRefSelect={openQuickRef} />
       )}
     </div>
   );
