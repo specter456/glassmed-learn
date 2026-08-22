@@ -7,20 +7,14 @@ import {
   Box,
   CalendarClock,
   CheckCircle2,
-  Cross,
-  Droplets,
   HeartPulse,
   Layers,
   Network,
   RefreshCw,
   Scissors,
   Search,
-  ShieldPlus,
   Sparkles,
-  Target,
   Trophy,
-  Utensils,
-  Wind,
   Zap,
 } from "lucide-react";
 import { useNavigate } from "react-router";
@@ -75,18 +69,13 @@ const CATEGORY_COLORS: Record<string, string> = {
   Systems: "#6fb5b0",
 };
 
-/* ─── Basics-First Path — organized by category ─── */
+/* ─── Basics-First Path — Top 5 essential topics for first-year students ─── */
 const BASICS_FIRST_PATH = [
   { num: 1, slug: "cardiac-cycle", title: "The Cardiac Cycle", desc: "Systole, diastole, and the pressure changes that drive every heartbeat.", articleSlug: "cardiac-cycle", icon: HeartPulse, color: "#ff5f7a", category: "Physiology" },
   { num: 2, slug: "action-potential", title: "The Action Potential", desc: "The electrical impulse that lets neurons and muscles communicate.", articleSlug: "action-potential", icon: Zap, color: "#a78bfa", category: "Physiology" },
   { num: 3, slug: "brachial-plexus", title: "The Brachial Plexus", desc: "The nerve superhighway from spine to fingertips — roots, trunks, cords, branches.", articleSlug: "brachial-plexus", icon: Network, color: "#22d3ee", category: "Anatomy" },
   { num: 4, slug: "krebs-cycle", title: "The Krebs (TCA) Cycle", desc: "How cells extract energy from glucose — the central metabolic hub.", articleSlug: "krebs-cycle", icon: RefreshCw, color: "#f59e0b", category: "Biochemistry" },
   { num: 5, slug: "muscle-contraction", title: "Muscle Contraction", desc: "Actin, myosin, and the sliding filament theory — how muscles generate force.", articleSlug: "muscle-contraction", icon: Activity, color: "#e879f9", category: "Physiology" },
-  { num: 6, slug: "respiratory-mechanics", title: "Respiratory Mechanics", desc: "Ventilation, gas exchange, and the physics of breathing.", articleSlug: "respiratory-mechanics", icon: Wind, color: "#67e8f9", category: "Physiology" },
-  { num: 7, slug: "renal-physiology", title: "Renal Physiology", desc: "Filtration, reabsorption, and the nephron — how the kidney balances the body.", articleSlug: undefined, icon: Droplets, color: "#22d3ee", category: "Systems" },
-  { num: 8, slug: "digestive-system", title: "The Digestive System", desc: "From ingestion to absorption — the organs and enzymes of digestion.", articleSlug: "digestive-system", icon: Utensils, color: "#f59e0b", category: "Systems" },
-  { num: 9, slug: "endocrine-system", title: "The Endocrine System", desc: "Hormones, feedback loops, and how glands regulate the body.", articleSlug: "endocrine-system", icon: Cross, color: "#a78bfa", category: "Physiology" },
-  { num: 10, slug: "blood-immunity", title: "Blood & Immunity", desc: "Blood cells, clotting, and the immune defences that keep you alive.", articleSlug: "blood-immunity", icon: ShieldPlus, color: "#e2666f", category: "Physiology" },
 ];
 
 /* ─── Search index ─── */
@@ -311,7 +300,7 @@ function DashboardInner() {
               The Basics-First Path
             </h2>
             <button
-              onClick={() => navigate("/research")}
+              onClick={() => navigate("/basics")}
               className="flex items-center gap-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
               style={{ cursor: "pointer" }}
             >
@@ -401,6 +390,23 @@ function DashboardInner() {
                 Try "heart", "krebs", "nerves", or "breathing"
               </p>
             </motion.div>
+          )}
+
+          {/* View All Topics CTA */}
+          {!isSearching && (
+            <motion.button
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+              whileHover={{ y: -2, scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate("/basics")}
+              className="glass-chip shine mt-4 flex w-full items-center justify-center gap-2 rounded-2xl p-4 text-center text-sm font-bold text-wistaria"
+              style={{ cursor: "pointer" }}
+            >
+              View All Topics
+              <ArrowRight className="size-4" />
+            </motion.button>
           )}
         </section>
       </main>
