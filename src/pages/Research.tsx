@@ -1054,15 +1054,34 @@ function ArticleReader({ article }: { article: Article }) {
         national equivalent).
       </p>
 
-      {/* the reading rabbit, tucked into the corner of every article */}
+      {/* the reading rabbit — fixed companion, bottom-right */}
       <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7, duration: 0.5 }}
-        className="pointer-events-none fixed bottom-24 right-5 z-30 hidden sm:block"
-        aria-hidden
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.7, duration: 0.5, type: "spring", stiffness: 200 }}
+        className="group pointer-events-auto fixed bottom-6 right-6 z-50 hidden sm:block"
+        aria-label="Your study companion"
       >
-        <RabbitMascot mood="reading" size={62} />
+        {/* Glow ring behind rabbit */}
+        <motion.div
+          className="absolute inset-0 -m-3 rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(162,162,208,0.3) 0%, transparent 70%)" }}
+          animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Floating bounce on hover */}
+        <motion.div
+          whileHover={{ y: -8, rotate: [0, -5, 5, 0] }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          className="relative"
+        >
+          <RabbitMascot mood="reading" size={56} />
+        </motion.div>
+        {/* Tooltip on hover */}
+        <div className="absolute bottom-full right-0 mb-2 whitespace-nowrap rounded-xl bg-white/10 px-3 py-1.5 text-xs font-bold text-wistaria opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100 pointer-events-none">
+          Your study companion! 🐰
+          <div className="absolute -bottom-1 right-4 size-2 rotate-45 bg-white/10" />
+        </div>
       </motion.div>
     </main>
   );
