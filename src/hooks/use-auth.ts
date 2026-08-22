@@ -22,6 +22,26 @@ export function useAuth() {
     }
   }, [isLoading]);
 
+  // Sign out guest users when they close the browser so anonymous sessions
+  // don't persist across visits. Username/email sessions are preserved.
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const handleBeforeUnload = () => {
+      // Only sign out anonymous users — authenticated users keep their session
+      try {
+        const isAnonymous = localStorage.getItem("convex-auth:is-anonymous");
+        if (isAnonymous === "true") {
+          // Best-effort signout on unload — may not complete but clears local state
+          signOut();
+        }
+      } catch {
+        /* storage unavailable */
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isAuthenticated, signOut]);
+
   return {
     isLoading,
     isAuthenticated,

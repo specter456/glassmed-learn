@@ -35,7 +35,6 @@ export function RequireAuth({ children }: { children: ReactNode }) {
     return (
       <Navigate
         to={`/auth?returnTo=${encodeURIComponent(returnTo)}`}
-        replace
       />
     );
   }

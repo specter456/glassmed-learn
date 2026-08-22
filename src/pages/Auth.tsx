@@ -77,9 +77,13 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   // triggering extra renders. There is no wait screen — the welcome
   // celebration plays over the destination page instead (see LoginCelebration).
   const redirectScheduled = useRef(false);
+  // Tracks whether the user explicitly clicked a login button.
+  // Auto-redirect only fires after an explicit action, preventing
+  // the auth page from instantly forwarding already-authenticated users.
+  const loginTriggered = useRef(false);
 
   useEffect(() => {
-    if (!authLoading && isAuthenticated && !redirectScheduled.current) {
+    if (!authLoading && isAuthenticated && loginTriggered.current && !redirectScheduled.current) {
       redirectScheduled.current = true;
       // Hand the fanfare to the destination: the dashboard mounts underneath
       // the translucent celebration, so the Yayy overlay fades in/out over the
@@ -150,6 +154,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   };
 
   const handleOtpSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    loginTriggered.current = true;
     event.preventDefault();
     setIsLoading(true);
     setError(null);
@@ -175,6 +180,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   };
 
   const handleGuestLogin = async () => {
+    loginTriggered.current = true;
     setIsLoading(true);
     setError(null);
     try {

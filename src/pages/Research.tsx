@@ -1395,7 +1395,7 @@ function ResearchInner() {
   const [selectedQuickRef, setSelectedQuickRef] = useState<QuickRef | null>(null);
   const openArticle = (next: string) => {
     setSelectedNews(null);
-    setSearchParams({ article: next }, { replace: true });
+    setSearchParams({ article: next });
   };
 
   const openNews = (item: MedicalNewsItem) => {
