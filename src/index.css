@@ -488,3 +488,11 @@
   color: oklch(0.48 0.1 245);
 }
 
+/* Article content safety net — prevents text overflow and rotation */
+ article, main {
+  overflow-x: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  transform: none !important;
+}
+

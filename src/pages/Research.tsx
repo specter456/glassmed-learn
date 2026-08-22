@@ -939,7 +939,7 @@ function ArticleReader({ article }: { article: Article }) {
       {/* ================================================================ */}
       {/*  SCROLLABLE CONTENT                                              */}
       {/* ================================================================ */}
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-32 pt-6 sm:px-6">
+      <main className="mx-auto w-full max-w-[52rem] flex-1 px-4 pb-32 pt-6 sm:px-6" style={{ overflowX: "hidden", wordWrap: "break-word", overflowWrap: "break-word" }}>
         {/* summary */}
         <motion.p
           initial={{ opacity: 0, y: 8 }}
