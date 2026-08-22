@@ -19,6 +19,7 @@ const PlexusDiagram = React.lazy(() => import("@/components/PlexusDiagram").then
 const SkeletalSystem = React.lazy(() => import("@/components/SkeletalSystem"));
 const EndocrineDiagram = React.lazy(() => import("@/components/EndocrineDiagram").then(m => ({ default: m.EndocrineDiagram })));
 const EarDiagram = React.lazy(() => import("@/components/EarDiagram").then(m => ({ default: m.EarDiagram })));
+const CellDiagram = React.lazy(() => import("@/components/CellDiagram").then(m => ({ default: m.CellDiagram })));
 
 
 
@@ -30,7 +31,7 @@ function DiagramFallback() {
   );
 }
 
-type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal" | "endocrine" | "ear";
+type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal" | "endocrine" | "ear" | "cell";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -165,6 +166,17 @@ const DIAGRAMS: Record<
     label: "Ear & Hearing",
     tag: "👂",
     Component: EarDiagram,
+  },
+  cell: {
+    kicker: "Diagram 11 · The Cell",
+    title: "The Living Machine",
+    blurb:
+      "Every living thing is built from cells — the nucleus stores DNA, mitochondria generate ATP, ribosomes build proteins, and the Golgi ships them out. 8 interactive organelles reveal how a single cell powers an entire organism. Hover any structure to make it blaze, tap it for a quick breakdown.",
+    parts: 8,
+    accent: "#22d3ee",
+    label: "Cell Biology",
+    tag: "🔬",
+    Component: CellDiagram,
   },
 };
 
