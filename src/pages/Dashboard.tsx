@@ -16,8 +16,11 @@ import {
   Sparkles,
   Trophy,
   Zap,
+  Zap as ZapIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router";
+import { matchShortcut, SHORTCUT_LIST } from "@/lib/shortcuts";
+import { TeacherTour } from "@/components/TeacherTour";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { AppHeader } from "@/components/AppHeader";
@@ -120,15 +123,19 @@ function DashboardInner() {
 
   const searchIndex = useMemo(buildSearchIndex, []);
 
+  const shortcutMatch = useMemo(() => matchShortcut(query), [query]);
+
   const filteredTopics = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return BASICS_FIRST_PATH;
+    // If it's a shortcut, don't filter the main list (the shortcut card shows instead)
+    if (shortcutMatch) return [];
     return BASICS_FIRST_PATH.filter((t) =>
       searchIndex
         .find((s) => s.slug === t.slug)
         ?.tags.some((tag) => tag.includes(q))
     );
-  }, [query, searchIndex]);
+  }, [query, searchIndex, shortcutMatch]);
 
   const isSearching = query.trim().length > 0;
 
@@ -188,9 +195,59 @@ function DashboardInner() {
               </button>
             )}
           </div>
+
+          {/* ── Shortcut Match Card ── */}
+          <AnimatePresence>
+            {shortcutMatch && (
+              <motion.button
+                initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => navigate(`/basics?article=${shortcutMatch.articleSlug}`)}
+                className="glass-panel shine mt-2 flex w-full items-center gap-3 rounded-2xl px-5 py-3.5 text-left transition-all hover:scale-[1.015] hover:shadow-[0_12px_30px_-8px_rgba(120,162,210,0.4)]"
+                style={{ cursor: "pointer" }}
+              >
+                <span className="flex size-10 items-center justify-center rounded-xl bg-wistaria/15 text-lg">
+                  {shortcutMatch.emoji}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-bold text-wistaria">
+                    ⚡ Shortcut: {shortcutMatch.shortcut}
+                  </p>
+                  <p className="mt-0.5 truncate text-sm font-semibold text-foreground">
+                    {shortcutMatch.name}
+                  </p>
+                </div>
+                <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
+              </motion.button>
+            )}
+          </AnimatePresence>
+
+          {/* ── Shortcut Hints (when search is empty) ── */}
+          {!isSearching && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="mt-2 flex flex-wrap gap-1.5"
+            >
+              {SHORTCUT_LIST.slice(0, 5).map((sc) => (
+                <button
+                  key={sc.shortcut}
+                  onClick={() => setQuery(sc.shortcut)}
+                  className="rounded-lg bg-white/5 px-2 py-1 text-[10px] font-bold text-muted-foreground transition-colors hover:bg-wistaria/15 hover:text-wistaria"
+                  style={{ cursor: "pointer" }}
+                >
+                  {sc.emoji} {sc.shortcut}
+                </button>
+              ))}
+            </motion.div>
+          )}
         </motion.div>
 
         {/* ── Stats Row ── */}
+        <TeacherTour />
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}

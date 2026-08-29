@@ -176,6 +176,7 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
   const handleResetTutorial = () => {
     const keys = [
       "glassmed-bee-tutorial-done", // localStorage — bee tour
+      "glassmed-teacher-tour-done", // localStorage — teacher mascot tour
       "glassmed-last-login", // localStorage — "Welcome" vs "Welcome back"
       "medipro-splash-seen", // sessionStorage — splash (legacy)
       "glassmed-welcome-shown", // sessionStorage — welcome once-per-session
