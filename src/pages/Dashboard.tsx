@@ -189,6 +189,7 @@ function DashboardInner() {
 
         {/* ── Search Bar ── */}
         <motion.div
+          data-tour-target="search"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.08 }}
@@ -277,7 +278,7 @@ function DashboardInner() {
         </motion.div>
 
         {/* Teacher Tour Overlay */}
-        <TeacherTour open={tourOpen} onClose={() => setTourOpen(false)} />
+        <TeacherTour open={tourOpen} onClose={() => setTourOpen(false)} rootSelector=".min-h-screen" />
 
         {/* ── Stats Row ── */}
         <motion.div
@@ -314,7 +315,7 @@ function DashboardInner() {
         </motion.div>
 
         {/* ── Quick Access Modules ── */}
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <div data-tour-target="modules" className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           {MODULES.map((m, i) => {
             const Icon = m.icon;
             const dueBadge = m.badge === "due" && !loading && (summary?.dueToday ?? 0) > 0;
@@ -382,7 +383,7 @@ function DashboardInner() {
         </motion.div>
 
         {/* ── Basics-First Path Grid ── */}
-        <section className="mt-8">
+        <section data-tour-target="basics-first-path" className="mt-8">
           <div className="flex items-center justify-between">
             <h2 className="flex items-center gap-2 text-lg font-extrabold tracking-tight text-wistaria">
               <Sparkles className="size-5" />
