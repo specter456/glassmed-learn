@@ -17,10 +17,11 @@ import {
   Trophy,
   Zap,
   Zap as ZapIcon,
+  GraduationCap,
 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { matchShortcut, SHORTCUT_LIST } from "@/lib/shortcuts";
-import { TeacherTour } from "@/components/TeacherTour";
+import { TeacherTour, isTourDone } from "@/components/TeacherTour";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { AppHeader } from "@/components/AppHeader";
@@ -112,6 +113,7 @@ function DashboardInner() {
   const loading = topics === undefined || summary === undefined;
 
   const [query, setQuery] = useState("");
+  const [tourOpen, setTourOpen] = useState(false);
 
   const firstName = user?.name?.split(" ")[0] ?? (user?.isAnonymous ? "Guest" : "future doctor");
   const greeting =
@@ -246,8 +248,33 @@ function DashboardInner() {
           )}
         </motion.div>
 
+        {/* ── Guided Tour Button ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.12 }}
+          className="mt-5"
+        >
+          <button
+            onClick={() => setTourOpen(true)}
+            className="glass-panel shine group flex w-full items-center gap-3 rounded-2xl px-5 py-3.5 text-left transition-all hover:scale-[1.015] hover:shadow-[0_12px_30px_-8px_rgba(120,162,210,0.4)]"
+            style={{ cursor: "pointer" }}
+          >
+            <span className="flex size-10 items-center justify-center rounded-xl bg-wistaria/15 text-wistaria transition-transform duration-300 group-hover:scale-110">
+              <GraduationCap className="size-5" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-bold text-foreground">Start Guided Tour</p>
+              <p className="mt-0.5 text-[11px] text-muted-foreground">Professor Rabbit will show you around the app 🐰</p>
+            </div>
+            <ArrowRight className="size-4 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:translate-x-1" />
+          </button>
+        </motion.div>
+
+        {/* Teacher Tour Overlay */}
+        <TeacherTour open={tourOpen} onClose={() => setTourOpen(false)} />
+
         {/* ── Stats Row ── */}
-        <TeacherTour />
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}

@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 import { useNavigate } from "react-router";
-import { BeeMascot } from "@/components/mascots";
+import { RabbitMascot } from "@/components/mascots";
 
 /* ------------------------------------------------------------------ */
 /* Tour persistence                                                    */
@@ -40,8 +41,6 @@ export function resetTour(): void {
 /* ------------------------------------------------------------------ */
 
 interface TourStep {
-  /** Highlight target selector (CSS) — null = no highlight ring */
-  target: string | null;
   /** Position of the speech bubble relative to the viewport */
   position: "bottom-center" | "bottom-right" | "bottom-left" | "center";
   /** Title in the speech bubble */
@@ -50,38 +49,44 @@ interface TourStep {
   message: string;
   /** Optional list of shortcuts to display */
   shortcuts?: { shortcut: string; name: string; emoji: string }[];
-  /** Optional navigation path after completing this step */
-  navigateTo?: string;
 }
 
 const TOUR_STEPS: TourStep[] = [
   {
-    target: null,
     position: "center",
-    title: "Welcome to MediPro! 🐝",
+    title: "Welcome! I'm Professor Rabbit 🐰",
     message:
-      "Hi there! I'm Professor Bee, your study guide. Let me show you around the app so you can start learning right away!",
+      "I'll be your study guide! Let me show you around the app so you can start learning right away. Tap Next to begin!",
   },
   {
-    target: ".glass-panel.shine.group",
     position: "bottom-center",
     title: "Your Study Hubs 📚",
     message:
-      "These 4 boxes are your main study hubs. Flashcards for quick review, Basics for deep learning, Game for fun practice, and Research for clinical topics.",
+      "These 4 boxes are your main study hubs! Tap any to begin — Flashcards for quick review, Basics for deep learning, Game for fun practice, and Research for clinical topics.",
   },
   {
-    target: "nav[aria-label='Primary']",
-    position: "bottom-center",
-    title: "Navigation Bar 🧭",
-    message:
-      "Use the bottom bar to jump between Home, Diagrams, Voice Notes, and Settings. It's always here — no matter where you are!",
-  },
-  {
-    target: null,
     position: "bottom-right",
-    title: "Pro Tip: Smart Shortcuts ⚡",
+    title: "Study Music Player 🎵",
     message:
-      "Type 2-letter shortcuts in the search bar to jump to topics instantly!",
+      "Need focus? This music player floats at the bottom of every screen. It plays lo-fi beats while you study — and never stops when you switch pages!",
+  },
+  {
+    position: "bottom-center",
+    title: "Spaced Repetition 🧠",
+    message:
+      "I'll remind you to review flashcards right before you forget! The more you get right, the longer I wait. It's science — and it works!",
+  },
+  {
+    position: "center",
+    title: "Special Day Surprise 🎁",
+    message:
+      "Got a special day coming up? There's a hidden gift box somewhere in the app. Click it ON your special day for a surprise! I won't tell you what it is yet…",
+  },
+  {
+    position: "bottom-right",
+    title: "Smart Shortcuts ⚡",
+    message:
+      "Pro tip: Type 2-letter shortcuts in the search bar to jump to topics instantly!",
     shortcuts: [
       { shortcut: "CS", name: "Cardiac Cycle", emoji: "❤️" },
       { shortcut: "AP", name: "Action Potential", emoji: "⚡" },
@@ -91,11 +96,10 @@ const TOUR_STEPS: TourStep[] = [
     ],
   },
   {
-    target: null,
     position: "center",
     title: "You're All Set! 🎉",
     message:
-      "That's it! Start with the Flashcards or explore the Basics. I'll be here if you need help. Happy studying!",
+      "That's it! Start with the Flashcards or explore the Basics. I'll be here if you need help. Happy studying, future doctor!",
   },
 ];
 
@@ -127,29 +131,20 @@ function StepDots({ current, total }: { current: number; total: number }) {
 /* ------------------------------------------------------------------ */
 
 interface TeacherTourProps {
-  /** Force-show the tour (e.g. from Settings reset) */
-  forceShow?: boolean;
+  /** Whether the tour overlay is visible (controlled by parent) */
+  open: boolean;
   /** Called when the tour is dismissed or completed */
-  onDismiss?: () => void;
+  onClose: () => void;
 }
 
-export function TeacherTour({ forceShow = false, onDismiss }: TeacherTourProps) {
+export function TeacherTour({ open, onClose }: TeacherTourProps) {
   const navigate = useNavigate();
-  const [visible, setVisible] = useState(false);
   const [step, setStep] = useState(0);
 
-  // Decide whether to show the tour on mount
+  // Reset step when tour re-opens
   useEffect(() => {
-    if (forceShow) {
-      setVisible(true);
-      return;
-    }
-    if (!isTourDone()) {
-      // Small delay so the page renders first
-      const t = setTimeout(() => setVisible(true), 600);
-      return () => clearTimeout(t);
-    }
-  }, [forceShow]);
+    if (open) setStep(0);
+  }, [open]);
 
   const current = TOUR_STEPS[step];
   const isLast = step === TOUR_STEPS.length - 1;
@@ -157,28 +152,22 @@ export function TeacherTour({ forceShow = false, onDismiss }: TeacherTourProps) 
   const handleNext = () => {
     if (isLast) {
       markTourDone();
-      setVisible(false);
-      onDismiss?.();
+      onClose();
       return;
-    }
-    // Navigate if the step requests it
-    if (current.navigateTo) {
-      navigate(current.navigateTo);
     }
     setStep((s) => s + 1);
   };
 
-  const handleSkip = () => {
+  const handleClose = () => {
     markTourDone();
-    setVisible(false);
-    onDismiss?.();
+    onClose();
   };
 
-  if (!visible) return null;
+  if (!open) return null;
 
   return createPortal(
     <AnimatePresence>
-      {visible && (
+      {open && (
         <>
           {/* ── Backdrop ── */}
           <motion.div
@@ -186,7 +175,7 @@ export function TeacherTour({ forceShow = false, onDismiss }: TeacherTourProps) 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={handleSkip}
+            onClick={handleClose}
           />
 
           {/* ── Speech Bubble ── */}
@@ -205,18 +194,31 @@ export function TeacherTour({ forceShow = false, onDismiss }: TeacherTourProps) 
             exit={{ opacity: 0, y: 12, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 340, damping: 26 }}
           >
-            {/* Mascot + pointer */}
+            {/* Mascot + pointer stick */}
             <div className="relative">
-              <BeeMascot mood="happy" size={64} />
-              {/* Pointer stick */}
-              <div className="absolute -right-2 bottom-2 rotate-[-30deg] text-lg">
+              <RabbitMascot mood="happy" size={64} />
+              {/* Teacher pointer stick */}
+              <div
+                className="absolute -right-3 bottom-1 text-lg"
+                style={{ transform: "rotate(-25deg)" }}
+              >
                 🪄
               </div>
             </div>
 
             {/* Bubble card */}
-            <div className="glass-strong shine rounded-3xl p-5 text-center shadow-[0_20px_50px_-10px_rgba(10,14,45,0.7)]">
-              <h3 className="text-base font-extrabold text-wistaria">
+            <div className="glass-strong shine relative rounded-3xl p-5 text-center shadow-[0_20px_50px_-10px_rgba(10,14,45,0.7)]">
+              {/* X close button */}
+              <button
+                onClick={handleClose}
+                className="absolute right-3 top-3 rounded-full p-1 text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground"
+                style={{ cursor: "pointer" }}
+                aria-label="Close tour"
+              >
+                <X className="size-4" />
+              </button>
+
+              <h3 className="pr-6 text-base font-extrabold text-wistaria">
                 {current.title}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-foreground/90">
@@ -247,7 +249,7 @@ export function TeacherTour({ forceShow = false, onDismiss }: TeacherTourProps) 
                 <StepDots current={step} total={TOUR_STEPS.length} />
                 <div className="flex gap-2">
                   <button
-                    onClick={handleSkip}
+                    onClick={handleClose}
                     className="rounded-xl px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground"
                     style={{ cursor: "pointer" }}
                   >
