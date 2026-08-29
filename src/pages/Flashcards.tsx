@@ -7,11 +7,13 @@ import {
   Flame,
   Layers,
   RotateCcw,
+  Search,
   Sparkles,
   X,
 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
+import { matchShortcut, SHORTCUT_MAP } from "@/lib/shortcuts";
 import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 import { toast } from "sonner";
@@ -42,6 +44,13 @@ const KEEP_GOING_MESSAGES = [
 
 /* ---------------------------- deck list ---------------------------- */
 
+const CATEGORIES = ["All", "Physiology", "Anatomy", "Neuroscience", "Biochemistry", "Genetics", "Systems"] as const;
+
+/** Reverse lookup: topic slug → shortcut code */
+const SLUG_TO_SHORTCUT: Record<string, string> = Object.fromEntries(
+  Object.values(SHORTCUT_MAP).map((s) => [s.articleSlug, s.shortcut])
+);
+
 function DeckList() {
   useEnsureSeeded();
   const navigate = useNavigate();
@@ -49,10 +58,44 @@ function DeckList() {
   const summary = useQuery(api.progress.summary);
   const loading = topics === undefined || summary === undefined;
 
+  const [rawQuery, setRawQuery] = useState("");
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<string>("All");
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  // Debounced search (300ms)
+  const handleRawChange = useCallback((value: string) => {
+    setRawQuery(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setQuery(value), 300);
+  }, []);
+
+  useEffect(() => () => { if (debounceRef.current) clearTimeout(debounceRef.current); }, []);
+
+  const shortcutMatch = useMemo(() => matchShortcut(query), [query]);
+
   const byTopic = useMemo(() => {
     const map = new Map((summary?.byTopic ?? []).map((t) => [t.slug, t]));
     return map;
   }, [summary]);
+
+  // Filter topics by search + category
+  const filteredTopics = useMemo(() => {
+    let list = topics ?? [];
+    // Category filter
+    if (category !== "All") {
+      list = list.filter((t) => t.subject === category);
+    }
+    // Search filter
+    const q = query.trim().toLowerCase();
+    if (!q) return list;
+    return list.filter((t) =>
+      t.title.toLowerCase().includes(q) ||
+      t.subject.toLowerCase().includes(q) ||
+      t.slug.includes(q) ||
+      (SLUG_TO_SHORTCUT[t.slug]?.toLowerCase() === q)
+    );
+  }, [topics, query, category]);
 
   return (
     <main className="mx-auto max-w-6xl px-4 pb-32 pt-10 sm:px-6">
@@ -74,11 +117,94 @@ function DeckList() {
         </p>
       </motion.div>
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {/* ── Search Bar ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.08 }}
+        className="relative mt-6"
+      >
+        <div className="glass-panel shine flex items-center gap-3 rounded-2xl px-5 py-3.5">
+          <Search className="size-5 shrink-0 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder='Search decks… try "heart", "nerve", "CS", "AP"'
+            value={rawQuery}
+            onChange={(e) => handleRawChange(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && shortcutMatch) {
+                const topic = (topics ?? []).find((t) => t.slug === shortcutMatch.articleSlug);
+                if (topic) navigate(`/flashcards?topic=${topic.slug}`);
+              }
+            }}
+            className="flex-1 bg-transparent text-sm font-medium text-foreground outline-none placeholder:text-muted-foreground"
+            style={{ cursor: "text" }}
+          />
+          {rawQuery && (
+            <button
+              onClick={() => { setRawQuery(""); setQuery(""); }}
+              className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-semibold text-muted-foreground transition-colors hover:bg-white/20 hover:text-foreground"
+              style={{ cursor: "pointer" }}
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        {/* Shortcut suggestion */}
+        <AnimatePresence>
+          {shortcutMatch && (
+            <motion.button
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.18 }}
+              onClick={() => {
+                const topic = (topics ?? []).find((t) => t.slug === shortcutMatch.articleSlug);
+                if (topic) navigate(`/flashcards?topic=${topic.slug}`);
+              }}
+              className="glass-panel shine mt-2 flex w-full items-center gap-3 rounded-2xl border border-wistaria/20 px-5 py-3 text-left transition-all hover:scale-[1.01]"
+              style={{ cursor: "pointer" }}
+            >
+              <span className="text-lg">{shortcutMatch.emoji}</span>
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-wistaria/70">⚡ Shortcut match</p>
+                <p className="mt-0.5 truncate text-sm font-semibold text-foreground">{shortcutMatch.name}</p>
+              </div>
+              <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      {/* ── Category Filters ── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="mt-4 flex flex-wrap gap-2"
+      >
+        {CATEGORIES.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setCategory(cat)}
+            className={`rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${
+              category === cat
+                ? "bg-wistaria text-white shadow-lg shadow-wistaria/30"
+                : "bg-white/5 text-muted-foreground hover:bg-wistaria/15 hover:text-wistaria"
+            }`}
+            style={{ cursor: "pointer" }}
+          >
+            {cat}
+          </button>
+        ))}
+      </motion.div>
+
+      {/* ── Deck Grid ── */}
+      <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {loading ? (
           <DeckGridSkeleton />
         ) : (
-          (topics ?? []).map((t, i) => {
+          filteredTopics.map((t, i) => {
             const Icon = topicIcon(t.icon);
             const stat = byTopic.get(t.slug);
             const pct =
@@ -86,9 +212,11 @@ function DeckList() {
             return (
               <motion.button
                 key={t.slug}
+                layout
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.07 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3, delay: i * 0.04 }}
                 whileHover={{ y: -6, scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => navigate(`/flashcards?topic=${t.slug}`)}
@@ -114,7 +242,14 @@ function DeckList() {
                 </div>
 
                 <div>
-                  <h2 className="text-base font-extrabold tracking-tight">{t.title}</h2>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-base font-extrabold tracking-tight">{t.title}</h2>
+                    {SLUG_TO_SHORTCUT[t.slug] && (
+                      <span className="shrink-0 rounded-md bg-wistaria/15 px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wider text-wistaria/80">
+                        {SLUG_TO_SHORTCUT[t.slug]}
+                      </span>
+                    )}
+                  </div>
                   <p className="mt-0.5 text-xs font-medium text-muted-foreground">
                     {t.subject}
                   </p>
