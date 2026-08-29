@@ -285,6 +285,29 @@ const SCENARIOS: Scenario[] = [
     proTip:
       "Epinephrine IM in the anterolateral thigh (vastus lateralis) absorbs fastest. Peak plasma levels in 5 to 10 minutes versus 20 plus minutes for subcutaneous injection. Dose: 0.3 to 0.5 mg IM (1:1000 = 0.3 to 0.5 mL). Can repeat every 5 to 15 minutes. NEVER delay epi for IV access! After epi: IV fluids (1 to 2L NS bolus), albuterol nebulizer for persistent wheezing, and diphenhydramine plus methylprednisolone as adjuncts.",
   },
+  {
+    id: "tremor-mystery",
+    name: "The Tremor Mystery",
+    emoji: " tremor",
+    savedEmoji: "",
+    patient: "A 65-year-old patient",
+    state: "EVALUATING A TREMOR",
+    prompt:
+      "A 65-year-old patient presents with a shaking right hand that has been getting worse over the past year. You notice the tremor is present when the hand rests in their lap, but it stops completely when they reach for the coffee cup on your desk. Their spouse also reports they have been walking more slowly and their handwriting has become very small. What is your most likely diagnosis?",
+    options: [
+      "Diagnose Essential Tremor and prescribe Propranolol",
+      "Diagnose Parkinson's Disease and check for rigidity and bradykinesia",
+      "Diagnose Cerebellar Tremor and order an urgent MRI of the brain",
+      "Diagnose Hyperthyroidism and check TSH levels",
+    ],
+    correctIndex: 1,
+    praise:
+      "Exactly right! This is a classic presentation of Parkinson's Disease. The resting tremor (present at rest, disappears with voluntary movement) is the hallmark. Combined with bradykinesia (slow walking) and micrographia (small handwriting), this is the Parkinson's triad. Parkinson's is a clinical diagnosis based on the UK Parkinson's Disease Society Brain Bank criteria. A resting tremor at 4 to 6 Hz with a pill-rolling character is highly specific. Treat with Levodopa/Carbidopa for symptomatic relief.",
+    sarcasm:
+      "Essential tremor is an ACTION tremor, not a RESTING tremor! It gets WORSE when reaching for things, not better. This patient's tremor stops when reaching for the cup — the exact opposite of essential tremor. Cerebellar tremor is an intention tremor that worsens as you approach the target. And hyperthyroid tremor is bilateral and fine, not unilateral. Your patient has bradykinesia and micrographia — classic Parkinson's! The resting tremor plus those two features is a slam dunk.",
+    proTip:
+      "Resting tremor = Parkinson's (pill-rolling, 4 to 6 Hz). Action tremor = Essential tremor (bilateral, worsens with movement). Intention tremor = Cerebellar (worsens as you approach target). The key test: watch the patient reach for something. If the tremor stops during reaching, it is a resting tremor. If it gets worse, it is action/intention. Always check for bradykinesia (timed finger taps, buttoning) and rigidity (cogwheel) to confirm Parkinson's. Always test them reaching for an object!",
+  },
 ];
 
 /* ------------------------- persistence ----------------------------- */
