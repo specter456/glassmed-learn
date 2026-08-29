@@ -403,7 +403,7 @@ export const ARTICLES: Article[] = [
         ],
         steps: [
           "Splint the joint above and the joint below the suspected fracture. A rigid item (rolled magazine, board, folded blanket) padded with cloth works.",
-          "Secure the splint with bandages, cloth strips, or tape — snug enough to hold, loose enough to slide a finger underneath. Check that the skin below isn't turning pale or blue.",
+          "Secure the splint with bandages, cloth strips, or tape — snug enough to hold, loose enough to slide a finger underneath. Check distal circulation: the skin below shouldn't turn pale or blue, and sensation should be intact.",
           "Apply a cold pack wrapped in a cloth over the injury for 15–20 minutes at a time (never ice directly on skin).",
           "Elevate the injured limb above the heart if it doesn't cause pain.",
         ],
@@ -2477,45 +2477,189 @@ export const ARTICLES: Article[] = [
       "New murmur post-MI → echo immediately → papillary muscle rupture or VSD → urgent surgical consultation.",
     ],
   },
+  {
+    slug: "cranial-nerves",
+    title: "The 12 Cranial Nerves",
+    emoji: "🧠",
+    category: "Foundations",
+    summary:
+      "Master the cranial nerves — their numbers, names, functions, and the classic mnemonics that make them unforgettable.",
+    readMinutes: 18,
+    sections: [],
+    keyPoints: [],
+    whenToCall: [],
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "📖",
+        sections: [
+          {
+            heading: "What Are the Cranial Nerves?",
+            body: [
+              "The 12 cranial nerves (CN I–XII) emerge directly from the brain and brainstem, passing through openings in the skull to supply the head, neck, and torso.",
+              "Unlike spinal nerves, each cranial nerve has a specific name and a distinct function — some carry only sensory information, some only motor, and some both (mixed).",
+              "Knowing which nerves do what is essential for neurological examination, and understanding their pathways helps localise lesions in clinical practice.",
+            ],
+          },
+          {
+            heading: "The Complete List (I–XII)",
+            body: [
+              "I — Olfactory: Smell (Sensory only)",
+              "II — Optic: Vision (Sensory only)",
+              "III — Oculomotor: Eye movement, pupil constriction, eyelid lift (Mostly Motor)",
+              "IV — Trochlear: Eye movement — downward/inward rotation (Motor only)",
+              "V — Trigeminal: Facial sensation + chewing (Mixed — largest nerve)",
+              "VI — Abducens: Eye movement — lateral gaze (Motor only)",
+              "VII — Facial: Facial expression, taste (anterior 2/3 tongue), lacrimation (Mixed)",
+              "VIII — Vestibulocochlear: Hearing + balance (Sensory only)",
+              "IX — Glossopharyngeal: Taste (posterior 1/3 tongue), swallowing, carotid body reflex (Mixed)",
+              "X — Vagus: Parasympathetic to heart/lungs/GI, voice, gag reflex (Mixed — longest nerve)",
+              "XI — Accessory: Head turning, shoulder shrugging (Motor only)",
+              "XII — Hypoglossal: Tongue movement (Motor only)",
+            ],
+          },
+          {
+            heading: "The Classic Mnemonics",
+            body: [
+              "Remember the Sensory/Motor/Both pattern for each nerve with this line:",
+              "\"Some Say Marry Money But My Brother Says Big Brains Matter More\" → S, S, M, M, B, M, B, S, B, B, M, M (CN I–XII)",
+              "And for the nerve names in order, use:",
+              "\"On Old Olympus' Towering Tops, A Finn And German Viewed Some Hops\" → O, O, O, T, T, A, F, G, V, S, H",
+            ],
+          },
+          {
+            heading: "Quick Classification",
+            bullets: [
+              "Sensory only: I (Olfactory), II (Optic), VIII (Vestibulocochlear)",
+              "Motor only: III (Oculomotor), IV (Trochlear), VI (Abducens), XI (Accessory), XII (Hypoglossal)",
+              "Mixed (both): V (Trigeminal), VII (Facial), IX (Glossopharyngeal), X (Vagus)",
+              "That's 4 sensory, 5 motor, and 3 mixed — a useful ratio for exams.",
+            ],
+          },
+          {
+            heading: "The Foramina — Where They Exit",
+            bullets: [
+              "Optic nerve (II) → Optic canal",
+              "Oculomotor (III), Trochlear (IV), Abducens (VI), V1 → Superior orbital fissure",
+              "Trigeminal V2 → Foramen rotundum. V3 → Foramen ovale",
+              "IX, X, XI → Jugular foramen",
+              "XII → Hypoglossal canal",
+            ],
+          },
+        ],
+        keyPoints: [
+          "12 cranial nerves — know their numbers, names, and sensory/motor/mixed classification.",
+          "The mnemonics \"Some Say Marry Money\" and \"On Old Olympus' Towering Tops\" are exam gold.",
+          "4 sensory, 5 motor, 3 mixed nerves — a useful ratio to remember.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "Vagus Nerve (X) — The Wandering Nerve",
+            body: [
+              "The vagus nerve is the longest cranial nerve, descending from the brainstem through the neck into the thorax and abdomen.",
+              "It provides parasympathetic innervation to the heart (slowing heart rate), lungs (bronchoconstriction), and the entire GI tract up to the splenic flexure.",
+              "Clinical pearl: Vagus nerve stimulation (VNS) is an FDA-approved treatment for drug-resistant epilepsy and depression.",
+              "The vagus also carries taste from the epiglottis and larynx, and controls the muscles of the pharynx and larynx (speech and swallowing).",
+            ],
+          },
+          {
+            heading: "Facial Nerve (VII) — Motor vs. Sensory",
+            body: [
+              "The facial nerve has four main branches after exiting the stylomastoid foramen: Temporal, Zygomatic, Buccal, and Mandibular — remembered as \"To Zanzibar By Motorcar\".",
+              "Motor function: Controls all muscles of facial expression, the stapedius muscle (protects against loud sounds), and the stylohyoid/digastric muscles.",
+              "Sensory function: Carries taste from the anterior 2/3 of the tongue via the chorda tympani branch.",
+              "Parasympathetic function: Stimulates lacrimation (tear production), submandibular/sublingual salivation, and nasal/palatal mucus secretion.",
+              "Bell's palsy (lower motor neuron lesion) affects the entire ipsilateral face — the patient cannot wrinkle their forehead, close their eye, or smile on that side.",
+            ],
+          },
+          {
+            heading: "Trigeminal Nerve (V) — Three Divisions",
+            body: [
+              "The trigeminal nerve has three major divisions: V1 (Ophthalmic), V2 (Maxillary), and V3 (Mandibular).",
+              "V1 — Ophthalmic: Purely sensory. Supplies sensation to the forehead, upper eyelid, and cornea (corneal reflex afferent limb).",
+              "V2 — Maxillary: Purely sensory. Supplies sensation to the cheek, upper lip, upper teeth, and nasal cavity. Exits via foramen rotundum.",
+              "V3 — Mandibular: Mixed. Sensation to the lower face + motor to the muscles of mastication (temporalis, masseter, medial/lateral pterygoids).",
+              "Trigeminal neuralgia: Excruciating, electric-shock-like facial pain — usually in V2/V3 distribution. Often caused by vascular compression of the nerve root.",
+            ],
+          },
+          {
+            heading: "Clinical Relevance — Bell's Palsy",
+            body: [
+              "Bell's palsy is an acute, idiopathic, lower motor neuron (LMN) facial nerve palsy — the most common cause of unilateral facial weakness.",
+              "Key distinction from stroke: In Bell's palsy, the forehead IS affected (patient cannot raise eyebrow). In stroke (upper motor neuron), the forehead is SPARED because the upper face receives bilateral cortical input.",
+              "Treatment: Corticosteroids (prednisolone) within 72 hours significantly improve recovery. Antivirals (acyclovir) are sometimes added but evidence is weaker.",
+              "Prognosis: ~85% recover fully within 3–6 months. Complete eye closure is the most important functional goal — use lubricating drops and tape the eye shut at night if needed.",
+            ],
+          },
+          {
+            heading: "Clinical Relevance — CN IX and X Testing",
+            bullets: [
+              "Gag reflex: Afferent limb = CN IX, Efferent limb = CN X. Absent gag → think IX lesion first.",
+              "Hoarseness + unilateral vocal cord paralysis → CN X (vagus/recurrent laryngeal nerve) lesion.",
+              "The recurrent laryngeal nerve loops under the aortic arch on the left — left vocal cord palsy is more common in thoracic disease.",
+              "Glossopharyngeal neuralgia: Severe throat/ear pain triggered by swallowing — can cause syncope via carotid sinus hypersensitivity.",
+            ],
+          },
+          {
+            heading: "High-Yield Summary",
+            bullets: [
+              "Only 3 cranial nerves pass through the superior orbital fissure: III, IV, VI (plus V1).",
+              "CN IV (Trochlear) is the only cranial nerve to exit posteriorly and the only one to fully decussate dorsally.",
+              "CN XI (Accessory) has a spinal root (C1–C5) that ascends through the foramen magnum — unique among cranial nerves.",
+              "Vagus does everything — it's the parasympathetic highway to the thorax and abdomen.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Vagus nerve (X) is the parasympathetic powerhouse: heart, lungs, GI tract.",
+          "Bell's palsy: forehead IS affected (LMN). Stroke: forehead SPARED (UMN) — the most tested distinction.",
+          "Trigeminal neuralgia = electric-shock face pain. Bell's palsy = sudden facial droop.",
+          "Recurrent laryngeal nerve loops under the aortic arch — left vocal cord palsy is more common in thoracic disease.",
+        ],
+      },
+    ],
+  },
 ];
 export function articleBySlug(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }
 
-export function articleToSpeech(a: Article): string {
-  const parts: string[] = [`${a.title}. ${a.summary}`];
-  if (a.tabs) {
-    for (const tab of a.tabs) {
-      parts.push(`${tab.label}.`);
-      for (const sec of tab.sections) {
-        parts.push(sec.heading);
-        if (sec.body) parts.push(...sec.body);
-        if (sec.bullets) parts.push(...sec.bullets);
-        if (sec.steps) parts.push(...sec.steps.map((s, i) => `Step ${i + 1}. ${s}`));
-        if (sec.callout) parts.push(sec.callout.title, sec.callout.text);
-      }
-    }
+export const ARTICLE_CATEGORIES = [
+  ...new Set(ARTICLES.map((a) => a.category)),
+];
+
+/** Plain-text reading of an article (includes title, all tabs). */
+export function articleToSpeech(article: Article): string {
+  let body: string[];
+  if (article.tabs) {
+    body = article.tabs.flatMap((tab) =>
+      tab.sections.flatMap((s) => [...(s.body ?? []), ...(s.steps ?? []), ...(s.bullets ?? [])])
+    );
   } else {
-    for (const sec of a.sections) {
-      parts.push(sec.heading);
-      if (sec.body) parts.push(...sec.body);
-      if (sec.bullets) parts.push(...sec.bullets);
-      if (sec.steps) parts.push(...sec.steps.map((s, i) => `Step ${i + 1}. ${s}`));
-      if (sec.callout) parts.push(sec.callout.title, sec.callout.text);
-    }
+    body = article.sections.flatMap((s) => [
+      ...(s.body ?? []),
+      ...(s.steps ?? []).map((step, i) => "Step " + (i + 1) + ". " + step),
+      ...(s.bullets ?? []),
+    ]);
   }
-  return parts.join("\n\n");
+  return (article.title + ". " + body.join(" ")).slice(0, 4000);
 }
 
+/** Total number of step-by-step instructions across all articles (no args). */
 export function totalSteps(): number {
   return ARTICLES.reduce((sum, a) => {
-    const sections = a.tabs
-      ? a.tabs.flatMap((t) => t.sections)
-      : a.sections;
-    return sum + sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0);
+    if (a.tabs) {
+      return sum + a.tabs.reduce(
+        (tabSum, tab) => tabSum + tab.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0),
+        0,
+      );
+    }
+    return sum + a.sections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0);
   }, 0);
 }
-
-export const ARTICLE_CATEGORIES: string[] = Array.from(
-  new Set(ARTICLES.map((a) => a.category)),
-);

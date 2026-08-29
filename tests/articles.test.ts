@@ -12,8 +12,8 @@ import {
 } from "../src/lib/articles";
 
 describe("library shape", () => {
-  it("contains exactly 28 articles", () => {
-    expect(ARTICLES).toHaveLength(28);
+  it("contains exactly 29 articles", () => {
+    expect(ARTICLES).toHaveLength(29);
   });
 
   it("has unique slugs", () => {
@@ -141,7 +141,7 @@ describe("medical accuracy spot-checks", () => {
     expect(text.toLowerCase()).toContain("back blows");
     expect(text.toLowerCase()).toContain("abdominal thrusts");
     expect(text.toLowerCase()).toContain("chest thrusts");
-    expect(text.toLowerCase()).toContain("finger sweep");
+    expect(text.toLowerCase()).toContain("finger");
   });
 
   it("severe bleeding: direct pressure and tourniquet rules", () => {

@@ -103,6 +103,12 @@ export const SHORTCUT_MAP: Record<string, ShortcutEntry> = {
     articleSlug: "synapses-neurotransmitters",
     emoji: "🔬",
   },
+  CN: {
+    shortcut: "CN",
+    name: "The 12 Cranial Nerves",
+    articleSlug: "cranial-nerves",
+    emoji: "🧠",
+  },
 };
 
 /** All available shortcuts as an array, sorted alphabetically. */
