@@ -20,7 +20,12 @@ import {
   GraduationCap,
 } from "lucide-react";
 import { useNavigate } from "react-router";
-import { matchShortcut, SHORTCUT_LIST } from "@/lib/shortcuts";
+import { matchShortcut, SHORTCUT_MAP } from "@/lib/shortcuts";
+
+/** Reverse lookup: articleSlug → shortcut code (e.g. "cardiac-cycle" → "CS") */
+const SLUG_TO_SHORTCUT: Record<string, string> = Object.fromEntries(
+  Object.values(SHORTCUT_MAP).map((s) => [s.articleSlug, s.shortcut])
+);
 import { TeacherTour, isTourDone } from "@/components/TeacherTour";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
@@ -189,26 +194,6 @@ function DashboardInner() {
           transition={{ duration: 0.4, delay: 0.08 }}
           className="relative mt-7"
         >
-          {/* ── Quick Chips (always visible, direct navigation) ── */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="mb-2.5 flex flex-wrap gap-1.5"
-          >
-            {SHORTCUT_LIST.map((sc) => (
-              <button
-                key={sc.shortcut}
-                onClick={() => navigate(`/basics?article=${sc.articleSlug}`)}
-                className="glass-chip flex items-center gap-1.5 rounded-xl px-2.5 py-1 text-[11px] font-semibold transition-all hover:scale-105 hover:bg-wistaria/15 hover:text-wistaria"
-                style={{ cursor: "pointer" }}
-              >
-                <span className="font-mono text-[10px] font-bold text-cloud">{sc.shortcut}</span>
-                <span className="text-muted-foreground">{sc.name}</span>
-              </button>
-            ))}
-          </motion.div>
-
           {/* ── Search Bar ── */}
           <div className="glass-panel shine flex items-center gap-3 rounded-2xl px-5 py-3.5">
             <Search className="size-5 shrink-0 text-muted-foreground" />
@@ -449,8 +434,13 @@ function DashboardInner() {
                       <topic.icon className="size-5" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-baseline gap-2">
+                      <div className="flex items-center gap-2">
                         <p className="truncate text-sm font-bold">{topic.title}</p>
+                        {SLUG_TO_SHORTCUT[topic.articleSlug ?? ""] && (
+                          <span className="shrink-0 rounded-md bg-wistaria/15 px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wider text-wistaria/80">
+                            {SLUG_TO_SHORTCUT[topic.articleSlug!]}
+                          </span>
+                        )}
                         {isAvailable ? (
                           <span className="shrink-0 rounded-full bg-wistaria/15 px-2 py-0.5 text-[10px] font-bold text-wistaria">
                             Basics & In-Depth

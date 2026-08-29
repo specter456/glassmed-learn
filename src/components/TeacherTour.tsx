@@ -83,17 +83,10 @@ const TOUR_STEPS: TourStep[] = [
       "Got a special day coming up? There's a hidden gift box somewhere in the app. Click it ON your special day for a surprise! I won't tell you what it is yet…",
   },
   {
-    position: "bottom-right",
+    position: "bottom-center",
     title: "Smart Shortcuts ⚡",
     message:
-      "Pro tip: Type 2-letter shortcuts in the search bar to jump to topics instantly!",
-    shortcuts: [
-      { shortcut: "CS", name: "Cardiac Cycle", emoji: "❤️" },
-      { shortcut: "AP", name: "Action Potential", emoji: "⚡" },
-      { shortcut: "BP", name: "Brachial Plexus", emoji: "🧠" },
-      { shortcut: "KC", name: "Krebs Cycle", emoji: "🔄" },
-      { shortcut: "MC", name: "Muscle Contraction", emoji: "💪" },
-    ],
+      "See this little code on the topic card? Type 'CS' in the search bar to jump straight to this topic instantly! Each card has its own shortcut code — it's the fastest way to review.\u2728",
   },
   {
     position: "center",
