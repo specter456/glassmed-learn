@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity,
   ArrowRight,
@@ -112,8 +112,10 @@ function DashboardInner() {
   const topics = useQuery(api.content.topics);
   const loading = topics === undefined || summary === undefined;
 
+  const [rawQuery, setRawQuery] = useState("");
   const [query, setQuery] = useState("");
   const [tourOpen, setTourOpen] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const firstName = user?.name?.split(" ")[0] ?? (user?.isAnonymous ? "Guest" : "future doctor");
   const greeting =
@@ -125,19 +127,29 @@ function DashboardInner() {
 
   const searchIndex = useMemo(buildSearchIndex, []);
 
-  const shortcutMatch = useMemo(() => matchShortcut(query), [query]);
+  // Debounced search — wait 300ms after typing stops
+  const handleRawChange = useCallback((value: string) => {
+    setRawQuery(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setQuery(value), 300);
+  }, []);
 
+  // Clean up debounce on unmount
+  useEffect(() => () => { if (debounceRef.current) clearTimeout(debounceRef.current); }, []);
+
+  // "Did you mean?" shortcut suggestion — only when input EXACTLY matches a 2-letter shortcut
+  const shortcutSuggestion = useMemo(() => matchShortcut(query), [query]);
+
+  // Normal text search — ALWAYS runs, never suppressed by shortcuts
   const filteredTopics = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return BASICS_FIRST_PATH;
-    // If it's a shortcut, don't filter the main list (the shortcut card shows instead)
-    if (shortcutMatch) return [];
     return BASICS_FIRST_PATH.filter((t) =>
       searchIndex
         .find((s) => s.slug === t.slug)
         ?.tags.some((tag) => tag.includes(q))
     );
-  }, [query, searchIndex, shortcutMatch]);
+  }, [query, searchIndex]);
 
   const isSearching = query.trim().length > 0;
 
@@ -177,19 +189,48 @@ function DashboardInner() {
           transition={{ duration: 0.4, delay: 0.08 }}
           className="relative mt-7"
         >
+          {/* ── Quick Chips (always visible, direct navigation) ── */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mb-2.5 flex flex-wrap gap-1.5"
+          >
+            {SHORTCUT_LIST.map((sc) => (
+              <button
+                key={sc.shortcut}
+                onClick={() => navigate(`/basics?article=${sc.articleSlug}`)}
+                className="glass-chip flex items-center gap-1.5 rounded-xl px-2.5 py-1 text-[11px] font-semibold transition-all hover:scale-105 hover:bg-wistaria/15 hover:text-wistaria"
+                style={{ cursor: "pointer" }}
+              >
+                <span className="font-mono text-[10px] font-bold text-cloud">{sc.shortcut}</span>
+                <span className="text-muted-foreground">{sc.name}</span>
+              </button>
+            ))}
+          </motion.div>
+
+          {/* ── Search Bar ── */}
           <div className="glass-panel shine flex items-center gap-3 rounded-2xl px-5 py-3.5">
             <Search className="size-5 shrink-0 text-muted-foreground" />
             <input
               type="text"
               placeholder='Search topics… try "heart", "krebs", "nerves"'
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              value={rawQuery}
+              onChange={(e) => handleRawChange(e.target.value)}
+              onKeyDown={(e) => {
+                // Enter on exact 2-letter shortcut → navigate directly
+                if (e.key === "Enter" && shortcutSuggestion) {
+                  navigate(`/basics?article=${shortcutSuggestion.articleSlug}`);
+                  setRawQuery("");
+                  setQuery("");
+                }
+              }}
               className="flex-1 bg-transparent text-sm font-medium text-foreground outline-none placeholder:text-muted-foreground"
               style={{ cursor: "text" }}
             />
-            {query && (
+            {rawQuery && (
               <button
-                onClick={() => setQuery("")}
+                onClick={() => { setRawQuery(""); setQuery(""); }}
                 className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-semibold text-muted-foreground transition-colors hover:bg-white/20 hover:text-foreground"
                 style={{ cursor: "pointer" }}
               >
@@ -198,54 +239,33 @@ function DashboardInner() {
             )}
           </div>
 
-          {/* ── Shortcut Match Card ── */}
+          {/* ── "Did you mean?" shortcut suggestion ── */}
           <AnimatePresence>
-            {shortcutMatch && (
+            {shortcutSuggestion && (
               <motion.button
-                initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                initial={{ opacity: 0, y: -6, scale: 0.97 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -6, scale: 0.97 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => navigate(`/basics?article=${shortcutMatch.articleSlug}`)}
-                className="glass-panel shine mt-2 flex w-full items-center gap-3 rounded-2xl px-5 py-3.5 text-left transition-all hover:scale-[1.015] hover:shadow-[0_12px_30px_-8px_rgba(120,162,210,0.4)]"
+                exit={{ opacity: 0, y: -4, scale: 0.98 }}
+                transition={{ duration: 0.18 }}
+                onClick={() => navigate(`/basics?article=${shortcutSuggestion.articleSlug}`)}
+                className="glass-panel shine mt-2 flex w-full items-center gap-3 rounded-2xl border border-wistaria/20 px-5 py-3 text-left transition-all hover:scale-[1.01] hover:shadow-[0_10px_25px_-8px_rgba(120,162,210,0.35)]"
                 style={{ cursor: "pointer" }}
               >
-                <span className="flex size-10 items-center justify-center rounded-xl bg-wistaria/15 text-lg">
-                  {shortcutMatch.emoji}
+                <span className="flex size-9 items-center justify-center rounded-xl bg-wistaria/15 text-base">
+                  {shortcutSuggestion.emoji}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs font-bold text-wistaria">
-                    ⚡ Shortcut: {shortcutMatch.shortcut}
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-wistaria/70">
+                    ⚡ Shortcut match
                   </p>
                   <p className="mt-0.5 truncate text-sm font-semibold text-foreground">
-                    {shortcutMatch.name}
+                    {shortcutSuggestion.name}
                   </p>
                 </div>
                 <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
               </motion.button>
             )}
           </AnimatePresence>
-
-          {/* ── Shortcut Hints (when search is empty) ── */}
-          {!isSearching && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="mt-2 flex flex-wrap gap-1.5"
-            >
-              {SHORTCUT_LIST.slice(0, 5).map((sc) => (
-                <button
-                  key={sc.shortcut}
-                  onClick={() => setQuery(sc.shortcut)}
-                  className="rounded-lg bg-white/5 px-2 py-1 text-[10px] font-bold text-muted-foreground transition-colors hover:bg-wistaria/15 hover:text-wistaria"
-                  style={{ cursor: "pointer" }}
-                >
-                  {sc.emoji} {sc.shortcut}
-                </button>
-              ))}
-            </motion.div>
-          )}
         </motion.div>
 
         {/* ── Guided Tour Button ── */}
