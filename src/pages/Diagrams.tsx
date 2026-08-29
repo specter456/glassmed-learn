@@ -20,6 +20,7 @@ const SkeletalSystem = React.lazy(() => import("@/components/SkeletalSystem"));
 const EndocrineDiagram = React.lazy(() => import("@/components/EndocrineDiagram").then(m => ({ default: m.EndocrineDiagram })));
 const EarDiagram = React.lazy(() => import("@/components/EarDiagram").then(m => ({ default: m.EarDiagram })));
 const CellDiagram = React.lazy(() => import("@/components/CellDiagram").then(m => ({ default: m.CellDiagram })));
+const CranialNervesDiagram = React.lazy(() => import("@/components/BrainstemCranialNerves").then(m => ({ default: m.BrainstemCranialNervesDiagram })));
 
 
 
@@ -31,7 +32,7 @@ function DiagramFallback() {
   );
 }
 
-type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal" | "endocrine" | "ear" | "cell";
+type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal" | "endocrine" | "ear" | "cell" | "cranial-nerves";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -178,6 +179,17 @@ const DIAGRAMS: Record<
     tag: "🔬",
     Component: CellDiagram,
   },
+  "cranial-nerves": {
+    kicker: "Diagram 12 · Brainstem & Cranial Nerves",
+    title: "The Command Center, Glowing",
+    blurb:
+      "Midbrain, pons, and medulla — the brainstem that keeps you alive — with all 12 cranial nerves branching out in their signature colors: blue for sensory, red for motor, purple for mixed. Hover any nerve to make it blaze, tap it for its story.",
+    parts: 15,
+    accent: "#c084fc",
+    label: "Cranial Nerves",
+    tag: "🧠",
+    Component: CranialNervesDiagram,
+  },
 };
 
 const COMING_SOON = ["Krebs Cycle", "DNA Replication Fork", "Cardiac Cycle ECG"];
@@ -239,6 +251,8 @@ function DiagramsInner() {
                   <Zap className="size-6" />
                 ) : active === "ear" ? (
                   <Zap className="size-6" />
+                ) : active === "cranial-nerves" ? (
+                  <Brain className="size-6" />
                 ) : (
                   <Zap className="size-6" />
                 )}
