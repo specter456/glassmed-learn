@@ -22,7 +22,7 @@ const EndocrineDiagram = React.lazy(() => import("@/components/EndocrineDiagram"
 const EarDiagram = React.lazy(() => import("@/components/EarDiagram").then(m => ({ default: m.EarDiagram })));
 const CellDiagram = React.lazy(() => import("@/components/CellDiagram").then(m => ({ default: m.CellDiagram })));
 const CranialNervesDiagram = React.lazy(() => import("@/components/BrainstemCranialNerves").then(m => ({ default: m.BrainstemCranialNervesDiagram })));
-
+const MitochondriaDiagram = React.lazy(() => import("@/components/MitochondriaDiagram").then(m => ({ default: m.MitochondriaDiagram })));
 
 
 function DiagramFallback() {
@@ -33,7 +33,7 @@ function DiagramFallback() {
   );
 }
 
-type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal" | "endocrine" | "ear" | "cell" | "cranial-nerves";
+type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal" | "endocrine" | "ear" | "cell" | "cranial-nerves" | "mitochondria";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -191,9 +191,20 @@ const DIAGRAMS: Record<
     tag: "🧠",
     Component: CranialNervesDiagram,
   },
+  mitochondria: {
+    kicker: "Diagram 13 · The Mitochondrion",
+    title: "The Powerhouse, Glowing",
+    blurb:
+      "Double-membraned energy factories where glucose becomes ATP — the Krebs cycle spins in the matrix, protons cascade through the electron transport chain, and ATP synthase turbines hum at 130 revolutions per second. Hover any structure to make it blaze, tap it for its story.",
+    parts: 7,
+    accent: "#4ade80",
+    label: "Cellular Energy",
+    tag: "⚡",
+    Component: MitochondriaDiagram,
+  },
 };
 
-const COMING_SOON = ["Krebs Cycle", "DNA Replication Fork", "Cardiac Cycle ECG"];
+const COMING_SOON = ["DNA Replication Fork", "Cardiac Cycle ECG"];
 
 function DiagramsInner() {
   const [active, setActive] = useState<DiagramId>("heart");
@@ -254,6 +265,8 @@ function DiagramsInner() {
                   <Zap className="size-6" />
                 ) : active === "cranial-nerves" ? (
                   <Brain className="size-6" />
+                ) : active === "mitochondria" ? (
+                  <Zap className="size-6" />
                 ) : (
                   <Zap className="size-6" />
                 )}
