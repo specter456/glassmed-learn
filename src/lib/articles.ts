@@ -2625,6 +2625,162 @@ export const ARTICLES: Article[] = [
       },
     ],
   },
+  // ---- Biochemistry ----
+  {
+    slug: "glycolysis-gluconeogenesis",
+    title: "Glycolysis & Gluconeogenesis",
+    emoji: "🔬",
+    category: "Biochemistry",
+    summary:
+      "Glycolysis is the universal energy pathway — every cell breaks glucose into pyruvate to make ATP. Gluconeogenesis is its mirror image, building new glucose when stores run low. Master both to understand metabolism, diabetes, and cancer.",
+    readMinutes: 8,
+    tabs: [
+      {
+        id: "basics",
+        label: "Basics",
+        icon: "📖",
+        sections: [
+          {
+            heading: "What is Glycolysis?",
+            body: [
+              "Glycolysis (from Greek: glyco = sugar, lysis = splitting) is the metabolic pathway that breaks one molecule of **glucose (6 carbons)** into two molecules of **pyruvate (3 carbons)**.",
+              "It happens in the **cytoplasm** of every cell — no mitochondria needed. That's why it works in red blood cells (which have no mitochondria) and in anaerobic conditions like intense exercise.",
+              "**Net yield per glucose molecule:**",
+            ],
+            bullets: [
+              "**2 ATP** produced (4 made, 2 invested = net 2).",
+              "**2 NADH** (electron carriers that feed into the electron transport chain for more ATP).",
+              "**2 Pyruvate** molecules — the endpoint that enters mitochondria for aerobic respiration, or becomes lactate under anaerobic conditions.",
+            ],
+          },
+          {
+            heading: "The 10 Steps (Simplified)",
+            body: [
+              "Glycolysis has 10 enzymatic steps, but you only need to remember the **3 irreversible, regulated steps** — the rest are reversible and shared with gluconeogenesis.",
+            ],
+            bullets: [
+              "**Step 1 — Hexokinase**: Glucose → Glucose-6-phosphate (investment: 1 ATP used). Traps glucose inside the cell.",
+              "**Step 3 — PFK-1 (Phosphofructokinase-1)**: Fructose-6-phosphate → Fructose-1,6-bisphosphate (investment: 1 ATP used). This is the **rate-limiting step** — the master switch of glycolysis.",
+              "**Step 10 — Pyruvate Kinase**: PEP → Pyruvate (makes 1 ATP). The final sprint — commits pyruvate.",
+              "Steps 2–9 are reversible and shared with gluconeogenesis.",
+            ],
+          },
+          {
+            heading: "What is Gluconeogenesis?",
+            body: [
+              "Gluconeogenesis = \"making new glucose.\" It is essentially glycolysis running in reverse, with 4 special enzymes to bypass the irreversible steps.",
+              "Where does it happen? Mainly in the **liver** (~90%) and to a small extent in the **kidneys**.",
+              "When does it happen? During fasting, starvation, or prolonged exercise — when blood glucose drops and the brain needs fuel.",
+            ],
+            bullets: [
+              "Not all of glycolysis is reversed — the 3 irreversible steps are bypassed by different enzymes.",
+              "Substrates: lactate, amino acids (alanine, glutamine), glycerol, and propionate — not fatty acids (humans cannot make glucose from fat!).",
+              "Net cost: 6 ATP per glucose made — gluconeogenesis is expensive.",
+            ],
+            callout: {
+              kind: "tip",
+              title: "The Cori Cycle",
+              text: "Lactate from muscles → travels to liver → converted back to glucose via gluconeogenesis → returns to muscles. This recycling loop is the Cori Cycle, and it keeps you going during exercise.",
+            },
+          },
+          {
+            heading: "Memory Hooks",
+            body: [
+              "Glycolysis investment phase: \"Good Friends Prefer Pizza Tonight\" (Glucose → F6P → F1,6BP → G3P → DHAP).",
+              "The rate-limiting enzyme: **PFK-1** — think \"Please Feed Kids (with ATP)\" — PFK-1 is always hungry for regulation.",
+              "Net ATP yield: \"Two is plenty\" — glycolysis makes a net of 2 ATP.",
+            ],
+          },
+        ],
+        keyPoints: [
+          "Glycolysis: glucose → 2 pyruvate + 2 ATP + 2 NADH, in the cytoplasm.",
+          "PFK-1 is the rate-limiting enzyme — the master switch of glycolysis.",
+          "Gluconeogenesis = reverse glycolysis with 4 bypass enzymes, mainly in the liver.",
+          "Humans cannot make glucose from fatty acids — only from amino acids, lactate, and glycerol.",
+        ],
+      },
+      {
+        id: "in-depth",
+        label: "In-Depth",
+        icon: "🔬",
+        sections: [
+          {
+            heading: "The 3 Irreversible, Highly Regulated Steps",
+            body: [
+              "These are the steps where glycolysis and gluconeogenesis use **different enzymes** — they are the control points.",
+            ],
+            steps: [
+              "**Hexokinase (Step 1)**: Glucose → Glucose-6-phosphate. Inhibited by its own product (G6P feedback inhibition). The liver uses **Glucokinase** instead — it has a higher Km (lower affinity), so it only kicks in when glucose is HIGH (after a meal).",
+              "**PFK-1 (Step 3)**: The master regulator. **Activated** by AMP (low energy signal) and fructose-2,6-bisphosphate (the most potent activator). **Inhibited** by ATP (high energy) and citrate (abundant TCA intermediates). This is where insulin and glucagon exert their metabolic control.",
+              "**Pyruvate Kinase (Step 10)**: PEP → Pyruvate + ATP. **Activated** by fructose-1,6-bisphosphate (feed-forward activation). **Inhibited** by ATP and alanine. Phosphorylation by glucagon (via PKA) inactivates liver pyruvate kinase.",
+            ],
+          },
+          {
+            heading: "Aerobic vs Anaerobic Glycolysis",
+            body: [
+              "The first 10 steps are identical regardless of oxygen. What differs is what happens to pyruvate AFTER glycolysis.",
+            ],
+            bullets: [
+              "**Aerobic (with O₂)**: Pyruvate enters mitochondria → Acetyl-CoA → Krebs cycle → electron transport chain. Net yield: ~30–32 ATP per glucose.",
+              "**Anaerobic (without O₂)**: Pyruvate → **Lactate** via Lactate Dehydrogenase (LDH). This regenerates NAD⁺ so glycolysis can continue. Only 2 ATP per glucose. Think: intense sprinting, RBCs, tumor cells.",
+              "The anaerobic pathway exists solely to regenerate NAD⁺ — without it, glycolysis would stop at Step 6.",
+            ],
+          },
+          {
+            heading: "The Gluconeogenesis Bypass Enzymes",
+            body: [
+              "Gluconeogenesis uses 4 special enzymes to bypass the 3 irreversible steps.",
+            ],
+            steps: [
+              "**Bypass 1a — Pyruvate Carboxylase** (mitochondria): Pyruvate → Oxaloacetate. Requires biotin. First step during fasting.",
+              "**Bypass 1b — PEPCK (PEP Carboxykinase)**: Oxaloacetate → PEP. Completes the pyruvate → PEP conversion.",
+              "**Bypass 2 — Fructose-1,6-bisphosphatase**: F1,6BP → F6P. Inhibited by AMP and F2,6BP (reciprocal regulation with PFK-1).",
+              "**Bypass 3 — Glucose-6-phosphatase**: G6P → Glucose. Only in liver and kidney. This is why muscle glycogen cannot directly raise blood glucose.",
+            ],
+          },
+          {
+            heading: "Hormonal Control",
+            body: [
+              "**Fructose-2,6-bisphosphate (F2,6BP)** is the key metabolic switch:",
+            ],
+            bullets: [
+              "**Fed state (insulin ↑)**: F2,6BP HIGH → activates PFK-1 → glycolysis ON → gluconeogenesis OFF.",
+              "**Fasting (glucagon ↑)**: Glucagon → cAMP → PKA → phosphorylates the bifunctional enzyme → F2,6BP drops → gluconeogenesis ON.",
+              "**Cortisol and epinephrine** also stimulate gluconeogenesis during stress — the body needs glucose to fight or flee.",
+            ],
+          },
+          {
+            heading: "Clinical Relevance",
+            bullets: [
+              "**Pyruvate Kinase Deficiency**: Most common glycolytic enzyme deficiency causing **hemolytic anemia**. RBCs depend entirely on glycolysis (no mitochondria). Without PK, they lose ATP, cannot maintain shape, and burst. Jaundice, splenomegaly, reticulocytosis.",
+              "**The Warburg Effect (Cancer)**: Tumor cells preferentially use glycolysis → lactate even with oxygen (aerobic glycolysis). Inefficient for ATP but provides rapid building blocks for growth. PET scans use ¹⁸F-FDG (radioactive glucose) because tumors gobble it up.",
+              "**Type 2 Diabetes**: Excessive hepatic gluconeogenesis → fasting hyperglycemia. **Metformin** works partly by inhibiting gluconeogenesis (activates AMPK, inhibits Complex I).",
+              "**Lactic Acidosis**: Impaired O₂ delivery (shock, sepsis) → massive anaerobic glycolysis → lactate accumulates → metabolic acidosis. Lactate > 4 mmol/L is a red flag.",
+            ],
+            callout: {
+              kind: "warning",
+              title: "NEET/MBBS Exam Classics",
+              text: "Rate-limiting enzyme = PFK-1. Net ATP = 2. Gluconeogenesis substrates (no fatty acids). Pyruvate kinase deficiency = hemolytic anemia. Warburg effect = PET scan uptake. These are the highest-yield facts.",
+            },
+          },
+        ],
+        keyPoints: [
+          "The 3 irreversible steps (Hexokinase, PFK-1, Pyruvate Kinase) are the regulation points.",
+          "Aerobic glycolysis → ~30–32 ATP; anaerobic → 2 ATP + lactate.",
+          "Pyruvate kinase deficiency = hemolytic anemia (RBCs depend on glycolysis).",
+          "Warburg effect: cancer cells prefer glycolysis even with O₂ available.",
+        ],
+      },
+    ],
+    sections: [],
+    keyPoints: [
+      "Glycolysis: glucose → 2 pyruvate + 2 ATP + 2 NADH, in the cytoplasm.",
+      "PFK-1 is the rate-limiting enzyme — the master switch of glycolysis.",
+      "Glucose cannot be made from fatty acids in humans.",
+      "Pyruvate kinase deficiency = hemolytic anemia.",
+    ],
+    whenToCall: [],
+  },
 ];
 export function articleBySlug(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);

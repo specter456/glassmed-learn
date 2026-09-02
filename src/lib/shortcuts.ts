@@ -109,6 +109,12 @@ export const SHORTCUT_MAP: Record<string, ShortcutEntry> = {
     articleSlug: "cranial-nerves",
     emoji: "🧠",
   },
+  GL: {
+    shortcut: "GL",
+    name: "Glycolysis & Gluconeogenesis",
+    articleSlug: "glycolysis-gluconeogenesis",
+    emoji: "🔬",
+  },
 };
 
 /** All available shortcuts as an array, sorted alphabetically. */
