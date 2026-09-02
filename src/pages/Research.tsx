@@ -340,6 +340,7 @@ import {
 import { useHead, StructuredData, articleStructuredData } from "@/lib/seo";
 import { isBookmarked, toggleBookmark } from "@/lib/bookmarks";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { BookmarkButton } from "@/components/BookmarkButton";
 import {
   VOICE_PROFILES,
   VOICE_QUALITIES,
