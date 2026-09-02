@@ -332,6 +332,29 @@ const SCENARIOS: Scenario[] = [
     proTip:
       "Dark urine + pale stools = Conjugated (direct) bilirubin is backing up into the blood and urine, and not reaching the gut. Always think obstruction! Pre-hepatic (hemolysis): indirect bilirubin up, dark stools, no dark urine. Hepatic (hepatitis): mixed bilirubin, urine dark, stools variable. Post-hepatic (gallstone/tumour): direct bilirubin up, dark urine, pale stools. Murphy's sign (inspiration arrest during RUQ palpation) = acute cholecystitis. Fatty food trigger = gallbladder pathology. Ultrasound is the first-line imaging for biliary obstruction.",
   },
+  {
+    id: "sickle-cell-crisis",
+    name: "The Sickle Cell Crisis",
+    emoji: "",
+    savedEmoji: "",
+    patient: "A 19-year-old patient",
+    state: "SEVERE BONE PAIN",
+    prompt:
+      "A 19-year-old patient arrives at the ER with sudden, severe pain in their lower back and legs. They have a known history of chronic anemia. Their oxygen saturation is slightly low at 92% on room air. On examination, the spleen is palpable and tender. Their conjunctivae are pale. What is your most likely diagnosis and next step?",
+    options: [
+      "Diagnose a DVT (deep vein thrombosis) and start IV Heparin immediately",
+      "Diagnose a Vaso-occlusive Crisis from Sickle Cell Disease and give IV fluids, oxygen, and strong analgesics",
+      "Diagnose Osteomyelitis (bone infection) and start IV antibiotics",
+      "Diagnose a Lumbar Disc Herniation and order an MRI of the spine",
+    ],
+    correctIndex: 1,
+    praise:
+      "Spot on! This is a classic Vaso-occlusive Crisis in a patient with Sickle Cell Disease. The triad of severe bony pain (back and legs), known chronic anemia, and low oxygen saturation is textbook. Sickled red blood cells block microvasculature, causing tissue ischaemia and excruciating pain. First-line treatment: IV fluids (aggressive hydration helps unsickle cells), supplemental oxygen, and IV opioids (morphine or fentanyl) for pain. Also check for fever (may indicate concurrent infection) and transfuse if haemoglobin is critically low.",
+    sarcasm:
+      "A DVT typically causes unilateral leg swelling, warmth, and calf tenderness — not severe bilateral bone pain in a patient with known anemia and low sats! Osteomyelitis would present with fever, localised erythema, and elevated inflammatory markers — not a sudden pain crisis. A disc herniation causes radicular pain with neurological deficits, not systemic symptoms like low oxygen. Your patient has chronic anemia, a palpable spleen, and bony pain — this is sickle cell disease screaming at you! When a known sickle cell patient has severe bone pain, it is a vaso-occlusive crisis until proven otherwise. Never make them wait!",
+    proTip:
+      "In sickle cell patients, severe bone pain = Vaso-occlusive crisis until proven otherwise. Never ignore their pain! Hydration and O2 help unsickle the cells. The pathophysiology: HbS polymerises under low oxygen -> RBCs sickle -> block small vessels -> tissue ischaemia -> pain. Common triggers: dehydration, infection, cold, hypoxia, stress. Complications: acute chest syndrome (fever + infiltrate + hypoxia — medical emergency), splenic sequestration, aplastic crisis (parvovirus B19), and stroke. ALWAYS check oxygen sats in a sickle cell patient. Hydroxyurea is the main disease-modifying drug — it increases fetal haemoglobin (HbF) which inhibits sickling.",
+  },
 ];
 
 /* ------------------------- persistence ----------------------------- */
