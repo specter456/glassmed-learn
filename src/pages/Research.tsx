@@ -308,6 +308,7 @@ import {
   Search,
   Siren,
   Square,
+  Star,
   Stethoscope,
   TestTube,
   TrendingUp,
@@ -337,6 +338,7 @@ import {
   type ArticleCallout,
 } from "@/lib/articles";
 import { useHead, StructuredData, articleStructuredData } from "@/lib/seo";
+import { isBookmarked, toggleBookmark } from "@/lib/bookmarks";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import {
   VOICE_PROFILES,
@@ -1103,9 +1105,12 @@ function ArticleReader({ article }: { article: Article }) {
                 </p>
               </div>
             </div>
-            <h1 className="mt-3 text-balance text-3xl font-extrabold tracking-tight text-wistaria sm:text-4xl">
-              {article.title}
-            </h1>
+            <div className="mt-3 flex items-start justify-between gap-3">
+              <h1 className="text-balance text-3xl font-extrabold tracking-tight text-wistaria sm:text-4xl">
+                {article.title}
+              </h1>
+              <BookmarkButton slug={article.slug} title={article.title} emoji={article.emoji} />
+            </div>
           </motion.div>
 
           {/* diagram */}
