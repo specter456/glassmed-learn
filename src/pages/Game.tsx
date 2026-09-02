@@ -309,6 +309,29 @@ const SCENARIOS: Scenario[] = [
     proTip:
       "Resting tremor = Parkinson's (pill-rolling, 4 to 6 Hz). Action tremor = Essential tremor (bilateral, worsens with movement). Intention tremor = Cerebellar (worsens as you approach target). The key test: watch the patient reach for something. If the tremor stops during reaching, it is a resting tremor. If it gets worse, it is action/intention. Always check for bradykinesia (timed finger taps, buttoning) and rigidity (cogwheel) to confirm Parkinson's. Always test them reaching for an object!",
   },
+  {
+    id: "jaundice-mystery",
+    name: "The Jaundice Mystery",
+    emoji: "",
+    savedEmoji: "",
+    patient: "A 48-year-old patient",
+    state: "FEVERISH & YELLOW",
+    prompt:
+      "A 48-year-old patient arrives with yellowing of the skin and eyes, dark tea-coloured urine, and pale chalky stools. They report severe colicky abdominal pain in the right upper quadrant that radiates to the right shoulder, triggered by eating fatty foods. Their gallbladder is palpable and tender on examination (Murphy's sign positive). What is your next move?",
+    options: [
+      "Diagnose Hepatitis A and order a viral hepatitis panel",
+      "Suspect a blocked common bile duct from a gallstone and order an abdominal ultrasound",
+      "Diagnose Hemolytic Anemia and order a peripheral blood smear and reticulocyte count",
+      "Diagnose Pancreatic Cancer and order a CT abdomen with contrast",
+    ],
+    correctIndex: 1,
+    praise:
+      "Spot on! This is classic obstructive (post-hepatic) jaundice from a gallstone lodged in the common bile duct. The triad of dark urine (conjugated bilirubinuria), pale stools (no bilirubin reaching the gut), and RUQ pain triggered by fatty foods is the textbook presentation. Murphy's sign confirms gallbladder involvement. An abdominal ultrasound will show dilated bile ducts and likely the stone itself. Treat with ERCP for stone extraction and cholecystectomy to prevent recurrence.",
+    sarcasm:
+      "Hepatitis causes PRE-hepatic or HEPATIC jaundice — you would NOT get pale stools because bilirubin is still reaching the gut. Dark urine plus pale stools is the hallmark of POST-hepatic obstruction — the conjugated bilirubin backs up into the blood and spills into the urine, while none reaches the intestines. Hemolytic anemia causes PRE-hepatic jaundice with DARK stools (excess urobilinogen), the opposite of what you see here. And pancreatic cancer pain is typically dull and constant, not colicky and post-prandial. Think obstruction!",
+    proTip:
+      "Dark urine + pale stools = Conjugated (direct) bilirubin is backing up into the blood and urine, and not reaching the gut. Always think obstruction! Pre-hepatic (hemolysis): indirect bilirubin up, dark stools, no dark urine. Hepatic (hepatitis): mixed bilirubin, urine dark, stools variable. Post-hepatic (gallstone/tumour): direct bilirubin up, dark urine, pale stools. Murphy's sign (inspiration arrest during RUQ palpation) = acute cholecystitis. Fatty food trigger = gallbladder pathology. Ultrasound is the first-line imaging for biliary obstruction.",
+  },
 ];
 
 /* ------------------------- persistence ----------------------------- */
