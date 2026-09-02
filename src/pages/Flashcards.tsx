@@ -1,3 +1,4 @@
+import { useHead } from "@/lib/seo";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -708,6 +709,7 @@ function FlashcardsInner() {
 }
 
 export default function Flashcards() {
+  useHead({ title: "Flashcards & Spaced Repetition", description: "Review medical topics with smart spaced repetition flashcards. Track your progress and master every concept.", path: "/flashcards" });
   return (
     <QueryErrorBoundary title="Couldn't load your flashcards">
       <FlashcardsInner />

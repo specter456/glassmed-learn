@@ -18,6 +18,7 @@ import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { GlassMedLogo, MedicalEmblems } from "@/components/GlassMedLogo";
+import { useHead } from "@/lib/seo";
 
 const MODULES = [
   {
@@ -68,6 +69,11 @@ function reveal(delay: number) {
 }
 
 export default function Landing() {
+  useHead({
+    title: "Where Medicine Becomes Energetic",
+    description: "Interactive medical education platform for NEET aspirants and first-year MBBS students. Learn with glowing anatomy diagrams, spaced repetition flashcards, and clinical case studies.",
+    path: "/",
+  });
   const navigate = useNavigate();
 
   const goAuth = (returnTo?: string) => {

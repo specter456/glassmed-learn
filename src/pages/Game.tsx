@@ -1,3 +1,4 @@
+import { useHead } from "@/lib/seo";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
@@ -1108,6 +1109,7 @@ function GameInner() {
 }
 
 export default function Game() {
+  useHead({ title: "First Aid Simulator Game", description: "Practice emergency medical scenarios in a fun, interactive game. Test your clinical decision-making skills.", path: "/game" });
   return (
     <QueryErrorBoundary title="Couldn't load the game">
       <GameInner />

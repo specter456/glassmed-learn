@@ -3,22 +3,89 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary Favicon -->
   <link rel="icon" type="image/svg+xml" href="/app-icon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/app-icon-192.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/app-icon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/manifest.webmanifest" />
+
+  <!-- PWA & Theme -->
   <meta name="theme-color" content="#0e1233" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="GlassMed Learn" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="apple-mobile-web-app-title" content="GlassMed" />
+
+  <!-- SEO Base Tags -->
+  <meta name="description" content="Interactive medical education platform for NEET aspirants and first-year MBBS students. Master anatomy, physiology, and biochemistry with glowing diagrams, spaced repetition flashcards, and clinical case studies." />
+  <meta name="keywords" content="medical education, NEET, MBBS, flashcards, anatomy, physiology, biochemistry, medical students, interactive learning, spaced repetition, clinical cases, GlassMed" />
+  <meta name="author" content="GlassMed" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow" />
+
+  <!-- Open Graph (Facebook / LinkedIn) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="GlassMed — Where Medicine Becomes Energetic" />
+  <meta property="og:description" content="Interactive medical education platform for NEET aspirants and first-year MBBS students. Learn with glowing anatomy diagrams, spaced repetition flashcards, and clinical case studies." />
+  <meta property="og:image" content="/app-icon-512.png" />
+  <meta property="og:site_name" content="GlassMed" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="GlassMed — Where Medicine Becomes Energetic" />
+  <meta name="twitter:description" content="Interactive medical education for medical students. Glowing anatomy diagrams, flashcards, and clinical cases." />
+  <meta name="twitter:image" content="/app-icon-512.png" />
+
+  <!-- Canonical URL (updated by useHead hook per-page) -->
+  <link rel="canonical" href="https://glassmed.app" />
+
+  <!-- Structured Data: Website -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "GlassMed",
+    "url": "https://glassmed.app",
+    "description": "Interactive medical education platform for NEET aspirants and first-year MBBS students.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://glassmed.app/dashboard?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- Structured Data: Educational Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "GlassMed",
+    "url": "https://glassmed.app",
+    "description": "Interactive medical education platform with glowing anatomy diagrams, spaced repetition flashcards, and clinical case studies for medical students.",
+    "logo": "https://glassmed.app/app-icon-512.png",
+    "educationalLevel": "College",
+    "teaches": ["Anatomy", "Physiology", "Biochemistry", "Neuroscience", "Clinical Medicine"],
+    "hasCourse": [
+      { "@type": "Course", "name": "The Cardiac Cycle", "description": "Master the cardiac cycle with interactive diagrams and flashcards." },
+      { "@type": "Course", "name": "The Action Potential", "description": "Understand nerve impulse generation and transmission." },
+      { "@type": "Course", "name": "The 12 Cranial Nerves", "description": "Learn all cranial nerves with mnemonics and clinical correlations." }
+    ]
+  }
+  </script>
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   />
-  <title>GlassMed Learn — Where Medicine Becomes Energetic</title>
+  <title>GlassMed — Where Medicine Becomes Energetic | Interactive Medical Education</title>
 </head>
 
 

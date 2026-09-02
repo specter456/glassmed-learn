@@ -336,6 +336,8 @@ import {
   type Article,
   type ArticleCallout,
 } from "@/lib/articles";
+import { useHead, StructuredData, articleStructuredData } from "@/lib/seo";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import {
   VOICE_PROFILES,
   VOICE_QUALITIES,
@@ -1390,6 +1392,24 @@ function ResearchInner() {
   const [searchParams, setSearchParams] = useSearchParams();
   const slug = searchParams.get("article");
   const article = slug ? articleBySlug(slug) : undefined;
+
+  // SEO: dynamic page title + meta for each article
+  useHead(
+    article
+      ? {
+          title: `${article.emoji} ${article.title} — Medical Education`,
+          description: article.summary,
+          path: `/research?article=${article.slug}`,
+          type: "article",
+          keywords: `${article.title}, ${article.category}, medical education, NEET, MBBS, GlassMed`,
+        }
+      : {
+          title: "Research & Clinical Library",
+          description: "Advanced medical research articles, clinical guidelines, surgical procedures, and quick-reference cards for healthcare professionals.",
+          path: "/research",
+        }
+  );
+
   const [selectedNews, setSelectedNews] = useState<MedicalNewsItem | null>(null);
 
   const [selectedQuickRef, setSelectedQuickRef] = useState<QuickRef | null>(null);

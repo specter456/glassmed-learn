@@ -5,6 +5,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { cn } from "@/lib/utils";
+import { useHead } from "@/lib/seo";
 
 /* Lazy-load every diagram so switching tabs never freezes the app.
    Each import becomes its own chunk — only the active diagram is downloaded. */
@@ -387,6 +388,7 @@ function DiagramsInner() {
 }
 
 export default function Diagrams() {
+  useHead({ title: "Interactive Anatomy Diagrams", description: "Explore glowing, interactive anatomy diagrams of the heart, brain, lungs, skeleton, and more. Perfect for visual learners.", path: "/diagrams" });
   return (
     <QueryErrorBoundary title="Couldn't load the diagrams">
       <DiagramsInner />

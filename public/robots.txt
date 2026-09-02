@@ -1,0 +1,30 @@
+# Robots.txt for GlassMed — Interactive Medical Education
+# Allow all crawlers to index public content
+
+User-agent: *
+Allow: /
+Allow: /dashboard
+Allow: /basics
+Allow: /research
+Allow: /diagrams
+Allow: /flashcards
+Allow: /game
+
+# Disallow private/auth pages
+Disallow: /auth
+Disallow: /voice-notes
+Disallow: /assistant
+Disallow: /*?gmreload=
+
+# Sitemap
+Sitemap: https://glassmed.app/sitemap.xml
+
+# Crawl-delay (be polite)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /

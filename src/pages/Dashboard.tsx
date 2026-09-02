@@ -36,6 +36,7 @@ import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { articleBySlug } from "@/lib/articles";
 import { useEnsureSeeded } from "@/hooks/use-ensure-seeded";
 import { useAuth } from "@/hooks/use-auth";
+import { useHead } from "@/lib/seo";
 
 /* ─── Main module buttons ─── */
 const MODULES = [
@@ -111,6 +112,12 @@ function buildSearchIndex() {
 /* ─── Dashboard ─── */
 function DashboardInner() {
   useEnsureSeeded();
+  useHead({
+    title: "Dashboard",
+    description: "Your personalized medical study dashboard. Track flashcard progress, review topics, and explore anatomy diagrams.",
+    path: "/dashboard",
+    keywords: "medical dashboard, study progress, flashcard review, medical education",
+  });
   const navigate = useNavigate();
   const { user } = useAuth();
   const summary = useQuery(api.progress.summary);

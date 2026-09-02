@@ -21,6 +21,7 @@ import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { ARTICLES, ARTICLE_CATEGORIES } from "@/lib/articles";
 import type { LucideIcon } from "lucide-react";
+import { useHead } from "@/lib/seo";
 
 /* ─── Category metadata for the Basics page ─── */
 const CATEGORY_META: Record<
@@ -337,6 +338,7 @@ function BasicsInner() {
 }
 
 export default function Basics() {
+  useHead({ title: "The Basics", description: "Interactive medical flashcards and study guides for first-year MBBS and NEET students. Master anatomy, physiology, and biochemistry.", path: "/basics" });
   return (
     <QueryErrorBoundary title="Couldn't load the fundamentals">
       <BasicsInner />
