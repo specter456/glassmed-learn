@@ -253,7 +253,7 @@ export const SEED_TOPICS = [
   },
   {
     slug: "dna-replication",
-    title: "DNA Replication",
+    title: "DNA Replication & The Central Dogma",
     subject: "Genetics",
     blurb:
       "How a cell copies 3 billion base pairs in hours — accurately, once per division.",
