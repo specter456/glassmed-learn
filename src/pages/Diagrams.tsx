@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Activity, Bone, Brain, Droplets, Eye, HeartPulse, Layers, MousePointerClick, Sparkles, Utensils, Wind, Zap } from "lucide-react";
+import { Activity, Bone, Brain, Dna, Droplets, Eye, HeartPulse, Layers, MousePointerClick, Sparkles, Utensils, Wind, Zap } from "lucide-react";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
@@ -23,6 +23,7 @@ const EarDiagram = React.lazy(() => import("@/components/EarDiagram").then(m => 
 const CellDiagram = React.lazy(() => import("@/components/CellDiagram").then(m => ({ default: m.CellDiagram })));
 const CranialNervesDiagram = React.lazy(() => import("@/components/BrainstemCranialNerves").then(m => ({ default: m.BrainstemCranialNervesDiagram })));
 const MitochondriaDiagram = React.lazy(() => import("@/components/MitochondriaDiagram").then(m => ({ default: m.MitochondriaDiagram })));
+const DNAReplicationDiagram = React.lazy(() => import("@/components/DNAReplicationDiagram").then(m => ({ default: m.DNAReplicationDiagram })));
 
 
 function DiagramFallback() {
@@ -33,7 +34,7 @@ function DiagramFallback() {
   );
 }
 
-type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal" | "endocrine" | "ear" | "cell" | "cranial-nerves" | "mitochondria";
+type DiagramId = "anatomy" | "heart" | "plexus" | "brain" | "lungs" | "digestive" | "kidney" | "eye" | "skeletal" | "endocrine" | "ear" | "cell" | "cranial-nerves" | "mitochondria" | "dna-replication";
 
 const DIAGRAMS: Record<
   DiagramId,
@@ -202,6 +203,17 @@ const DIAGRAMS: Record<
     tag: "⚡",
     Component: MitochondriaDiagram,
   },
+  "dna-replication": {
+    kicker: "Diagram 14 · DNA Replication",
+    title: "The Blueprint Copies Itself",
+    blurb:
+      "Two strands unwind, helicase unzips the bonds, and DNA polymerase builds new complementary strands — the leading strand races forward while the lagging strand stitches Okazaki fragments. Hover any enzyme to make it blaze, tap it for its story.",
+    parts: 8,
+    accent: "#22d3ee",
+    label: "Genetics",
+    tag: "🧬",
+    Component: DNAReplicationDiagram,
+  },
 };
 
 const COMING_SOON = ["DNA Replication Fork", "Cardiac Cycle ECG"];
@@ -267,6 +279,8 @@ function DiagramsInner() {
                   <Brain className="size-6" />
                 ) : active === "mitochondria" ? (
                   <Zap className="size-6" />
+                ) : active === "dna-replication" ? (
+                  <Dna className="size-6" />
                 ) : (
                   <Zap className="size-6" />
                 )}
