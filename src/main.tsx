@@ -2,6 +2,7 @@ import "@vly-ai/integrations";
 import { MotionConfig } from "framer-motion";
 import { Toaster } from "@/components/ui/sonner";
 import { MusicPlayer } from "@/components/MusicPlayer";
+import { FocusTimer } from "@/components/FocusTimer";
 import { BottomNav } from "@/components/BottomNav";
 import { LoginCelebration } from "@/components/Celebration";
 import { RequireAuth } from "@/components/RequireAuth";
@@ -461,6 +462,7 @@ function App() {
           </MotionConfig>
           <Toaster />
           <MusicPlayer />
+          <FocusTimer />
         </ConvexAuthProvider>
       </StrictMode>
     </RootErrorBoundary>
