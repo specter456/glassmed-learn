@@ -52,6 +52,7 @@ import {
   type SpeechRecognizer,
 } from "@/lib/speech";
 import { cn } from "@/lib/utils";
+import { smartAiAnswer } from "@/lib/smartAi";
 
 /* ------------------------- safe preferences ------------------------- */
 /* localStorage can throw in sandboxed previews — never let it crash the page. */
@@ -285,10 +286,14 @@ function AssistantInner() {
               ? err.message
               : String(err);
         if (message.includes("ASSISTANT_NOT_CONFIGURED")) {
-          setSetupNeeded(true);
-          setLastError(
-            "The assistant needs an OpenAI API key before it can answer — see the banner below.",
-          );
+          // No API key — fall back to the local Smart AI knowledge base
+          const smartResponse = smartAiAnswer(text);
+          // Simulate typing delay for a natural feel
+          await new Promise((r) => setTimeout(r, 800 + Math.random() * 1200));
+          setMessages((prev) => [...prev, { role: "assistant", content: smartResponse.content }]);
+          setSetupNeeded(false);
+          setLastError(null);
+          return; // skip the rest of the catch block
         } else if (message.includes("RATE_LIMITED")) {
           setLastError("You're sending questions very fast — give it a minute, then try again.");
         } else if (message.includes("ASSISTANT_BAD_KEY")) {
