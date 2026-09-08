@@ -14,9 +14,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
-import { api } from "@/convex/_generated/api";
-import { ConvexError } from "convex/values";
-import { useAction } from "convex/react";
+
 import { toast } from "sonner";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
@@ -104,8 +102,7 @@ function ThinkingDots() {
 }
 
 function AssistantInner() {
-  const [searchParams] = useSearchParams();
-  const askAssistant = useAction(api.assistant.askAssistant);
+  const [searchParams] = useSearchParams(); // preserves ?q= from Dashboard
 
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -118,9 +115,6 @@ function AssistantInner() {
   const [busy, setBusy] = useState(false);
   const [speakingId, setSpeakingId] = useState<number | null>(null);
   const [speechPaused, setSpeechPaused] = useState(false);
-  // True when the last answer failed because no API key is configured — shows
-  // a persistent setup banner instead of a toast that disappears.
-  const [setupNeeded, setSetupNeeded] = useState(false);
   // Transient inline error note (visible, unlike a toast that auto-dismisses).
   const [lastError, setLastError] = useState<string | null>(null);
 
@@ -277,61 +271,24 @@ function AssistantInner() {
       setMessages(history);
       setBusy(true);
       try {
-        const { content } = await askAssistant({
-          messages: history.map((m) => ({ role: m.role, content: m.content })),
-        });
-        setMessages((prev) => [...prev, { role: "assistant", content }]);
-        setSetupNeeded(false);
+        // Smart AI runs entirely client-side from our article content.
+        // No API keys, no server calls, no network — 100% reliable.
+        const smartResponse = smartAiAnswer(text);
+        // Simulate typing delay for a natural, AI-like feel
+        const delay = Math.max(600, Math.min(smartResponse.content.length * 2, 2000));
+        await new Promise((r) => setTimeout(r, delay));
+        setMessages((prev) => [...prev, { role: "assistant", content: smartResponse.content }]);
         setLastError(null);
       } catch (err) {
-        const data = err instanceof ConvexError ? err.data : undefined;
-        const message =
-          typeof data === "string"
-            ? data
-            : err instanceof Error
-              ? err.message
-              : String(err);
-        if (
-          message.includes("ASSISTANT_NOT_CONFIGURED") ||
-          message.includes("AUTH_REQUIRED")
-        ) {
-          // No API key or guest user — fall back to the local Smart AI knowledge base.
-          // Smart AI runs entirely client-side from our article content, so no API
-          // key or server auth is needed.
-          const smartResponse = smartAiAnswer(text);
-          // Simulate typing delay for a natural feel
-          await new Promise((r) => setTimeout(r, 800 + Math.random() * 1200));
-          setMessages((prev) => [...prev, { role: "assistant", content: smartResponse.content }]);
-          setSetupNeeded(false);
-          setLastError(null);
-          return; // skip the rest of the catch block
-        } else if (message.includes("RATE_LIMITED")) {
-          setLastError("You're sending questions very fast — give it a minute, then try again.");
-        } else if (message.includes("ASSISTANT_BAD_KEY")) {
-          setSetupNeeded(true);
-          setLastError(
-            "The AI key looks invalid — double-check AI_API_KEY (and AI_BASE_URL if set) in the Keys tab.",
-          );
-        } else if (message.includes("AI_QUOTA_EXCEEDED")) {
-          setLastError(
-            "Your AI key's free quota is currently exhausted. Check your provider's rate limits (Groq / SambaNova / Google free tiers, or OpenAI credits), then try again.",
-          );
-        } else if (message.includes("AI_MODEL_UNAVAILABLE")) {
-          // Model not found on this provider — fall back to Smart AI
-          const smartResponse = smartAiAnswer(text);
-          await new Promise((r) => setTimeout(r, 800 + Math.random() * 1200));
-          setMessages((prev) => [...prev, { role: "assistant", content: smartResponse.content }]);
-          setLastError("The AI model wasn't available, so I answered from my built-in knowledge base.");
-          return;
-        } else {
-          setLastError("The AI couldn't answer right now. Please try again in a moment.");
-        }
+        const message = err instanceof Error ? err.message : String(err);
+        setLastError("Something went wrong. Please try again.");
         toast.error("MediPro couldn't answer this time.");
+        console.error("[MediPro] Smart AI error:", message);
       } finally {
         setBusy(false);
       }
     },
-    [input, busy, messages, askAssistant, listening, stopListening],
+    [input, busy, messages, listening, stopListening],
   );
 
   // Privacy in action: everything the user typed lives only in this component's
@@ -658,49 +615,8 @@ function AssistantInner() {
           <div ref={bottomRef} />
         </div>
 
-        {/* persistent setup banner — the AI will not answer without a key */}
-        {setupNeeded && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="glass-strong mt-3 flex flex-col gap-3 rounded-2xl border border-[#e0a458]/30 p-4 sm:flex-row sm:items-center"
-          >
-            <div className="flex items-start gap-3">
-              <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#e0a458]/15 text-[#e0a458]">
-                <Bot className="size-4" />
-              </div>
-              <div>
-                <p className="text-sm font-bold">One step to switch me on</p>
-                <p className="mt-0.5 text-xs leading-5 text-muted-foreground">
-                  Add an AI key in the project's{" "}
-                  <span className="font-semibold text-foreground">Keys tab</span> —{" "}
-                  <code className="rounded bg-white/10 px-1 font-mono text-[10px]">AI_API_KEY</code>{" "}
-                  (works for OpenAI, Google Gemini, SambaNova, or Groq). It's read server-side
-                  only — never shipped to the browser.
-                </p>
-              </div>
-            </div>
-            <div className="flex shrink-0 items-center gap-2">
-              <a
-                href="https://console.groq.com/keys"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[#e0a458] px-4 text-xs font-bold text-[#191922] transition-colors hover:bg-[#eeb86b]"
-              >
-                Get a free Groq key
-              </a>
-              <button
-                onClick={() => setSetupNeeded(false)}
-                className="rounded-full px-2 py-1 text-xs font-semibold text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Dismiss
-              </button>
-            </div>
-          </motion.div>
-        )}
-
         {/* inline error note — visible until the next message */}
-        {lastError && !setupNeeded && (
+        {lastError && (
           <motion.p
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
@@ -722,7 +638,7 @@ function AssistantInner() {
                   // recognizer can't overwrite what the user typed.
                   if (listening) stopListening();
                 }}
-                aria-invalid={lastError !== null && !setupNeeded}
+                aria-invalid={lastError !== null}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
