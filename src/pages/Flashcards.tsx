@@ -426,7 +426,7 @@ function StudySession({ slug }: { slug: string }) {
   }
 
   return (
-    <main className="mx-auto max-w-3xl px-4 pb-32 pt-10 sm:px-6">
+    <main className="mx-auto max-w-3xl px-4 pb-40 pt-10 sm:px-6">
       {/* session header */}
       <div className="flex items-center justify-between">
         <button
@@ -472,7 +472,7 @@ function StudySession({ slug }: { slug: string }) {
           <div className="mx-auto mt-4 max-w-xl [perspective:1600px]">
             <motion.div
               key={current._id}
-              className="relative h-[22rem] w-full cursor-pointer [transform-style:preserve-3d]"
+              className="relative h-64 w-full cursor-pointer [transform-style:preserve-3d] sm:h-[22rem]"
               // Verdict shown: slide down/out. New card: glides in from the top.
               initial={{ opacity: 0, y: -48 }}
               animate={{
@@ -541,18 +541,18 @@ function StudySession({ slug }: { slug: string }) {
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="mx-auto mt-6 flex max-w-xl items-center gap-3"
+                className="mx-auto mt-5 flex max-w-xl gap-3 sm:mt-6"
               >
                 <Button
                   variant="outline"
-                  className="h-14 flex-1 gap-2 rounded-2xl border-[#e2666f]/40 bg-white/5 text-[#e2666f] hover:bg-[#e2666f]/10"
+                  className="h-14 flex-1 gap-2 rounded-2xl border-[#e2666f]/40 bg-white/5 text-base font-bold text-[#e2666f] shadow-lg shadow-[#e2666f]/10 hover:bg-[#e2666f]/10 sm:text-sm"
                   onClick={() => void handleAnswer(false)}
                 >
                   <X className="size-5" />
                   I missed it
                 </Button>
                 <Button
-                  className="h-14 flex-1 gap-2 rounded-2xl bg-[#6fb5b0] text-white shadow-[0_12px_28px_-10px_rgba(111,181,176,0.7)] hover:bg-[#5ba39e]"
+                  className="h-14 flex-1 gap-2 rounded-2xl bg-[#6fb5b0] text-base font-bold text-white shadow-[0_12px_28px_-10px_rgba(111,181,176,0.7)] hover:bg-[#5ba39e] sm:text-sm"
                   onClick={() => void handleAnswer(true)}
                 >
                   <Check className="size-5" />
