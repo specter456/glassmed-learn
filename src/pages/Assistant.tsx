@@ -317,9 +317,12 @@ function AssistantInner() {
             "Your AI key's free quota is currently exhausted. Check your provider's rate limits (Groq / SambaNova / Google free tiers, or OpenAI credits), then try again.",
           );
         } else if (message.includes("AI_MODEL_UNAVAILABLE")) {
-          setLastError(
-            "That AI model isn't available on this key — check the AI_MODEL value in your Keys tab (try gemini-2.0-flash).",
-          );
+          // Model not found on this provider — fall back to Smart AI
+          const smartResponse = smartAiAnswer(text);
+          await new Promise((r) => setTimeout(r, 800 + Math.random() * 1200));
+          setMessages((prev) => [...prev, { role: "assistant", content: smartResponse.content }]);
+          setLastError("The AI model wasn't available, so I answered from my built-in knowledge base.");
+          return;
         } else {
           setLastError("The AI couldn't answer right now. Please try again in a moment.");
         }
