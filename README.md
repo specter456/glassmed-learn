@@ -1,6 +1,6 @@
 #  GlassMed: Where Medicine Becomes Energetic
 
-**GlassMed** is an interactive, gamified medical education web app designed for first-year medical students and clinicians. It transforms dense medical textbooks into glowing "Heatwave" anatomy diagrams, spaced-repetition flashcards, clinical case games, and deep-dive research articles.
+**GlassMed** is an interactive, gamified medical education web app designed for first-year medical students and researchers. It transforms dense medical textbooks into glowing "Heatwave" anatomy diagrams, spaced-repetition flashcards, clinical case games, and deep-dive research articles.
 
  **Live Demo:** https://glassmed.freebuff.app/
 
