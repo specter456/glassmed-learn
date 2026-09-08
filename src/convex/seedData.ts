@@ -71,7 +71,7 @@ export const SEED_TOPICS = [
   {
     slug: "action-potential",
     title: "The Action Potential",
-    subject: "Neurophysiology",
+    subject: "Neuroscience",
     blurb:
       "The nerve's electric spike — how a neuron fires and why it can't fire twice.",
     accent: "#7B9EE8",
@@ -522,6 +522,33 @@ export const SEED_TOPICS = [
       { heading: "Vagus Nerve (X) — The Wandering Nerve", body: "The longest cranial nerve. Parasympathetic supply to heart (slows HR), lungs (bronchoconstriction), and GI tract up to splenic flexure.\n\nAlso carries: taste from epiglottis, muscles of pharynx/larynx (speech, swallowing), and the gag reflex (efferent limb).\n\n**Clinical**: Vagus nerve stimulation (VNS) treats drug-resistant epilepsy and depression. Recurrent laryngeal nerve (branch of X) loops under the aortic arch — left vocal cord palsy is common in thoracic disease." },
       { heading: "Facial Nerve (VII) — Motor vs Sensory", body: "Four branches after stylomastoid foramen: **T**emporal, **Z**ygomatic, **B**uccal, **M**andibular (\"To Zanzibar By Motorcar\").\n\n**Motor**: All muscles of facial expression + stapedius + stylohyoid.\n**Sensory**: Taste from anterior 2/3 tongue (chorda tympani).\n**Parasympathetic**: Lacrimation, submandibular salivation.\n\n**Bell's palsy**: LMN lesion → entire ipsilateral face affected (can't raise eyebrow). Treatment: prednisolone within 72h. ~85% recover fully." },
       { heading: "Clinical: Bell's Palsy vs Stroke", body: "**Bell's palsy (LMN)**: Forehead IS affected (can't wrinkle brow). Entire half of face is weak.\n\n**Stroke (UMN)**: Forehead is SPARED (bilateral cortical innervation). Only lower face is weak on contralateral side.\n\nThis is THE most tested distinction in cranial nerve exams.\n\nOther key tests:\n- Gag reflex: IX (afferent) + X (efferent).\n- Trigeminal neuralgia: electric-shock pain in V2/V3 → carbamazepine first-line." },
+    ],
+  },
+  {
+    slug: "glycolysis-gluconeogenesis",
+    title: "Glycolysis & Gluconeogenesis",
+    subject: "Biochemistry",
+    blurb: "The metabolic crossroads \u2014 how cells burn glucose for energy and how the liver makes new sugar.",
+    accent: "#4ade80",
+    icon: "zap",
+    diagram: "mitochondria",
+    order: 14,
+    keyPoints: [
+      "Glycolysis: glucose \u2192 2 pyruvate + 2 ATP + 2 NADH (cytoplasm).",
+      "3 irreversible steps: Hexokinase, PFK-1, Pyruvate Kinase \u2014 the regulation points.",
+      "PFK-1 is the master switch, activated by AMP and inhibited by ATP.",
+      "Humans cannot make glucose from fatty acids (no glyoxylate cycle).",
+    ],
+    basicBlocks: [
+      { heading: "What is Glycolysis?", body: "Glycolysis = \"sugar splitting.\" It\'s the first step of glucose metabolism, happening in the **cytoplasm** (no mitochondria needed).\\n\\nOne glucose (6C) is split into two pyruvate (3C) molecules. The cell invests 2 ATP upfront but makes 4 ATP back \u2014 net gain of **2 ATP** per glucose." },
+      { heading: "The 10 Steps (Simplified)", body: "**Energy Investment Phase (Steps 1\u20135):**\\n1. Glucose \u2192 Glucose-6-P (Hexokinase)\\n2. G6P \u2192 Fructose-6-P\\n3. F6P \u2192 Fructose-1,6-bisphosphate (**PFK-1** \u2014 rate-limiting!)\\n4. Split into two 3C molecules\\n5. Both 3C molecules continue\\n\\n**Energy Payoff Phase (Steps 6\u201310):**\\n6\u201310: Generate 4 ATP + 2 NADH total\\n\\n**Net: 2 ATP + 2 NADH + 2 pyruvate**" },
+      { heading: "What is Gluconeogenesis?", body: "Gluconeogenesis = \"making new sugar.\" The reverse of glycolysis, happening mainly in the **liver** (and kidneys).\\n\\nThe body uses it during fasting/starvation to maintain blood glucose for the brain. It costs 6 ATP per glucose made \u2014 the body\'s \"emergency glucose factory.\"" },
+      { heading: "Memory Hooks", body: "**Glycolysis regulation**: \"Good Friends Prefer Pizza Tonight\" \u2192 Glucokinase, PFK-1, Pyruvate Kinase\\n\\n**Gluconeogenesis substrates**: Lactate, Amino acids (alanine, glutamine), Glycerol, Propionate \u2192 \"LAGP\"\\n\\n**Key exam fact**: Net ATP yield = 2. Rate-limiting enzyme = PFK-1. Humans cannot convert fatty acids to glucose." },
+    ],
+    inDepthBlocks: [
+      { heading: "The 3 Irreversible Steps", body: "Glycolysis has 10 steps, but only 3 are irreversible (highly regulated):\\n\\n1. **Hexokinase** (Step 1): Glucose \u2192 G6P. Inhibited by G6P (product inhibition). In liver, **Glucokinase** (high Km) acts as a glucose sensor.\\n\\n2. **PFK-1** (Step 3): F6P \u2192 F1,6BP. THE rate-limiting enzyme.\\n- Activated by: AMP, F2,6BP (insulin signal)\\n- Inhibited by: ATP, citrate (energy abundance)\\n\\n3. **Pyruvate Kinase** (Step 10): PEP \u2192 Pyruvate.\\n- Activated by: F1,6BP (feedforward activation)\\n- Inhibited by: ATP, alanine" },
+      { heading: "Aerobic vs Anaerobic", body: "**Aerobic (with O\u2082)**: Pyruvate \u2192 Acetyl-CoA \u2192 Krebs cycle \u2192 ETC. Net: ~30\u201332 ATP per glucose.\\n\\n**Anaerobic (without O\u2082)**: Pyruvate \u2192 **Lactate** via Lactate Dehydrogenase (LDH). Only 2 ATP. The lactate is exported and converted back to glucose in the liver (Cori Cycle).\\n\\nWhy anaerobic? To regenerate NAD\u207a so glycolysis can continue producing ATP when mitochondria are unavailable." },
+      { heading: "Clinical Relevance", body: "**Pyruvate Kinase Deficiency**: Most common glycolytic enzyme deficiency. RBCs depend entirely on glycolysis (no mitochondria). Without PK \u2192 ATP deficit \u2192 membrane instability \u2192 **hemolytic anemia**. Presents with jaundice, splenomegaly, reticulocytosis.\\n\\n**The Warburg Effect**: Cancer cells preferentially use glycolysis \u2192 lactate even with oxygen available (\"aerobic glycolysis\"). Inefficient for ATP but provides rapid building blocks for growth. PET scans use \u00b9\u208F-FDG (radioactive glucose) because tumors gobble it up.\\n\\n**Type 2 Diabetes**: Excess gluconeogenesis \u2192 fasting hyperglycemia. **Metformin** works partly by inhibiting gluconeogenesis.\\n\\n**Lactic Acidosis**: Impaired O\u2082 delivery \u2192 massive anaerobic glycolysis \u2192 lactate > 4 mmol/L \u2192 metabolic acidosis." },
     ],
   },
 ];

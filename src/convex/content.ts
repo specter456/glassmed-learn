@@ -18,12 +18,11 @@ export const ensureSeeded = mutation({
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Not authenticated");
 
-    const existing = await ctx.db.query("topics").first();
-    if (existing) return { seeded: false, topics: 0, cards: 0 };
-
     let insertedTopics = 0;
     let insertedCards = 0;
 
+    // Insert any topics from SEED_TOPICS that don't exist yet.
+    // This is idempotent — safe to call on every page load.
     for (const topic of SEED_TOPICS) {
       const found = await ctx.db
         .query("topics")
@@ -35,6 +34,7 @@ export const ensureSeeded = mutation({
       }
     }
 
+    // Insert any flashcards from SEED_FLASHCARDS that don't exist yet.
     const seenCards = new Set(
       (await ctx.db.query("flashcards").collect()).map(
         (c) => `${c.topicSlug}|${c.front}|${c.back}`,
