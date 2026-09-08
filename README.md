@@ -4,11 +4,11 @@
 
  **Live Demo:** [Insert your Freebuff live link here]
 
-## 📸 App Screenshots
+##  App Screenshots
 
 ![Landing ](GlassMed_Landing.png)
 
-![Heart Diagram]()
+![Heart Diagram](GlassMed_research.png)
 
 ![Flashcards]()
 
