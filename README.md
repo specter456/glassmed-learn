@@ -2,7 +2,7 @@
 
 **GlassMed** is an interactive, gamified medical education web app designed for first-year medical students and clinicians. It transforms dense medical textbooks into glowing "Heatwave" anatomy diagrams, spaced-repetition flashcards, clinical case games, and deep-dive research articles.
 
- **Live Demo:** [Insert your Freebuff live link here]
+ **Live Demo:** https://glassmed.freebuff.app/
 
 ##  App Screenshots
 
@@ -24,15 +24,15 @@ Building this app was an iterative journey of solving real user problems:
 * **Working:** Spaced Repetition Flashcards with smart filtering.
 * **Working:** First-Aid Simulator Game (Clinical scenarios).
 * **Working:** Global Lo-Fi Music Player & Customizable Pomodoro Timer.
-* **🔧 In Progress:** Integrating a live AI API for the "Ask MediPro" chatbot.
+* ** In Progress:** Integrating a live AI API for the "Ask MediPro" chatbot.
 
-## 🔄 Content Update Frequency
+##  Content Update Frequency
 - Medical content is reviewed and updated **quarterly** (every 3 months)
 - Guidelines are aligned with the latest editions of standard medical textbooks (Guyton, Ganong, Harper's)
 - Clinical protocols follow current ACC/AHA, WHO, and Surviving Sepsis Campaign guidelines
 - Last updated: September 2026
 
-## 👨‍⚕️ Medical Review Board
+##  Medical Review Board
 This app's content is developed and reviewed by:
 - **Medical Students** (First and second-year curriculum focus)
 - **Standard References:** Content follows established medical education standards from:
@@ -46,25 +46,19 @@ This app's content is developed and reviewed by:
 
 ---
 
-## ⚠️ IMPORTANT MEDICAL DISCLAIMER
+##  IMPORTANT MEDICAL DISCLAIMER
 
 **GlassMed is an EDUCATIONAL TOOL ONLY and is NOT intended for clinical use.**
 
-- ❌ **DO NOT** use this app for actual patient care or clinical decision-making
-- ❌ **DO NOT** rely on this information for diagnosis or treatment
-- ✅ **ALWAYS** consult peer-reviewed medical literature and clinical guidelines
-- ✅ **ALWAYS** follow your institution's protocols and supervising physician's guidance
-- ✅ This app is designed to **supplement** (not replace) formal medical education
+-  **DO NOT** use this app for actual patient care or clinical decision-making
+-  **DO NOT** rely on this information for diagnosis or treatment
+-  **ALWAYS** consult peer-reviewed medical literature and clinical guidelines
+-  **ALWAYS** follow your institution's protocols and supervising physician's guidance
+- This app is designed to **supplement** (not replace) formal medical education
 
 **The developers assume no liability for any errors, omissions, or misuse of the information contained in this application. Medical knowledge evolves constantly - always verify information with current, authoritative sources.**
 
 ---
-
-## 🛠️ Tech Stack
-* **Frontend Framework:** React 19 & Vite (Chosen for fast, interactive UI rendering).
-* **Styling & UI:** Tailwind CSS v4 & Shadcn UI (Used to build the custom glassmorphism and neon glowing effects).
-* **Backend & Database:** Convex (Handles user authentication, flashcard data, and progress tracking).
-* **Animations & 3D:** Framer Motion (for smooth page transitions) & Three.js (for 3D anatomy models).
 
 ## ️ How It Works
 * **Dual-Mode Learning:** Students learn the "Basics" (e.g., what is the cardiac cycle?), while clinicians read "In-Depth" research (e.g., STEMI door-to-balloon protocols).
@@ -81,5 +75,5 @@ This app's content is developed and reviewed by:
 * Add a backend database to sync user progress across multiple devices.
 * Connect a custom domain (e.g., glassmed.app) for professional deployment.
 
-## 🎥 Demo
-[Paste your Google Drive / Loom / YouTube link here]
+##  Demo
+https://drive.google.com/file/d/119zHp0h2-jTlyfOmFbAVaAVnpMVBqYZo/view?usp=sharing
