@@ -5,10 +5,12 @@
  **Live Demo:** [Insert your Freebuff live link here]
 
 ## 📸 App Screenshots
-*(Add 3-4 of your best, properly rotated screenshots here!)*
-![Home Screen](link_to_image.png)
-![Heatwave Diagram](link_to_image.png)
-![Clinical Research](link_to_image.png)
+
+[Home Screen]https://drive.google.com/file/d/10B1NBOm8fthejsfvEVdw2AOCiJekFUDp/view?usp=drive_link
+
+![Heatwave Diagram]https://drive.google.com/file/d/1x5Ib7cOage1M2mb-1zda07FtFNmECdHh/view?usp=sharing
+
+![Clinical Research]https://drive.google.com/file/d/1aLH7ewyY08VgMhd8j95_f3EEvPSYq1na/view?usp=drive_link
 
 ##  Design Evolution & Thought Process
 Building this app was an iterative journey of solving real user problems:
