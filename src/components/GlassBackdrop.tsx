@@ -32,36 +32,24 @@ export function GlassBackdrop({ className }: { className?: string }) {
       {/* aurora band — pale Cloud Blue shining across the top */}
       <div className="absolute -top-44 left-1/2 h-[360px] w-[min(120vw,1400px)] -translate-x-1/2 rounded-full bg-cloud/15 blur-[90px]" />
 
-      {/* glowing orbs — blur-2xl instead of blur-3xl keeps the depth while
-          cutting the GPU cost of large blurred layers (less overheating) */}
+      {/* glowing orbs — reduced from 5 to 3 for better performance on
+          login screens. blur-2xl keeps depth while cutting GPU cost. */}
       <div
         className={cn(
-          "absolute -top-32 right-[8%] h-[420px] w-[420px] animate-orb rounded-full blur-2xl",
+          "absolute -top-32 right-[8%] h-[420px] w-[420px] animate-orb rounded-full blur-2xl will-change-transform",
           light ? "bg-cloud/15" : "bg-cloud/28",
         )}
       />
       <div
         className={cn(
-          "absolute top-[30%] -left-40 h-[460px] w-[460px] animate-orb-slow rounded-full blur-2xl",
+          "absolute top-[30%] -left-40 h-[460px] w-[460px] animate-orb-slow rounded-full blur-2xl will-change-transform",
           light ? "bg-wistaria/12" : "bg-wistaria/24",
         )}
       />
       <div
         className={cn(
-          "absolute bottom-[-140px] right-[20%] h-[380px] w-[380px] animate-orb rounded-full blur-2xl",
+          "absolute bottom-[-140px] right-[20%] h-[380px] w-[380px] animate-orb rounded-full blur-2xl will-change-transform",
           light ? "bg-[#e8b7cf]/10" : "bg-[#e8b7cf]/20",
-        )}
-      />
-      <div
-        className={cn(
-          "absolute top-[55%] right-[-120px] h-[320px] w-[320px] animate-orb-slow rounded-full blur-2xl",
-          light ? "bg-cloud/12" : "bg-cloud/20",
-        )}
-      />
-      <div
-        className={cn(
-          "absolute bottom-[12%] left-[6%] h-[280px] w-[280px] animate-orb rounded-full blur-2xl",
-          light ? "bg-cloud/8" : "bg-cloud/12",
         )}
       />
 

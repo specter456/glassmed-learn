@@ -57,7 +57,7 @@ export function BeeTutorial() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="pointer-events-none fixed inset-x-0 bottom-24 z-[80] flex justify-center px-4"
+          className="pointer-events-none fixed inset-x-0 bottom-32 z-[80] flex justify-center px-4 sm:bottom-24"
           initial={{ opacity: 0, y: 40 }}
           animate={
             leaving
@@ -71,7 +71,7 @@ export function BeeTutorial() {
               : { type: "spring", stiffness: 220, damping: 20, delay: 0.5 }
           }
         >
-          <div className="pointer-events-auto flex flex-col items-center">
+          <div className="pointer-events-none flex flex-col items-center">
             {/* speech bubble */}
             <motion.div
               key={step}
@@ -96,15 +96,12 @@ export function BeeTutorial() {
             </motion.div>
 
             {/* the bee, flying below the bubble */}
-            <motion.button
-              onClick={flyAway}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="mt-1 cursor-pointer"
-              aria-label="Dismiss the welcome tutorial"
+            <motion.div
+              className="mt-1"
+              aria-hidden
             >
-              <BeeMascot size={86} />
-            </motion.button>
+              <BeeMascot size={72} />
+            </motion.div>
           </div>
         </motion.div>
       )}
