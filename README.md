@@ -26,6 +26,40 @@ Building this app was an iterative journey of solving real user problems:
 * **Working:** Global Lo-Fi Music Player & Customizable Pomodoro Timer.
 * **🔧 In Progress:** Integrating a live AI API for the "Ask MediPro" chatbot.
 
+## 🔄 Content Update Frequency
+- Medical content is reviewed and updated **quarterly** (every 3 months)
+- Guidelines are aligned with the latest editions of standard medical textbooks (Guyton, Ganong, Harper's)
+- Clinical protocols follow current ACC/AHA, WHO, and Surviving Sepsis Campaign guidelines
+- Last updated: September 2026
+
+## 👨‍⚕️ Medical Review Board
+This app's content is developed and reviewed by:
+- **Medical Students** (First and second-year curriculum focus)
+- **Standard References:** Content follows established medical education standards from:
+  - Guyton & Hall Textbook of Medical Physiology
+  - Ganong's Review of Medical Physiology
+  - Harper's Illustrated Biochemistry
+  - Gray's Anatomy for Students
+  - Current clinical guidelines (ACC/AHA, WHO, Surviving Sepsis Campaign)
+
+*Note: This is a student-led educational project. For clinical use, always refer to up-to-date peer-reviewed sources and institutional protocols.*
+
+---
+
+## ⚠️ IMPORTANT MEDICAL DISCLAIMER
+
+**GlassMed is an EDUCATIONAL TOOL ONLY and is NOT intended for clinical use.**
+
+- ❌ **DO NOT** use this app for actual patient care or clinical decision-making
+- ❌ **DO NOT** rely on this information for diagnosis or treatment
+- ✅ **ALWAYS** consult peer-reviewed medical literature and clinical guidelines
+- ✅ **ALWAYS** follow your institution's protocols and supervising physician's guidance
+- ✅ This app is designed to **supplement** (not replace) formal medical education
+
+**The developers assume no liability for any errors, omissions, or misuse of the information contained in this application. Medical knowledge evolves constantly - always verify information with current, authoritative sources.**
+
+---
+
 ## 🛠️ Tech Stack
 * **Frontend Framework:** React 19 & Vite (Chosen for fast, interactive UI rendering).
 * **Styling & UI:** Tailwind CSS v4 & Shadcn UI (Used to build the custom glassmorphism and neon glowing effects).
