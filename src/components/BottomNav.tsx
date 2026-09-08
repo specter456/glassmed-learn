@@ -55,8 +55,9 @@ export function BottomNav() {
   return (
     <>
       <nav
-        className="fixed inset-x-0 bottom-0 z-[70] px-3 pb-3 sm:px-6 sm:pb-5"
+        className="fixed inset-x-0 z-[1000] px-3 sm:px-6"
         aria-label="Primary"
+        style={{ bottom: "env(safe-area-inset-bottom, 0px)" }}
       >
         <div className="glass-strong mx-auto flex max-w-md items-end justify-between gap-1 rounded-3xl border border-white/10 px-2.5 pb-2 pt-2.5 shadow-[0_18px_50px_-14px_rgba(10,14,45,0.6)]">
           {ITEMS.map((item) => {
