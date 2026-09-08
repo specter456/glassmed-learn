@@ -12,13 +12,6 @@
 
 ![Flashcards](GlassMed_Flashcards.png)
 
-
-##  Design Evolution & Thought Process
-Building this app was an iterative journey of solving real user problems:
-* **The Overwhelm Problem:** Initially, I built a long vertical list of medical topics. I realized this was overwhelming for students. **Solution:** I pivoted to a clean Grid Layout with a Search Bar and "Smart Shortcuts" (e.g., typing "CS" instantly pulls up Cardiac Surgery).
-* **The Redundancy Problem:** I noticed my "Research" and "Basics" sections had overlapping content. **Solution:** I completely restructured the app. "Basics" is now strictly for student fundamentals, while "Research" was rebuilt as a professional clinical journal for doctors.
-* **The Navigation Problem:** Users were getting lost in the deep content. **Solution:** I designed "Professor Rabbit," an interactive, spotlight-guided onboarding tour that teaches users how to use the app step-by-step.
-
 ##  Current Status
 * **Working:** Interactive Heatwave Anatomy Gallery (Heart, Brain, Skeleton, etc.).
 * **Working:** Spaced Repetition Flashcards with smart filtering.
@@ -26,11 +19,23 @@ Building this app was an iterative journey of solving real user problems:
 * **Working:** Global Lo-Fi Music Player & Customizable Pomodoro Timer.
 * ** In Progress:** Integrating a live AI API for the "Ask MediPro" chatbot.
 
+##  Design Evolution & Thought Process
+Building this app was an iterative journey of solving real user problems:
+* **The Overwhelm Problem:** Initially, I built a long vertical list of medical topics. I realized this was overwhelming for students. **Solution:** I pivoted to a clean Grid Layout with a Search Bar and "Smart Shortcuts" (e.g., typing "CS" instantly pulls up Cardiac Surgery).
+* **The Redundancy Problem:** I noticed my "Research" and "Basics" sections had overlapping content. **Solution:** I completely restructured the app. "Basics" is now strictly for student fundamentals, while "Research" was rebuilt as a professional clinical journal for doctors.
+* **The Navigation Problem:** Users were getting lost in the deep content. **Solution:** I designed "Professor Rabbit," an interactive, spotlight-guided onboarding tour that teaches users how to use the app step-by-step.
+
 ##  Content Update Frequency
 - Medical content is reviewed and updated **quarterly** (every 3 months)
 - Guidelines are aligned with the latest editions of standard medical textbooks (Guyton, Ganong, Harper's)
 - Clinical protocols follow current ACC/AHA, WHO, and Surviving Sepsis Campaign guidelines
 - Last updated: September 2026
+  
+## Tech Stack
+* **Frontend Framework:** React 19 & Vite (Chosen for fast, interactive UI rendering).
+* **Styling & UI:** Tailwind CSS v4 & Shadcn UI (Used to build the custom glassmorphism and neon glowing effects).
+* **Backend & Database:** Convex (Handles user authentication, flashcard data, and progress tracking).
+* **Animations & 3D:** Framer Motion (for smooth page transitions) & Three.js (for 3D anatomy models).
 
 ##  Medical Review Board
 This app's content is developed and reviewed by:
