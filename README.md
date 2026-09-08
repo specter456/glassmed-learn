@@ -8,7 +8,7 @@
 
 ![Landing ](GlassMed_Landing.png)
 
-![Heart Diagram](GlassMed_research.png)
+![Research](GlassMed_research.png)
 
 ![Flashcards]()
 
