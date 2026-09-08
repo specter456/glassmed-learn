@@ -107,7 +107,13 @@ function AssistantInner() {
   const [searchParams] = useSearchParams();
   const askAssistant = useAction(api.assistant.askAssistant);
 
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      role: "assistant",
+      content:
+        "Hi! I'm **MediPro** \uD83D\uDC30, your medical study assistant!\n\nI can help you with:\n\u2022 Understanding core concepts (cardiac cycle, action potential, Krebs cycle, etc.)\n\u2022 Explaining mechanisms step-by-step\n\u2022 Clinical correlations and mnemonics\n\u2022 Definitions and terminology\n\nTry asking something like \"What is the cardiac cycle?\" or pick a suggestion below!\n\n_\u26A0\uFE0F For study purposes only \u2014 always verify with your textbooks._",
+    },
+  ]);
   const [input, setInput] = useState(() => searchParams.get("q") ?? "");
   const [busy, setBusy] = useState(false);
   const [speakingId, setSpeakingId] = useState<number | null>(null);
@@ -285,8 +291,13 @@ function AssistantInner() {
             : err instanceof Error
               ? err.message
               : String(err);
-        if (message.includes("ASSISTANT_NOT_CONFIGURED")) {
-          // No API key — fall back to the local Smart AI knowledge base
+        if (
+          message.includes("ASSISTANT_NOT_CONFIGURED") ||
+          message.includes("AUTH_REQUIRED")
+        ) {
+          // No API key or guest user — fall back to the local Smart AI knowledge base.
+          // Smart AI runs entirely client-side from our article content, so no API
+          // key or server auth is needed.
           const smartResponse = smartAiAnswer(text);
           // Simulate typing delay for a natural feel
           await new Promise((r) => setTimeout(r, 800 + Math.random() * 1200));
@@ -387,7 +398,7 @@ function AssistantInner() {
             </div>
           </div>
 
-          {messages.length > 0 && (
+          {messages.length > 1 && (
             <Button
               variant="ghost"
               size="sm"
@@ -543,6 +554,22 @@ function AssistantInner() {
             </div>
           ) : (
             <>
+              {/* Show suggestions after welcome message (only 1 message = welcome) */}
+              {messages.length === 1 && !busy && (
+                <div className="flex flex-col items-center gap-3 px-4 pt-2 text-center">
+                  <div className="flex max-w-md flex-wrap justify-center gap-2">
+                    {SUGGESTIONS.map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => void send(s)}
+                        className="glass-chip rounded-full px-3.5 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:border-wistaria/40 hover:text-foreground"
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               {messages.map((m, i) =>
                 m.role === "user" ? (
                   <motion.div
