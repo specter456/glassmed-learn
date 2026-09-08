@@ -52,7 +52,11 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     searchParams.get("returnTo"),
     redirectAfterAuth,
   );
+  // "signIn" = show email input, { email } = show OTP input
   const [step, setStep] = useState<"signIn" | { email: string }>("signIn");
+  // authMode: "signin" = returning user, "signup" = new user (visual only — same OTP flow)
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+  const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -85,15 +89,6 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   useEffect(() => {
     if (!authLoading && isAuthenticated && loginTriggered.current && !redirectScheduled.current) {
       redirectScheduled.current = true;
-      // Hand the fanfare to the destination: the dashboard mounts underneath
-      // the translucent celebration, so the Yayy overlay fades in/out over the
-      // same screen instead of a separate login-success screen. (LoginCelebration
-      // itself decides "Welcome" vs "Welcome back" and records the login.)
-      //
-      // The arrival flag is set by the sign-in handlers below, NOT here — this
-      // effect only navigates. That keeps the celebration tied to an explicit
-      // login action in this session: remounting this page while already
-      // signed in (e.g. browser Back after login) never re-triggers it.
       navigate(redirect);
     }
   }, [authLoading, isAuthenticated, navigate, redirect]);
@@ -108,12 +103,12 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   }, [step]);
 
   /** Send (or resend) the 6-digit code to an email. Returns true on success. */
-  const sendCode = async (email: string): Promise<boolean> => {
+  const sendCode = async (emailAddr: string): Promise<boolean> => {
     setIsLoading(true);
     setError(null);
     try {
       const formData = new FormData();
-      formData.set("email", email);
+      formData.set("email", emailAddr);
       await signIn("email-otp", formData);
       const sentAt = Date.now();
       try {
@@ -139,9 +134,18 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   const handleEmailSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email") as string;
-    if (await sendCode(email)) {
-      setStep({ email });
+    const emailValue = (formData.get("email") as string)?.trim();
+    // Validation: email cannot be empty
+    if (!emailValue) {
+      setError("Please enter your email address.");
+      return;
+    }
+    if (!emailValue.includes("@")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    if (await sendCode(emailValue)) {
+      setStep({ email: emailValue });
     }
   };
 
@@ -160,11 +164,8 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     setError(null);
     try {
       const formData = new FormData(event.currentTarget);
-      // Flag the welcome celebration BEFORE signIn. signIn() triggers
-      // isAuthenticated → true → the useEffect navigates → LoginCelebration
-      // reads the flag on mount. If we set the flag AFTER signIn, the effect
-      // has already run and missed it (race condition).
-      markLoginArrival();
+      // Flag the welcome celebration BEFORE signIn.
+      markLoginArrival(false);
       await signIn("email-otp", formData);
     } catch (error) {
       console.error("OTP verification error:", error);
@@ -181,17 +182,19 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
 
   const handleGuestLogin = () => {
     loginTriggered.current = true;
-    // Flag the welcome celebration BEFORE navigation.
-    markLoginArrival();
-    // Navigate IMMEDIATELY — do not await signIn. The Convex auth session
-    // is created in the background by the ConvexAuthProvider. This avoids
-    // the 200-500ms lag that makes the button feel unresponsive.
+    // Flag the welcome celebration BEFORE navigation — mark as guest.
+    markLoginArrival(true);
+    // Navigate IMMEDIATELY — do not await signIn.
     navigate(redirect);
-    // Fire-and-forget: signIn completes asynchronously. If it fails,
-    // the RequireAuth wrapper will bounce the user back to /auth.
+    // Fire-and-forget: signIn completes asynchronously.
     signIn("anonymous").catch((err) => {
       console.error("Guest sign-in failed (background):", err);
     });
+  };
+
+  const toggleAuthMode = () => {
+    setAuthMode((m) => (m === "signin" ? "signup" : "signin"));
+    setError(null);
   };
 
   return (
@@ -211,11 +214,12 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
               <>
                 <CardHeader className="text-center">
                   <CardTitle className="text-2xl font-extrabold tracking-tight text-wistaria">
-                    Get Started
+                    {authMode === "signin" ? "Welcome Back" : "Create Account"}
                   </CardTitle>
                   <CardDescription>
-                    Enter your email to log in or sign up — we'll send a magic
-                    code.
+                    {authMode === "signin"
+                      ? "Enter your email and we'll send you a magic code to sign in."
+                      : "Enter your email to get started — we'll send you a magic code."}
                   </CardDescription>
                 </CardHeader>
                 <form onSubmit={handleEmailSubmit}>
@@ -229,6 +233,8 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                           type="email"
                           className="pl-9"
                           disabled={isLoading}
+                          value={email}
+                          onChange={(e) => { setEmail(e.target.value); setError(null); }}
                           required
                         />
                       </div>
@@ -250,6 +256,33 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       <p className="mt-2 text-sm text-red-500">{error}</p>
                     )}
 
+                    {/* Sign-in / Sign-up toggle */}
+                    <p className="mt-3 text-center text-xs text-muted-foreground">
+                      {authMode === "signin" ? (
+                        <>
+                          Don't have an account?{" "}
+                          <button
+                            type="button"
+                            onClick={toggleAuthMode}
+                            className="font-semibold text-wistaria underline-offset-2 hover:underline"
+                          >
+                            Sign up
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          Already have an account?{" "}
+                          <button
+                            type="button"
+                            onClick={toggleAuthMode}
+                            className="font-semibold text-wistaria underline-offset-2 hover:underline"
+                          >
+                            Sign in
+                          </button>
+                        </>
+                      )}
+                    </p>
+
                     <div className="mt-4">
                       <div className="relative">
                         <div className="absolute inset-0 flex items-center">
@@ -262,10 +295,15 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                         </div>
                       </div>
 
+                      {/* Guest note */}
+                      <p className="mt-3 text-center text-[11px] text-muted-foreground/70">
+                        As a guest, your progress and data will not be saved.
+                      </p>
+
                       <Button
                         type="button"
                         variant="outline"
-                        className="mt-4 w-full active:scale-[0.97] active:bg-wistaria/10 transition-transform duration-100"
+                        className="mt-2 w-full active:scale-[0.97] active:bg-wistaria/10 transition-transform duration-100"
                         onClick={handleGuestLogin}
                       >
                         <UserX className="mr-2 h-4 w-4" />
@@ -355,7 +393,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                     <Button
                       type="button"
                       variant="ghost"
-                      onClick={() => setStep("signIn")}
+                      onClick={() => { setStep("signIn"); setError(null); }}
                       disabled={isLoading}
                       className="w-full"
                     >
@@ -367,8 +405,14 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             )}
 
             <div className="rounded-b-3xl border-t border-white/10 bg-white/5 px-6 py-4 text-center text-xs text-muted-foreground backdrop-blur">
-              Your study data stays private to your account — and every topic,
-              guide, and tool on GlassMed is free.
+              By continuing, you agree to our{" "}
+              <span className="font-semibold text-foreground/80">Terms of Service</span>{" "}
+              and{" "}
+              <span className="font-semibold text-foreground/80">Privacy Policy</span>.
+              <br />
+              <span className="mt-1 inline-block text-[10px] opacity-70">
+                We only save your study progress and flashcard data. We do not sell your data.
+              </span>
             </div>
           </Card>
         </div>

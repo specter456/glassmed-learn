@@ -255,6 +255,10 @@ export const LAST_LOGIN_KEY = "glassmed-last-login";
 /** Marks that the welcome celebration already played this session, so it can
  *  never fire again from page-to-page navigation — only a fresh sign-in. */
 export const WELCOME_SHOWN_KEY = "glassmed-welcome-shown";
+/** Login count for email users — determines welcome vs welcome back vs skip. */
+export const LOGIN_COUNT_KEY = "glassmed-login-count";
+/** Flag indicating the current login is a guest (not email). */
+export const GUEST_LOGIN_KEY = "glassmed-guest-login";
 
 /**
  * Module-level arrival flag — the primary signal that a login just happened.
@@ -270,7 +274,7 @@ let arrivalFlag = false;
 /** Called by the sign-in handlers BEFORE signIn() — the flag must be set
  *  before isAuthenticated flips and the redirect effect navigates, because
  *  LoginCelebration reads it on the destination pathname. */
-export function markLoginArrival() {
+export function markLoginArrival(guest = false) {
   arrivalFlag = true;
   // Write to BOTH sessionStorage and localStorage so the signal survives
   // sandboxed iframes (where sessionStorage may be blocked) and page
@@ -285,6 +289,20 @@ export function markLoginArrival() {
   } catch {
     /* non-fatal */
   }
+  // Mark whether this is a guest login so the celebration can decide
+  // whether to show "Welcome" (guest) or "Welcome back" (returning user).
+  if (guest) {
+    try {
+      sessionStorage.setItem(GUEST_LOGIN_KEY, "1");
+    } catch {
+      /* non-fatal */
+    }
+    try {
+      localStorage.setItem(GUEST_LOGIN_KEY, "1");
+    } catch {
+      /* non-fatal */
+    }
+  }
 }
 
 const WELCOME_NEW = {
@@ -297,73 +315,84 @@ const WELCOME_BACK = {
   subtitle: "Yayyy! Great to see you again — let's keep going! 💪",
 };
 
-/** Welcome celebration shown once right after sign-in/guest entry. */
+/** Welcome celebration shown once right after sign-in/guest entry.
+ *
+ * Rules:
+ *  - Guest logins: always show "Welcome" (never "Welcome back").
+ *  - Email logins: 1st -> "Welcome", 2nd -> "Welcome back", 3rd+ -> skip.
+ */
 export function LoginCelebration() {
   const location = useLocation();
   const [celebrating, setCelebrating] = useState(false);
   const [message, setMessage] = useState(WELCOME_NEW);
 
-  // Auth calls markLoginArrival() BEFORE signIn(). signIn() triggers
-  // isAuthenticated → true → the redirect effect navigates → this effect runs
-  // on the new pathname and reads the flag. The flag is consumed atomically
-  // (memory + sessionStorage + localStorage), so it can never fire twice.
   useEffect(() => {
     let flagged = false;
     try {
       flagged = sessionStorage.getItem(LOGIN_ARRIVAL_KEY) === "1";
     } catch {
-      // sessionStorage blocked — fall through to localStorage below.
+      // sessionStorage blocked
     }
     if (!flagged) {
       try {
         flagged = localStorage.getItem(LOGIN_ARRIVAL_KEY) === "1";
       } catch {
-        // localStorage blocked — fall through to the in-memory flag.
+        // localStorage blocked
       }
     }
     flagged = flagged || arrivalFlag;
     arrivalFlag = false;
-    // Consume the flag from all stores so it can never fire twice.
     try {
       sessionStorage.removeItem(LOGIN_ARRIVAL_KEY);
-    } catch {
-      /* non-fatal */
-    }
+    } catch { /* non-fatal */ }
     try {
       localStorage.removeItem(LOGIN_ARRIVAL_KEY);
-    } catch {
-      /* non-fatal */
-    }
+    } catch { /* non-fatal */ }
     if (!flagged) return;
-    // At most once per session: even if a stale arrival flag somehow survives,
-    // the welcome never replays while navigating between pages. A fresh login
-    // in a later session re-arms it because this marker is session-scoped.
     let alreadyShown = false;
     try {
       alreadyShown = sessionStorage.getItem(WELCOME_SHOWN_KEY) === "1";
-    } catch {
-      // sessionStorage unavailable — celebrate anyway (best effort).
-    }
+    } catch { /* best effort */ }
     if (alreadyShown) return;
     try {
       sessionStorage.setItem(WELCOME_SHOWN_KEY, "1");
-    } catch {
-      // Non-fatal — the in-session guard just won't persist.
-    }
-    // Decide new vs returning BEFORE recording this login (otherwise a
-    // first-ever login would already look like a returning one), then record it
-    // so the next login says "Welcome back!".
-    let returning = false;
+    } catch { /* non-fatal */ }
+
+    // Determine if this is a guest login.
+    let isGuest = false;
     try {
-      returning = localStorage.getItem(LAST_LOGIN_KEY) !== null;
-      localStorage.setItem(LAST_LOGIN_KEY, String(Date.now()));
-    } catch {
-      // localStorage unavailable — treat as a brand-new arrival.
+      isGuest = sessionStorage.getItem(GUEST_LOGIN_KEY) === "1" ||
+                localStorage.getItem(GUEST_LOGIN_KEY) === "1";
+      sessionStorage.removeItem(GUEST_LOGIN_KEY);
+      localStorage.removeItem(GUEST_LOGIN_KEY);
+    } catch { /* non-fatal */ }
+
+    if (isGuest) {
+      // Guests ALWAYS see "Welcome" -- never "Welcome back".
+      const t = setTimeout(() => {
+        setMessage(WELCOME_NEW);
+        setCelebrating(true);
+      }, 120);
+      return () => clearTimeout(t);
     }
-    // Defer a tick so the destination paints first; the veil then fades in
-    // over the same screen instead of a separate login-success screen.
+
+    // For email/logged-in users, track login count.
+    let loginCount = 0;
+    try {
+      loginCount = Number(localStorage.getItem(LOGIN_COUNT_KEY)) || 0;
+    } catch { /* non-fatal */ }
+    loginCount += 1;
+    try {
+      localStorage.setItem(LOGIN_COUNT_KEY, String(loginCount));
+      localStorage.setItem(LAST_LOGIN_KEY, String(Date.now()));
+    } catch { /* non-fatal */ }
+
+    // 3rd time and onwards: skip celebration entirely.
+    if (loginCount >= 3) return;
+
+    // 1st time: "Welcome", 2nd time: "Welcome back".
     const t = setTimeout(() => {
-      setMessage(returning ? WELCOME_BACK : WELCOME_NEW);
+      setMessage(loginCount === 1 ? WELCOME_NEW : WELCOME_BACK);
       setCelebrating(true);
     }, 120);
     return () => clearTimeout(t);
