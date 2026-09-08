@@ -6,11 +6,11 @@
 
 ## 📸 App Screenshots
 
-![Landing Page](landing-page.png)
+![Landing ](GlassMed_Landing.png)
 
-![Heart Diagram](heart-diagram.png)
+![Heart Diagram]()
 
-![Flashcards](flashcards.png)
+![Flashcards]()
 
 
 ##  Design Evolution & Thought Process
