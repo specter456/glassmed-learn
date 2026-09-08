@@ -31,12 +31,13 @@ Building this app was an iterative journey of solving real user problems:
 - Clinical protocols follow current ACC/AHA, WHO, and Surviving Sepsis Campaign guidelines
 - Last updated: September 2026
   
-## Tech Stack
-* **Frontend Framework:** React 19 & Vite (Chosen for fast, interactive UI rendering).
-* **Styling & UI:** Tailwind CSS v4 & Shadcn UI (Used to build the custom glassmorphism and neon glowing effects).
-* **Backend & Database:** Convex (Handles user authentication, flashcard data, and progress tracking).
-* **Animations & 3D:** Framer Motion (for smooth page transitions) & Three.js (for 3D anatomy models).
-
+##  Tech Stack & Development Process
+* **Core Technologies:** HTML5, CSS3, JavaScript (Vanilla)
+* **Development Method:** AI-Assisted Development (Built collaboratively using Freebuff as a coding agent)
+* **Data Storage:** Browser LocalStorage / IndexedDB (Ensuring 100% local, private data storage)
+* **Hosting:** Freebuff.dev
+* **Design:** Custom CSS for glassmorphism, neon glowing effects, and responsive grid layouts.
+  
 ##  Medical Review Board
 This app's content is developed and reviewed by:
 - **Medical Students** (First and second-year curriculum focus)
