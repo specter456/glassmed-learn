@@ -6,11 +6,12 @@
 
 ## 📸 App Screenshots
 
-[Home Screen]https://drive.google.com/file/d/10B1NBOm8fthejsfvEVdw2AOCiJekFUDp/view?usp=drive_link
+![Landing Page](landing-page.png)
 
-![Heatwave Diagram]https://drive.google.com/file/d/1x5Ib7cOage1M2mb-1zda07FtFNmECdHh/view?usp=sharing
+![Heart Diagram](heart-diagram.png)
 
-![Clinical Research]https://drive.google.com/file/d/1aLH7ewyY08VgMhd8j95_f3EEvPSYq1na/view?usp=drive_link
+![Flashcards](flashcards.png)
+
 
 ##  Design Evolution & Thought Process
 Building this app was an iterative journey of solving real user problems:
