@@ -10,7 +10,7 @@
 
 ![Research](GlassMed_research.png)
 
-![Flashcards]()
+![Flashcards](GlassMed_Flashcards.png)
 
 
 ##  Design Evolution & Thought Process
