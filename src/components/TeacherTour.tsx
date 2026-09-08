@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router";
@@ -220,53 +220,91 @@ export function TeacherTour({ open, onClose, rootSelector }: TeacherTourProps) {
 
   if (!open) return null;
 
-  // Determine speech bubble position based on spotlight
-  const bubblePosition = (() => {
-    if (!spotlight) {
-      // No target — use the static position
-      if (current.position === "center") return "center";
-      if (current.position === "bottom-right") return "bottom-right";
-      if (current.position === "bottom-left") return "bottom-left";
-      return "bottom-center";
-    }
-    // With a target, position the bubble below the spotlight by default,
-    // unless the spotlight is in the bottom half of the screen
-    const screenMid = window.innerHeight / 2;
-    if (spotlight.top + spotlight.height / 2 > screenMid) {
-      return "top-center" as const;
-    }
-    return "bottom-center" as const;
-  })();
+  // Bubble dimensions (approximate, used for viewport collision checks)
+  const BUBBLE_MAX_W = 384; // max-w-sm ≈ 384px
+  const BUBBLE_EST_H = 320; // rough estimate of bubble height
+  const MARGIN = 16; // min gap from viewport edges
 
-  // Calculate speech bubble position relative to spotlight
+  // Fully dynamic bubble positioning — never goes off-screen
   const getBubbleStyle = (): React.CSSProperties => {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
     if (!spotlight) {
-      if (bubblePosition === "center")
-        return { top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
-      if (bubblePosition === "bottom-right")
-        return { bottom: 120, right: 16 };
-      if (bubblePosition === "bottom-left")
-        return { bottom: 120, left: 16 };
-      return { bottom: 120, left: "50%", transform: "translateX(-50%)" };
-    }
-
-    const targetCenterX = spotlight.left + spotlight.width / 2;
-
-    if (bubblePosition === "top-center") {
+      // No target — center on screen (used for welcome/closing steps)
       return {
-        bottom: window.innerHeight - spotlight.top + 16,
-        left: targetCenterX,
-        transform: "translateX(-50%)",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        maxWidth: `min(${BUBBLE_MAX_W}px, ${vw - MARGIN * 2}px)`,
       };
     }
 
-    // bottom-center (default with spotlight)
+    const targetCenterX = spotlight.left + spotlight.width / 2;
+    const spaceBelow = vh - (spotlight.top + spotlight.height);
+    const spaceAbove = spotlight.top;
+    const spaceRight = vw - (spotlight.left + spotlight.width);
+    const spaceLeft = spotlight.left;
+
+    // Decide vertical placement: above or below
+    const placeBelow = spaceBelow >= BUBBLE_EST_H + MARGIN || spaceBelow >= spaceAbove;
+
+    let top: number | string;
+    if (placeBelow) {
+      top = spotlight.top + spotlight.height + MARGIN;
+    } else {
+      // Place above the target
+      const desiredTop = spotlight.top - BUBBLE_EST_H - MARGIN;
+      top = Math.max(MARGIN, desiredTop);
+    }
+
+    // Decide horizontal: try center, then shift left or right to stay in view
+    const halfBubble = Math.min(BUBBLE_MAX_W / 2, (vw - MARGIN * 2) / 2);
+    let left = targetCenterX;
+    let translateX = "-50%";
+
+    // Check if centered bubble overflows right edge
+    if (targetCenterX + halfBubble > vw - MARGIN) {
+      left = vw - MARGIN - halfBubble;
+    }
+    // Check if centered bubble overflows left edge
+    if (targetCenterX - halfBubble < MARGIN) {
+      left = MARGIN + halfBubble;
+    }
+
+    // If the target is near the left or right edge, prefer aligning to that edge
+    if (spaceRight < 120 && spaceLeft > spaceRight) {
+      // Target is near right edge — align bubble to right of viewport
+      left = Math.min(vw - MARGIN - halfBubble, targetCenterX + spotlight.width / 2 - halfBubble + 20);
+      if (left < MARGIN + halfBubble) left = MARGIN + halfBubble;
+    } else if (spaceLeft < 120) {
+      // Target is near left edge — align bubble to left of viewport
+      left = Math.max(MARGIN + halfBubble, targetCenterX - spotlight.width / 2 - 20 + halfBubble);
+      if (left > vw - MARGIN - halfBubble) left = vw - MARGIN - halfBubble;
+    }
+
     return {
-      top: spotlight.top + spotlight.height + 16,
-      left: targetCenterX,
-      transform: "translateX(-50%)",
+      top: typeof top === "number" ? Math.max(MARGIN, Math.min(top, vh - MARGIN - 100)) : top,
+      left,
+      transform: `translateX(${translateX})`,
+      maxWidth: `min(${BUBBLE_MAX_W}px, ${vw - MARGIN * 2}px)`,
     };
   };
+
+  // Clamp bubble to never escape viewport (safety net applied via CSS + inline style)
+  const clampedBubbleStyle = useMemo(() => {
+    const style = getBubbleStyle();
+    const vw = typeof window !== "undefined" ? window.innerWidth : 1024;
+    const vh = typeof window !== "undefined" ? window.innerHeight : 768;
+
+    // Extra safety: if top is somehow negative, clamp it
+    if (typeof style.top === "number" && style.top < 0) style.top = MARGIN;
+    // If left is somehow negative, clamp it
+    if (typeof style.left === "number" && style.left < 0) style.left = MARGIN;
+
+    return style;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [spotlight, step]);
 
   return createPortal(
     <AnimatePresence>
@@ -323,8 +361,8 @@ export function TeacherTour({ open, onClose, rootSelector }: TeacherTourProps) {
 
           {/* ── Speech Bubble + Rabbit ── */}
           <motion.div
-            className="fixed z-[202] flex max-w-sm flex-col items-center gap-3"
-            style={getBubbleStyle()}
+            className="fixed z-[202] flex flex-col items-center gap-3"
+            style={clampedBubbleStyle}
             initial={{ opacity: 0, y: 16, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -332,9 +370,9 @@ export function TeacherTour({ open, onClose, rootSelector }: TeacherTourProps) {
           >
             {/* Mascot + pointer stick */}
             <div className="relative">
-              <RabbitMascot mood="happy" size={56} />
+              <RabbitMascot mood="happy" size={48} />
               <div
-                className="absolute -right-3 bottom-1 text-lg"
+                className="absolute -right-3 bottom-1 text-lg sm:block"
                 style={{ transform: "rotate(-25deg)" }}
               >
                 🪄
@@ -342,7 +380,7 @@ export function TeacherTour({ open, onClose, rootSelector }: TeacherTourProps) {
             </div>
 
             {/* Bubble card */}
-            <div className="glass-strong shine relative rounded-3xl p-5 text-center shadow-[0_20px_50px_-10px_rgba(10,14,45,0.7)]">
+            <div className="glass-strong shine relative rounded-3xl p-4 text-center shadow-[0_20px_50px_-10px_rgba(10,14,45,0.7)] sm:p-5">
               {/* X close button */}
               <button
                 onClick={handleClose}
@@ -353,10 +391,10 @@ export function TeacherTour({ open, onClose, rootSelector }: TeacherTourProps) {
                 <X className="size-4" />
               </button>
 
-              <h3 className="pr-6 text-base font-extrabold text-wistaria">
+              <h3 className="pr-6 text-[clamp(0.875rem,0.8rem+0.25vw,1.125rem)] font-extrabold text-wistaria">
                 {current.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-foreground/90">
+              <p className="mt-2 text-[clamp(0.8125rem,0.75rem+0.25vw,0.9375rem)] leading-relaxed text-foreground/90">
                 {current.message}
               </p>
 
@@ -385,14 +423,14 @@ export function TeacherTour({ open, onClose, rootSelector }: TeacherTourProps) {
                 <div className="flex gap-2">
                   <button
                     onClick={handleClose}
-                    className="rounded-xl px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground"
+                    className="min-h-[44px] min-w-[44px] rounded-xl px-3 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground"
                     style={{ cursor: "pointer" }}
                   >
                     Skip
                   </button>
                   <button
                     onClick={handleNext}
-                    className="rounded-xl bg-wistaria px-4 py-1.5 text-xs font-bold text-white shadow-lg shadow-wistaria/30 transition-all hover:bg-wistaria/90 hover:shadow-wistaria/50 active:scale-[0.97]"
+                    className="min-h-[44px] min-w-[44px] rounded-xl bg-wistaria px-4 py-2 text-xs font-bold text-white shadow-lg shadow-wistaria/30 transition-all hover:bg-wistaria/90 hover:shadow-wistaria/50 active:scale-[0.97]"
                     style={{ cursor: "pointer" }}
                   >
                     {isLast ? "Let's Go! 🚀" : "Next →"}
