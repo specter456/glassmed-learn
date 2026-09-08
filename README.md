@@ -16,7 +16,7 @@
 * **Working:** Interactive Heatwave Anatomy Gallery (Heart, Brain, Skeleton, etc.).
 * **Working:** Spaced Repetition Flashcards with smart filtering.
 * **Working:** First-Aid Simulator Game (Clinical scenarios).
-* **Working:** Global Lo-Fi Music Player & Customizable Pomodoro Timer.
+* **Working:** Global Lo-Fi Music Player & Customizable focus Timer.
 * ** In Progress:** Integrating a live AI API for the "Ask MediPro" chatbot.
 
 ##  Design Evolution & Thought Process
