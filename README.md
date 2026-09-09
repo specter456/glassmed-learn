@@ -39,7 +39,7 @@ Building this app was an iterative journey of solving real user problems:
 * **Design:** Custom CSS for glassmorphism, neon glowing effects, and responsive grid layouts.
   
 ##  Medical Review Board
-This app's content is developed and reviewed by:
+This app's content is developed for and reviewed by:
 - **Medical Students** (First and second-year curriculum focus)
 - **Standard References:** Content follows established medical education standards from:
   - Guyton & Hall Textbook of Medical Physiology
