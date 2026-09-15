@@ -18,6 +18,7 @@ import {
   Zap,
   Zap as ZapIcon,
   GraduationCap,
+  Flame,
 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { matchShortcut, SHORTCUT_MAP } from "@/lib/shortcuts";
@@ -27,6 +28,8 @@ const SLUG_TO_SHORTCUT: Record<string, string> = Object.fromEntries(
   Object.values(SHORTCUT_MAP).map((s) => [s.articleSlug, s.shortcut])
 );
 import { TeacherTour } from "@/components/TeacherTour";
+import { useReviewStreak } from "@/hooks/use-review-streak";
+import { useReviewNotifications } from "@/hooks/use-review-notifications";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { AppHeader } from "@/components/AppHeader";
@@ -128,6 +131,9 @@ function DashboardInner() {
   const [query, setQuery] = useState("");
   const [tourOpen, setTourOpen] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  const { streak, recordReview } = useReviewStreak();
+  useReviewNotifications(summary?.dueToday ?? 0);
 
   const firstName = user?.name?.split(" ")[0] ?? (user?.isAnonymous ? "Guest" : "future doctor");
   const greeting =
@@ -292,12 +298,13 @@ function DashboardInner() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.14 }}
-          className="mt-6 grid grid-cols-3 gap-3"
+          className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4"
         >
           {[
             { label: "Due today", value: summary?.dueToday, icon: CalendarClock, color: "#7b9ee8" },
             { label: "Mastered", value: summary?.mastered, icon: Trophy, color: "#6fb5b0" },
             { label: "Accuracy", value: summary ? `${summary.accuracy}%` : undefined, icon: CheckCircle2, color: "#a88bd4" },
+            { label: "Streak", value: streak > 0 ? `${streak}d` : "0", icon: Flame, color: streak >= 3 ? "#f59e0b" : "#888" },
           ].map((s) => {
             const Icon = s.icon;
             return (
@@ -320,6 +327,56 @@ function DashboardInner() {
             );
           })}
         </motion.div>
+
+        {/* ── Due Today Topics ── */}
+        {!loading && summary && summary.dueToday > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.16 }}
+            className="glass-panel shine mt-6 rounded-2xl p-4 sm:p-5"
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <CalendarClock className="size-4 text-[#7b9ee8]" />
+              <h3 className="text-sm font-extrabold text-wistaria">Due for Review Today</h3>
+              <span className="ml-auto rounded-full bg-[#7b9ee8]/15 px-2.5 py-0.5 text-[11px] font-bold text-[#7b9ee8]">
+                {summary.dueToday} card{summary.dueToday !== 1 ? 's' : ''}
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {summary.byTopic
+                .filter((t) => t.due > 0)
+                .slice(0, 6)
+                .map((t) => (
+                  <button
+                    key={t.slug}
+                    onClick={() => navigate(`/flashcards?topic=${t.slug}`)}
+                    className="glass-chip flex items-center gap-2 rounded-xl px-3 py-2 text-left transition-all hover:scale-[1.02] hover:shadow-[0_8px_20px_-6px_rgba(120,162,210,0.3)]"
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <span className="flex size-7 shrink-0 items-center justify-center rounded-lg" style={{ backgroundColor: t.accent + '1f', color: t.accent }}>
+                      <Flame className="size-3.5" />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="truncate text-xs font-bold text-foreground">{t.title}</p>
+                      <p className="text-[10px] font-semibold text-muted-foreground">
+                        {t.due} due · {t.mastered}/{t.total} mastered
+                      </p>
+                    </div>
+                  </button>
+                ))}
+            </div>
+            {summary.byTopic.filter((t) => t.due > 0).length > 6 && (
+              <button
+                onClick={() => navigate('/flashcards')}
+                className="mt-3 w-full text-center text-xs font-semibold text-wistaria/70 hover:text-wistaria"
+                style={{ cursor: 'pointer' }}
+              >
+                View all due decks
+              </button>
+            )}
+          </motion.div>
+        )}
 
         {/* ── Quick Access Modules ── */}
         <div data-tour-target="modules" className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
