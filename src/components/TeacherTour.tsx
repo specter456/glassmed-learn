@@ -127,22 +127,10 @@ export function TeacherTour({ open, onClose }: TeacherTourProps) {
 
   return (
     <>
-      {/* Dark overlay */}
-      <div
-        onClick={handleClose}
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 999990,
-          background: "rgba(0,0,0,0.6)",
-          backdropFilter: "blur(3px)",
-          opacity: visible ? 1 : 0,
-          transition: "opacity 0.3s ease",
-          pointerEvents: visible ? "auto" : "none",
-        }}
-      />
+      {/* Dark overlay with spotlight cutout — target element stays bright */}
+      <DarkOverlay targetId={current.targetId} visible={visible} onClose={handleClose} />
 
-      {/* Neon spotlight glow */}
+      {/* Neon glow border around the target */}
       {current.targetId && <Spotlight targetId={current.targetId} visible={visible} />}
 
       {/* Speech Bubble + Rabbit */}
@@ -339,11 +327,12 @@ export function TeacherTour({ open, onClose }: TeacherTourProps) {
   );
 }
 
-/* Spotlight helper — renders a fixed neon border around the target element */
-function Spotlight({ targetId, visible }: { targetId: string; visible: boolean }) {
+/* ---------- Spotlight measurement hook ---------- */
+function useSpotlightRect(targetId?: string) {
   const [rect, setRect] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
 
   useEffect(() => {
+    if (!targetId) { setRect(null); return; }
     const measure = () => {
       const el = document.querySelector(`[data-tour-target="${targetId}"]`);
       if (el) {
@@ -353,17 +342,62 @@ function Spotlight({ targetId, visible }: { targetId: string; visible: boolean }
         }
       }
     };
-    // Measure after scroll settles
     const t1 = setTimeout(measure, 100);
     const t2 = setTimeout(measure, 500);
     window.addEventListener("resize", measure);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      window.removeEventListener("resize", measure);
-    };
+    return () => { clearTimeout(t1); clearTimeout(t2); window.removeEventListener("resize", measure); };
   }, [targetId]);
 
+  return rect;
+}
+
+/* ---------- Dark overlay with spotlight cutout ---------- */
+/*
+ * The overlay uses a radial-gradient that is TRANSPARENT over the target
+ * element and DARK everywhere else. This means the target is never
+ * blurred, dimmed, or affected by the overlay — it stays bright and sharp.
+ */
+function DarkOverlay({
+  targetId,
+  visible,
+  onClose,
+}: {
+  targetId?: string;
+  visible: boolean;
+  onClose: () => void;
+}) {
+  const rect = useSpotlightRect(targetId);
+
+  // Build the gradient: transparent hole over the target, dark elsewhere
+  const gradient = rect
+    ? `radial-gradient(
+        ellipse ${rect.width / 2 + 16}px ${rect.height / 2 + 16}px
+        at ${rect.left + rect.width / 2}px ${rect.top + rect.height / 2}px,
+        transparent 0%,
+        transparent 60%,
+        rgba(0,0,0,0.65) 100%
+      )`
+    : "rgba(0,0,0,0.65)";
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 999990,
+        background: gradient,
+        opacity: visible ? 1 : 0,
+        transition: "opacity 0.3s ease, background 0.4s ease",
+        pointerEvents: visible ? "auto" : "none",
+      }}
+    />
+  );
+}
+
+/* ---------- Neon glow border around the target ---------- */
+function Spotlight({ targetId, visible }: { targetId: string; visible: boolean }) {
+  const rect = useSpotlightRect(targetId);
   if (!rect) return null;
 
   return (
