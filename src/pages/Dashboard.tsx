@@ -26,7 +26,7 @@ import { matchShortcut, SHORTCUT_MAP } from "@/lib/shortcuts";
 const SLUG_TO_SHORTCUT: Record<string, string> = Object.fromEntries(
   Object.values(SHORTCUT_MAP).map((s) => [s.articleSlug, s.shortcut])
 );
-import { TeacherTour, isTourDone } from "@/components/TeacherTour";
+import { TeacherTour } from "@/components/TeacherTour";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { AppHeader } from "@/components/AppHeader";
