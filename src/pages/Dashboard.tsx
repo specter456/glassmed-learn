@@ -28,8 +28,6 @@ const SLUG_TO_SHORTCUT: Record<string, string> = Object.fromEntries(
   Object.values(SHORTCUT_MAP).map((s) => [s.articleSlug, s.shortcut])
 );
 import { TeacherTour } from "@/components/TeacherTour";
-import { useReviewStreak } from "@/hooks/use-review-streak";
-import { useReviewNotifications } from "@/hooks/use-review-notifications";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { AppHeader } from "@/components/AppHeader";
@@ -131,25 +129,6 @@ function DashboardInner() {
   const [query, setQuery] = useState("");
   const [tourOpen, setTourOpen] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-
-  // Bulletproof fallback: if React onClick fails for any reason,
-  // a DOM-level listener on the button guarantees the tour opens.
-  useEffect(() => {
-    const btn = document.getElementById("start-tour-btn");
-    if (!btn) return;
-    const handler = () => setTourOpen(true);
-    btn.addEventListener("click", handler, { once: true });
-    // Also listen for the custom event dispatched by the button
-    const customHandler = () => setTourOpen(true);
-    window.addEventListener("open-tour", customHandler);
-    return () => {
-      btn.removeEventListener("click", handler);
-      window.removeEventListener("open-tour", customHandler);
-    };
-  }, []);
-
-  const { streak, recordReview } = useReviewStreak();
-  useReviewNotifications(summary?.dueToday ?? 0);
 
   const firstName = user?.name?.split(" ")[0] ?? (user?.isAnonymous ? "Guest" : "future doctor");
   const greeting =
@@ -291,12 +270,7 @@ function DashboardInner() {
           className="mt-5"
         >
           <button
-            id="start-tour-btn"
-            onClick={() => {
-              setTourOpen(true);
-              // Fallback: dispatch custom event in case React onClick doesn't fire
-              window.dispatchEvent(new CustomEvent("open-tour"));
-            }}
+            onClick={() => setTourOpen(true)}
             className="glass-panel shine group flex w-full items-center gap-3 rounded-2xl px-5 py-3.5 text-left transition-all hover:scale-[1.015] hover:shadow-[0_12px_30px_-8px_rgba(120,162,210,0.4)]"
             style={{ cursor: "pointer" }}
           >
@@ -325,7 +299,7 @@ function DashboardInner() {
             { label: "Due today", value: summary?.dueToday, icon: CalendarClock, color: "#7b9ee8" },
             { label: "Mastered", value: summary?.mastered, icon: Trophy, color: "#6fb5b0" },
             { label: "Accuracy", value: summary ? `${summary.accuracy}%` : undefined, icon: CheckCircle2, color: "#a88bd4" },
-            { label: "Streak", value: streak > 0 ? `${streak}d` : "0", icon: Flame, color: streak >= 3 ? "#f59e0b" : "#888" },
+            { label: "Total Cards", value: summary?.totalCards, icon: Flame, color: "#f59e0b" },
           ].map((s) => {
             const Icon = s.icon;
             return (
