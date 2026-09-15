@@ -286,7 +286,7 @@ function DashboardInner() {
         </motion.div>
 
         {/* Teacher Tour Overlay */}
-        <TeacherTour open={tourOpen} onClose={() => setTourOpen(false)} rootSelector=".min-h-screen" />
+        <TeacherTour open={tourOpen} onClose={() => setTourOpen(false)} />
 
         {/* ── Stats Row ── */}
         <motion.div
