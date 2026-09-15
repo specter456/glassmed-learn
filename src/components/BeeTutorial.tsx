@@ -57,7 +57,7 @@ export function BeeTutorial() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          className="pointer-events-none fixed inset-x-0 bottom-32 z-[80] flex justify-center px-4 sm:bottom-24"
+          className="pointer-events-none fixed inset-x-0 bottom-44 z-[80] flex justify-center px-4 sm:bottom-36"
           initial={{ opacity: 0, y: 40 }}
           animate={
             leaving

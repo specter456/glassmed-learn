@@ -209,7 +209,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             <GlassMedBrand size="lg" />
           </button>
 
-          <Card className="glass-strong shine mt-8 w-full rounded-3xl border-0 pb-0 shadow-none">
+          <Card className="glass-strong shine relative z-10 mt-8 w-full rounded-3xl border-0 pb-0 shadow-none">
             {step === "signIn" ? (
               <>
                 <CardHeader className="text-center">
@@ -296,8 +296,8 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       </div>
 
                       {/* Guest note */}
-                      <p className="mt-3 text-center text-[11px] text-muted-foreground/70">
-                        As a guest, your progress and data will not be saved.
+                      <p className="mt-3 text-center text-xs font-medium leading-relaxed text-[#b8c4d6]">
+                        ⚠️ As a guest, your progress and data will not be saved.
                       </p>
 
                       <Button
@@ -404,13 +404,26 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
               </>
             )}
 
-            <div className="rounded-b-3xl border-t border-white/10 bg-white/5 px-6 py-4 text-center text-xs text-muted-foreground backdrop-blur">
+            <div className="relative z-10 rounded-b-3xl border-t border-white/10 bg-white/5 px-6 py-4 text-center text-xs leading-relaxed text-[#b8c4d6] backdrop-blur">
               By continuing, you agree to our{" "}
-              <span className="font-semibold text-foreground/80">Terms of Service</span>{" "}
+              <button
+                type="button"
+                className="font-semibold text-[#7ec8e3] underline-offset-2 hover:underline"
+                onClick={() => window.open("https://example.com/terms", "_blank")}
+              >
+                Terms of Service
+              </button>{" "}
               and{" "}
-              <span className="font-semibold text-foreground/80">Privacy Policy</span>.
+              <button
+                type="button"
+                className="font-semibold text-[#7ec8e3] underline-offset-2 hover:underline"
+                onClick={() => window.open("https://example.com/privacy", "_blank")}
+              >
+                Privacy Policy
+              </button>
+              .
               <br />
-              <span className="mt-1 inline-block text-[10px] opacity-70">
+              <span className="mt-1.5 inline-block text-[11px] font-medium text-[#a0b0c4]">
                 We only save your study progress and flashcard data. We do not sell your data.
               </span>
             </div>
