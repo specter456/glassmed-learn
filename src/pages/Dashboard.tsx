@@ -132,6 +132,22 @@ function DashboardInner() {
   const [tourOpen, setTourOpen] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
+  // Bulletproof fallback: if React onClick fails for any reason,
+  // a DOM-level listener on the button guarantees the tour opens.
+  useEffect(() => {
+    const btn = document.getElementById("start-tour-btn");
+    if (!btn) return;
+    const handler = () => setTourOpen(true);
+    btn.addEventListener("click", handler, { once: true });
+    // Also listen for the custom event dispatched by the button
+    const customHandler = () => setTourOpen(true);
+    window.addEventListener("open-tour", customHandler);
+    return () => {
+      btn.removeEventListener("click", handler);
+      window.removeEventListener("open-tour", customHandler);
+    };
+  }, []);
+
   const { streak, recordReview } = useReviewStreak();
   useReviewNotifications(summary?.dueToday ?? 0);
 
@@ -275,7 +291,12 @@ function DashboardInner() {
           className="mt-5"
         >
           <button
-            onClick={() => setTourOpen(true)}
+            id="start-tour-btn"
+            onClick={() => {
+              setTourOpen(true);
+              // Fallback: dispatch custom event in case React onClick doesn't fire
+              window.dispatchEvent(new CustomEvent("open-tour"));
+            }}
             className="glass-panel shine group flex w-full items-center gap-3 rounded-2xl px-5 py-3.5 text-left transition-all hover:scale-[1.015] hover:shadow-[0_12px_30px_-8px_rgba(120,162,210,0.4)]"
             style={{ cursor: "pointer" }}
           >

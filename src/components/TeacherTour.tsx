@@ -318,7 +318,7 @@ export function TeacherTour({ open, onClose, rootSelector }: TeacherTourProps) {
           {/* ── Dark overlay ── */}
           <motion.div
             className="fixed inset-0"
-            style={{ zIndex: 99990 }}
+            style={{ zIndex: 999990 }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -343,7 +343,7 @@ export function TeacherTour({ open, onClose, rootSelector }: TeacherTourProps) {
               key={`spotlight-${step}`}
               className="pointer-events-none fixed"
               style={{
-                zIndex: 99991,
+                zIndex: 999991,
                 top: spotlight.top,
                 left: spotlight.left,
                 width: spotlight.width,
@@ -369,7 +369,7 @@ export function TeacherTour({ open, onClose, rootSelector }: TeacherTourProps) {
           <motion.div
             key={`bubble-${step}`}
             className="fixed flex flex-col items-center gap-2"
-            style={{ ...clampedBubbleStyle, zIndex: 99992 }}
+            style={{ ...clampedBubbleStyle, zIndex: 999992 }}
             initial={{ opacity: 0, y: 14, scale: 0.93 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
