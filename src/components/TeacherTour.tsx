@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
-import { createPortal } from "react-dom";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { RabbitMascot } from "@/components/mascots";
 
@@ -311,7 +310,7 @@ export function TeacherTour({ open, onClose, rootSelector }: TeacherTourProps) {
     };
   }, [spotlight, vw, vh, BUBBLE_MAX_W, BUBBLE_EST_H, MARGIN]);
 
-  return createPortal(
+  return (
     <AnimatePresence>
       {open && (
         <>
@@ -459,7 +458,6 @@ export function TeacherTour({ open, onClose, rootSelector }: TeacherTourProps) {
           </motion.div>
         </>
       )}
-    </AnimatePresence>,
-    document.body,
+    </AnimatePresence>
   );
 }
