@@ -33,6 +33,7 @@ export function BeeTutorial() {
   const flyAway = () => {
     if (leaving) return;
     setLeaving(true);
+    // Disappear instantly — no lingering animation that looks like lag.
     timers.current.push(
       window.setTimeout(() => {
         try {
@@ -41,14 +42,14 @@ export function BeeTutorial() {
           // Storage unavailable — the tutorial simply won't be remembered.
         }
         setVisible(false);
-      }, 950),
+      }, 180),
     );
   };
 
   useEffect(() => {
     const t = timers.current;
-    t.push(window.setTimeout(() => setStep(1), 4000));
-    t.push(window.setTimeout(flyAway, 8500));
+    t.push(window.setTimeout(() => setStep(1), 3000));
+    t.push(window.setTimeout(flyAway, 6000));
     return () => t.forEach((id) => window.clearTimeout(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -61,14 +62,14 @@ export function BeeTutorial() {
           initial={{ opacity: 0, y: 40 }}
           animate={
             leaving
-              ? { opacity: 0, y: -120, x: 80 }
-              : { opacity: 1, y: 0, x: 0 }
+              ? { opacity: 0, y: -40, scale: 0.8 }
+              : { opacity: 1, y: 0, x: 0, scale: 1 }
           }
-          exit={{ opacity: 0, y: -90 }}
+          exit={{ opacity: 0, scale: 0.7 }}
           transition={
             leaving
-              ? { duration: 0.9, ease: "easeIn" }
-              : { type: "spring", stiffness: 220, damping: 20, delay: 0.5 }
+              ? { duration: 0.15, ease: "easeOut" }
+              : { type: "spring", stiffness: 280, damping: 24, delay: 0.4 }
           }
         >
           <div className="pointer-events-none flex flex-col items-center">

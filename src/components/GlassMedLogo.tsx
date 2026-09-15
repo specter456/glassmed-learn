@@ -67,7 +67,7 @@ function MoonStar({
     <g transform={`translate(${x} ${y}) scale(${scale})`}>
       <motion.g
         animate={{ opacity: [0.3, 1, 0.3] }}
-        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay }}
+        transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut", delay }}
       >
         <path
           d="M12 0 C12.8 6.8 17.2 11.2 24 12 C17.2 12.8 12.8 17.2 12 24 C11.2 17.2 6.8 12.8 0 12 C6.8 11.2 11.2 6.8 12 0 Z"
@@ -219,11 +219,11 @@ export function GlassMedBrand({
 /* ----------------------------------------------------------------------- */
 
 const EMBLEM_LAYOUT = [
-  { Icon: Stethoscope, pos: "-top-9 -left-10", color: "#a2a2d0", delay: 0, duration: 6 },
-  { Icon: Cross, pos: "-top-8 -right-9", color: "#feffaf", delay: 0.9, duration: 7 },
-  { Icon: Shirt, pos: "-bottom-8 -right-10", color: "#feffaf", delay: 0.4, duration: 7.2 },
-  { Icon: Syringe, pos: "-bottom-9 -left-8", color: "#78a2d2", delay: 1.6, duration: 6.4 },
-  { Icon: HeartPulse, pos: "top-1/2 -right-16 -translate-y-1/2", color: "#e896b4", delay: 2.1, duration: 5.6 },
+  { Icon: Stethoscope, pos: "-top-9 -left-10", color: "#a2a2d0", delay: 0, duration: 3.5 },
+  { Icon: Cross, pos: "-top-8 -right-9", color: "#feffaf", delay: 0.6, duration: 4 },
+  { Icon: Shirt, pos: "-bottom-8 -right-10", color: "#feffaf", delay: 0.3, duration: 4.2 },
+  { Icon: Syringe, pos: "-bottom-9 -left-8", color: "#78a2d2", delay: 1.0, duration: 3.8 },
+  { Icon: HeartPulse, pos: "top-1/2 -right-16 -translate-y-1/2", color: "#e896b4", delay: 1.4, duration: 3.2 },
 ];
 
 /**
@@ -245,8 +245,9 @@ export function MedicalEmblems({
         <motion.span
           key={pos}
           className={cn("absolute", pos)}
-          animate={{ y: [0, -10, 0], rotate: [0, 6, 0] }}
+          animate={{ y: [0, -8, 0], rotate: [0, 4, 0] }}
           transition={{ duration, repeat: Infinity, ease: "easeInOut", delay }}
+          style={{ willChange: "transform" }}
         >
           <motion.span
             className="flex size-11 items-center justify-center rounded-2xl bg-white/5 ring-1 ring-white/15 backdrop-blur-sm"

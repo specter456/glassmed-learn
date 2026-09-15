@@ -95,9 +95,9 @@ export function BeeMascot({
     <motion.div
       aria-hidden
       animate={{ y: [0, -6, 0], rotate: [0, 2.5, -2.5, 0] }}
-      transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
       className={className}
-      style={{ width: size, height: size, display: "inline-block" }}
+      style={{ width: size, height: size, display: "inline-block", willChange: "transform", transform: "translateZ(0)" }}
     >
       <svg viewBox="0 0 140 140" width={size} height={size} overflow="visible">
         {/* soft floor shadow */}
@@ -108,14 +108,14 @@ export function BeeMascot({
           cx="38" cy="56" rx="19" ry="30"
           fill="rgba(255,255,255,0.72)" stroke="#e3ddff" strokeWidth="2"
           animate={{ rotate: [-10, 10, -10] }}
-          transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 0.35, repeat: Infinity, ease: "easeInOut" }}
           style={{ transformOrigin: "38px 56px" }}
         />
         <motion.ellipse
           cx="102" cy="56" rx="19" ry="30"
           fill="rgba(255,255,255,0.72)" stroke="#e3ddff" strokeWidth="2"
           animate={{ rotate: [10, -10, 10] }}
-          transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 0.35, repeat: Infinity, ease: "easeInOut" }}
           style={{ transformOrigin: "102px 56px" }}
         />
 
@@ -161,8 +161,8 @@ export function PandaMascot({
   const wrapperAnim = mood === "encouraging" ? { y: [0, -4, 0] } : { y: [0, -8, 0], scale: [1, 1.03, 1] };
   const wrapperTransition =
     mood === "encouraging"
-      ? { duration: 1.6, repeat: Infinity, ease: "easeInOut" as const }
-      : { duration: 0.9, repeat: Infinity, ease: "easeInOut" as const };
+      ? { duration: 1.2, repeat: Infinity, ease: "easeInOut" as const }
+      : { duration: 0.7, repeat: Infinity, ease: "easeInOut" as const };
 
   return (
     <motion.div
@@ -170,7 +170,7 @@ export function PandaMascot({
       animate={wrapperAnim}
       transition={wrapperTransition}
       className={className}
-      style={{ width: size, height: size, display: "inline-block" }}
+      style={{ width: size, height: size, display: "inline-block", willChange: "transform", transform: "translateZ(0)" }}
     >
       <svg viewBox="0 0 140 140" width={size} height={size} overflow="visible">
         <defs>
@@ -257,11 +257,11 @@ export function RabbitMascot({
   size = 120,
   className,
 }: BaseProps & { mood?: RabbitMood }) {
-  const wrapperAnim = mood === "reading" ? { y: [0, -3, 0] } : { y: [0, -8, 0] };
+  const wrapperAnim = mood === "reading" ? { y: [0, -4, 0] } : { y: [0, -8, 0] };
   const wrapperTransition =
     mood === "reading"
-      ? { duration: 2.8, repeat: Infinity, ease: "easeInOut" as const }
-      : { duration: 1, repeat: Infinity, ease: "easeInOut" as const };
+      ? { duration: 1.5, repeat: Infinity, ease: "easeInOut" as const }
+      : { duration: 0.8, repeat: Infinity, ease: "easeInOut" as const };
 
   return (
     <motion.div
@@ -269,7 +269,7 @@ export function RabbitMascot({
       animate={wrapperAnim}
       transition={wrapperTransition}
       className={className}
-      style={{ width: size, height: size, display: "inline-block" }}
+      style={{ width: size, height: size, display: "inline-block", willChange: "transform", transform: "translateZ(0)" }}
     >
       <svg viewBox="0 0 140 140" width={size} height={size} overflow="visible">
         <defs>
@@ -284,7 +284,7 @@ export function RabbitMascot({
         {/* long ears with peach inner pads */}
         <motion.g
           animate={mood === "happy" ? { rotate: [-6, 6, -6] } : { rotate: [-2, 2, -2] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
           style={{ transformOrigin: "56px 62px" }}
         >
           <ellipse cx="52" cy="26" rx="13" ry="32" fill="#ffffff" transform="rotate(-10 52 62)" />
@@ -292,7 +292,7 @@ export function RabbitMascot({
         </motion.g>
         <motion.g
           animate={mood === "happy" ? { rotate: [6, -6, 6] } : { rotate: [2, -2, 2] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
           style={{ transformOrigin: "84px 62px" }}
         >
           <ellipse cx="88" cy="26" rx="13" ry="32" fill="#ffffff" transform="rotate(10 88 62)" />
@@ -368,8 +368,8 @@ export function FoxMascot({
   const wrapperAnim = mood === "thinking" ? { y: [0, -2, 0], rotate: [-2, 2, -2] } : { y: [0, -8, 0], scale: [1, 1.03, 1] };
   const wrapperTransition =
     mood === "thinking"
-      ? { duration: 2, repeat: Infinity, ease: "easeInOut" as const }
-      : { duration: 1, repeat: Infinity, ease: "easeInOut" as const };
+      ? { duration: 1.4, repeat: Infinity, ease: "easeInOut" as const }
+      : { duration: 0.8, repeat: Infinity, ease: "easeInOut" as const };
 
   return (
     <motion.div
@@ -377,7 +377,7 @@ export function FoxMascot({
       animate={wrapperAnim}
       transition={wrapperTransition}
       className={className}
-      style={{ width: size, height: size, display: "inline-block" }}
+      style={{ width: size, height: size, display: "inline-block", willChange: "transform", transform: "translateZ(0)" }}
     >
       <svg viewBox="0 0 140 140" width={size} height={size} overflow="visible">
         <defs>
@@ -468,8 +468,8 @@ export function CatMascot({
   const wrapperAnim = mood === "excited" ? { y: [0, -12, 0], scale: [1, 1.05, 1] } : { y: [0, -8, 0] };
   const wrapperTransition =
     mood === "excited"
-      ? { duration: 0.7, repeat: Infinity, ease: "easeInOut" as const }
-      : { duration: 1.1, repeat: Infinity, ease: "easeInOut" as const };
+      ? { duration: 0.5, repeat: Infinity, ease: "easeInOut" as const }
+      : { duration: 0.8, repeat: Infinity, ease: "easeInOut" as const };
 
   return (
     <motion.div
@@ -477,7 +477,7 @@ export function CatMascot({
       animate={wrapperAnim}
       transition={wrapperTransition}
       className={className}
-      style={{ width: size, height: size, display: "inline-block" }}
+      style={{ width: size, height: size, display: "inline-block", willChange: "transform", transform: "translateZ(0)" }}
     >
       <svg viewBox="0 0 140 140" width={size} height={size} overflow="visible">
         <defs>
@@ -500,14 +500,14 @@ export function CatMascot({
         <motion.path
           d="M38 40 L 28 10 L 60 22 Z" fill="#ffffff"
           animate={mood === "excited" ? { rotate: [-6, 6, -6] } : { rotate: 0 }}
-          transition={{ duration: 0.9, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
           style={{ transformOrigin: "44px 26px" }}
         />
         <path d="M40 34 L 35 18 L 52 24 Z" fill="#ffc4d6" />
         <motion.path
           d="M102 40 L 112 10 L 80 22 Z" fill="#ffffff"
           animate={mood === "excited" ? { rotate: [6, -6, 6] } : { rotate: 0 }}
-          transition={{ duration: 0.9, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
           style={{ transformOrigin: "96px 26px" }}
         />
         <path d="M100 34 L 105 18 L 88 24 Z" fill="#ffc4d6" />
