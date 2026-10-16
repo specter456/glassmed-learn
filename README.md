@@ -17,7 +17,7 @@
 * **Working:** Spaced Repetition Flashcards with smart filtering.
 * **Working:** First-Aid Simulator Game (Clinical scenarios).
 * **Working:** Global Lo-Fi Music Player & Customizable focus Timer.
-* ** In Progress:** Integrating a live AI API for the "Ask MediPro" chatbot.
+*  **In Progress:** Integrating a live AI API for the "Ask MediPro" chatbot.
 
 ##  Design Evolution & Thought Process
 Building this app was an iterative journey of solving real user problems:
@@ -77,7 +77,7 @@ This app's content is developed for and reviewed by:
 * **Iterative Problem Solving:** When the AI kept breaking the navigation, I learned to break down complex features into smaller, isolated tasks to prevent the app from crashing.
 
 ##  Next Steps
-* Integrate a real LLM API (like OpenAI) to make the "Ask MediPro" AI tutor fully functional.
+* Integrate a real LLM API (like OpenAI) to make the "Ask GlassMed" AI tutor fully functional.
 * Add a backend database to sync user progress across multiple devices.
 * Connect a custom domain (e.g., glassmed.app) for professional deployment.
 
