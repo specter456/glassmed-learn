@@ -1,12 +1,15 @@
+import { onGuestSessionWiped, scopedStorage } from "@/lib/account-storage";
 import { useCallback, useEffect, useState } from "react";
 
 /**
- * Tracks the user's daily review streak using localStorage.
+ * Tracks the user's daily review streak.
  *
  * - A "day" is counted if the user reviews at least one flashcard that day.
  * - Streak resets if the user misses more than 1 day (i.e., last review was
  *   2+ days ago).
- * - Works for both logged-in and guest users (localStorage-based).
+ * - Bucket-scoped: a guest's streak lives under their `guest_session_id` and
+ *   is wiped when the guest leaves, so it can never be inherited by an
+ *   email account on the same browser.
  */
 
 const STREAK_KEY = "glassmed-review-streak";
@@ -29,7 +32,7 @@ function daysBetween(a: string, b: string): number {
 
 function loadStreak(): StreakData {
   try {
-    const raw = localStorage.getItem(STREAK_KEY);
+    const raw = scopedStorage.getItem(STREAK_KEY);
     if (raw) return JSON.parse(raw);
   } catch {
     /* storage unavailable */
@@ -39,7 +42,7 @@ function loadStreak(): StreakData {
 
 function saveStreak(data: StreakData): void {
   try {
-    localStorage.setItem(STREAK_KEY, JSON.stringify(data));
+    scopedStorage.setItem(STREAK_KEY, JSON.stringify(data));
   } catch {
     /* storage unavailable */
   }
@@ -47,6 +50,20 @@ function saveStreak(data: StreakData): void {
 
 export function useReviewStreak() {
   const [streak, setStreak] = useState<StreakData>(loadStreak);
+
+  // Re-read whenever the active storage bucket changes (a guest session is
+  // created or wiped) so no streak ever crosses an account boundary.
+  useEffect(() => {
+    const sync = () =>
+      setStreak((prev) => {
+        const next = loadStreak();
+        return prev.count === next.count && prev.lastDate === next.lastDate
+          ? prev
+          : next;
+      });
+    sync();
+    return onGuestSessionWiped(sync);
+  }, []);
 
   // Check on mount if the streak should be reset (missed >1 day)
   useEffect(() => {

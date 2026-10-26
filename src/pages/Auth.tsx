@@ -18,6 +18,7 @@ import { BeeTutorial } from "@/components/BeeTutorial";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { GlassMedBrand } from "@/components/GlassMedLogo";
 import { markLoginArrival } from "@/components/Celebration";
+import { beginGuestSession } from "@/lib/account-storage";
 import { useAuth } from "@/hooks/use-auth";
 import { ArrowRight, Loader2, Mail, UserX } from "lucide-react";
 import { Suspense, useEffect, useRef, useState } from "react";
@@ -184,6 +185,10 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
 
   const handleGuestLogin = () => {
     loginTriggered.current = true;
+    // Spin up a brand-new, isolated guest session first: every piece of guest
+    // progress from here on is written under a fresh guest_session_id and is
+    // wiped the moment this guest signs out or closes the tab.
+    beginGuestSession();
     // Flag the welcome celebration BEFORE navigation — mark as guest.
     markLoginArrival(true);
     // Navigate IMMEDIATELY — do not await signIn. `replace` keeps the stack
@@ -227,6 +232,10 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                 </CardHeader>
                 <form onSubmit={handleEmailSubmit}>
                   <CardContent>
+                    {/* Privacy note — right above the sign-in-with-email action */}
+                    <p className="mb-2 text-center text-xs font-medium leading-relaxed text-[#b8c4d6]">
+                      Sign in to save your progress, streaks, and data securely.
+                    </p>
                     <div className="relative flex items-center gap-2">
                       <div className="relative flex-1">
                         <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -298,9 +307,10 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                         </div>
                       </div>
 
-                      {/* Guest note */}
+                      {/* Guest note — right above the guest button */}
                       <p className="mt-3 text-center text-xs font-medium leading-relaxed text-[#b8c4d6]">
-                        ⚠️ As a guest, your progress and data will not be saved.
+                        Note: As a guest, your progress and data will not be
+                        saved.
                       </p>
 
                       <Button

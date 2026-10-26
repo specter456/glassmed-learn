@@ -66,6 +66,19 @@ export const topics = query({
   },
 });
 
+/**
+ * Minimal card index (id + topic) — the client needs this to compute a study
+ * summary for guest sessions, whose progress lives only in their isolated
+ * browser session and never in the database.
+ */
+export const cardIndex = query({
+  args: {},
+  handler: async (ctx) => {
+    const cards = await ctx.db.query("flashcards").collect();
+    return cards.map((c) => ({ _id: c._id, topicSlug: c.topicSlug }));
+  },
+});
+
 /** A single topic by slug. */
 export const topicBySlug = query({
   args: { slug: v.string() },

@@ -1,6 +1,11 @@
 /**
  * Bookmark system — persists to localStorage so bookmarks survive refreshes.
+ * Keys are account-scoped: a guest's bookmarks live under their
+ * `guest_session_id` and are wiped when the guest leaves, so they can never
+ * appear inside a signed-in account on the same browser.
  */
+
+import { scopedStorage } from "@/lib/account-storage";
 
 const STORAGE_KEY = "glassmed-bookmarks";
 
@@ -22,7 +27,7 @@ export interface Bookmark {
 
 function readAll(): Bookmark[] {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = scopedStorage.getItem(STORAGE_KEY);
     return raw ? (JSON.parse(raw) as Bookmark[]) : [];
   } catch {
     return [];
@@ -31,7 +36,7 @@ function readAll(): Bookmark[] {
 
 function writeAll(bookmarks: Bookmark[]): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
+    scopedStorage.setItem(STORAGE_KEY, JSON.stringify(bookmarks));
   } catch {
     /* storage unavailable */
   }

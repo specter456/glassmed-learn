@@ -30,7 +30,16 @@ const schema = defineSchema(
       isAnonymous: v.optional(v.boolean()), // is the user anonymous. do not remove
 
       role: v.optional(roleValidator), // role of the user. do not remove
-    }).index("email", ["email"]), // index for the email. do not remove or modify
+
+      // ---- Welcome / onboarding state (per user profile) ----
+      // How many times this account has signed in. Used by the routing logic
+      // to decide between the full Welcome screen (1st login) and a quick
+      // "Welcome back!" toast (2nd time and onwards).
+      loginCount: v.optional(v.number()),
+      // Flipped once the user has finished the full Welcome/onboarding screen.
+      hasCompletedOnboarding: v.optional(v.boolean()),
+    })
+      .index("email", ["email"]), // index for the email. do not remove or modify
 
     // ---------- GlassMed Learn content tables ----------
 

@@ -17,6 +17,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { scopedStorage } from "@/lib/account-storage";
 import { AppHeader } from "@/components/AppHeader";
 import {
   ConfettiBurst,
@@ -358,6 +359,9 @@ const SCENARIOS: Scenario[] = [
 ];
 
 /* ------------------------- persistence ----------------------------- */
+// Account-scoped: a guest's XP/level/high score live under their
+// `guest_session_id` and are wiped when the guest leaves, so they can never
+// bleed into a signed-in account on the same browser.
 
 const KEY_LEVEL = "medipro-firstaid-level";
 const KEY_XP = "medipro-firstaid-xp";
@@ -372,9 +376,9 @@ interface SavedStats {
 function loadStats(): SavedStats {
   try {
     return {
-      level: Number(localStorage.getItem(KEY_LEVEL)) || 1,
-      xp: Number(localStorage.getItem(KEY_XP)) || 0,
-      highScore: Number(localStorage.getItem(KEY_HIGH)) || 0,
+      level: Number(scopedStorage.getItem(KEY_LEVEL)) || 1,
+      xp: Number(scopedStorage.getItem(KEY_XP)) || 0,
+      highScore: Number(scopedStorage.getItem(KEY_HIGH)) || 0,
     };
   } catch {
     return { level: 1, xp: 0, highScore: 0 };
@@ -383,9 +387,9 @@ function loadStats(): SavedStats {
 
 function saveStats(s: SavedStats): void {
   try {
-    localStorage.setItem(KEY_LEVEL, String(s.level));
-    localStorage.setItem(KEY_XP, String(s.xp));
-    localStorage.setItem(KEY_HIGH, String(s.highScore));
+    scopedStorage.setItem(KEY_LEVEL, String(s.level));
+    scopedStorage.setItem(KEY_XP, String(s.xp));
+    scopedStorage.setItem(KEY_HIGH, String(s.highScore));
   } catch {
     /* storage unavailable — progress just won't persist */
   }

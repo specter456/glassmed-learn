@@ -1,5 +1,9 @@
 import { api } from "@/convex/_generated/api";
 import { signalAuthReady } from "@/components/SplashScreen";
+import {
+  currentGuestSessionId,
+  wipeGuestSession,
+} from "@/lib/account-storage";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useConvexAuth, useQuery } from "convex/react";
 import { useEffect, useRef, useSyncExternalStore } from "react";
@@ -45,6 +49,9 @@ export function useSigningOut(): boolean {
 
 /** Wipe every local + session key so no data can bleed between accounts. */
 function clearStorage() {
+  // Kill the guest session first: this also notifies subscribers so no
+  // component keeps rendering rows that are about to disappear.
+  wipeGuestSession();
   try {
     localStorage.clear();
   } catch {
@@ -110,8 +117,9 @@ export function useAuth() {
     }
   }, [isLoading]);
 
-  // Sign out guest users when they close the browser so anonymous sessions
-  // don't persist across visits. Username/email sessions are preserved.
+  // Guest sessions are temporary: when a guest closes the tab we wipe their
+  // isolated session (synchronous, so it always lands) and sign the anonymous
+  // account out. Signed-in email sessions are preserved.
   useEffect(() => {
     if (!isAuthenticated) return;
     const handleBeforeUnload = () => {
@@ -119,6 +127,8 @@ export function useAuth() {
       try {
         const isAnonymous = localStorage.getItem("convex-auth:is-anonymous");
         if (isAnonymous === "true") {
+          // Drop the guest_session_id and every progress key under it.
+          if (currentGuestSessionId()) wipeGuestSession();
           // Best-effort signout on unload — may not complete but clears local state
           signOut();
         }

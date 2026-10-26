@@ -2,10 +2,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Pause, Play, RotateCcw, Settings, Timer, X } from "lucide-react";
 import { toast } from "sonner";
+import { scopedStorage } from "@/lib/account-storage";
 import { cn } from "@/lib/utils";
 
 /* ── localStorage helpers ────────────────────────────────────────────── */
 
+// Account-scoped so a guest's timer setup never lands in a signed-in
+// account's bucket (and is wiped together with the guest session).
 const STORAGE_KEY = "glassmed-focus-timer";
 
 interface TimerPrefs {
@@ -18,7 +21,7 @@ const DEFAULTS: TimerPrefs = { focusMin: 25, shortBreakMin: 5, longBreakMin: 15 
 
 function loadPrefs(): TimerPrefs {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = scopedStorage.getItem(STORAGE_KEY);
     if (raw) {
       const p = JSON.parse(raw) as Partial<TimerPrefs>;
       return {
@@ -32,7 +35,7 @@ function loadPrefs(): TimerPrefs {
 }
 
 function savePrefs(p: TimerPrefs): void {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch { /* ignore */ }
+  try { scopedStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch { /* ignore */ }
 }
 
 /* ── helpers ─────────────────────────────────────────────────────────── */

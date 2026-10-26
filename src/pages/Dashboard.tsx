@@ -37,6 +37,7 @@ import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { articleBySlug } from "@/lib/articles";
 import { useEnsureSeeded } from "@/hooks/use-ensure-seeded";
 import { useAuth } from "@/hooks/use-auth";
+import { useProgressSummary } from "@/hooks/use-flashcard-progress";
 import { useHead } from "@/lib/seo";
 
 /* ─── Main module buttons ─── */
@@ -121,7 +122,9 @@ function DashboardInner() {
   });
   const navigate = useNavigate();
   const { user } = useAuth();
-  const summary = useQuery(api.progress.summary);
+  // Scope-aware: Convex rows for signed-in students, the isolated guest
+  // session for guests — identical shape either way.
+  const summary = useProgressSummary();
   const topics = useQuery(api.content.topics);
   const loading = topics === undefined || summary === undefined;
 

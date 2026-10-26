@@ -1,7 +1,11 @@
 import { CatMascot, PandaMascot } from "@/components/mascots";
+import { api } from "@/convex/_generated/api";
+import { useAuth } from "@/hooks/use-auth";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useMutation } from "convex/react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 /* ------------------------- success messages ------------------------ */
@@ -255,8 +259,6 @@ export const LAST_LOGIN_KEY = "glassmed-last-login";
 /** Marks that the welcome celebration already played this session, so it can
  *  never fire again from page-to-page navigation — only a fresh sign-in. */
 export const WELCOME_SHOWN_KEY = "glassmed-welcome-shown";
-/** Login count for email users — determines welcome vs welcome back vs skip. */
-export const LOGIN_COUNT_KEY = "glassmed-login-count";
 /** Flag indicating the current login is a guest (not email). */
 export const GUEST_LOGIN_KEY = "glassmed-guest-login";
 
@@ -289,19 +291,43 @@ export function markLoginArrival(guest = false) {
   } catch {
     /* non-fatal */
   }
-  // Mark whether this is a guest login so the celebration can decide
-  // whether to show "Welcome" (guest) or "Welcome back" (returning user).
-  if (guest) {
+  // Mark (or explicitly un-mark) the guest flag in the same call, so a stale
+  // guest flag from an earlier session can never make an email login look
+  // like a guest login.
+  for (const store of [sessionStorage, localStorage]) {
     try {
-      sessionStorage.setItem(GUEST_LOGIN_KEY, "1");
+      if (guest) store.setItem(GUEST_LOGIN_KEY, "1");
+      else store.removeItem(GUEST_LOGIN_KEY);
     } catch {
       /* non-fatal */
     }
-    try {
-      localStorage.setItem(GUEST_LOGIN_KEY, "1");
-    } catch {
-      /* non-fatal */
-    }
+  }
+}
+
+function readFlag(key: string): boolean {
+  try {
+    if (sessionStorage.getItem(key) === "1") return true;
+  } catch {
+    /* storage blocked */
+  }
+  try {
+    if (localStorage.getItem(key) === "1") return true;
+  } catch {
+    /* storage blocked */
+  }
+  return false;
+}
+
+function clearFlag(key: string): void {
+  try {
+    sessionStorage.removeItem(key);
+  } catch {
+    /* non-fatal */
+  }
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    /* non-fatal */
   }
 }
 
@@ -315,99 +341,150 @@ const WELCOME_BACK = {
   subtitle: "Yayyy! Great to see you again — let's keep going! 💪",
 };
 
-/** Welcome celebration shown once right after sign-in/guest entry.
+/** What should happen once a sign-in arrival has been understood. */
+
+type WelcomeDecision = "welcome" | "toast" | null;
+
+/** Welcome / onboarding screen logic.
  *
  * Rules:
- *  - Guest logins: always show "Welcome" (never "Welcome back").
- *  - Email logins: 1st -> "Welcome", 2nd -> "Welcome back", 3rd+ -> skip.
+ *  - Guests: ALWAYS the full Welcome screen — never "Welcome back".
+ *  - Email, 1st login: full Welcome screen, then the profile is marked
+ *    (`hasCompletedOnboarding`).
+ *  - Email, 2nd time onwards: no full screen at all — just a quick
+ *    "Welcome back!" toast at the top, straight through to the dashboard.
+ *
+ * The login count lives on the user's Convex profile (`users.loginCount`),
+ * so it follows the account instead of leaking between two accounts that
+ * happen to share a browser.
  */
 export function LoginCelebration() {
   const location = useLocation();
-  const [celebrating, setCelebrating] = useState(false);
-  const [message, setMessage] = useState(WELCOME_NEW);
+  const { isLoading: authLoading, isAuthenticated, user } = useAuth();
+  const recordLogin = useMutation(api.users.recordLogin);
+  const completeOnboarding = useMutation(api.users.completeOnboarding);
 
+  const [celebrating, setCelebrating] = useState(false);
+  const [pendingArrival, setPendingArrival] = useState(false);
+  const [decision, setDecision] = useState<WelcomeDecision>(null);
+  // StrictMode runs effects twice — share one in-flight recordLogin() so the
+  // profile is only bumped once per sign-in.
+  const loginRecordedRef = useRef<
+    Promise<Awaited<ReturnType<typeof recordLogin>>> | null
+  >(null);
+  const toastShownRef = useRef(false);
+
+  // (1) Spot the arrival flag — exactly once per explicit sign-in.
   useEffect(() => {
-    let flagged = false;
-    try {
-      flagged = sessionStorage.getItem(LOGIN_ARRIVAL_KEY) === "1";
-    } catch {
-      // sessionStorage blocked
-    }
-    if (!flagged) {
-      try {
-        flagged = localStorage.getItem(LOGIN_ARRIVAL_KEY) === "1";
-      } catch {
-        // localStorage blocked
-      }
-    }
-    flagged = flagged || arrivalFlag;
+    const flagged = readFlag(LOGIN_ARRIVAL_KEY) || arrivalFlag;
     arrivalFlag = false;
-    try {
-      sessionStorage.removeItem(LOGIN_ARRIVAL_KEY);
-    } catch { /* non-fatal */ }
-    try {
-      localStorage.removeItem(LOGIN_ARRIVAL_KEY);
-    } catch { /* non-fatal */ }
+    clearFlag(LOGIN_ARRIVAL_KEY);
     if (!flagged) return;
-    let alreadyShown = false;
-    try {
-      alreadyShown = sessionStorage.getItem(WELCOME_SHOWN_KEY) === "1";
-    } catch { /* best effort */ }
-    if (alreadyShown) return;
+
+    const isGuestArrival = readFlag(GUEST_LOGIN_KEY);
+    clearFlag(GUEST_LOGIN_KEY);
+
+    // Guests always get the full screen. Email arrivals only play it once
+    // per browser session, so a reload can never replay it.
+    if (isGuestArrival) {
+      setPendingArrival(true);
+      return;
+    }
+    if (readFlag(WELCOME_SHOWN_KEY)) return;
     try {
       sessionStorage.setItem(WELCOME_SHOWN_KEY, "1");
-    } catch { /* non-fatal */ }
+    } catch {
+      /* non-fatal */
+    }
+    setPendingArrival(true);
+  }, [location.pathname]);
 
-    // Determine if this is a guest login.
-    let isGuest = false;
-    try {
-      isGuest = sessionStorage.getItem(GUEST_LOGIN_KEY) === "1" ||
-                localStorage.getItem(GUEST_LOGIN_KEY) === "1";
-      sessionStorage.removeItem(GUEST_LOGIN_KEY);
-      localStorage.removeItem(GUEST_LOGIN_KEY);
-    } catch { /* non-fatal */ }
-
-    if (isGuest) {
-      // Guests ALWAYS see "Welcome" -- never "Welcome back".
-      const t = setTimeout(() => {
-        setMessage(WELCOME_NEW);
-        setCelebrating(true);
-      }, 120);
-      return () => clearTimeout(t);
+  // (2) Once the session is known, decide: full screen or quick toast.
+  useEffect(() => {
+    if (!pendingArrival) return;
+    if (authLoading) return; // wait for the session to resolve
+    if (!isAuthenticated || !user) {
+      // Signed out — nothing to greet.
+      setPendingArrival(false);
+      return;
     }
 
-    // For email/logged-in users, track login count.
-    let loginCount = 0;
-    try {
-      loginCount = Number(localStorage.getItem(LOGIN_COUNT_KEY)) || 0;
-    } catch { /* non-fatal */ }
-    loginCount += 1;
-    try {
-      localStorage.setItem(LOGIN_COUNT_KEY, String(loginCount));
-      localStorage.setItem(LAST_LOGIN_KEY, String(Date.now()));
-    } catch { /* non-fatal */ }
+    if (user.isAnonymous) {
+      // Guests ALWAYS get the full Welcome screen.
+      setPendingArrival(false);
+      setDecision("welcome");
+      return;
+    }
 
-    // 3rd time and onwards: skip celebration entirely.
-    if (loginCount >= 3) return;
+    let cancelled = false;
+    void (async () => {
+      let firstLogin = false;
+      let handled = false;
+      try {
+        if (!loginRecordedRef.current) loginRecordedRef.current = recordLogin();
+        const result = await loginRecordedRef.current;
+        firstLogin = result?.isFirstLogin ?? false;
+        handled = true;
+      } catch (error) {
+        console.warn("[GlassMed] Couldn't record login:", error);
+        handled = true;
+      }
+      // Cancelled (effect re-ran / unmounted): leave the promise in place so
+      // the next run reuses it instead of counting the login twice.
+      if (!handled || cancelled) return;
+      loginRecordedRef.current = null;
+      try {
+        localStorage.setItem(LAST_LOGIN_KEY, String(Date.now()));
+      } catch {
+        /* non-fatal */
+      }
+      setPendingArrival(false);
+      setDecision(firstLogin ? "welcome" : "toast");
+    })();
 
-    // 1st time: "Welcome", 2nd time: "Welcome back".
-    const t = setTimeout(() => {
-      setMessage(loginCount === 1 ? WELCOME_NEW : WELCOME_BACK);
-      setCelebrating(true);
-    }, 120);
-    return () => clearTimeout(t);
-  }, [location.pathname]);
+    return () => {
+      cancelled = true;
+    };
+  }, [pendingArrival, authLoading, isAuthenticated, user, recordLogin]);
+
+  // (3) Act on the decision — the only place that shows anything.
+  useEffect(() => {
+    if (decision === "welcome") {
+      const timer = window.setTimeout(() => setCelebrating(true), 120);
+      return () => window.clearTimeout(timer);
+    }
+    if (decision === "toast") {
+      if (!toastShownRef.current) {
+        toastShownRef.current = true;
+        toast(WELCOME_BACK.title, {
+          description: WELCOME_BACK.subtitle,
+          position: "top-center",
+          duration: 3500,
+        });
+      }
+      setDecision(null);
+    }
+  }, [decision]);
 
   return (
     <AnimatePresence>
       {celebrating && (
         <CelebrationOverlay
-          title={message.title}
-          subtitle={message.subtitle}
+          title={WELCOME_NEW.title}
+          subtitle={WELCOME_NEW.subtitle}
           emoji="💙"
           footer="Your study space is ready — keep the momentum going!"
           durationMs={2400}
-          onDone={() => setCelebrating(false)}
+          onDone={() => {
+            setCelebrating(false);
+            setDecision(null);
+            // First-time email users have now finished onboarding.
+            if (user && !user.isAnonymous) {
+              completeOnboarding().catch((error) => {
+                console.warn("[GlassMed] Couldn't save onboarding:", error);
+              });
+            }
+          }}
         />
       )}
     </AnimatePresence>

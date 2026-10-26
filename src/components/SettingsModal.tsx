@@ -2,9 +2,11 @@ import { InstallModal } from "@/components/InstallModal";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Puppy, type PuppyMood } from "@/components/Puppy";
+import { api } from "@/convex/_generated/api";
 import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/lib/theme";
 import { AnimatePresence, motion } from "framer-motion";
+import { useMutation } from "convex/react";
 import {
   ArrowRight,
   Download,
@@ -149,6 +151,7 @@ function SettingsRow({
 
 export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalProps) {
   const { user } = useAuth();
+  const resetOnboarding = useMutation(api.users.resetOnboarding);
   const { theme } = useTheme();
   const [hover, setHover] = useState<HoverKey | null>(null);
   const [installOpen, setInstallOpen] = useState(false);
@@ -178,6 +181,7 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
       "glassmed-bee-tutorial-done", // localStorage — bee tour
       "glassmed-teacher-tour-done", // localStorage — teacher mascot tour
       "glassmed-last-login", // localStorage — "Welcome" vs "Welcome back"
+      "glassmed-login-count", // localStorage — legacy login counter (now a profile field)
       "medipro-splash-seen", // sessionStorage — splash (legacy)
       "glassmed-welcome-shown", // sessionStorage — welcome once-per-session
       "glassmed-login-just-arrived", // sessionStorage + localStorage — arrival flag
@@ -194,6 +198,11 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
         /* ignore */
       }
     }
+    // The Welcome decision now lives on the user's profile — clear it there
+    // too, otherwise the full Welcome screen could never be replayed.
+    resetOnboarding().catch((error) => {
+      console.warn("[GlassMed] Couldn't reset onboarding flags:", error);
+    });
     toast("First-time tutorial reset 🐝", {
       description:
         "Log out, then open the login page again to meet the bee and replay the welcome.",

@@ -16,7 +16,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { matchShortcut, SHORTCUT_MAP } from "@/lib/shortcuts";
 import { api } from "@/convex/_generated/api";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
+import {
+  useProgressRows,
+  useProgressSummary,
+  useRecordAnswer,
+} from "@/hooks/use-flashcard-progress";
 import { toast } from "sonner";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
@@ -56,7 +61,9 @@ function DeckList() {
   useEnsureSeeded();
   const navigate = useNavigate();
   const topics = useQuery(api.content.topics);
-  const summary = useQuery(api.progress.summary);
+  // Scope-aware: Convex rows for signed-in students, the isolated guest
+  // session for guests — identical shape either way.
+  const summary = useProgressSummary();
   const loading = topics === undefined || summary === undefined;
 
   const [rawQuery, setRawQuery] = useState("");
@@ -287,8 +294,8 @@ function DeckList() {
 function StudySession({ slug }: { slug: string }) {
   const navigate = useNavigate();
   const deck = useQuery(api.content.deck, { slug });
-  const progress = useQuery(api.progress.myProgress);
-  const recordAnswer = useMutation(api.progress.recordAnswer);
+  const progress = useProgressRows();
+  const recordAnswer = useRecordAnswer();
 
   const [flipped, setFlipped] = useState(false);
   const [result, setResult] = useState<"won" | "missed" | null>(null);
