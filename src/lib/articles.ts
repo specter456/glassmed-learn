@@ -2957,21 +2957,55 @@ export const ARTICLE_CATEGORIES = [
   ...new Set(ARTICLES.map((a) => a.category)),
 ];
 
-/** Plain-text reading of an article (includes title, all tabs). */
-export function articleToSpeech(article: Article): string {
+/**
+ * Plain-text reading of a single section — heading, prose, numbered steps,
+ * bullets and any callout, in the order they appear on screen.
+ */
+function sectionToSpeech(s: ArticleSection): string[] {
+  return [
+    ...(s.heading ? [s.heading + "."] : []),
+    ...(s.body ?? []),
+    ...(s.steps ?? []).map((step, i) => "Step " + (i + 1) + ". " + step),
+    ...(s.bullets ?? []),
+    ...(s.callout ? [s.callout.title + ". " + s.callout.text] : []),
+  ];
+}
+
+/**
+ * Plain-text reading of an article.
+ *
+ * With no `tabId` it reads the title plus every tab (the fallback for
+ * articles without tabs). With a `tabId` it reads only that tab — so
+ * "Read aloud" narrates whatever Basics / In-Depth tab the student is
+ * actually looking at, prefixed with the tab label.
+ */
+export function articleToSpeech(article: Article, tabId?: string): string {
+  let prefix = article.title + ". ";
   let body: string[];
-  if (article.tabs) {
-    body = article.tabs.flatMap((tab) =>
-      tab.sections.flatMap((s) => [...(s.body ?? []), ...(s.steps ?? []), ...(s.bullets ?? [])])
-    );
-  } else {
-    body = article.sections.flatMap((s) => [
-      ...(s.body ?? []),
-      ...(s.steps ?? []).map((step, i) => "Step " + (i + 1) + ". " + step),
-      ...(s.bullets ?? []),
+  const tab = tabId ? article.tabs?.find((t) => t.id === tabId) : undefined;
+
+  if (tab) {
+    prefix += tab.label + ". ";
+    body = [
+      ...tab.sections.flatMap(sectionToSpeech),
+      ...tab.keyPoints,
+      ...(tab.id === "in-depth" ? article.whenToCall : []),
+    ];
+  } else if (article.tabs) {
+    body = article.tabs.flatMap((t) => [
+      t.label + ".",
+      ...t.sections.flatMap(sectionToSpeech),
+      ...t.keyPoints,
     ]);
+    body.push(...article.whenToCall);
+  } else {
+    body = [
+      ...article.sections.flatMap(sectionToSpeech),
+      ...article.keyPoints,
+      ...article.whenToCall,
+    ];
   }
-  return (article.title + ". " + body.join(" ")).slice(0, 4000);
+  return (prefix + body.join(" ")).slice(0, 4000);
 }
 
 /** Total number of step-by-step instructions across all articles (no args). */

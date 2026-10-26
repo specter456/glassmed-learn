@@ -20,6 +20,7 @@ import {
   speak,
   speechAvailable,
   stopSpeaking,
+  toSpeechText,
   type VoiceProfile,
 } from "../src/lib/tts";
 
@@ -363,5 +364,66 @@ describe("onVoicesReady", () => {
     off();
     synth.onvoiceschanged?.();
     expect(notified).toBe(1);
+  });
+});
+
+describe("toSpeechText (clean text handed to the engine)", () => {
+  it("strips markdown headings, emphasis, code fences and list markers", () => {
+    expect(toSpeechText("## The Cardiac Cycle")).toBe("The Cardiac Cycle");
+    expect(toSpeechText("**bold** and *italic* and `code`")).toBe("bold and italic and code");
+    expect(toSpeechText("- first\n- second")).toBe("first second");
+    expect(toSpeechText("> A clinical pearl")).toBe("A clinical pearl");
+  });
+
+  it("keeps the text inside HTML but drops the tags", () => {
+    expect(toSpeechText("<p>Hello <b>world</b></p>")).toBe("Hello world");
+  });
+
+  it("never treats a bare '<' as markup, so comparisons are spoken", () => {
+    expect(toSpeechText("GCS < 15 with RR ≥ 22")).toBe(
+      "GCS less than 15 with RR at least 22",
+    );
+  });
+
+  it("reduces links and images to their labels", () => {
+    expect(toSpeechText("See [the ECG guide](https://example.com/ecg).")).toBe(
+      "See the ECG guide.",
+    );
+    expect(toSpeechText("![heart axis](axis.png)")).toBe("heart axis");
+  });
+
+  it("turns medical symbols into words the engine can pronounce", () => {
+    expect(toSpeechText("SpO₂ 94%")).toBe("SpO2 94 percent");
+    expect(toSpeechText("36.8°C")).toBe("36.8 degrees C");
+    expect(toSpeechText("BP 90/60 mmHg")).toBe("BP 90 per 60 mmHg");
+    expect(toSpeechText("100–120/min")).toBe("100 to 120/min");
+    expect(toSpeechText("Pfannenstiel incision → blunt separation")).toBe(
+      "Pfannenstiel incision, blunt separation",
+    );
+  });
+
+  it("flattens tables and decodes HTML entities", () => {
+    expect(toSpeechText("| A | B |\n|---|---|\n| 1 | 2 |")).toBe("A B 1 2");
+    expect(toSpeechText("Pain &amp; stiffness")).toBe("Pain and stiffness");
+    expect(toSpeechText("Ringer&apos;s lactate")).toBe("Ringer's lactate");
+  });
+
+  it("returns an empty string for empty or markup-only input, and is idempotent", () => {
+    expect(toSpeechText("")).toBe("");
+    expect(toSpeechText("**")).toBe("");
+    expect(toSpeechText("   \n\t  ")).toBe("");
+    const once = toSpeechText("## **Read** SpO₂ < 15");
+    expect(once).not.toBe("");
+    expect(toSpeechText(once)).toBe(once);
+  });
+
+  it("speak() feeds cleaned text to the utterance, so markdown is never spoken", () => {
+    speak("**Cardiac Cycle**", profile("smooth"));
+    expect(lastUtterance().text).toBe("Cardiac Cycle");
+  });
+
+  it("speak() returns false when the content is markup only", () => {
+    expect(speak("**~~**", profile("smooth"))).toBe(false);
+    expect(synth.speakCalls).toBe(0);
   });
 });

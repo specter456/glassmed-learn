@@ -15,11 +15,11 @@ import {
   Stethoscope,
   Zap,
 } from "lucide-react";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate, useSearchParams } from "react-router";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
-import { ARTICLES, ARTICLE_CATEGORIES } from "@/lib/articles";
+import { ARTICLES, ARTICLE_CATEGORIES, articleBySlug } from "@/lib/articles";
 import type { LucideIcon } from "lucide-react";
 import { useHead } from "@/lib/seo";
 
@@ -105,6 +105,8 @@ const RESEARCH_ARTICLES = ARTICLES.filter(
 /* ─── Basics Page ─── */
 function BasicsInner() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const articleSlug = searchParams.get("article");
   const [query, setQuery] = useState("");
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
     new Set(ARTICLE_CATEGORIES)
@@ -142,6 +144,16 @@ function BasicsInner() {
       return next;
     });
   };
+
+  /*
+   * /basics?article=<slug> — how the dashboard shortcuts and search jump
+   * straight to a topic. Open the reader (the same view the topic cards use,
+   * which is where Read Aloud lives) instead of silently showing the list.
+   */
+  const requestedArticle = articleSlug ? articleBySlug(articleSlug) : undefined;
+  if (requestedArticle) {
+    return <Navigate to={`/research?article=${requestedArticle.slug}`} replace />;
+  }
 
   return (
     <div className="min-h-screen">

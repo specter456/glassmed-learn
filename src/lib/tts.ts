@@ -33,6 +33,8 @@ export interface VoiceProfile {
   gender: "male" | "female" | null;
   /** For the "custom" profile — the exact name of the chosen installed voice. */
   customVoiceName?: string;
+  /** For the "custom" profile — the unique URI of the chosen installed voice. */
+  customVoiceURI?: string;
 }
 
 export const VOICE_PROFILES: VoiceProfile[] = [
@@ -281,6 +283,117 @@ export interface SpeakOptions {
   onEnd?: () => void;
 }
 
+/* ------------------------- text preparation ------------------------- */
+
+/** HTML entities that show up in pasted/markdown content → spoken words. */
+const HTML_ENTITIES: Record<string, string> = {
+  "&amp;": "&",
+  "&lt;": "<",
+  "&gt;": ">",
+  "&quot;": '"',
+  "&apos;": "'",
+  "&#39;": "'",
+  "&nbsp;": " ",
+  "&mdash;": "—",
+  "&ndash;": "–",
+  "&hellip;": "…",
+};
+
+/**
+ * Symbols a speech engine reads badly (or skips entirely) → the words a
+ * person would actually say. Note `→` becomes a comma: "Denature → Anneal"
+ * spoken as "Denature, Anneal" sounds far more natural than "Denature to
+ * Anneal".
+ */
+const SPOKEN_SYMBOLS: Array<[RegExp, string]> = [
+  [/[→⇒➜⟶]/g, ", "],
+  [/≥/g, " at least "],
+  [/≤/g, " at most "],
+  [/×/g, " times "],
+  [/÷/g, " divided by "],
+  [/±/g, " plus or minus "],
+  [/≈/g, " approximately "],
+  [/[∆Δ]/g, " delta "],
+  [/°/g, " degrees "],
+  [/%/g, " percent "],
+  [/&/g, " and "],
+  [/[✓✔]/g, " yes "],
+  [/§/g, " section "],
+  [/[µμ]/g, " micro "],
+];
+
+const SUBSCRIPTS = "₀₁₂₃₄₅₆₇₈₉";
+const SUPERSCRIPTS = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+
+/** Convert a decimal HTML entity (`&#39;`) to its character, safely. */
+function decimalEntity(code: string): string {
+  const n = Number(code);
+  if (!Number.isFinite(n) || n < 0x20 || n > 0x10ffff) return " ";
+  if (n >= 0xd800 && n <= 0xdfff) return " "; // lone surrogate
+  try {
+    return String.fromCodePoint(n);
+  } catch {
+    return " ";
+  }
+}
+
+/**
+ * Turn raw content into clean, speakable plain text.
+ *
+ * Speech engines read markup out loud ("hash hash heading", "asterisk
+ * asterisk bold"), so every string handed to `speak()` passes through here
+ * first. Strips HTML tags, Markdown syntax, table pipes, list bullets and
+ * entities, then rewrites medical symbols (SpO₂, 36.8°C, GCS < 15, 100–120)
+ * into words the engine pronounces correctly. Never throws.
+ */
+export function toSpeechText(raw: string): string {
+  if (!raw) return "";
+  let t = String(raw);
+
+  // 1. Blocks that should never be spoken.
+  t = t.replace(/<!--[\s\S]*?-->/g, " ");
+  t = t.replace(/<(script|style)\b[^<>]*>[\s\S]*?<\/\1\s*>/gi, " ");
+  t = t.replace(/^\s*```[\w-]*\s*$/gm, " "); // fence markers (code kept)
+
+  // 2. Markdown → plain words.
+  t = t.replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1"); // image → alt text
+  t = t.replace(/\[([^\]]+)\]\([^)]*\)/g, "$1"); // link → label
+  t = t.replace(/\[([^\]]+)\]\[[^\]]*\]/g, "$1"); // ref link → label
+  t = t.replace(/^\s*\[[^\]]+\]:\s*\S+.*$/gm, " "); // link definitions
+  t = t.replace(/^\s{0,3}#{1,6}\s+/gm, ""); // "# Heading"
+  t = t.replace(/^\s{0,3}>\s?/gm, ""); // "> quote"
+  t = t.replace(/^\s*(?:[-*+]|\d+[.)])\s+/gm, ""); // list markers
+  t = t.replace(/^\s*(?:[-*_]\s*){3,}$/gm, " "); // "---" rules
+  t = t.replace(/^\s*\|?(?:\s*:?-{2,}:?\s*\|)+\s*$/gm, " "); // table rules
+  t = t.replace(/\|/g, " "); // table cell pipes
+  // Well-formed tags only — a bare "<" (e.g. "GCS < 15") must survive,
+  // otherwise everything up to the next ">" would be deleted.
+  t = t.replace(/<\/?[A-Za-z][A-Za-z0-9-]*\b[^<>]*>/g, " ");
+  t = t.replace(/\*\*|__|~~|`|\*/g, ""); // emphasis markers
+
+  // 3. HTML entities → characters.
+  for (const [entity, word] of Object.entries(HTML_ENTITIES)) {
+    t = t.split(entity).join(word);
+  }
+  t = t.replace(/&#(\d+);/g, (_m, code: string) => decimalEntity(code));
+
+  // 4. Symbols → spoken words (subscripts first: SpO₂ → SpO2).
+  t = t.replace(/[₀-₉]/g, (c) => String(SUBSCRIPTS.indexOf(c)));
+  t = t.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g, (c) => String(SUPERSCRIPTS.indexOf(c)));
+  for (const [pattern, word] of SPOKEN_SYMBOLS) t = t.replace(pattern, word);
+  t = t.replace(/(\d)\s*[–—]\s*(\d)/g, "$1 to $2"); // 100–120 → "100 to 120"
+  t = t.replace(/(\d)\/(\d)/g, "$1 per $2"); // 90/60 → "90 per 60"
+  // Any "<" / ">" left over after tag stripping is a comparison
+  // ("GCS < 15"), never markup — say it instead of skipping it.
+  t = t.replace(/</g, " less than ");
+  t = t.replace(/>/g, " greater than ");
+  t = t.replace(/[\\#]/g, ""); // escapes + stray heading markers
+
+  // 5. Collapse and tidy.
+  t = t.replace(/\s+([,.;:!?])/g, "$1"); // "word , word" → "word, word"
+  return t.replace(/\s+/g, " ").trim();
+}
+
 /**
  * Speak `text` with the given profile. Always cancels anything currently
  * playing first (so sending a new message stops the previous narration).
@@ -290,20 +403,32 @@ export function speak(text: string, profile: VoiceProfile, options?: SpeakOption
   if (!speechAvailable() || !text.trim()) return false;
 
   const synth = window.speechSynthesis;
-  try {
-    synth.cancel();
-  } catch {
-    /* ignore */
+  const clean = toSpeechText(text);
+  if (!clean) return false;
+
+  // Only cancel when something is actually queued. An unconditional cancel()
+  // immediately before speak() is the classic Chrome race that swallows the
+  // new utterance — which made "Read aloud" silently do nothing.
+  if (active || synth.speaking || synth.pending) {
+    try {
+      synth.cancel();
+    } catch {
+      /* ignore */
+    }
   }
   clearActive();
 
-  const utterance = new SpeechSynthesisUtterance(text);
+  const utterance = new SpeechSynthesisUtterance(clean);
   utterance.pitch = profile.pitch;
   utterance.rate = profile.rate;
   utterance.volume = 1;
 
-  if (profile.id === "custom" && profile.customVoiceName) {
-    const custom = getInstalledVoices().find((v) => v.name === profile.customVoiceName);
+  if (profile.id === "custom" && (profile.customVoiceName || profile.customVoiceURI)) {
+    const voices = getInstalledVoices();
+    const custom =
+      (profile.customVoiceURI
+        ? voices.find((v) => v.voiceURI === profile.customVoiceURI)
+        : undefined) ?? voices.find((v) => v.name === profile.customVoiceName);
     if (custom) utterance.voice = custom;
   } else if (profile.gender) {
     const voice = pickByGender(profile.gender);
@@ -323,12 +448,19 @@ export function speak(text: string, profile: VoiceProfile, options?: SpeakOption
   // paused, so it can't fight the user.
   active.keepAlive = setInterval(() => {
     const current = active;
-    if (current && !current.paused) {
-      try {
-        window.speechSynthesis.resume();
-      } catch {
-        /* ignore */
+    if (!current || current.paused) return;
+    try {
+      const s = window.speechSynthesis;
+      // Chrome silently kills long utterances after ~15s. A plain resume()
+      // does nothing (we were never paused) — the pause/resume nudge is the
+      // documented workaround, and it is gated on actually speaking so a
+      // finished utterance is never revived.
+      if (s.speaking && !s.paused) {
+        s.pause();
+        s.resume();
       }
+    } catch {
+      /* ignore */
     }
   }, KEEP_ALIVE_MS);
 

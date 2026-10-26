@@ -293,7 +293,6 @@ import {
   Baby,
   BookOpen,
   Brain,
-  Check,
   ChevronRight,
   Clock3,
   ExternalLink,
@@ -301,33 +300,24 @@ import {
   Lightbulb,
   ListChecks,
   Newspaper,
-  Pause,
   Pill,
-  Play,
   Printer,
   Search,
   Siren,
-  Square,
   Star,
   Stethoscope,
   TestTube,
   TrendingUp,
-  Volume2,
 } from "lucide-react";
-import React, { Suspense, useEffect, useMemo, useState } from "react";
+import React, { Suspense, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
-import { toast } from "sonner";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { RabbitMascot } from "@/components/mascots";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { ReadAloud } from "@/components/ReadAloud";
 import {
   ARTICLE_CATEGORIES,
   ARTICLES,
@@ -341,20 +331,6 @@ import { useHead, StructuredData, articleStructuredData } from "@/lib/seo";
 import { isBookmarked, toggleBookmark } from "@/lib/bookmarks";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { BookmarkButton } from "@/components/BookmarkButton";
-import {
-  VOICE_PROFILES,
-  VOICE_QUALITIES,
-  applyQuality,
-  pauseSpeaking,
-  qualityById,
-  resumeSpeaking,
-  speak,
-  speechAvailable,
-  stopSpeaking,
-  type VoiceProfile,
-  type VoiceProfileId,
-  type VoiceQualityId,
-} from "@/lib/tts";
 
 /* ------------------------------------------------------------------ */
 /* Lazy-loaded diagram components                                      */
@@ -502,16 +478,6 @@ function DiagramView({ slug, emoji, title }: { slug: string; emoji: string; titl
       </Suspense>
     </div>
   );
-}
-
-/* ------------------------- safe preferences ------------------------- */
-
-function loadPref(key: string): string | null {
-  try {
-    return localStorage.getItem(key);
-  } catch {
-    return null;
-  }
 }
 
 /* --------------------------- medical news feed --------------------------- */
@@ -987,76 +953,20 @@ function ArticleReader({ article }: { article: Article }) {
   const [activeTab, setActiveTab] = useState<string | null>(
     () => article.tabs?.[0]?.id ?? null,
   );
-  const [speakingSlug, setSpeakingSlug] = useState<string | null>(null);
-  const [paused, setPaused] = useState(false);
-
-  // Reuse the voice the user picked in the Assistant (falls back to Smooth).
-  const [profileId] = useState<VoiceProfileId>(
-    () => (loadPref("medipro-tts-voice") as VoiceProfileId | null) ?? "smooth",
-  );
-  const [customVoiceName] = useState<string | null>(
-    () => loadPref("medipro-tts-custom-voice") || null,
-  );
-  const [qualityId, setQualityId] = useState<VoiceQualityId>(
-    () => (loadPref("medipro-tts-quality") as VoiceQualityId | null) ?? "smooth-calm",
-  );
-  const profile: VoiceProfile = useMemo(() => {
-    const base = VOICE_PROFILES.find((p) => p.id === profileId) ?? VOICE_PROFILES[3];
-    return base.id === "custom" ? { ...base, customVoiceName: customVoiceName ?? undefined } : base;
-  }, [profileId, customVoiceName]);
-  const quality = useMemo(() => qualityById(qualityId), [qualityId]);
-
-  // Persist the quality choice (shared with the Assistant via the same key).
-  useEffect(() => {
-    try {
-      localStorage.setItem("medipro-tts-quality", qualityId);
-    } catch {
-      /* storage unavailable */
-    }
-  }, [qualityId]);
-
-  // Stop any narration when leaving the article.
-  useEffect(() => () => stopSpeaking(), []);
-
-  const isReading = speakingSlug === article.slug;
-
-  const toggleRead = () => {
-    if (isReading) {
-      if (paused) {
-        resumeSpeaking();
-        setPaused(false);
-      } else {
-        pauseSpeaking();
-        setPaused(true);
-      }
-      return;
-    }
-    stopSpeaking();
-    setPaused(false);
-    setSpeakingSlug(article.slug);
-    const started = speak(articleToSpeech(article), applyQuality(profile, quality), {
-      onEnd: () => {
-        setSpeakingSlug(null);
-        setPaused(false);
-      },
-    });
-    if (!started) {
-      setSpeakingSlug(null);
-      toast.error("Speech isn't available in this browser.");
-    }
-  };
-
-  const stopRead = () => {
-    stopSpeaking();
-    setSpeakingSlug(null);
-    setPaused(false);
-  };
 
   const hasTabs = Boolean(article.tabs);
   const activeTabData = hasTabs ? article.tabs?.find((t) => t.id === activeTab) : undefined;
   const displaySections = activeTabData?.sections ?? article.sections;
   const displayKeyPoints = activeTabData?.keyPoints ?? article.keyPoints;
   const displayWhenToCall = article.whenToCall;
+
+  // Read Aloud narrates exactly what is on screen: the active Basics /
+  // In-Depth tab when the article is tabbed, the whole article otherwise.
+  // Markdown, HTML and medical symbols are stripped inside the TTS engine.
+  const speechText = useMemo(
+    () => articleToSpeech(article, activeTab ?? undefined),
+    [article, activeTab],
+  );
 
   const stepCount = displaySections.reduce((s, sec) => s + (sec.steps?.length ?? 0), 0);
 
@@ -1129,84 +1039,19 @@ function ArticleReader({ article }: { article: Article }) {
             <DiagramView slug={article.slug} emoji={article.emoji} title={article.title} />
           </motion.div>
 
-          {/* read aloud */}
+          {/* read aloud — Play / Pause / Stop, voice picker, 0.8–1.5× speed */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.1 }}
-            className="glass-strong mt-4 flex items-center gap-3 rounded-2xl p-3"
+            className="mt-4"
           >
-            <Button
-              onClick={toggleRead}
-              className="gap-2 rounded-full px-4 text-sm"
-              size="sm"
-              aria-label={isReading ? (paused ? "Resume reading" : "Pause reading") : "Read article aloud"}
-            >
-              {isReading && !paused ? (
-                <Pause className="size-3.5" />
-              ) : (
-                <Play className="size-3.5" />
-              )}
-              {isReading && !paused ? "Pause" : "Read aloud"}
-            </Button>
-            <button
-              onClick={stopRead}
-              className="flex size-8 items-center justify-center rounded-full bg-white/5 text-muted-foreground transition-colors hover:bg-[#e2666f]/15 hover:text-[#e2666f]"
-              aria-label="Stop reading"
-              title="Stop"
-            >
-              <Square className="size-3" />
-            </button>
-            <Popover>
-              <PopoverTrigger asChild>
-                <button className="glass-chip flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold text-muted-foreground transition-colors hover:text-foreground">
-                  {quality.label}
-                </button>
-              </PopoverTrigger>
-              <PopoverContent align="end" className="glass-strong w-64 border-white/10">
-                <p className="text-sm font-extrabold tracking-tight">Voice quality</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  Tunes pitch and speed so narration sounds natural, not robotic.
-                </p>
-                <div className="mt-3 space-y-1.5">
-                  {VOICE_QUALITIES.map((q) => {
-                    const active = qualityId === q.id;
-                    return (
-                      <button
-                        key={q.id}
-                        onClick={() => setQualityId(q.id)}
-                        className={`flex w-full items-center justify-between gap-2 rounded-xl border px-3 py-2 text-left transition-colors ${
-                          active
-                            ? "border-wistaria/40 bg-wistaria/10"
-                            : "border-white/10 hover:border-white/20"
-                        }`}
-                      >
-                        <span>
-                          <span className="block text-sm font-bold">{q.label}</span>
-                          <span className="block text-[11px] leading-4 text-muted-foreground">
-                            {q.description}
-                          </span>
-                        </span>
-                        {active && <Check className="size-4 shrink-0 text-wistaria" />}
-                      </button>
-                    );
-                  })}
-                </div>
-              </PopoverContent>
-            </Popover>
-            <div className="ml-auto flex items-center gap-2 text-[11px] font-semibold">
-              <Volume2 className="size-3.5 text-wistaria" />
-              {isReading ? (paused ? "Paused" : "Reading…") : "Ready"}
-              <span className="hidden text-muted-foreground sm:inline">
-                · {profile.label} · {quality.label}
-              </span>
-            </div>
+            <ReadAloud
+              text={speechText}
+              label={activeTabData?.label ?? article.category}
+              storageKey="medipro-article"
+            />
           </motion.div>
-          {!speechAvailable() && (
-            <p className="mt-1 px-1 text-[10px] font-semibold text-[#e2666f]">
-              Speech isn't supported in this browser, so Read Aloud is unavailable.
-            </p>
-          )}
 
           {/* tab bar for tabbed articles */}
           {hasTabs && article.tabs && (
