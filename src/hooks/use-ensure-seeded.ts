@@ -3,7 +3,7 @@ import { useMutation } from "convex/react";
 import { useEffect, useRef } from "react";
 
 /**
- * Seeds the MediPro content tables on first run (no-op afterwards).
+ * Seeds the GlassMed content tables on first run (no-op afterwards).
  * Pages that display topics/decks call this once on mount.
  */
 export function useEnsureSeeded() {

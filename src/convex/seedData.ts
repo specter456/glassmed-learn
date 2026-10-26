@@ -1,5 +1,5 @@
 /**
- * MediPro seed content.
+ * GlassMed seed content.
  *
  * The learning path is deliberately "Basics first, then In-Depth":
  * every topic ships a `basicBlocks` layer (the high-yield foundation)

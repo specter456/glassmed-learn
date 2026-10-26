@@ -88,7 +88,7 @@ const SUGGESTIONS = [
 
 function ThinkingDots() {
   return (
-    <div className="flex items-center gap-1.5" aria-label="MediPro is thinking">
+    <div className="flex items-center gap-1.5" aria-label="GlassMed is thinking">
       {[0, 1, 2].map((i) => (
         <motion.span
           key={i}
@@ -108,7 +108,7 @@ function AssistantInner() {
     {
       role: "assistant",
       content:
-        "Hi! I'm **MediPro** \uD83D\uDC30, your medical study assistant!\n\nI can help you with:\n\u2022 Understanding core concepts (cardiac cycle, action potential, Krebs cycle, etc.)\n\u2022 Explaining mechanisms step-by-step\n\u2022 Clinical correlations and mnemonics\n\u2022 Definitions and terminology\n\nTry asking something like \"What is the cardiac cycle?\" or pick a suggestion below!\n\n_\u26A0\uFE0F For study purposes only \u2014 always verify with your textbooks._",
+        "Hi! I'm **GlassMed** \uD83D\uDC30, your medical study assistant!\n\nI can help you with:\n\u2022 Understanding core concepts (cardiac cycle, action potential, Krebs cycle, etc.)\n\u2022 Explaining mechanisms step-by-step\n\u2022 Clinical correlations and mnemonics\n\u2022 Definitions and terminology\n\nTry asking something like \"What is the cardiac cycle?\" or pick a suggestion below!\n\n_\u26A0\uFE0F For study purposes only \u2014 always verify with your textbooks._",
     },
   ]);
   const [input, setInput] = useState(() => searchParams.get("q") ?? "");
@@ -282,8 +282,8 @@ function AssistantInner() {
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
         setLastError("Something went wrong. Please try again.");
-        toast.error("MediPro couldn't answer this time.");
-        console.error("[MediPro] Smart AI error:", message);
+        toast.error("GlassMed couldn't answer this time.");
+        console.error("[GlassMed] Smart AI error:", message);
       } finally {
         setBusy(false);
       }
@@ -353,7 +353,7 @@ function AssistantInner() {
           <div className="flex items-center gap-2.5">
             <FoxMascot mood="happy" size={40} />
             <div>
-              <h1 className="text-lg font-extrabold tracking-tight text-wistaria">MediPro Assistant</h1>
+              <h1 className="text-lg font-extrabold tracking-tight text-wistaria">GlassMed Assistant</h1>
               <p className="text-xs text-muted-foreground">Accurate study answers · read aloud</p>
             </div>
           </div>
@@ -549,7 +549,7 @@ function AssistantInner() {
                   >
                     <div className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-wistaria">
                       <Bot className="size-3.5" />
-                      MediPro
+                      GlassMed
                     </div>
                     <p className="whitespace-pre-wrap text-sm leading-6 text-foreground">
                       {m.content}

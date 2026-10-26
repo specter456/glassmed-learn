@@ -9,7 +9,7 @@ export type PuppyMood =
   | "excited";
 
 /**
- * The GlassMed puppy — the MediPro mascot. A warm cream puppy with big
+ * The GlassMed puppy — the GlassMed mascot. A warm cream puppy with big
  * sparkly eyes, pink inner ears, a wistaria-blue collar with a little medical
  * cross tag, and a mood system that drives the whole app:
  *

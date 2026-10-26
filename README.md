@@ -17,7 +17,7 @@
 * **Working:** Spaced Repetition Flashcards with smart filtering.
 * **Working:** First-Aid Simulator Game (Clinical scenarios).
 * **Working:** Global Lo-Fi Music Player & Customizable focus Timer.
-*  **In Progress:** Integrating a live AI API for the "Ask MediPro" chatbot.
+*  **In Progress:** Integrating a live AI API for the "Ask GlassMed" chatbot.
 
 ##  Design Evolution & Thought Process
 Building this app was an iterative journey of solving real user problems:

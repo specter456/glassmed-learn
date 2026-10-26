@@ -9,9 +9,11 @@ import { RequireAuth } from "@/components/RequireAuth";
 import { SplashScreen } from "@/components/SplashScreen";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
+import { GlassMedBrand } from "@/components/GlassMedLogo";
+import { useSigningOut } from "@/hooks/use-auth";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
-import { ConvexReactClient } from "convex/react";
-import React, { StrictMode, useEffect, lazy, Suspense } from "react";
+import { ConvexReactClient, useConvexAuth } from "convex/react";
+import React, { StrictMode, useEffect, lazy, Suspense, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import "./index.css";
@@ -161,6 +163,52 @@ const Assistant = lazyWithRetry(() => import("./pages/Assistant.tsx"));
 const Diagrams = lazyWithRetry(() => import("./pages/Diagrams.tsx"));
 const VoiceNotes = lazyWithRetry(() => import("./pages/VoiceNotes.tsx"));
 const NotFound = lazyWithRetry(() => import("./pages/NotFound.tsx"));
+
+/**
+ * Full-screen boot state — deep night-board gradient with the GlassMed
+ * lockup and a light spinner. Rendered instead of the router while the
+ * session is still unknown or a sign-out is tearing down.
+ */
+function BootScreen() {
+  return (
+    <div
+      className="night-board fixed inset-0 z-[99] flex flex-col items-center justify-center gap-7"
+      role="status"
+      aria-label="Loading GlassMed"
+    >
+      <GlassMedBrand size="md" />
+      <div className="size-7 animate-spin rounded-full border-2 border-white/15 border-t-wistaria" />
+    </div>
+  );
+}
+
+/**
+ * Global auth gate — nothing in the router paints until the session is
+ * 100% confirmed (guest or signed-in), or until a sign-out has finished
+ * tearing down. This is what stops the previous account's dashboard from
+ * flashing on load and on logout.
+ *
+ * If the session check stalls (offline backend), public routes are let
+ * through after a beat so the app never locks on the boot screen —
+ * protected routes stay gated by `RequireAuth`, which keeps waiting.
+ */
+function AuthGate({ children }: { children: React.ReactNode }) {
+  const { isLoading } = useConvexAuth();
+  const signingOut = useSigningOut();
+  const [stalled, setStalled] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setStalled(false);
+      return;
+    }
+    const t = window.setTimeout(() => setStalled(true), 8000);
+    return () => window.clearTimeout(t);
+  }, [isLoading]);
+
+  if ((isLoading && !stalled) || signingOut) return <BootScreen />;
+  return <>{children}</>;
+}
 
 /** Shared shell for authenticated pages: page content + the fixed bottom
  *  navigation bar. */
@@ -370,6 +418,7 @@ function App() {
               <ToolbarErrorBoundary>
                 <VlyToolbar />
               </ToolbarErrorBoundary>
+              <AuthGate>
               <Suspense fallback={<RouteLoading />}>
                 <Routes>
                   <Route path="/" element={<Landing />} />
@@ -460,6 +509,7 @@ function App() {
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
+              </AuthGate>
             </BrowserRouter>
           </MotionConfig>
           <Toaster />

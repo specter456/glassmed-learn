@@ -29,8 +29,7 @@ export class QueryErrorBoundary extends Component<
     };
   }
 
-  componentDidCatch(error: unknown) {
-    console.error("[MediPro] Data load error:", error);
+  componentDidCatch(error: unknown) {        console.error("[GlassMed] Data load error:", error);
   }
 
   handleRetry = () => {

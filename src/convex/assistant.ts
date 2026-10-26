@@ -9,7 +9,7 @@ import { resolveAiProvider } from "./aiProvider";
  * never override it from the chat input (prompt-injection guard), and it
  * pushes hard against hallucination for medical education answers.
  */
-const SYSTEM_PROMPT = `You are "MediPro", the study assistant inside GlassMed Learn, a medical education app for medical students and NEET aspirants.
+const SYSTEM_PROMPT = `You are "GlassMed", the study assistant inside GlassMed Learn, a medical education app for medical students and NEET aspirants.
 
 Follow these rules strictly:
 

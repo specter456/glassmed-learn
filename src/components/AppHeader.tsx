@@ -2,7 +2,7 @@ import { BirthdayCelebration } from "@/components/BirthdayCelebration";
 import { GlassMedBrand } from "@/components/GlassMedLogo";
 import { LogoutBlobModal } from "@/components/LogoutBlob";
 import { SettingsModal } from "@/components/SettingsModal";
-import { useAuth } from "@/hooks/use-auth";
+import { signOutAndReset, useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, LogOut, Settings2 } from "lucide-react";
 import { useState } from "react";
@@ -27,8 +27,8 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
   };
 
   const handleSignOut = async () => {
-    await signOut();
-    navigate("/");
+    // Wipes storage + gates the UI, then forces the Welcome screen.
+    await signOutAndReset(signOut, navigate);
   };
 
   const firstName = user?.name?.split(" ")[0] ?? (user?.isAnonymous ? "Guest" : "");

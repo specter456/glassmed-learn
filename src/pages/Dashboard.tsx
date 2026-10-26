@@ -414,7 +414,7 @@ function DashboardInner() {
           })}
         </div>
 
-        {/* ── Ask MediPro ── */}
+        {/* ── Ask GlassMed ── */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
@@ -428,7 +428,7 @@ function DashboardInner() {
                 <Bot className="size-5" />
               </div>
               <div>
-                <h3 className="text-sm font-extrabold tracking-tight text-wistaria">Ask MediPro</h3>
+                <h3 className="text-sm font-extrabold tracking-tight text-wistaria">Ask GlassMed</h3>
                 <p className="mt-0.5 text-xs text-muted-foreground">
                   Stuck on a concept? Get a source-minded study answer.
                 </p>

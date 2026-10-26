@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import logo from "@/assets/logo.svg";
-import { useAuth } from "@/hooks/use-auth";
+import { signOutAndReset, useAuth } from "@/hooks/use-auth";
 import { Home, LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
 
@@ -18,12 +18,8 @@ export function LogoDropdown() {
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
-    try {
-      await signOut();
-      navigate("/");
-    } catch (error) {
-      console.error("Sign out error:", error);
-    }
+    // Wipes storage + gates the UI, then forces the Welcome screen.
+    await signOutAndReset(signOut, navigate);
   };
 
   const handleGoHome = () => {

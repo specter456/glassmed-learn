@@ -321,7 +321,7 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
               <div className="min-w-0">
                 <p className="flex items-center gap-1.5 truncate text-sm font-bold">
                   <UserRound className="size-3.5 shrink-0 text-wistaria" />
-                  {displayName || "MediPro student"}
+                  {displayName || "GlassMed student"}
                 </p>
                 <p className="flex items-center gap-1.5 truncate text-xs text-muted-foreground">
                   <Mail className="size-3 shrink-0" />

@@ -1,5 +1,5 @@
 /**
- * Smart MediPro — Local AI Fallback
+ * Smart GlassMed — Local AI Fallback
  *
  * When no AI_API_KEY is configured, the assistant falls back to this
  * knowledge base built from our own article content. Zero API calls,
@@ -135,7 +135,7 @@ const GENERAL_ANSWERS: { patterns: string[]; answer: string }[] = [
   {
     patterns: ["hello", "hi there", "hey", "who are you", "what are you", "what can you do"],
     answer:
-      "Hello! I'm **MediPro**, your medical study assistant built into GlassMed Learn.\n\nI can help you with:\n• Understanding core medical concepts (cardiac cycle, action potential, etc.)\n• Explaining mechanisms and pathways step-by-step\n• Providing clinical correlations and mnemonics\n• Clarifying definitions and terminology\n\nI draw from our course content to give you accurate, source-based answers. What would you like to study today?",
+      "Hello! I'm **GlassMed**, your medical study assistant built into GlassMed Learn.\n\nI can help you with:\n• Understanding core medical concepts (cardiac cycle, action potential, etc.)\n• Explaining mechanisms and pathways step-by-step\n• Providing clinical correlations and mnemonics\n• Clarifying definitions and terminology\n\nI draw from our course content to give you accurate, source-based answers. What would you like to study today?",
   },
   {
     patterns: ["thank", "thanks", "great job", "awesome", "perfect", "helpful"],
