@@ -32,8 +32,11 @@ export function RequireAuth({ children }: { children: ReactNode }) {
 
   if (!isAuthenticated) {
     const returnTo = `${location.pathname}${location.search}`;
+    // `replace` keeps the history stack clean: the gated page is swapped
+    // for /auth instead of pushed, so Back never bounces between them.
     return (
       <Navigate
+        replace
         to={`/auth?returnTo=${encodeURIComponent(returnTo)}`}
       />
     );

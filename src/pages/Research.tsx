@@ -315,7 +315,7 @@ import {
   Volume2,
 } from "lucide-react";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { toast } from "sonner";
 import { AppHeader } from "@/components/AppHeader";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
@@ -1064,6 +1064,10 @@ function ArticleReader({ article }: { article: Article }) {
     setActiveTab(tabId);
   };
 
+  // Client-side navigation — a plain <a href> would reload the SPA and wipe
+  // the history stack, making Back behave unpredictably.
+  const navigate = useNavigate();
+
   return (
     <main className="mx-auto w-full max-w-[52rem] px-4 pb-32 pt-6 sm:px-6" style={{ overflowX: "hidden", wordWrap: "break-word", overflowWrap: "break-word" }}>
       {/* ================================================================ */}
@@ -1071,13 +1075,14 @@ function ArticleReader({ article }: { article: Article }) {
       {/* ================================================================ */}
       <div>
           {/* back link */}
-          <a
-            href="/research"
+          <button
+            type="button"
+            onClick={() => navigate("/research")}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="size-4" />
             Back to the library
-          </a>
+          </button>
 
           {/* header */}
           <motion.div

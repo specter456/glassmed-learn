@@ -7,6 +7,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { LoginCelebration } from "@/components/Celebration";
 import { RequireAuth } from "@/components/RequireAuth";
 import { SplashScreen } from "@/components/SplashScreen";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { ConvexReactClient } from "convex/react";
@@ -362,6 +363,7 @@ function App() {
         <ConvexAuthProvider client={convex}>
           <MotionConfig reducedMotion="user">
             <BrowserRouter>
+              <ScrollToTop />
               <RouteSyncer />
               <SplashScreen />
               <LoginCelebration />

@@ -89,7 +89,9 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   useEffect(() => {
     if (!authLoading && isAuthenticated && loginTriggered.current && !redirectScheduled.current) {
       redirectScheduled.current = true;
-      navigate(redirect);
+      // replace: leaving /auth must not leave an auth entry behind, otherwise
+      // pressing Back returns here and the guard immediately bounces forward.
+      navigate(redirect, { replace: true });
     }
   }, [authLoading, isAuthenticated, navigate, redirect]);
 
@@ -184,8 +186,9 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     loginTriggered.current = true;
     // Flag the welcome celebration BEFORE navigation — mark as guest.
     markLoginArrival(true);
-    // Navigate IMMEDIATELY — do not await signIn.
-    navigate(redirect);
+    // Navigate IMMEDIATELY — do not await signIn. `replace` keeps the stack
+    // clean so Back from the dashboard never returns to this auth screen.
+    navigate(redirect, { replace: true });
     // Fire-and-forget: signIn completes asynchronously.
     signIn("anonymous").catch((err) => {
       console.error("Guest sign-in failed (background):", err);

@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, LogOut, Settings2 } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 interface AppHeaderProps {
   title?: string;
@@ -17,6 +17,7 @@ interface AppHeaderProps {
 export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
 
@@ -52,7 +53,11 @@ export function AppHeader({ title, subtitle, onBack }: AppHeaderProps) {
             <ArrowLeft className="size-4" />
           </button>
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={() =>
+              pathname === "/dashboard"
+                ? window.scrollTo({ top: 0, behavior: "smooth" })
+                : navigate("/dashboard")
+            }
             aria-label="Go home"
             className="rounded-full transition-transform hover:scale-105"
           >
