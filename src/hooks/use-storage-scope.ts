@@ -4,13 +4,12 @@ import {
   ensureGuestSession,
   wipeGuestSession,
 } from "@/lib/account-storage";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface StorageScope {
-  /**
-   * - `"guest"`  → isolated guest session (data lives under guest_session_id)
+  /** - `"guest"`  → isolated guest session (data lives under guest_session_id)
    * - `"account"`→ signed-in student (data lives under their own user_id)
-   * - `null`     → auth not resolved yet (or signed out) — read nothing
+   * - `null`      → auth not resolved yet (or signed out) — read nothing
    */
   scope: "guest" | "account" | null;
   /** The active guest session id — only set when `scope === "guest"`. */
@@ -19,43 +18,60 @@ export interface StorageScope {
 
 const UNKNOWN: StorageScope = { scope: null, guestId: null };
 
-/**
- * Resolves which storage bucket the current session may read and write.
- *
- * Guests get a `guest_session_id` namespace that is wiped on sign-out/close;
- * email accounts get their own bucket (and Convex rows under their user_id).
+/** Resolves which storage bucket the current session may read and write.
+
+ * Guests get a `guest_session_id` namespace stored in session storage (per tab,
+ * gone when the tab closes) so no two visitors can share a bucket; email
+ * accounts keep the plain keys and their Convex rows under their own `user_id`.
  * While auth is still loading this reports `null`, so callers can show their
  * loading state instead of flashing another account's numbers.
  */
 export function useStorageScope(): StorageScope {
   const { isLoading, isAuthenticated, user } = useAuth();
-  const [guestId, setGuestId] = useState<string | null>(() =>
-    currentGuestSessionId(),
+  const [guestId, setGuestId] = useState<string | null>(
+    () => currentGuestSessionId(),
   );
+  const didUpdate = useRef(false);
 
   useEffect(() => {
-    if (isLoading || !isAuthenticated || !user) return;
-    if (user.isAnonymous) {
-      // Guests always need an id — create one for accounts that signed in
-      // before this key existed, but never rotate a live session.
-      const id = ensureGuestSession();
-      setGuestId((prev) => (prev === id ? prev : id));
+    if (isLoading || !isAuthenticated || !user) {
+      if (didUpdate.current && guestId !== null) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- bailout
+        setGuestId(null);
+      }
+      didUpdate.current = true;
       return;
     }
-    // A signed-in account must never inherit leftover guest data.
-    if (currentGuestSessionId()) {
-      wipeGuestSession();
-      setGuestId(null);
+
+    let next: StorageScope = UNKNOWN;
+    if (user.isAnonymous) {
+      ensureGuestSession();
+      next = {
+        scope: "guest",
+        guestId: currentGuestSessionId(),
+      };
+    } else {
+      next = { scope: "account", guestId: null };
+      if (currentGuestSessionId()) {
+        wipeGuestSession();
+      }
+    }
+
+    didUpdate.current = true;
+    if (next.guestId !== guestId) {
+      /* eslint-disable-next-line react-hooks/set-state-in-effect -- state is
+         written only when the computed next state diverges from the render; the
+         effect only ever writes here, never elsewhere in this render cycle. */
+      setGuestId(next.guestId);
     }
   }, [isLoading, isAuthenticated, user]);
 
-  if (isLoading || !isAuthenticated || !user) return UNKNOWN;
-
-  if (user.isAnonymous) {
-    // Don't report "guest" until the session id actually exists, so callers
-    // keep showing their loading state instead of an empty bucket.
-    return guestId ? { scope: "guest", guestId } : UNKNOWN;
+  // Return the last-computed intent, mirroring what the effect is settling to.
+  if (isLoading || !isAuthenticated || !user) {
+    return UNKNOWN;
   }
-
+  if (user.isAnonymous) {
+    return { scope: "guest", guestId };
+  }
   return { scope: "account", guestId: null };
 }

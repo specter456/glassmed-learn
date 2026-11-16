@@ -328,10 +328,11 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                         </div>
                       </div>
 
-                      {/* Guest note — right above the guest button */}
+                                              {/* Guest note — right above the guest button */}
                       <p className="mt-3 text-center text-xs font-medium leading-relaxed text-[#b8c4d6]">
-                        Note: As a guest, your progress and data will not be
-                        saved.
+                        As a guest, your data is saved only in this browser for
+                        this session. It will not sync across devices and will be
+                        wiped when you sign out.
                       </p>
 
                       <Button

@@ -6,6 +6,7 @@ import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { getPortalRoot } from "@/lib/portal";
+import { scopedStorage } from "@/lib/account-storage";
 
 /**
  * GlassMed's universal birthday celebration 🎂
@@ -25,6 +26,28 @@ import { getPortalRoot } from "@/lib/portal";
 const BIRTHDAY_KEY = "glassmed-birthday";
 const CELEBRATION_MS = 9000; // auto-fade after 9s of party
 const FIREWORKS_MS = 8000; // rockets keep launching for the first 8s
+
+// Birthday memory is personal — scoped under the guest/account session so two
+// visitors on the same browser never share each other's.
+function readMemory(): BirthdayMemory | null {
+  try {
+    const raw = scopedStorage.getItem(BIRTHDAY_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as BirthdayMemory;
+    if (typeof parsed?.name === "string" && typeof parsed?.date === "string") return parsed;
+  } catch {
+    // Unreadable memory — treat as no birthday yet.
+  }
+  return null;
+}
+
+function saveMemory(visible: BirthdayMemory): void {
+  try {
+    scopedStorage.setItem(BIRTHDAY_KEY, JSON.stringify(visible));
+  } catch {
+    /* storage blocked */
+  }
+}
 
 const CONFETTI_COLORS = [
   "#78A2D2", // cloud blue
@@ -52,18 +75,6 @@ function todayStr() {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
     d.getDate(),
   ).padStart(2, "0")}`;
-}
-
-function readMemory(): BirthdayMemory | null {
-  try {
-    const raw = localStorage.getItem(BIRTHDAY_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as BirthdayMemory;
-    if (typeof parsed?.name === "string" && typeof parsed?.date === "string") return parsed;
-  } catch {
-    // Unreadable memory — treat as no birthday yet.
-  }
-  return null;
 }
 
 /** Tiny swaying party hat for the mascot. */
@@ -247,14 +258,7 @@ export function BirthdayCelebration() {
     const clean = name.trim().slice(0, 40);
     const finalName = clean || "Wonderful Student";
     setCelebrateName(finalName);
-    try {
-      localStorage.setItem(
-        BIRTHDAY_KEY,
-        JSON.stringify({ name: finalName, date: todayStr() }),
-      );
-    } catch {
-      // Storage unavailable — the party still happens for this session.
-    }
+          saveMemory({ name: finalName, date: todayStr() });
     setStage("celebrating");
     clearAutoClose();
     autoCloseRef.current = window.setTimeout(closeModal, CELEBRATION_MS);

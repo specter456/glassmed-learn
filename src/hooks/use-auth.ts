@@ -2,6 +2,7 @@ import { api } from "@/convex/_generated/api";
 import { signalAuthReady } from "@/components/SplashScreen";
 import {
   currentGuestSessionId,
+  staleGuestState,
   wipeGuestSession,
 } from "@/lib/account-storage";
 import { useAuthActions } from "@convex-dev/auth/react";
@@ -98,7 +99,6 @@ export async function signOutAndReset(
   // protected screen underneath can never repaint first.
   window.setTimeout(() => setSigningOut(false), 60);
 }
-
 export function useAuth() {
   const { isLoading: isAuthLoading, isAuthenticated } = useConvexAuth();
   const user = useQuery(api.users.currentUser);
@@ -117,27 +117,44 @@ export function useAuth() {
     }
   }, [isLoading]);
 
+  // Stale guest detection: if the app boots into an anonymous account whose
+  // session id is not present in THIS tab (it was wiped, or this is a fresh
+  // browser), that anonymous row belongs to a previous visitor. End it now
+  // instead of leasing it to whoever opens the app next.
+  useEffect(() => {
+    if (!isAuthenticated || !user || staleGuestState.detected) return;
+    if (user.isAnonymous && !currentGuestSessionId()) {
+      // Best-effort cleanup — fails silently if anything is missing.
+      try {
+        wipeGuestSession();
+        void signOut();
+      } catch {
+        /* storage/auth unavailable */
+      }
+      staleGuestState.detected = true;
+    }
+  }, [isAuthenticated, user, signOut]);
+
   // Guest sessions are temporary: when a guest closes the tab we wipe their
-  // isolated session (synchronous, so it always lands) and sign the anonymous
-  // account out. Signed-in email sessions are preserved.
+  // session id so the next tab/website visitor cannot inherit it, and we sign
+  // the anonymous Convex account out. Signed-in email sessions are preserved.
   useEffect(() => {
     if (!isAuthenticated) return;
-    const handleBeforeUnload = () => {
-      // Only sign out anonymous users — authenticated users keep their session
+    const handlePageHide = () => {
+      // Only tear down anonymous visitors — authenticated users keep their session.
       try {
-        const isAnonymous = localStorage.getItem("convex-auth:is-anonymous");
-        if (isAnonymous === "true") {
-          // Drop the guest_session_id and every progress key under it.
-          if (currentGuestSessionId()) wipeGuestSession();
-          // Best-effort signout on unload — may not complete but clears local state
-          signOut();
+        const userIsGuest =
+          user?.isAnonymous ?? localStorage.getItem("convex-auth:is-anonymous") === "true";
+        if (userIsGuest) {
+          wipeGuestSession();
+          void signOut();
         }
       } catch {
         /* storage unavailable */
       }
     };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("pagehide", handlePageHide);
+    return () => window.removeEventListener("pagehide", handlePageHide);
   }, [isAuthenticated, signOut]);
 
   return {
