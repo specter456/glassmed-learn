@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { CatMascot } from "@/components/mascots";
 import confetti from "canvas-confetti";
 import { AnimatePresence, motion } from "framer-motion";
@@ -23,7 +24,6 @@ export const WELCOME_SIGNIN = {
   emoji: "📚",
 };
 
-
 const ROUND_COMPLETE_TITLES: Record<string, string> = {
   Low: "Shift over",
   Mid: "Shift over",
@@ -31,12 +31,17 @@ const ROUND_COMPLETE_TITLES: Record<string, string> = {
   Max: "Perfect shift",
 };
 
-function pickMessage<T extends string[] | Record<string, string>>(collection: T, index: number): string {
+function pickMessage<T extends string[] | Record<string, string>>(
+  collection: T,
+  index: number,
+): string {
   if (Array.isArray(collection)) {
     return collection[index % collection.length] ?? collection[0] ?? "";
   }
   const keys = Object.keys(collection);
-  return collection[keys[index % keys.length]] ?? collection[keys[0]] ?? "";
+  return (
+    collection[keys[index % keys.length]] ?? collection[keys[0]] ?? ""
+  );
 }
 
 const QUIZ_PRAISE: Record<string, string> = {
@@ -54,7 +59,7 @@ const FLASHCARD_WINS: Record<string, string> = {
   Two: "Two cards — the deck is starting to respect you.",
   Three: "Three mastered. The deck is nervous.",
   Four: "Four. The deck has officially met its match.",
-  Five: "Already five? The deck is filing a complaint.",
+  Five: "Five? The deck is filing a complaint.",
   Six: "Six cards — the deck is drafting your biography.",
   Seven: "Seven. The deck is considering a promotion for you.",
   Eight: "Eight mastered. The deck is losing sleep.",
@@ -91,7 +96,12 @@ function ConfettiBurstImpl({ count = 20 }: { count?: number }) {
   return (
     <span
       ref={ref}
-      style={{ position: "relative", display: "inline-block", width: 0, height: 0 }}
+      style={{
+        position: "relative",
+        display: "inline-block",
+        width: 0,
+        height: 0,
+      }}
       aria-hidden="true"
     />
   );
@@ -112,11 +122,12 @@ function Mascot({
   className?: string;
   mood?: string;
 }) {
+  const m = (mood as import("@/components/mascots").CatMood) ?? undefined;
   switch (variant) {
     case "fox":
-      return <CatMascot mood={mood as any} size={size} className={className} />;
+      return <CatMascot mood={m} size={size} className={className} />;
     default:
-      return <CatMascot mood={mood as any} size={size} className={className} />;
+      return <CatMascot mood={m} size={size} className={className} />;
   }
 }
 
@@ -146,8 +157,6 @@ export function LoginCelebration() {
         setOpen(true);
       }, 30);
     };
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- the gate state
-    // is driven here by the only effect that owns it.
   }, []);
 
   // Spot an arrival flag and open the celebration once per sign-in.
@@ -165,32 +174,17 @@ export function LoginCelebration() {
     triggerRef.current?.();
   }, [location.pathname]);
 
-  // After the celebration overlay has animated in, clear the open gate.
+  // Present the overlay after it has settled in.
   useEffect(() => {
-    if (!celebrating) return;
+    if (!open) return;
     const timer = setTimeout(() => {
       setOpen(false);
-      setCelebrating(false);
-
-      try {
-        completeOnboarding().catch((error) => {
-          console.warn("[GlassMed] Couldn't save onboarding:", error);
-        });
-      } catch {
-        /* non-fatal */
-      }
-    }, 2200);
+      setCelebrating(true);
+    }, 280);
     return () => clearTimeout(timer);
-  }, [celebrating]);
+  }, [open]);
 
-  // Once the session is known, decide: full screen or quick toast.
-  useEffect(() => {
-    if (!open || celebrating) return;
-    setOpen(false);
-    setCelebrating(true);
-  }, [open, celebrating]);
-
-  // After the celebration overlay has animated in, clear the open gate.
+  // Once the celebration overlay has animated in, clear the open gate.
   useEffect(() => {
     if (!celebrating) return;
     const timer = setTimeout(() => {
@@ -199,7 +193,10 @@ export function LoginCelebration() {
 
       try {
         completeOnboarding().catch((error) => {
-          console.warn("[GlassMed] Couldn't save onboarding:", error);
+          console.warn(
+            "[GlassMed] Couldn't save onboarding:",
+            error,
+          );
         });
       } catch {
         /* non-fatal */
@@ -219,28 +216,31 @@ export function LoginCelebration() {
   );
 }
 
-function LoginCelebrationOverlay({ open }: { open: boolean }) {
+function LoginCelebrationOverlay({
+  open,
+}: {
+  open: boolean;
+}) {
   const overlayRef = useRef<HTMLDivElement>(null);
-  const doneRef = useRef<(() => void) | null>(null);
+  const onEndRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    doneRef.current = () => {
+    onEndRef.current = () => {
       /* no-op — close is driven by the parent's open state */
     };
   }, [open]);
 
   useEffect(() => {
     if (!overlayRef.current) return;
-    const onEnd = () => {
-      if (doneRef.current) doneRef.current();
-    };
-    overlayRef.current.addEventListener("animationend", onEnd);
-    return () => overlayRef.current?.removeEventListener("animationend", onEnd);
+    const node = overlayRef.current;
+    const handler = () => onEndRef.current?.();
+    node.addEventListener("animationend", handler);
+    return () => node.removeEventListener("animationend", handler);
   }, [open]);
 
   return (
     <motion.div
-      ref={overlayRef as any}
+      ref={overlayRef}
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: open ? 1 : 0 }}
@@ -285,7 +285,13 @@ function LoginCelebrationOverlay({ open }: { open: boolean }) {
 // ------------------------------------------------------------------
 
 export { ConfettiBurstImpl as ConfettiBurst };
-export { FLASHCARD_WINS, Mascot, pickMessage, QUIZ_PRAISE, ROUND_COMPLETE_TITLES };
+export {
+  FLASHCARD_WINS,
+  Mascot,
+  pickMessage,
+  QUIZ_PRAISE,
+  ROUND_COMPLETE_TITLES,
+};
 
 export function markLoginArrival(isGuest: boolean) {
   try {
@@ -336,5 +342,3 @@ function clearFlag(key: string): void {
 async function completeOnboarding(): Promise<void> {
   // Stub — expand only if the backend exposes an onboarding endpoint.
 }
-
-
