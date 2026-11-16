@@ -22,6 +22,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
+import { getPortalRoot } from "@/lib/portal";
 
 function formatMemberSince(ts?: number): string {
   if (!ts || !Number.isFinite(ts)) return "Unknown";
@@ -392,7 +393,7 @@ export function SettingsModal({ open, onClose, onRequestLogout }: SettingsModalP
         </div>
           )}
         </AnimatePresence>,
-        document.body,
+        getPortalRoot(),
       )}
       <InstallModal open={installOpen} onClose={() => setInstallOpen(false)} />
     </>

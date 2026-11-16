@@ -15,6 +15,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
+import { getPortalRoot } from "@/lib/portal";
 import { Spinner } from "@/components/ui/spinner";
 import {
   deleteVoiceNote,
@@ -575,7 +576,7 @@ export function VoiceRecorderModal({ open, onClose }: VoiceRecorderModalProps) {
             </div>
           )}
         </AnimatePresence>,
-        document.body,
+        getPortalRoot(),
       )}
     </>
   );

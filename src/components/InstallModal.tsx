@@ -4,6 +4,7 @@ import { CheckCircle2, Download, MonitorSmartphone, Smartphone, Sparkles, X } fr
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
+import { getPortalRoot } from "@/lib/portal";
 
 interface InstallPromptEventLike {
   prompt: () => Promise<void>;
@@ -275,6 +276,6 @@ export function InstallModal({ open, onClose }: InstallModalProps) {
         </div>
       )}
     </AnimatePresence>,
-    document.body,
+    getPortalRoot(),
   );
 }

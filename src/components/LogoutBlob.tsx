@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { LogOut, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { getPortalRoot } from "@/lib/portal";
 
 interface LogoutBlobModalProps {
   open: boolean;
@@ -120,6 +121,6 @@ export function LogoutBlobModal({ open, onClose, onConfirm }: LogoutBlobModalPro
         </div>
       )}
     </AnimatePresence>,
-    document.body,
+    getPortalRoot(),
   );
 }

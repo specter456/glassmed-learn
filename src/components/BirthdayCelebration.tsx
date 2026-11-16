@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { getPortalRoot } from "@/lib/portal";
 
 /**
  * GlassMed's universal birthday celebration 🎂
@@ -375,7 +376,7 @@ export function BirthdayCelebration() {
           </div>
         )}
       </AnimatePresence>,
-        document.body,
+        getPortalRoot(),
       )}
     </>
   );
