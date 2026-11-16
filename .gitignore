@@ -1,4 +1,12 @@
+# Secrets — real env files must never be committed.
+.env
 .env.local
+.env.production
+.env.development
+.env.*.local
+# ...but the placeholder template is safe to track.
+!.env.example
+
 node_modules
 dist
 src/convex/_generated

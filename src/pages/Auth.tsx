@@ -19,6 +19,7 @@ import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { GlassMedBrand } from "@/components/GlassMedLogo";
 import { markLoginArrival } from "@/components/Celebration";
 import { beginGuestSession } from "@/lib/account-storage";
+import { stripControlChars } from "@/lib/sanitize";
 import { useAuth } from "@/hooks/use-auth";
 import { ArrowRight, Loader2, Mail, UserX } from "lucide-react";
 import { Suspense, useEffect, useRef, useState } from "react";
@@ -34,6 +35,13 @@ interface AuthProps {
 // top of the backend's own limits.
 const RESEND_COOLDOWN_SECONDS = 30;
 const OTP_SEND_KEY = "glassmed-otp-sent-at";
+
+// Input hardening: bounded lengths and a conservative email shape check so the
+// form can never be used to push oversized or malformed payloads at the auth
+// backend. (The backend validates again — this is defence in depth.)
+const MAX_EMAIL_LENGTH = 254; // RFC 5321 maximum
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const OTP_PATTERN = /^\d{6}$/;
 
 function resolveRedirectAfterAuth(
   returnTo: string | null,
@@ -137,13 +145,19 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   const handleEmailSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const emailValue = (formData.get("email") as string)?.trim();
+    const rawEmail = (formData.get("email") as string) ?? "";
+    // Strip control characters/whitespace before validating or sending.
+    const emailValue = stripControlChars(rawEmail).trim();
     // Validation: email cannot be empty
     if (!emailValue) {
       setError("Please enter your email address.");
       return;
     }
-    if (!emailValue.includes("@")) {
+    if (emailValue.length > MAX_EMAIL_LENGTH) {
+      setError("That email address is too long.");
+      return;
+    }
+    if (!EMAIL_PATTERN.test(emailValue)) {
       setError("Please enter a valid email address.");
       return;
     }
@@ -161,8 +175,12 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   };
 
   const handleOtpSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    loginTriggered.current = true;
     event.preventDefault();
+    if (!OTP_PATTERN.test(otp)) {
+      setError("Enter the 6-digit code from your email.");
+      return;
+    }
+    loginTriggered.current = true;
     setIsLoading(true);
     setError(null);
     try {
@@ -243,6 +261,9 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                           name="email"
                           placeholder="name@example.com"
                           type="email"
+                          inputMode="email"
+                          autoComplete="email"
+                          maxLength={MAX_EMAIL_LENGTH}
                           className="pl-9"
                           disabled={isLoading}
                           value={email}

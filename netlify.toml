@@ -19,6 +19,25 @@
   status = 200
 
 # ---------------------------------------------------------------------------
+# Security headers — applied to every response.
+#   nosniff            stops browsers from MIME-sniffing a response into a
+#                      script/style it was not served as.
+#   SAMEORIGIN         blocks clickjacking by third-party frames.
+#   HSTS               forces HTTPS for a year (Netlify serves HTTPS only).
+#   Permissions-Policy only the microphone is exposed (voice notes); camera
+#                      and geolocation are disabled outright.
+#   Referrer-Policy    keeps URLs out of cross-origin Referer headers.
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), geolocation=(), microphone=(self)"
+
+# ---------------------------------------------------------------------------
 # REQUIRED environment variables — set these in the Netlify UI
 # (Site settings -> Environment variables) before/after your first build:
 #

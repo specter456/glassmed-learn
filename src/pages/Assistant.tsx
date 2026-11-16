@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/popover";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
+import { stripControlChars } from "@/lib/sanitize";
 import {
   VOICE_PROFILES,
   VOICE_QUALITIES,
@@ -99,6 +100,18 @@ function ThinkingDots() {
       ))}
     </div>
   );
+}
+
+/** Longest question the assistant accepts (mirrors the server-side cap). */
+const MAX_CHAT_INPUT = 2000;
+
+/**
+ * Chat input hardening: drop control characters that have no place in a chat
+ * message (keeping newlines and tabs) and cap the length. Message content is
+ * always rendered as escaped JSX text, never as HTML.
+ */
+function sanitizeChatText(value: string) {
+  return stripControlChars(value, MAX_CHAT_INPUT);
 }
 
 function AssistantInner() {
@@ -259,7 +272,7 @@ function AssistantInner() {
   const send = useCallback(
     async (textOverride?: string) => {
       if (listening) stopListening();
-      const text = (textOverride ?? input).trim().slice(0, 2000);
+      const text = sanitizeChatText(textOverride ?? input).trim();
       if (!text || busy) return;
 
       stopSpeaking();
@@ -633,7 +646,7 @@ function AssistantInner() {
               <Textarea
                 value={input}
                 onChange={(e) => {
-                  setInput(e.target.value);
+                  setInput(sanitizeChatText(e.target.value));
                   // A manual edit ends any live listening session so the
                   // recognizer can't overwrite what the user typed.
                   if (listening) stopListening();
@@ -650,7 +663,7 @@ function AssistantInner() {
                     ? "Listening… speak your question 🎤"
                     : "Ask a question… (Enter to send, Shift+Enter for a new line)"
                 }
-                maxLength={2000}
+                maxLength={MAX_CHAT_INPUT}
                 rows={1}
                 className="nice-scroll max-h-32 min-h-0 w-full resize-none rounded-xl border-white/10 bg-white/5 pb-7 pr-11"
                 aria-label="Ask the assistant"
