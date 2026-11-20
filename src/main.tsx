@@ -11,6 +11,8 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
 import { GlassMedBrand } from "@/components/GlassMedLogo";
 import { useSigningOut } from "@/hooks/use-auth";
+import { installRemoveChildGuard } from "@/lib/dom-guard";
+import { ensurePortalRoot } from "@/lib/portal";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { ConvexReactClient, useConvexAuth } from "convex/react";
 import React, { StrictMode, useEffect, lazy, Suspense, useState } from "react";
@@ -523,6 +525,8 @@ function App() {
   );
 }
 
+installRemoveChildGuard();
+ensurePortalRoot();
 stripReloadMarker();
 preloadRoutes();
 installCrashGuard();

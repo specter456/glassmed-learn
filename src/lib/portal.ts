@@ -16,8 +16,12 @@
 
 const PORTAL_ROOT_ID = "glassmed-portal-root";
 
-export function getPortalRoot(): HTMLElement {
-  if (typeof window === "undefined") return document.body;
+/**
+ * Create the overlay container once, at boot, so renders never touch the DOM.
+ * Returns the stable element (or `null` outside the browser).
+ */
+export function ensurePortalRoot(): HTMLElement | null {
+  if (typeof window === "undefined") return null;
 
   const existing = document.getElementById(PORTAL_ROOT_ID);
   if (existing) return existing;
@@ -26,4 +30,8 @@ export function getPortalRoot(): HTMLElement {
   el.id = PORTAL_ROOT_ID;
   document.body.appendChild(el);
   return el;
+}
+
+export function getPortalRoot(): HTMLElement {
+  return ensurePortalRoot() ?? document.body;
 }
