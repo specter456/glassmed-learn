@@ -2,10 +2,9 @@ import { Button } from "@/components/ui/button";
 import { CatMascot } from "@/components/mascots";
 import confetti from "canvas-confetti";
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import {
   GUEST_LOGIN_KEY,
   LOGIN_ARRIVAL_KEY,
@@ -20,8 +19,9 @@ import { getPortalRoot } from "@/lib/portal";
 const WELCOME_WITH_GUEST = {
   title: "Welcome back, brilliant student!",
   subtitle:
-    "Your study space is ready — pick up where you left off and keep\nthe momentum going. We've brought back your notes, streaks and progress.",
+    "Your study space is ready — your notes, streaks and progress are right where you left them.",
   emoji: "🌟",
+  cta: "Start Studying",
 };
 
 // ------------------------------------------------------------------
@@ -94,26 +94,12 @@ function Mascot({
 
 export function LoginCelebration() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [celebrating, setCelebrating] = useState(false);
-  const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const triggerRef = useRef<(() => void) | null>(null);
-  const closingRef = useRef(false);
 
-  // Keep the latest trigger callback available to effects without
-  // re-running them when the ref is refreshed.
-  useEffect(() => {
-    triggerRef.current = () => {
-      if (closingRef.current) return;
-      closingRef.current = true;
-      openTimerRef.current = setTimeout(() => {
-        closingRef.current = false;
-        setOpen(true);
-      }, 30);
-    };
-  }, []);
-
-  // Spot an arrival flag and open the celebration once per sign-in.
+  // Spot an arrival flag and open the welcome card once per sign-in. The DOM
+  // side effect (setting state) happens on the next frame, never synchronously
+  // in the effect body.
   useEffect(() => {
     const arrival = readFlag(LOGIN_ARRIVAL_KEY);
     if (!arrival) return;
@@ -125,110 +111,114 @@ export function LoginCelebration() {
     const shouldPlay = !readFlag(WELCOME_SHOWN_KEY) || isGuest;
     if (!shouldPlay) return;
 
-    triggerRef.current?.();
+    try {
+      sessionStorage.setItem(WELCOME_SHOWN_KEY, "1");
+    } catch {
+      /* non-fatal */
+    }
+
+    const raf = requestAnimationFrame(() => setOpen(true));
+    return () => cancelAnimationFrame(raf);
   }, [location.pathname]);
 
-  // Present the overlay after it has settled in.
-  useEffect(() => {
-    if (!open) return;
-    const timer = setTimeout(() => {
-      setOpen(false);
-      setCelebrating(true);
-    }, 280);
-    return () => clearTimeout(timer);
-  }, [open]);
+  const close = () => setOpen(false);
 
-  // Once the celebration overlay has animated in, clear the open gate.
-  useEffect(() => {
-    if (!celebrating) return;
-    const timer = setTimeout(() => {
-      setOpen(false);
-      setCelebrating(false);
+  const handleStartStudying = () => {
+    // Close first (AnimatePresence plays the fade-out), then go straight to
+    // the dashboard. One click, no second tap needed.
+    setOpen(false);
+    void completeOnboarding().catch((error) => {
+      console.warn("[GlassMed] Couldn't save onboarding:", error);
+    });
+    navigate("/dashboard");
+  };
 
-      try {
-        completeOnboarding().catch((error) => {
-          console.warn(
-            "[GlassMed] Couldn't save onboarding:",
-            error,
-          );
-        });
-      } catch {
-        /* non-fatal */
-      }
-    }, 2200);
-    return () => clearTimeout(timer);
-  }, [celebrating]);
-
-  if (!open && !celebrating) return null;
-
+  // Render the portal unconditionally so AnimatePresence can play the
+  // fade-out after `open` flips to false.
   return createPortal(
     <AnimatePresence>
-      {open && <LoginCelebrationOverlay open={open} />}
-      {celebrating && <LoginCelebrationOverlay open={celebrating} />}
+      {open && (
+        <LoginCelebrationOverlay
+          key="welcome-back"
+          onContinue={handleStartStudying}
+          onDismiss={close}
+        />
+      )}
     </AnimatePresence>,
     getPortalRoot(),
   );
 }
 
 function LoginCelebrationOverlay({
-  open,
+  onContinue,
+  onDismiss,
 }: {
-  open: boolean;
+  onContinue: () => void;
+  onDismiss: () => void;
 }) {
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const onEndRef = useRef<(() => void) | null>(null);
-
-  useEffect(() => {
-    onEndRef.current = () => {
-      /* no-op — close is driven by the parent's open state */
-    };
-  }, [open]);
-
-  useEffect(() => {
-    if (!overlayRef.current) return;
-    const node = overlayRef.current;
-    const handler = () => onEndRef.current?.();
-    node.addEventListener("animationend", handler);
-    return () => node.removeEventListener("animationend", handler);
-  }, [open]);
-
   return (
     <motion.div
-      ref={overlayRef}
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      style={{
+        background: "rgba(8, 12, 30, 0.45)",
+        backdropFilter: "blur(6px)",
+        WebkitBackdropFilter: "blur(6px)",
+      }}
       initial={{ opacity: 0 }}
-      animate={{ opacity: open ? 1 : 0 }}
+      animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.18 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      onClick={onDismiss}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="glassmed-welcome-title"
     >
       <motion.div
-        className="relative mx-auto max-w-md overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm shadow-2xl"
-        initial={{ scale: 0.94, opacity: 0 }}
-        animate={{ scale: open ? 1 : 0.94, opacity: open ? 1 : 0 }}
-        transition={{ duration: 0.2 }}
+        className="relative w-full max-w-md rounded-3xl p-8 text-center"
+        style={{
+          background: "rgba(255, 255, 255, 0.1)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          boxShadow:
+            "0 24px 80px -20px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.15)",
+        }}
+        initial={{ opacity: 0, scale: 0.94, y: 16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 8 }}
+        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+        onClick={(event) => event.stopPropagation()}
       >
         <div className="mb-3 text-5xl" aria-hidden="true">
-          🌟
+          {WELCOME_WITH_GUEST.emoji}
         </div>
-        <h3 className="text-xl font-bold text-white">
+        <h2
+          id="glassmed-welcome-title"
+          className="text-xl font-extrabold tracking-tight text-white"
+          style={{ textShadow: "0 1px 12px rgba(8, 12, 30, 0.45)" }}
+        >
           {WELCOME_WITH_GUEST.title}
-        </h3>
-        <p className="mt-2 text-sm leading-relaxed text-white/80">
+        </h2>
+        <p
+          className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-white/85"
+          style={{ textShadow: "0 1px 10px rgba(8, 12, 30, 0.4)" }}
+        >
           {WELCOME_WITH_GUEST.subtitle}
         </p>
-        <p className="mt-3 text-xs text-white/50">
-          Your study space is ready — keep the momentum going!
-        </p>
         <Button
-          className="mt-6 w-full rounded-xl bg-wistaria px-5 text-wistaria shadow-lg shadow-wistaria/20 transition-transform active:scale-95"
-          size="sm"
-          onClick={() => {
-            /* parent-driven close */
-          }}
+          type="button"
+          className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#78A2D2] to-[#a2a2d0] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-[#78A2D2]/30 transition-transform hover:brightness-110 active:scale-[0.97]"
+          onClick={onContinue}
         >
-          <X className="mr-2 h-4 w-4" />
-          Close
+          {WELCOME_WITH_GUEST.cta}
         </Button>
+        <button
+          type="button"
+          onClick={onDismiss}
+          className="mt-3 w-full rounded-xl px-4 py-2 text-xs font-semibold text-white/60 transition-colors hover:text-white/90"
+        >
+          Maybe later
+        </button>
       </motion.div>
     </motion.div>
   );
