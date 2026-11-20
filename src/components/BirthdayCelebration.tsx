@@ -49,19 +49,25 @@ function saveMemory(visible: BirthdayMemory): void {
   }
 }
 
+// GlassMed's neon party palette: cyan, purple, pink (+ a little sparkle).
+const NEON_CYAN = "#22d3ee";
+const NEON_PURPLE = "#a855f7";
+const NEON_PINK = "#ec4899";
+
 const CONFETTI_COLORS = [
-  "#78A2D2", // cloud blue
-  "#FEFFAF", // butter yellow
-  "#A2A2D0", // wistaria
-  "#8be9c8", // mint
-  "#ffb3c6", // soft pink
-  "#FFD700", // gold
-  "#e63946", // red
-  "#3b82f6", // blue
+  NEON_CYAN,
+  NEON_PURPLE,
+  NEON_PINK,
+  "#67e8f9",
+  "#c084fc",
+  "#f9a8d4",
+  "#FEFFAF",
   "#ffffff",
 ];
 
-const FIREWORK_COLORS = ["#FFD700", "#e63946", "#3b82f6", "#ffffff"];
+const FIREWORK_COLORS = [NEON_CYAN, NEON_PURPLE, NEON_PINK, "#ffffff"];
+
+const AGAIN_MS = 6000; // the "again" card lingers long enough to enjoy
 
 type Stage = "name" | "celebrating" | "again";
 
@@ -99,6 +105,49 @@ function PartyHat() {
       <circle cx="32" cy="2" r="5" fill="#feffaf" />
       <path d="M4 56 Q 32 62 60 56 Z" fill="#231640" opacity="0.35" />
     </motion.svg>
+  );
+}
+
+/**
+ * A cute floating sticker: gentle bob + sway, forever.
+ * Pure transform animation, so it stays GPU-cheap.
+ */
+function Sticker({
+  emoji,
+  className,
+  delay = 0,
+  duration = 4,
+  rotate = 12,
+  size = "text-3xl sm:text-4xl",
+}: {
+  emoji: string;
+  className: string;
+  delay?: number;
+  duration?: number;
+  rotate?: number;
+  size?: string;
+}) {
+  return (
+    <motion.span
+      aria-hidden
+      className={`pointer-events-none absolute select-none drop-shadow-[0_0_14px_rgba(168,85,247,0.55)] ${size} ${className}`}
+      initial={{ opacity: 0, scale: 0.6 }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+        y: [0, -14, 0],
+        rotate: [-rotate, rotate, -rotate],
+      }}
+      exit={{ opacity: 0, scale: 0.6 }}
+      transition={{
+        opacity: { duration: 0.35, delay },
+        scale: { duration: 0.35, delay },
+        y: { duration, repeat: Infinity, ease: "easeInOut", delay },
+        rotate: { duration: duration * 1.4, repeat: Infinity, ease: "easeInOut", delay },
+      }}
+    >
+      {emoji}
+    </motion.span>
   );
 }
 
@@ -229,23 +278,62 @@ export function BirthdayCelebration() {
     };
   }, [open, stage]);
 
-  // "Happy birthday again" — one quick burst, auto-closes.
+  // Grand entrance: as soon as the card opens, fire a full-screen neon
+  // explosion from both sides and the bottom of the screen.
   useEffect(() => {
-    if (!open || stage !== "again") return;
+    if (!open) return;
+
+    // Bottom-centre fountain bursting upward.
     confetti({
-      particleCount: 120,
-      spread: 110,
-      origin: { y: 0.6 },
+      particleCount: 110,
+      angle: 90,
+      spread: 120,
+      startVelocity: 46,
+      origin: { x: 0.5, y: 1 },
       colors: CONFETTI_COLORS,
+      scalar: 1,
+      ticks: 200,
+      zIndex: 10000,
       disableForReducedMotion: true,
     });
+
+    // Left cannon.
+    confetti({
+      particleCount: 70,
+      angle: 58,
+      spread: 70,
+      startVelocity: 52,
+      origin: { x: 0, y: 0.9 },
+      colors: CONFETTI_COLORS,
+      ticks: 200,
+      zIndex: 10000,
+      disableForReducedMotion: true,
+    });
+
+    // Right cannon.
+    confetti({
+      particleCount: 70,
+      angle: 122,
+      spread: 70,
+      startVelocity: 52,
+      origin: { x: 1, y: 0.9 },
+      colors: CONFETTI_COLORS,
+      ticks: 200,
+      zIndex: 10000,
+      disableForReducedMotion: true,
+    });
+  }, [open]);
+
+  // "Happy birthday again" — the entrance burst fires above, then the card
+  // eases itself away.
+  useEffect(() => {
+    if (!open || stage !== "again") return;
     const t = window.setTimeout(() => {
       setOpen(false);
       setStage("name");
-    }, 2600);
+    }, AGAIN_MS);
     return () => {
       window.clearTimeout(t);
-      confetti.reset();
     };
   }, [open, stage]);
 
@@ -258,7 +346,7 @@ export function BirthdayCelebration() {
     const clean = name.trim().slice(0, 40);
     const finalName = clean || "Wonderful Student";
     setCelebrateName(finalName);
-          saveMemory({ name: finalName, date: todayStr() });
+    saveMemory({ name: finalName, date: todayStr() });
     setStage("celebrating");
     clearAutoClose();
     autoCloseRef.current = window.setTimeout(closeModal, CELEBRATION_MS);
@@ -292,18 +380,44 @@ export function BirthdayCelebration() {
               onClick={isParty ? undefined : closeModal}
             />
 
-            <motion.div
-              role="dialog"
-              aria-modal="true"
-              aria-label="Birthday celebration"
-              className={`glass-strong shine relative w-full rounded-3xl p-7 text-center ${
+            <div
+              className={`relative flex w-full justify-center ${
                 isParty ? "max-w-lg" : "max-w-md"
               }`}
-              initial={{ opacity: 0, y: 24, scale: 0.94 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 12, scale: 0.96, transition: { duration: 0.6 } }}
-              transition={{ type: "spring", stiffness: 320, damping: 26 }}
             >
+              {/* Pulsing neon halo, painted behind the card. */}
+              <motion.div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 rounded-[2.5rem]"
+                style={{
+                  background: `linear-gradient(120deg, ${NEON_CYAN}, ${NEON_PURPLE}, ${NEON_PINK}, ${NEON_CYAN})`,
+                  filter: "blur(26px)",
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0.3, 0.75, 0.3] }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  opacity: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                }}
+              />
+
+              <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Birthday celebration"
+                className="glass-strong shine relative w-full rounded-[2.5rem] border border-white/25 p-7 text-center shadow-[0_0_50px_-10px_rgba(168,85,247,0.85),0_30px_80px_-30px_rgba(0,0,0,0.8)]"
+                initial={{ opacity: 0, y: 24, scale: 0.94 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 12, scale: 0.96, transition: { duration: 0.6 } }}
+                transition={{ type: "spring", stiffness: 320, damping: 26 }}
+              >
+                {/* Cute floating stickers around the card. */}
+                <Sticker emoji="🎈" className="-top-8 -left-3" delay={0} duration={3.6} />
+                <Sticker emoji="🎉" className="-top-7 -right-4" delay={0.25} duration={4.2} rotate={16} />
+                <Sticker emoji="🐱" className="-left-2 top-1/3 sm:-left-7" delay={0.45} duration={3.2} rotate={10} />
+                <Sticker emoji="🎂" className="-right-2 top-1/2 sm:-right-7" delay={0.15} duration={3.9} rotate={-14} />
+                <Sticker emoji="⭐" className="-bottom-7 left-1/4" delay={0.6} duration={3.4} size="text-2xl sm:text-3xl" />
+                <Sticker emoji="🎈" className="-bottom-6 -right-3" delay={0.35} duration={4.4} rotate={18} />
               <button
                 onClick={closeModal}
                 className="absolute right-4 top-4 z-10 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-white/10"
@@ -344,14 +458,19 @@ export function BirthdayCelebration() {
 
               {stage === "again" && againName && (
                 <>
-                  <div className="flex justify-center">
-                    <CatMascot mood="excited" size={110} />
-                  </div>
-                  <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-wistaria">
-                    Happy Birthday again, {againName}! 🎂✨
+                  <motion.div
+                    className="relative mx-auto flex h-32 w-40 items-end justify-center"
+                    animate={{ y: [0, -14, 0], rotate: [-2, 2, -2] }}
+                    transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <PartyHat />
+                    <CatMascot mood="excited" size={104} />
+                  </motion.div>
+                  <h2 className="mt-2 bg-[linear-gradient(100deg,#22d3ee,#a855f7,#ec4899)] bg-clip-text font-calligraphy text-4xl leading-tight text-transparent drop-shadow-[0_0_20px_rgba(168,85,247,0.8)] sm:text-5xl">
+                    Happy Birthday again, {againName}!
                   </h2>
-                  <p className="mx-auto mt-2 max-w-[22rem] text-sm leading-6 text-muted-foreground">
-                    Hope your special day keeps getting better!
+                  <p className="mx-auto mt-2 text-base font-bold text-foreground">
+                    Take a break, you've earned it! 🌟
                   </p>
                 </>
               )}
@@ -367,16 +486,16 @@ export function BirthdayCelebration() {
                     <CatMascot mood="excited" size={128} />
                   </motion.div>
 
-                  <h2 className="mt-3 bg-gradient-to-b from-[#FEFFAF] via-white to-[#A2A2D0] bg-clip-text text-4xl font-black tracking-tight text-transparent drop-shadow-[0_0_18px_rgba(162,162,208,0.65)] sm:text-5xl">
-                    🎉 Happy Birthday, {celebrateName}! 🎂✨
+                  <h2 className="mt-2 bg-[linear-gradient(100deg,#22d3ee,#a855f7,#ec4899)] bg-clip-text font-calligraphy text-4xl leading-tight text-transparent drop-shadow-[0_0_22px_rgba(236,72,153,0.8)] sm:text-5xl">
+                    🎉 Happy Birthday, {celebrateName}!
                   </h2>
-                  <p className="mx-auto mt-3 max-w-[24rem] text-sm leading-6 text-muted-foreground">
-                    May your day be filled with joy, laughter, and all the things you
-                    love most. You are amazing!
+                  <p className="mx-auto mt-2 text-base font-bold text-foreground">
+                    Take a break, you've earned it! 🌟
                   </p>
                 </>
               )}
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
         )}
       </AnimatePresence>,
