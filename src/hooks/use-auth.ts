@@ -1,5 +1,5 @@
 import { api } from "@/convex/_generated/api";
-import { signalAuthReady } from "@/components/SplashScreen";
+import { signalAuthReady } from "@/lib/auth-ready";
 import {
   currentGuestSessionId,
   staleGuestState,

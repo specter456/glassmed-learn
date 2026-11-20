@@ -265,7 +265,6 @@ export function MitochondriaDiagram({ className }: { className?: string }) {
 
           {/* === ELECTRON TRANSPORT CHAIN (dots along inner membrane) === */}
           {[195, 225, 255, 345, 375, 405].map((cx, i) => {
-            const cy = 200 + (i % 2 === 0 ? -85 : 85) * (i < 3 ? 1 : 1);
             const ry2 = 85;
             const yPos = i < 3 ? 200 - ry2 + 12 : 200 + ry2 - 12;
             return (

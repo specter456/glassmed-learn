@@ -84,7 +84,6 @@ export function BrainstemCranialNervesDiagram() {
 
   const current = active ?? hovered;
   const isLit = (id: string) => current === id;
-  const isRegion = (id: string) => REGIONS.some((r) => r.id === id);
 
   const activeNerve = NERVES.find((n) => n.id === current);
   const activeRegion = REGIONS.find((r) => r.id === current);

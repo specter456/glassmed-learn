@@ -184,7 +184,12 @@ export function FocusTimer() {
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const prefsRef = useRef(prefs);
-  prefsRef.current = prefs;
+
+  // Keep the timer callback reading the latest prefs without writing a ref
+  // during render (refs may only be touched outside of render).
+  useEffect(() => {
+    prefsRef.current = prefs;
+  }, [prefs]);
 
   const clearTimer = useCallback(() => {
     if (intervalRef.current) {

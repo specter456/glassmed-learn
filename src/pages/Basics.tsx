@@ -4,7 +4,6 @@ import {
   ArrowRight,
   BookOpen,
   ChevronDown,
-  ChevronRight,
   Dna,
   HeartPulse,
   Layers,

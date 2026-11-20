@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { isAuthReady, onAuthReady } from "@/lib/auth-ready";
 
 /**
  * Minimum time the splash is visible (ms) — even on a fast connection the
@@ -10,21 +11,6 @@ import { useEffect, useRef, useState } from "react";
 const SPLASH_MIN_MS = 2200;
 /** Absolute ceiling — the splash never blocks the app longer than this. */
 const SPLASH_MAX_MS = 4500;
-
-/**
- * Module-level signal that the auth check has completed. Consumed once by
- * SplashScreen so it can dismiss early on fast connections.
- */
-let authReady = false;
-const readyListeners: Array<() => void> = [];
-
-/** Called by useAuth once the initial session check resolves. */
-export function signalAuthReady() {
-  if (authReady) return;
-  authReady = true;
-  for (const fn of readyListeners) fn();
-  readyListeners.length = 0;
-}
 
 /**
  * App-launch splash — deep navy→purple gradient with the rabbit swinging
@@ -50,27 +36,18 @@ export function SplashScreen() {
     // Minimum display time gate.
     const min = setTimeout(() => {
       minRef.current = true;
-      if (authReady) dismiss();
+      if (isAuthReady()) dismiss();
     }, SPLASH_MIN_MS);
 
-    // If auth is already ready (e.g. cached session), dismiss after min.
-    if (authReady && minRef.current) dismiss();
-    else {
-      const onReady = () => {
-        if (minRef.current) dismiss();
-      };
-      readyListeners.push(onReady);
-      return () => {
-        clearTimeout(ceiling);
-        clearTimeout(min);
-        const idx = readyListeners.indexOf(onReady);
-        if (idx !== -1) readyListeners.splice(idx, 1);
-      };
-    }
+    // Dismiss as soon as both the minimum time and the auth check are done.
+    const unsubscribe = onAuthReady(() => {
+      if (minRef.current) dismiss();
+    });
 
     return () => {
       clearTimeout(ceiling);
       clearTimeout(min);
+      unsubscribe();
     };
   }, []);
 

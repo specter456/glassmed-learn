@@ -13,7 +13,6 @@ import { useCallback, useEffect, useState } from "react";
  */
 
 const STREAK_KEY = "glassmed-review-streak";
-const LAST_REVIEW_KEY = "glassmed-last-review-date";
 
 interface StreakData {
   count: number;
@@ -48,8 +47,23 @@ function saveStreak(data: StreakData): void {
   }
 }
 
+/** Load the streak and apply the "missed a day" reset up front, so the first
+ * render already shows the correct value (no effect-driven re-render). */
+function loadInitialStreak(): StreakData {
+  const data = loadStreak();
+  if (data.lastDate) {
+    const gap = daysBetween(data.lastDate, todayStr());
+    if (gap > 1) {
+      const reset = { count: 0, lastDate: data.lastDate };
+      saveStreak(reset);
+      return reset;
+    }
+  }
+  return data;
+}
+
 export function useReviewStreak() {
-  const [streak, setStreak] = useState<StreakData>(loadStreak);
+  const [streak, setStreak] = useState<StreakData>(loadInitialStreak);
 
   // Re-read whenever the active storage bucket changes (a guest session is
   // created or wiped) so no streak ever crosses an account boundary.
@@ -63,20 +77,6 @@ export function useReviewStreak() {
       });
     sync();
     return onGuestSessionWiped(sync);
-  }, []);
-
-  // Check on mount if the streak should be reset (missed >1 day)
-  useEffect(() => {
-    const data = loadStreak();
-    if (data.lastDate) {
-      const gap = daysBetween(data.lastDate, todayStr());
-      if (gap > 1) {
-        // Missed a day — reset streak
-        const reset = { count: 0, lastDate: data.lastDate };
-        saveStreak(reset);
-        setStreak(reset);
-      }
-    }
   }, []);
 
   /**

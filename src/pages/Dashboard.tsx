@@ -16,7 +16,6 @@ import {
   Sparkles,
   Trophy,
   Zap,
-  Zap as ZapIcon,
   GraduationCap,
   Flame,
 } from "lucide-react";
@@ -141,7 +140,7 @@ function DashboardInner() {
         ? "Good afternoon"
         : "Good evening";
 
-  const searchIndex = useMemo(buildSearchIndex, []);
+  const searchIndex = useMemo(() => buildSearchIndex(), []);
 
   // Debounced search — wait 300ms after typing stops
   const handleRawChange = useCallback((value: string) => {

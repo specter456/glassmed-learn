@@ -56,24 +56,37 @@ function removeMeta(name: string) {
  * ```
  */
 export function useHead(seo?: SEOData) {
+  // Depend on the individual values (not the object) so callers passing a
+  // fresh literal each render don't re-run the effect on every render.
+  const {
+    title,
+    description,
+    path,
+    keywords,
+    image,
+    type,
+    noIndex,
+  } = seo ?? {};
+  const hasSeo = seo !== undefined;
+
   useEffect(() => {
-    if (!seo) return;
+    if (!hasSeo) return;
 
     // --- Title ---
-    const fullTitle = seo.title
-      ? `${seo.title} | ${SITE_NAME}`
+    const fullTitle = title
+      ? `${title} | ${SITE_NAME}`
       : `${SITE_NAME} — Where Medicine Becomes Energetic`;
     document.title = fullTitle;
 
     // --- Meta description ---
-    const desc = seo.description ?? DEFAULT_DESCRIPTION;
+    const desc = description ?? DEFAULT_DESCRIPTION;
     setMeta("description", desc);
-    setMeta("keywords", seo.keywords ?? "medical education, NEET, MBBS, flashcards, anatomy, physiology");
+    setMeta("keywords", keywords ?? "medical education, NEET, MBBS, flashcards, anatomy, physiology");
 
     // --- Open Graph ---
-    const ogImage = seo.image ?? `${SITE_URL}${DEFAULT_IMAGE}`;
-    const ogUrl = seo.path ? `${SITE_URL}${seo.path}` : SITE_URL;
-    setMeta("og:type", seo.type ?? "website");
+    const ogImage = image ?? `${SITE_URL}${DEFAULT_IMAGE}`;
+    const ogUrl = path ? `${SITE_URL}${path}` : SITE_URL;
+    setMeta("og:type", type ?? "website");
     setMeta("og:title", fullTitle);
     setMeta("og:description", desc);
     setMeta("og:image", ogImage);
@@ -96,7 +109,7 @@ export function useHead(seo?: SEOData) {
     canonical.setAttribute("href", ogUrl);
 
     // --- Robots ---
-    if (seo.noIndex) {
+    if (noIndex) {
       setMeta("robots", "noindex, nofollow");
     } else {
       removeMeta("robots");
@@ -107,7 +120,7 @@ export function useHead(seo?: SEOData) {
       document.title = `${SITE_NAME} — Where Medicine Becomes Energetic`;
       setMeta("description", DEFAULT_DESCRIPTION);
     };
-  }, [seo?.title, seo?.description, seo?.path]);
+  }, [hasSeo, title, description, path, keywords, image, type, noIndex]);
 }
 
 /* ------------------------------------------------------------------ */

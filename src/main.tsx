@@ -199,8 +199,10 @@ function AuthGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!isLoading) {
-      setStalled(false);
-      return;
+      // Clear the stall flag from the next frame instead of synchronously in
+      // the effect body (avoids a cascading render during commit).
+      const raf = requestAnimationFrame(() => setStalled(false));
+      return () => cancelAnimationFrame(raf);
     }
     const t = window.setTimeout(() => setStalled(true), 8000);
     return () => window.clearTimeout(t);

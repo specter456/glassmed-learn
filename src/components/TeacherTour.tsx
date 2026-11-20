@@ -4,24 +4,12 @@ import { RabbitMascot } from "@/components/mascots";
 
 const TOUR_DONE_KEY = "glassmed-teacher-tour-done";
 
-export function isTourDone(): boolean {
-  try {
-    return localStorage.getItem(TOUR_DONE_KEY) === "1";
-  } catch {
-    return true;
-  }
-}
-
-export function markTourDone(): void {
+function markTourDone(): void {
   try {
     localStorage.setItem(TOUR_DONE_KEY, "1");
-  } catch {}
-}
-
-export function resetTour(): void {
-  try {
-    localStorage.removeItem(TOUR_DONE_KEY);
-  } catch {}
+  } catch {
+    /* storage unavailable — the tour just replays next time */
+  }
 }
 
 interface TourStep {
@@ -75,15 +63,18 @@ export function TeacherTour({ open, onClose }: TeacherTourProps) {
   const [step, setStep] = useState(0);
   const [visible, setVisible] = useState(false);
 
-  // Animate in/out
+  // Animate in/out. State is updated from the animation frame callback (not
+  // synchronously in the effect body) so the fade transition still fires.
   useEffect(() => {
-    if (open) {
-      setStep(0);
-      // Small delay so CSS transition fires
-      requestAnimationFrame(() => setVisible(true));
-    } else {
-      setVisible(false);
-    }
+    const raf = requestAnimationFrame(() => {
+      if (open) {
+        setStep(0);
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
+    });
+    return () => cancelAnimationFrame(raf);
   }, [open]);
 
   const handleNext = useCallback(() => {
@@ -332,7 +323,10 @@ function useSpotlightRect(targetId?: string) {
   const [rect, setRect] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
 
   useEffect(() => {
-    if (!targetId) { setRect(null); return; }
+    if (!targetId) {
+      const raf = requestAnimationFrame(() => setRect(null));
+      return () => cancelAnimationFrame(raf);
+    }
     const measure = () => {
       const el = document.querySelector(`[data-tour-target="${targetId}"]`);
       if (el) {

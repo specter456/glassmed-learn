@@ -304,7 +304,6 @@ import {
   Printer,
   Search,
   Siren,
-  Star,
   Stethoscope,
   TestTube,
   TrendingUp,
@@ -327,9 +326,7 @@ import {
   type Article,
   type ArticleCallout,
 } from "@/lib/articles";
-import { useHead, StructuredData, articleStructuredData } from "@/lib/seo";
-import { isBookmarked, toggleBookmark } from "@/lib/bookmarks";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { useHead } from "@/lib/seo";
 import { BookmarkButton } from "@/components/BookmarkButton";
 
 /* ------------------------------------------------------------------ */
