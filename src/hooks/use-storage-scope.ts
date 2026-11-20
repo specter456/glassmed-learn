@@ -36,7 +36,6 @@ export function useStorageScope(): StorageScope {
   useEffect(() => {
     if (isLoading || !isAuthenticated || !user) {
       if (didUpdate.current && guestId !== null) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- bailout
         setGuestId(null);
       }
       didUpdate.current = true;
@@ -64,7 +63,7 @@ export function useStorageScope(): StorageScope {
          effect only ever writes here, never elsewhere in this render cycle. */
       setGuestId(next.guestId);
     }
-  }, [isLoading, isAuthenticated, user]);
+  }, [isLoading, isAuthenticated, user, guestId]);
 
   // Return the last-computed intent, mirroring what the effect is settling to.
   if (isLoading || !isAuthenticated || !user) {

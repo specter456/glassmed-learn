@@ -19,13 +19,12 @@ import {
 import { useEffect, useState } from "react";
 import { scopedStorage } from "@/lib/account-storage";
 import { AppHeader } from "@/components/AppHeader";
+import { ConfettiBurst, Mascot } from "@/components/Celebration";
 import {
-  ConfettiBurst,
-  Mascot,
   QUIZ_PRAISE,
   ROUND_COMPLETE_TITLES,
   pickMessage,
-} from "@/components/Celebration";
+} from "@/lib/celebration-copy";
 import { GlassBackdrop } from "@/components/GlassBackdrop";
 import { QueryErrorBoundary } from "@/components/QueryErrorBoundary";
 import { Button } from "@/components/ui/button";

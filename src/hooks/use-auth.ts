@@ -155,7 +155,7 @@ export function useAuth() {
     };
     window.addEventListener("pagehide", handlePageHide);
     return () => window.removeEventListener("pagehide", handlePageHide);
-  }, [isAuthenticated, signOut]);
+  }, [isAuthenticated, user?.isAnonymous, signOut]);
 
   return {
     isLoading,

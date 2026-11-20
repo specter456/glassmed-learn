@@ -5,6 +5,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useLocation } from "react-router";
+import {
+  GUEST_LOGIN_KEY,
+  LOGIN_ARRIVAL_KEY,
+  WELCOME_SHOWN_KEY,
+} from "@/lib/celebration-copy";
 import { getPortalRoot } from "@/lib/portal";
 
 // ------------------------------------------------------------------
@@ -16,55 +22,6 @@ const WELCOME_WITH_GUEST = {
   subtitle:
     "Your study space is ready — pick up where you left off and keep\nthe momentum going. We've brought back your notes, streaks and progress.",
   emoji: "🌟",
-};
-
-export const WELCOME_SIGNIN = {
-  title: "Welcome back!",
-  subtitle: "Your study space is ready — you've been missed.",
-  emoji: "📚",
-};
-
-const ROUND_COMPLETE_TITLES: Record<string, string> = {
-  Low: "Shift over",
-  Mid: "Shift over",
-  High: "Shift over",
-  Max: "Perfect shift",
-};
-
-function pickMessage<T extends string[] | Record<string, string>>(
-  collection: T,
-  index: number,
-): string {
-  if (Array.isArray(collection)) {
-    return collection[index % collection.length] ?? collection[0] ?? "";
-  }
-  const keys = Object.keys(collection);
-  return (
-    collection[keys[index % keys.length]] ?? collection[keys[0]] ?? ""
-  );
-}
-
-const QUIZ_PRAISE: Record<string, string> = {
-  Zero: "Careful — the patient doesn't forgive, and neither does this score.",
-  One: "One down. Try not to make it a highlight reel.",
-  Two: "Decent. Your patient is grateful and mildly impressed.",
-  Three: "Solid. You didn't kill anyone today.",
-  Four: "Getting sharp. Your patient is now loyal to you.",
-  Five: "Patient saved, squad impressed. You're basically a rookie hero.",
-};
-
-const FLASHCARD_WINS: Record<string, string> = {
-  Zero: "Cards mastered: 0. The deck is winning today.",
-  One: "One card tamed. The deck notices.",
-  Two: "Two cards — the deck is starting to respect you.",
-  Three: "Three mastered. The deck is nervous.",
-  Four: "Four. The deck has officially met its match.",
-  Five: "Five? The deck is filing a complaint.",
-  Six: "Six cards — the deck is drafting your biography.",
-  Seven: "Seven. The deck is considering a promotion for you.",
-  Eight: "Eight mastered. The deck is losing sleep.",
-  Nine: "Nine — the deck is drafting your retirement speech.",
-  Ten: "Ten cards. That's not a study session, that's a takeover.",
 };
 
 // ------------------------------------------------------------------
@@ -135,11 +92,8 @@ function Mascot({
 //  Login celebration component (mounted by main.tsx)
 // ------------------------------------------------------------------
 
-const LOGIN_ARRIVAL_KEY = "glassmed-login-arrival";
-const GUEST_LOGIN_KEY = "glassmed-guest-login";
-const WELCOME_SHOWN_KEY = "glassmed-welcome-shown";
-
 export function LoginCelebration() {
+  const location = useLocation();
   const [open, setOpen] = useState(false);
   const [celebrating, setCelebrating] = useState(false);
   const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -284,35 +238,7 @@ function LoginCelebrationOverlay({
 //  Public API
 // ------------------------------------------------------------------
 
-export { ConfettiBurstImpl as ConfettiBurst };
-export {
-  FLASHCARD_WINS,
-  Mascot,
-  pickMessage,
-  QUIZ_PRAISE,
-  ROUND_COMPLETE_TITLES,
-};
-
-export function markLoginArrival(isGuest: boolean) {
-  try {
-    sessionStorage.setItem(LOGIN_ARRIVAL_KEY, "1");
-    if (isGuest) {
-      try {
-        sessionStorage.setItem(GUEST_LOGIN_KEY, "1");
-      } catch {
-        /* non-fatal */
-      }
-    } else {
-      try {
-        sessionStorage.removeItem(GUEST_LOGIN_KEY);
-      } catch {
-        /* non-fatal */
-      }
-    }
-  } catch {
-    /* non-fatal */
-  }
-}
+export { ConfettiBurstImpl as ConfettiBurst, Mascot };
 
 // ------------------------------------------------------------------
 //  Helpers (kept small so they don't pull in anything new)
