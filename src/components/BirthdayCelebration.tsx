@@ -25,7 +25,89 @@ import { scopedStorage } from "@/lib/account-storage";
 
 const BIRTHDAY_KEY = "glassmed-birthday";
 const CELEBRATION_MS = 9000; // auto-fade after 9s of party
-const FIREWORKS_MS = 8000; // rockets keep launching for the first 8s
+
+// ------------------------------------------------------------------
+//  Firework sound (Web Audio API — no asset files, no dependencies)
+// ------------------------------------------------------------------
+
+let audioCtx: AudioContext | null = null;
+
+/** Lazily create (and resume) a single shared AudioContext. */
+function getAudioContext(): AudioContext | null {
+  try {
+    if (!audioCtx) {
+      const Ctor =
+        window.AudioContext ??
+        (window as Window & { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext;
+      if (!Ctor) return null;
+      audioCtx = new Ctor();
+    }
+    if (audioCtx.state === "suspended") void audioCtx.resume();
+    return audioCtx;
+  } catch {
+    // Audio is decorative — never let it break the celebration.
+    return null;
+  }
+}
+
+/** "Whoosh" — filtered noise sweeping upward as the rocket climbs. */
+function playWhoosh(ctx: AudioContext | null): void {
+  if (!ctx) return;
+  try {
+    const now = ctx.currentTime;
+    const frames = Math.floor(ctx.sampleRate * 0.36);
+    const buffer = ctx.createBuffer(1, frames, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < frames; i += 1) {
+      data[i] = (Math.random() * 2 - 1) * (1 - i / frames);
+    }
+
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.Q.value = 1.1;
+    filter.frequency.setValueAtTime(420, now);
+    filter.frequency.exponentialRampToValueAtTime(2600, now + 0.3);
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.1, now + 0.07);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
+
+    source.connect(filter).connect(gain).connect(ctx.destination);
+    source.start(now);
+    source.stop(now + 0.36);
+  } catch {
+    /* audio is best-effort */
+  }
+}
+
+/** Soft "pop" — a falling tone with a fast decay for the shell burst. */
+function playPop(ctx: AudioContext | null): void {
+  if (!ctx) return;
+  try {
+    const now = ctx.currentTime;
+
+    const osc = ctx.createOscillator();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(760, now);
+    osc.frequency.exponentialRampToValueAtTime(140, now + 0.22);
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.14, now + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.32);
+  } catch {
+    /* audio is best-effort */
+  }
+}
 
 // Birthday memory is personal — scoped under the guest/account session so two
 // visitors on the same browser never share each other's.
@@ -54,7 +136,7 @@ const NEON_CYAN = "#22d3ee";
 const NEON_PURPLE = "#a855f7";
 const NEON_PINK = "#ec4899";
 
-const CONFETTI_COLORS = [
+const FIREWORK_COLORS = [
   NEON_CYAN,
   NEON_PURPLE,
   NEON_PINK,
@@ -64,8 +146,6 @@ const CONFETTI_COLORS = [
   "#FEFFAF",
   "#ffffff",
 ];
-
-const FIREWORK_COLORS = [NEON_CYAN, NEON_PURPLE, NEON_PINK, "#ffffff"];
 
 const AGAIN_MS = 6000; // the "again" card lingers long enough to enjoy
 
@@ -105,6 +185,33 @@ function PartyHat() {
       <circle cx="32" cy="2" r="5" fill="#feffaf" />
       <path d="M4 56 Q 32 62 60 56 Z" fill="#231640" opacity="0.35" />
     </motion.svg>
+  );
+}
+
+/** Big, always-visible emoji band that sits in normal flow (never clipped). */
+function EmojiRow() {
+  const emojis = ["🎂", "🎈", "🎉"];
+  return (
+    <div
+      className="flex select-none items-center justify-center gap-1"
+      style={{ fontSize: "4rem", lineHeight: 1 }}
+      aria-hidden
+    >
+      {emojis.map((emoji, index) => (
+        <motion.span
+          key={emoji}
+          animate={{ y: [0, -10, 0], rotate: [-6, 6, -6] }}
+          transition={{
+            duration: 2.6 + index * 0.3,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: index * 0.15,
+          }}
+        >
+          {emoji}
+        </motion.span>
+      ))}
+    </div>
   );
 }
 
@@ -194,134 +301,88 @@ export function BirthdayCelebration() {
     };
   }, []);
 
-  // Fireworks: rockets shoot up from the bottom and burst in mid-air.
+  // Fireworks: exactly five rockets launch from the bottom edge (right above
+  // the bottom navigation bar), each one bursting into a ring of colour at its
+  // own apex height. `origin.y = 1` is the bottom of the viewport.
   useEffect(() => {
-    if (!open || stage !== "celebrating") return;
-    const fireworksEnd = Date.now() + FIREWORKS_MS;
-    const burstTimers: number[] = [];
-    let raf = 0;
+    if (!open) return;
+    const reduceMotion =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    const audio = reduceMotion ? null : getAudioContext();
+    const timers: number[] = [];
 
-    const launchRocket = () => {
-      const x = 0.12 + Math.random() * 0.76;
-      const color = FIREWORK_COLORS[Math.floor(Math.random() * FIREWORK_COLORS.length)];
-      confetti({
-        particleCount: 4,
-        angle: 90,
-        spread: 14,
-        startVelocity: 58,
-        gravity: 1.25,
-        ticks: 42,
-        origin: { x, y: 1 },
-        colors: [color, "#ffffff"],
-        scalar: 1.05,
-        zIndex: 10000,
-        disableForReducedMotion: true,
-      });
-      burstTimers.push(
+    const shots = [
+      { x: 0.2, flight: 560 },
+      { x: 0.8, flight: 640 },
+      { x: 0.35, flight: 600 },
+      { x: 0.65, flight: 700 },
+      { x: 0.5, flight: 780 },
+    ];
+
+    shots.forEach((shot, index) => {
+      // Stagger the launches so they read as five separate rockets.
+      timers.push(
         window.setTimeout(() => {
+          playWhoosh(audio);
+
+          // The rocket: a short, fast streak climbing from the bottom edge.
           confetti({
-            particleCount: 80,
+            particleCount: 6,
             angle: 90,
-            spread: 360,
-            startVelocity: 24,
-            gravity: 0.85,
-            ticks: 85,
-            origin: { x, y: 0.5 + Math.random() * 0.3 },
-            colors: FIREWORK_COLORS,
-            scalar: 0.9,
+            spread: 8,
+            startVelocity: 72,
+            gravity: 0.9,
+            decay: 0.9,
+            ticks: 60,
+            origin: { x: shot.x, y: 1 },
+            colors: ["#ffffff", "#fef3c7"],
+            scalar: 0.8,
             zIndex: 10000,
             disableForReducedMotion: true,
           });
-        }, 190),
+
+          // The burst: a full circle that blooms where the rocket peaked.
+          timers.push(
+            window.setTimeout(() => {
+              playPop(audio);
+              confetti({
+                particleCount: 130,
+                angle: 90,
+                spread: 360,
+                startVelocity: 26,
+                gravity: 0.75,
+                decay: 0.92,
+                ticks: 140,
+                origin: { x: shot.x, y: 0.35 },
+                colors: FIREWORK_COLORS,
+                scalar: 1.05,
+                zIndex: 10000,
+                disableForReducedMotion: true,
+              });
+              // A smaller white core makes it read as a real shell.
+              confetti({
+                particleCount: 40,
+                angle: 90,
+                spread: 360,
+                startVelocity: 12,
+                gravity: 0.6,
+                ticks: 110,
+                origin: { x: shot.x, y: 0.35 },
+                colors: ["#ffffff", "#fef3c7", "#ffffff"],
+                scalar: 0.7,
+                zIndex: 10000,
+                disableForReducedMotion: true,
+              });
+            }, shot.flight),
+          );
+        }, 100 + index * 320),
       );
-      if (Date.now() < fireworksEnd) raf = requestAnimationFrame(launchRocket);
-    };
+    });
 
-    raf = requestAnimationFrame(launchRocket);
     return () => {
-      cancelAnimationFrame(raf);
-      burstTimers.forEach((t) => window.clearTimeout(t));
+      timers.forEach((t) => window.clearTimeout(t));
       confetti.reset();
     };
-  }, [open, stage]);
-
-  // Confetti cannons from both sides while the celebration is up.
-  useEffect(() => {
-    if (!open || stage !== "celebrating") return;
-    const end = Date.now() + CELEBRATION_MS;
-    let raf = 0;
-    const tick = () => {
-      confetti({
-        particleCount: 3,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0, y: 0.7 },
-        colors: CONFETTI_COLORS,
-        zIndex: 10000,
-        disableForReducedMotion: true,
-      });
-      confetti({
-        particleCount: 3,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1, y: 0.7 },
-        colors: CONFETTI_COLORS,
-        zIndex: 10000,
-        disableForReducedMotion: true,
-      });
-      if (Date.now() < end) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(raf);
-      confetti.reset();
-    };
-  }, [open, stage]);
-
-  // Grand entrance: as soon as the card opens, fire a full-screen neon
-  // explosion from both sides and the bottom of the screen.
-  useEffect(() => {
-    if (!open) return;
-
-    // Bottom-centre fountain bursting upward.
-    confetti({
-      particleCount: 110,
-      angle: 90,
-      spread: 120,
-      startVelocity: 46,
-      origin: { x: 0.5, y: 1 },
-      colors: CONFETTI_COLORS,
-      scalar: 1,
-      ticks: 200,
-      zIndex: 10000,
-      disableForReducedMotion: true,
-    });
-
-    // Left cannon.
-    confetti({
-      particleCount: 70,
-      angle: 58,
-      spread: 70,
-      startVelocity: 52,
-      origin: { x: 0, y: 0.9 },
-      colors: CONFETTI_COLORS,
-      ticks: 200,
-      zIndex: 10000,
-      disableForReducedMotion: true,
-    });
-
-    // Right cannon.
-    confetti({
-      particleCount: 70,
-      angle: 122,
-      spread: 70,
-      startVelocity: 52,
-      origin: { x: 1, y: 0.9 },
-      colors: CONFETTI_COLORS,
-      ticks: 200,
-      zIndex: 10000,
-      disableForReducedMotion: true,
-    });
   }, [open]);
 
   // "Happy birthday again" — the entrance burst fires above, then the card
@@ -381,9 +442,8 @@ export function BirthdayCelebration() {
             />
 
             <div
-              className={`relative flex w-full justify-center ${
-                isParty ? "max-w-lg" : "max-w-md"
-              }`}
+              className="relative flex justify-center"
+              style={{ width: "90%", maxWidth: 500 }}
             >
               {/* Pulsing neon halo, painted behind the card. */}
               <motion.div
@@ -405,19 +465,22 @@ export function BirthdayCelebration() {
                 role="dialog"
                 aria-modal="true"
                 aria-label="Birthday celebration"
-                className="glass-strong shine relative w-full rounded-[2.5rem] border border-white/25 p-7 text-center shadow-[0_0_50px_-10px_rgba(168,85,247,0.85),0_30px_80px_-30px_rgba(0,0,0,0.8)]"
+                className="glass-strong shine relative w-full border border-white/25 text-center shadow-[0_0_50px_-10px_rgba(168,85,247,0.85),0_30px_80px_-30px_rgba(0,0,0,0.8)]"
+                style={{
+                  padding: 40,
+                  borderRadius: 28,
+                  maxHeight: "calc(100dvh - 2rem)",
+                  overflowY: "auto",
+                }}
                 initial={{ opacity: 0, y: 24, scale: 0.94 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 12, scale: 0.96, transition: { duration: 0.6 } }}
                 transition={{ type: "spring", stiffness: 320, damping: 26 }}
               >
-                {/* Cute floating stickers around the card. */}
-                <Sticker emoji="🎈" className="-top-8 -left-3" delay={0} duration={3.6} />
-                <Sticker emoji="🎉" className="-top-7 -right-4" delay={0.25} duration={4.2} rotate={16} />
-                <Sticker emoji="🐱" className="-left-2 top-1/3 sm:-left-7" delay={0.45} duration={3.2} rotate={10} />
-                <Sticker emoji="🎂" className="-right-2 top-1/2 sm:-right-7" delay={0.15} duration={3.9} rotate={-14} />
-                <Sticker emoji="⭐" className="-bottom-7 left-1/4" delay={0.6} duration={3.4} size="text-2xl sm:text-3xl" />
-                <Sticker emoji="🎈" className="-bottom-6 -right-3" delay={0.35} duration={4.4} rotate={18} />
+                {/* A few gentle floaters, kept fully inside the card so they
+                    can never be clipped by the viewport edge. */}
+                <Sticker emoji="⭐" className="bottom-3 left-4" delay={0.5} duration={3.4} size="text-2xl" />
+                <Sticker emoji="🎈" className="right-3 top-14" delay={0.2} duration={4.2} size="text-3xl" rotate={14} />
               <button
                 onClick={closeModal}
                 className="absolute right-4 top-4 z-10 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-white/10"
@@ -458,18 +521,19 @@ export function BirthdayCelebration() {
 
               {stage === "again" && againName && (
                 <>
+                  <EmojiRow />
                   <motion.div
                     className="relative mx-auto flex h-32 w-40 items-end justify-center"
                     animate={{ y: [0, -14, 0], rotate: [-2, 2, -2] }}
                     transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
                   >
                     <PartyHat />
-                    <CatMascot mood="excited" size={104} />
+                    <CatMascot mood="excited" size={112} />
                   </motion.div>
-                  <h2 className="mt-2 bg-[linear-gradient(100deg,#22d3ee,#a855f7,#ec4899)] bg-clip-text font-calligraphy text-4xl leading-tight text-transparent drop-shadow-[0_0_20px_rgba(168,85,247,0.8)] sm:text-5xl">
+                  <h2 className="mt-1 break-words bg-[linear-gradient(100deg,#22d3ee,#a855f7,#ec4899)] bg-clip-text font-calligraphy text-4xl font-bold leading-[1.1] text-transparent drop-shadow-[0_0_20px_rgba(168,85,247,0.8)] sm:text-5xl">
                     Happy Birthday again, {againName}!
                   </h2>
-                  <p className="mx-auto mt-2 text-base font-bold text-foreground">
+                  <p className="mx-auto mt-3 text-base font-bold text-foreground sm:text-lg">
                     Take a break, you've earned it! 🌟
                   </p>
                 </>
@@ -477,19 +541,20 @@ export function BirthdayCelebration() {
 
               {isParty && (
                 <>
+                  <EmojiRow />
                   <motion.div
                     className="relative mx-auto flex h-44 w-48 items-end justify-center"
                     animate={{ y: [0, -22, 0] }}
                     transition={{ duration: 0.85, repeat: Infinity, ease: "easeInOut" }}
                   >
                     <PartyHat />
-                    <CatMascot mood="excited" size={128} />
+                    <CatMascot mood="excited" size={132} />
                   </motion.div>
 
-                  <h2 className="mt-2 bg-[linear-gradient(100deg,#22d3ee,#a855f7,#ec4899)] bg-clip-text font-calligraphy text-4xl leading-tight text-transparent drop-shadow-[0_0_22px_rgba(236,72,153,0.8)] sm:text-5xl">
-                    🎉 Happy Birthday, {celebrateName}!
+                  <h2 className="mt-1 break-words bg-[linear-gradient(100deg,#22d3ee,#a855f7,#ec4899)] bg-clip-text font-calligraphy text-5xl font-bold leading-[1.05] text-transparent drop-shadow-[0_0_22px_rgba(236,72,153,0.8)] sm:text-6xl">
+                    Happy Birthday, {celebrateName}!
                   </h2>
-                  <p className="mx-auto mt-2 text-base font-bold text-foreground">
+                  <p className="mx-auto mt-3 text-base font-bold text-foreground sm:text-lg">
                     Take a break, you've earned it! 🌟
                   </p>
                 </>
