@@ -443,18 +443,29 @@ export function BirthdayCelebration() {
 
             <div
               className="relative flex justify-center"
-              style={{ width: "90%", maxWidth: 500 }}
+              style={{
+                width: "90%",
+                maxWidth: 500,
+                position: "relative",
+                zIndex: 1,
+                isolation: "isolate",
+              }}
             >
-              {/* Pulsing neon halo, painted behind the card. */}
+              {/* Pulsing neon halo — strictly decorative: z-index 0, no
+                  pointer events, low opacity, and the card sits at z 1 so
+                  the glow can never wash out the text or block a click. */}
               <motion.div
                 aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-[2.5rem]"
+                className="absolute rounded-[2.5rem]"
                 style={{
+                  inset: -10,
+                  zIndex: 0,
+                  pointerEvents: "none",
                   background: `linear-gradient(120deg, ${NEON_CYAN}, ${NEON_PURPLE}, ${NEON_PINK}, ${NEON_CYAN})`,
-                  filter: "blur(26px)",
+                  filter: "blur(18px)",
                 }}
                 initial={{ opacity: 0 }}
-                animate={{ opacity: [0.3, 0.75, 0.3] }}
+                animate={{ opacity: [0.15, 0.4, 0.15] }}
                 exit={{ opacity: 0 }}
                 transition={{
                   opacity: { duration: 4, repeat: Infinity, ease: "easeInOut" },
@@ -465,12 +476,19 @@ export function BirthdayCelebration() {
                 role="dialog"
                 aria-modal="true"
                 aria-label="Birthday celebration"
-                className="glass-strong shine relative w-full border border-white/25 text-center shadow-[0_0_50px_-10px_rgba(168,85,247,0.85),0_30px_80px_-30px_rgba(0,0,0,0.8)]"
+                className="shine relative w-full border border-white/15 text-center shadow-[0_0_50px_-10px_rgba(168,85,247,0.85),0_30px_80px_-30px_rgba(0,0,0,0.8)]"
                 style={{
                   padding: 40,
                   borderRadius: 28,
                   maxHeight: "calc(100dvh - 2rem)",
                   overflowY: "auto",
+                  position: "relative",
+                  zIndex: 1,
+                  // Opaque surface: the neon halo behind can never bleed
+                  // through and turn the card into a blurry blob.
+                  background:
+                    "linear-gradient(160deg, rgba(26,29,50,0.98) 0%, rgba(15,17,32,0.99) 100%)",
+                  color: "#ffffff",
                 }}
                 initial={{ opacity: 0, y: 24, scale: 0.94 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -483,7 +501,7 @@ export function BirthdayCelebration() {
                 <Sticker emoji="🎈" className="right-3 top-14" delay={0.2} duration={4.2} size="text-3xl" rotate={14} />
               <button
                 onClick={closeModal}
-                className="absolute right-4 top-4 z-10 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-white/10"
+                className="absolute right-4 top-4 z-10 rounded-full p-1.5 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                 aria-label="Close"
               >
                 <X className="size-4" />
@@ -506,7 +524,7 @@ export function BirthdayCelebration() {
                       if (e.key === "Enter" && name.trim()) celebrate();
                     }}
                     placeholder="Your name…"
-                    className="mt-5 w-full rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-center text-lg font-semibold text-foreground placeholder:text-muted-foreground/70 focus:border-wistaria/60 focus:outline-none focus:ring-2 focus:ring-wistaria/30"
+                    className="mt-5 w-full rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-center text-lg font-semibold text-white placeholder:text-white/45 focus:border-wistaria/60 focus:outline-none focus:ring-2 focus:ring-wistaria/30"
                   />
                   <Button
                     type="button"
@@ -533,7 +551,7 @@ export function BirthdayCelebration() {
                   <h2 className="mt-1 break-words bg-[linear-gradient(100deg,#22d3ee,#a855f7,#ec4899)] bg-clip-text font-calligraphy text-4xl font-bold leading-[1.1] text-transparent drop-shadow-[0_0_20px_rgba(168,85,247,0.8)] sm:text-5xl">
                     Happy Birthday again, {againName}!
                   </h2>
-                  <p className="mx-auto mt-3 text-base font-bold text-foreground sm:text-lg">
+                  <p className="mx-auto mt-3 text-base font-bold text-white/85 sm:text-lg">
                     Take a break, you've earned it! 🌟
                   </p>
                 </>
@@ -554,7 +572,7 @@ export function BirthdayCelebration() {
                   <h2 className="mt-1 break-words bg-[linear-gradient(100deg,#22d3ee,#a855f7,#ec4899)] bg-clip-text font-calligraphy text-5xl font-bold leading-[1.05] text-transparent drop-shadow-[0_0_22px_rgba(236,72,153,0.8)] sm:text-6xl">
                     Happy Birthday, {celebrateName}!
                   </h2>
-                  <p className="mx-auto mt-3 text-base font-bold text-foreground sm:text-lg">
+                  <p className="mx-auto mt-3 text-base font-bold text-white/85 sm:text-lg">
                     Take a break, you've earned it! 🌟
                   </p>
                 </>

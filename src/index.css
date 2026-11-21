@@ -537,9 +537,51 @@ html, body, #root {
   overflow-x: hidden;
 }
 
+/* ───────────────────────────────────────────────────────────────
+   LAYERING CONTRACT — single source of truth for stacking order.
+
+        -1     ambient glow (GlassBackdrop orbs / gradient wash)
+         0     page background
+        10     page content (text, cards, buttons)
+        60     app header
+        70     bottom navigation
+      1200     modal / overlay portal
+     10000+    confetti canvas (pointer-events: none)
+
+   Rule: every decorative background layer is `position: fixed`,
+   `pointer-events: none` and sits at a negative z-index, so a glow
+   can never cover content or swallow a click. Content always paints
+   above it because #root creates its own stacking context at z 10,
+   and portalled overlays live above #root at 1200.
+   ─────────────────────────────────────────────────────────────── */
+:root {
+  --z-ambient: -1;
+  --z-content: 10;
+  --z-header: 60;
+  --z-nav: 70;
+  --z-overlay: 1200;
+}
+
 #root {
+  position: relative;
+  z-index: var(--z-content);
   width: 100%;
   box-sizing: border-box;
+}
+
+/* Decorative ambience only — fixed, non-interactive, always behind. */
+.ambient-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-ambient);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Overlays are portalled here so they always stack above the app shell. */
+#glassmed-portal-root {
+  position: relative;
+  z-index: var(--z-overlay);
 }
 
 /* Ensure images and SVGs never overflow their containers */

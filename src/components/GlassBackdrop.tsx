@@ -14,10 +14,7 @@ export function GlassBackdrop({ className }: { className?: string }) {
   return (
     <div
       aria-hidden
-      className={cn(
-        "pointer-events-none fixed inset-0 -z-10 overflow-hidden",
-        className,
-      )}
+      className={cn("ambient-backdrop", className)}
     >
       {/* base wash — deep navy, cool (or pale Cloud in light mode) */}
       <div
