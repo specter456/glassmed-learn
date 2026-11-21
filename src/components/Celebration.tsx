@@ -156,66 +156,95 @@ function LoginCelebrationOverlay({
   onContinue: () => void;
   onDismiss: () => void;
 }) {
+  // Escape closes the card, so it can never trap someone in the overlay.
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onDismiss();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onDismiss]);
+
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      className="fixed inset-0 flex items-center justify-center p-4"
       style={{
-        background: "rgba(8, 12, 30, 0.45)",
-        backdropFilter: "blur(6px)",
-        WebkitBackdropFilter: "blur(6px)",
+        zIndex: 1000,
+        background: "rgba(8, 12, 30, 0.55)",
+        backdropFilter: "blur(2px)",
+        WebkitBackdropFilter: "blur(2px)",
+        pointerEvents: "auto",
       }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
+      transition={{ duration: 0.22, ease: "easeOut" }}
       onClick={onDismiss}
       role="dialog"
       aria-modal="true"
       aria-labelledby="glassmed-welcome-title"
     >
       <motion.div
-        className="relative w-full max-w-md rounded-3xl p-8 text-center"
+        className="relative text-center"
         style={{
-          background: "rgba(255, 255, 255, 0.1)",
+          width: "90%",
+          maxWidth: 400,
+          borderRadius: 24,
+          background: "rgba(30, 30, 40, 0.85)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
           backdropFilter: "blur(12px)",
           WebkitBackdropFilter: "blur(12px)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
+          padding: 28,
+          color: "#ffffff",
+          pointerEvents: "auto",
           boxShadow:
-            "0 24px 80px -20px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.15)",
+            "0 24px 80px -20px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08)",
         }}
-        initial={{ opacity: 0, scale: 0.94, y: 16 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.96, y: 8 }}
-        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.98 }}
+        transition={{ duration: 0.24, ease: "easeOut" }}
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="mb-3 text-5xl" aria-hidden="true">
+        <div
+          className="mb-3 text-5xl"
+          aria-hidden="true"
+          style={{ position: "relative" }}
+        >
           {WELCOME_WITH_GUEST.emoji}
         </div>
         <h2
           id="glassmed-welcome-title"
-          className="text-xl font-extrabold tracking-tight text-white"
-          style={{ textShadow: "0 1px 12px rgba(8, 12, 30, 0.45)" }}
+          className="text-xl font-extrabold tracking-tight"
+          style={{ position: "relative", color: "#ffffff" }}
         >
           {WELCOME_WITH_GUEST.title}
         </h2>
         <p
-          className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-white/85"
-          style={{ textShadow: "0 1px 10px rgba(8, 12, 30, 0.4)" }}
+          className="mx-auto mt-2 max-w-sm text-sm leading-relaxed"
+          style={{ position: "relative", color: "rgba(255, 255, 255, 0.8)" }}
         >
           {WELCOME_WITH_GUEST.subtitle}
         </p>
         <Button
           type="button"
-          className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#78A2D2] to-[#a2a2d0] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-[#78A2D2]/30 transition-transform hover:brightness-110 active:scale-[0.97]"
           onClick={onContinue}
+          className="mt-6 w-full rounded-xl px-5 text-sm font-bold transition-transform hover:brightness-110 active:scale-[0.97]"
+          style={{
+            position: "relative",
+            minHeight: 44,
+            color: "#ffffff",
+            background: "linear-gradient(90deg, #78A2D2 0%, #a2a2d0 100%)",
+            boxShadow: "0 10px 24px -10px rgba(120, 162, 210, 0.9)",
+          }}
         >
           {WELCOME_WITH_GUEST.cta}
         </Button>
         <button
           type="button"
           onClick={onDismiss}
-          className="mt-3 w-full rounded-xl px-4 py-2 text-xs font-semibold text-white/60 transition-colors hover:text-white/90"
+          className="mt-2 w-full rounded-xl px-4 py-2 text-xs font-semibold transition-colors"
+          style={{ position: "relative", color: "rgba(255, 255, 255, 0.65)" }}
         >
           Maybe later
         </button>
