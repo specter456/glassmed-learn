@@ -32,9 +32,12 @@ const schema = defineSchema(
       role: v.optional(roleValidator), // role of the user. do not remove
 
       // ---- Welcome / onboarding state (per user profile) ----
-      // How many times this account has signed in. Used by the routing logic
-      // to decide between the full Welcome screen (1st login) and a quick
-      // "Welcome back!" toast (2nd time and onwards).
+      // Drives which arrival card an email student sees on their next sign-in:
+      //   unset / 1 → full "Welcome" card
+      //   2         → "Welcome back!" card
+      //   3 or more → no card, straight to the dashboard
+      // Advanced by `users.acknowledgeWelcome` each time the card is dismissed
+      // with its continue button. Guests never use it (always a fresh Welcome).
       loginCount: v.optional(v.number()),
       // Flipped once the user has finished the full Welcome/onboarding screen.
       hasCompletedOnboarding: v.optional(v.boolean()),

@@ -5,24 +5,18 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useLocation, useNavigate } from "react-router";
+import { api } from "@/convex/_generated/api";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import {
   GUEST_LOGIN_KEY,
   LOGIN_ARRIVAL_KEY,
-  WELCOME_SHOWN_KEY,
+  WELCOME_FIRST_TIME,
+  WELCOME_RETURNING,
+  WELCOME_RETURNING_AT,
+  WELCOME_SILENT_FROM,
+  type WelcomeCopy,
 } from "@/lib/celebration-copy";
 import { getPortalRoot } from "@/lib/portal";
-
-// ------------------------------------------------------------------
-//  Reusable copy / data
-// ------------------------------------------------------------------
-
-const WELCOME_WITH_GUEST = {
-  title: "Welcome back, brilliant student!",
-  subtitle:
-    "Your study space is ready — your notes, streaks and progress are right where you left them.",
-  emoji: "🌟",
-  cta: "Start Studying",
-};
 
 // ------------------------------------------------------------------
 //  Confetti burst
@@ -92,56 +86,97 @@ function Mascot({
 //  Login celebration component (mounted by main.tsx)
 // ------------------------------------------------------------------
 
+/** Which card is up, and whether the arrival was a guest. */
+type ArrivalCard = { copy: WelcomeCopy; guest: boolean };
+
 export function LoginCelebration() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const { isAuthenticated } = useConvexAuth();
+  // The signed-in profile carries `loginCount`, the card selector for email
+  // students. Guests never read it — anonymous rows have no count.
+  const profile = useQuery(api.users.currentUser);
+  const acknowledgeWelcome = useMutation(api.users.acknowledgeWelcome);
 
-  // Spot an arrival flag and open the welcome card once per sign-in. The DOM
-  // side effect (setting state) happens on the next frame, never synchronously
-  // in the effect body.
+  const [card, setCard] = useState<ArrivalCard | null>(null);
+  // An email arrival is waiting for its profile before we can pick a card.
+  const [awaitingProfile, setAwaitingProfile] = useState(false);
+
+  // 1. Read the arrival flag the auth screen set just before navigating.
+  //    State updates happen on the next animation frame, never synchronously
+  //    in the effect body.
   useEffect(() => {
     const arrival = readFlag(LOGIN_ARRIVAL_KEY);
     if (!arrival) return;
     clearFlag(LOGIN_ARRIVAL_KEY);
 
-    const isGuest = readFlag(GUEST_LOGIN_KEY);
+    const isGuest = readFlag(GUEST_LOGIN_KEY) === "1";
     clearFlag(GUEST_LOGIN_KEY);
 
-    const shouldPlay = !readFlag(WELCOME_SHOWN_KEY) || isGuest;
-    if (!shouldPlay) return;
-
-    try {
-      sessionStorage.setItem(WELCOME_SHOWN_KEY, "1");
-    } catch {
-      /* non-fatal */
-    }
-
-    const raf = requestAnimationFrame(() => setOpen(true));
+    const raf = requestAnimationFrame(() => {
+      if (isGuest) {
+        // Guests have no history to come "back" to: always a fresh Welcome.
+        setCard({ copy: WELCOME_FIRST_TIME, guest: true });
+      } else {
+        setAwaitingProfile(true);
+      }
+    });
     return () => cancelAnimationFrame(raf);
   }, [location.pathname]);
 
-  const close = () => setOpen(false);
+  // 2. Email arrivals: loginCount picks the card.
+  //      1st login (unset or 1) → full Welcome
+  //      2nd login (2)          → "Welcome back!"
+  //      3rd login onwards      → no card at all
+  useEffect(() => {
+    if (!awaitingProfile || !isAuthenticated || !profile) return;
 
-  const handleStartStudying = () => {
+    const count = profile.loginCount ?? 0;
+    const next: ArrivalCard | null =
+      count >= WELCOME_SILENT_FROM
+        ? null
+        : {
+            copy:
+              count === WELCOME_RETURNING_AT
+                ? WELCOME_RETURNING
+                : WELCOME_FIRST_TIME,
+            guest: false,
+          };
+
+    const raf = requestAnimationFrame(() => {
+      setAwaitingProfile(false);
+      setCard(next);
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [awaitingProfile, isAuthenticated, profile]);
+
+  const dismiss = () => setCard(null);
+
+  const handleContinue = () => {
+    const wasGuest = card?.guest ?? false;
     // Close first (AnimatePresence plays the fade-out), then go straight to
     // the dashboard. One click, no second tap needed.
-    setOpen(false);
-    void completeOnboarding().catch((error) => {
-      console.warn("[GlassMed] Couldn't save onboarding:", error);
-    });
+    setCard(null);
+    if (!wasGuest) {
+      // Email students only: advance the counter so the card is gone by the
+      // third sign-in. The mutation also marks onboarding complete.
+      void acknowledgeWelcome().catch((error) => {
+        console.warn("[GlassMed] Couldn't save login count:", error);
+      });
+    }
     navigate("/dashboard");
   };
 
-  // Render the portal unconditionally so AnimatePresence can play the
-  // fade-out after `open` flips to false.
+  // The portal renders unconditionally so AnimatePresence can play the
+  // fade-out after `card` clears.
   return createPortal(
     <AnimatePresence>
-      {open && (
+      {card && (
         <LoginCelebrationOverlay
-          key="welcome-back"
-          onContinue={handleStartStudying}
-          onDismiss={close}
+          key={card.copy.title}
+          copy={card.copy}
+          onContinue={handleContinue}
+          onDismiss={dismiss}
         />
       )}
     </AnimatePresence>,
@@ -150,9 +185,11 @@ export function LoginCelebration() {
 }
 
 function LoginCelebrationOverlay({
+  copy,
   onContinue,
   onDismiss,
 }: {
+  copy: WelcomeCopy;
   onContinue: () => void;
   onDismiss: () => void;
 }) {
@@ -211,20 +248,20 @@ function LoginCelebrationOverlay({
           aria-hidden="true"
           style={{ position: "relative" }}
         >
-          {WELCOME_WITH_GUEST.emoji}
+          {copy.emoji}
         </div>
         <h2
           id="glassmed-welcome-title"
           className="text-xl font-extrabold tracking-tight"
           style={{ position: "relative", color: "#ffffff" }}
         >
-          {WELCOME_WITH_GUEST.title}
+          {copy.title}
         </h2>
         <p
           className="mx-auto mt-2 max-w-sm text-sm leading-relaxed"
           style={{ position: "relative", color: "rgba(255, 255, 255, 0.8)" }}
         >
-          {WELCOME_WITH_GUEST.subtitle}
+          {copy.subtitle}
         </p>
         <Button
           type="button"
@@ -238,7 +275,7 @@ function LoginCelebrationOverlay({
             boxShadow: "0 10px 24px -10px rgba(120, 162, 210, 0.9)",
           }}
         >
-          {WELCOME_WITH_GUEST.cta}
+          {copy.cta}
         </Button>
         <button
           type="button"
@@ -282,8 +319,4 @@ function clearFlag(key: string): void {
   } catch {
     /* non-fatal */
   }
-}
-
-async function completeOnboarding(): Promise<void> {
-  // Stub — expand only if the backend exposes an onboarding endpoint.
 }

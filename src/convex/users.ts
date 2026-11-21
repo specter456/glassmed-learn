@@ -33,14 +33,22 @@ export const getCurrentUser = async (ctx: QueryCtx) => {
 };
 
 /**
- * Called once per explicit sign-in (email OTP).
+ * Advance the profile's login counter once the student has finished the
+ * Welcome card ("Start Studying" / "Continue Studying").
  *
- * Bumps `loginCount` on the user's own profile so the client can tell a
- * first-ever login (show the full Welcome screen) from a returning one
- * (skip it and show a quick "Welcome back!" toast instead). Guest sessions
- * are anonymous and never call this — their welcome logic lives client-side.
+ * The counter is a plain arrival tally the client reads on the NEXT sign-in:
+ *
+ *   unset or 1  → 2   first welcome finished
+ *   2           → 3   "welcome back" finished
+ *   3+          → +1  card is never shown again
+ *
+ * So the stored value means "how many popups this account is allowed to see":
+ * below 2 → full Welcome, exactly 2 → "Welcome back!", 3 or more → none.
+ *
+ * Guests are anonymous and never reach here — their card is always the fresh
+ * Welcome, decided client-side.
  */
-export const recordLogin = mutation({
+export const acknowledgeWelcome = mutation({
   args: {},
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
@@ -48,14 +56,10 @@ export const recordLogin = mutation({
     const user = await ctx.db.get(userId);
     if (!user || user.isAnonymous) return null;
 
-    const loginCount = (user.loginCount ?? 0) + 1;
-    await ctx.db.patch(userId, { loginCount });
-
-    return {
-      loginCount,
-      isFirstLogin: loginCount === 1,
-      hasCompletedOnboarding: user.hasCompletedOnboarding ?? false,
-    };
+    // A brand-new profile has no count yet → treat it as the first arrival.
+    const next = Math.max(user.loginCount ?? 1, 1) + 1;
+    await ctx.db.patch(userId, { loginCount: next, hasCompletedOnboarding: true });
+    return next;
   },
 });
 

@@ -6,11 +6,49 @@
  * imported by any page.
  */
 
-export const WELCOME_SIGNIN = {
-  title: "Welcome back!",
-  subtitle: "Your study space is ready — you've been missed.",
-  emoji: "📚",
+/**
+ * Welcome-card copy.
+ *
+ * Which card plays is decided per visitor:
+ *
+ *  - Guests always get {@link WELCOME_FIRST_TIME}. They are anonymous, so
+ *    there is no history to come "back" to — every guest arrival is a fresh
+ *    welcome.
+ *  - Email students get it based on `users.loginCount`:
+ *      unset / 1 → {@link WELCOME_FIRST_TIME}   (first ever sign-in)
+ *      2         → {@link WELCOME_RETURNING}     (second sign-in)
+ *      3 or more → no card at all
+ */
+export interface WelcomeCopy {
+  emoji: string;
+  title: string;
+  subtitle: string;
+  cta: string;
+}
+
+/** First-time (and every guest) arrival. */
+export const WELCOME_FIRST_TIME: WelcomeCopy = {
+  emoji: "🌟",
+  title: "Welcome to GlassMed!",
+  subtitle:
+    "Your study space is ready — flashcards, visual basics and spaced review, all in one place.",
+  cta: "Start Studying",
 };
+
+/** Second sign-in for an email student only. */
+export const WELCOME_RETURNING: WelcomeCopy = {
+  emoji: "📚",
+  title: "Welcome back, brilliant student!",
+  subtitle:
+    "Your study space is ready — your notes, streaks and progress are right where you left them.",
+  cta: "Continue Studying",
+};
+
+/** Email logins at or above this count skip the card entirely. */
+export const WELCOME_SILENT_FROM = 3;
+
+/** The second login gets the "welcome back" card. */
+export const WELCOME_RETURNING_AT = 2;
 
 export const ROUND_COMPLETE_TITLES: Record<string, string> = {
   Low: "Shift over",
@@ -57,7 +95,6 @@ export const FLASHCARD_WINS: Record<string, string> = {
 
 export const LOGIN_ARRIVAL_KEY = "glassmed-login-arrival";
 export const GUEST_LOGIN_KEY = "glassmed-guest-login";
-export const WELCOME_SHOWN_KEY = "glassmed-welcome-shown";
 
 /** Flag the upcoming route change as a fresh sign-in (guest or email). */
 export function markLoginArrival(isGuest: boolean) {
